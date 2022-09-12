@@ -26,6 +26,9 @@ gp origin -d feature  # git push origin --delete feature
 git diff              # changes between the Working Directory and the Staging Area
 git diff HEAD         # changes between the Working Directory and the HEAD
 git diff --staged     # changes between the Staging Area and the HEAD
+
+# Github CLI
+gh pr view <number> -R <user>/<repo> 
 ```
 
 Docker

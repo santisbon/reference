@@ -176,6 +176,7 @@ These will vary for each person. Some examples on a Mac:
 ```Shell
 brew install wget
 brew install gcc
+brew install jq
 brew install --cask docker
 brew install --cask 1password
 brew install --cask nordvpn
@@ -335,12 +336,12 @@ Macbook **M1/M2** is based on **ARM**. The Docker host is detected as **linux/ar
 On a Macbook M1/M2 running a native arm64 linux image instead of an amd64 (x86-64 Intel) image with emulation:  
 When installing apps on the container either install the package for the ARM platform if they provide one, or run an amd64 docker image (Docker will use emulation). 
 
-See Docker host info
+See Docker host info.  
+You need to use the real field names (not display names) so we'll grab the info in json to get the real field names and use ```jq``` to display it nicely. Then we'll render them using Go templates.
+
 ```Shell
-# You need to use the real field names
-brew install jq
 docker info --format '{{json .}}' | jq .
-# Get info using Go templates
+
 docker info --format "{{.Plugins.Volume}}"
 docker info --format "{{.OSType}} - {{.Architecture}} CPUs: {{.NCPU}}"
 ```
