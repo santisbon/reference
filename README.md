@@ -1,8 +1,8 @@
+# Setting up a new machine
 
-Table of Contents
-=================
+## Table of Contents
 
-* [Setting up a new machine](#setting-up-a-new-machine)
+
 * [Do a clean install of the OS](#do-a-clean-install-of-the-os)
 * [Package manager](#package-manager)
    * [macOS](#macos)
@@ -55,8 +55,6 @@ Table of Contents
    * [Installing dependencies examples](#installing-dependencies-examples)
       * [Troubleshooting mocha](#troubleshooting-mocha)
    * [Set up ESLint with a configuration file](#set-up-eslint-with-a-configuration-file)
-
-# Setting up a new machine
 
 # Do a clean install of the OS
 
