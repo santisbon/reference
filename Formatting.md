@@ -1,13 +1,13 @@
 # Formatting Output
 
-## JSON input
+## JSON
 
 Get ```jq``` (a json processor) with ```brew install jq```.
 
 ```jq [options...] filter [files...]```  
 The simplest ```jq``` filter is the identity filter ```.``` and it takes its input and produces it unchanged as output. ```jq``` by default pretty-prints all output so the ```.``` filter is basically a json pretty-printer.
 
-## Output templates
+## Templates
 To display an array using [Go templates](https://blog.gopheracademy.com/advent-2017/using-go-templates/) use  
 ```
 {{range pipeline}} T1 {{end}}
@@ -23,6 +23,7 @@ Pretty-print json.
 docker info --format '{{json .}}' | jq .
 ```
 
+Without arrays.
 ```Shell
 docker info --format "{{.Plugins.Volume}}"
 docker info --format "{{.OSType}} - {{.Architecture}} CPUs: {{.NCPU}}"
@@ -31,5 +32,7 @@ docker info --format "{{.OSType}} - {{.Architecture}} CPUs: {{.NCPU}}"
 With arrays
 ```Shell
 docker inspect --format '{{range .Mounts}} {{.Type}} {{.Name}} {{end}}' mycontainer
+gh pr list -R lstein/stable-diffusion --json author,url --template '{{range .}} {{.author.login}} {{.url}} {{end}}'
+gh pr list -R lstein/stable-diffusion --json author,url --template '{{range .}} {{tablerow .author.login .url}} {{end}}'
 
 ```

@@ -28,6 +28,7 @@ git diff HEAD         # changes between the Working Directory and the HEAD
 git diff --staged     # changes between the Staging Area and the HEAD
 
 # Github CLI
+gh pr list -R <user>/<repo> | grep something
 gh pr view <number> -R <user>/<repo> 
 ```
 
