@@ -1,0 +1,6 @@
+#!/bin/zsh
+./gh-md-toc $1 > toc.md
+cat toc.md $1 > toc-content.md
+rm -rf toc.md
+pbcopy < toc-content.md # "xclip -selection clipboard" on linux
+echo "TOC and content saved to toc-content.md and copied to clipboard"
