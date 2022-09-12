@@ -1,64 +1,7 @@
+# Setting up a new machine
 
-Table of Contents
-=================
+# Do a clean install of the OS
 
-* [Prerequisites](#prerequisites)
-   * [Do a clean install of the OS](#do-a-clean-install-of-the-os)
-* [Package manager](#package-manager)
-   * [macOS](#macos)
-   * [Linux](#linux)
-* [Shell](#shell)
-   * [Bash](#bash)
-   * [Zsh](#zsh)
-   * [Terminal replacement](#terminal-replacement)
-* [Install utilities](#install-utilities)
-* [Git](#git)
-   * [Install](#install)
-   * [Configure](#configure)
-   * [Set up git autocompletion (bash)](#set-up-git-autocompletion-bash)
-   * [Set up SSH key](#set-up-ssh-key)
-* [Docker](#docker)
-   * [Install](#install-1)
-      * [macOS](#macos-1)
-      * [Linux:](#linux-1)
-   * [Use](#use)
-      * [Architecture](#architecture)
-      * [Examples](#examples)
-* [Python](#python)
-   * [Install Python, the pip Python package installer, and Setuptools](#install-python-the-pip-python-package-installer-and-setuptools)
-      * [With Homebrew](#with-homebrew)
-      * [Without Homebrew](#without-homebrew)
-   * [Get the pep8 python style checker](#get-the-pep8-python-style-checker)
-   * [Anaconda](#anaconda)
-      * [Notebooks](#notebooks)
-* [Raspberry Pi](#raspberry-pi)
-* [Amazon Web Services](#amazon-web-services)
-   * [AWS CLI](#aws-cli)
-      * [Install the AWS command line interface](#install-the-aws-command-line-interface)
-      * [Add the AWS CLI to your PATH](#add-the-aws-cli-to-your-path)
-      * [Check if the AWS CLI is installed correctly](#check-if-the-aws-cli-is-installed-correctly)
-      * [Configure the AWS CLI](#configure-the-aws-cli)
-   * [Alexa Skills Kit (ASK) CLI](#alexa-skills-kit-ask-cli)
-   * [AWS Amplify](#aws-amplify)
-* [MySQL development](#mysql-development)
-   * [Install MySQL Community Edition](#install-mysql-community-edition)
-   * [Configure your PATH](#configure-your-path)
-   * [Start the MySQL service](#start-the-mysql-service)
-   * [Verify it's running](#verify-its-running)
-   * [Connect to your MySQL instance](#connect-to-your-mysql-instance)
-   * [To stop MySQL](#to-stop-mysql)
-   * [Exporting data](#exporting-data)
-* [Node.js](#nodejs)
-   * [Install](#install-2)
-   * [Update npm](#update-npm)
-   * [Initialize a node project by creating a package.json](#initialize-a-node-project-by-creating-a-packagejson)
-   * [Installing dependencies examples](#installing-dependencies-examples)
-      * [Troubleshooting mocha](#troubleshooting-mocha)
-   * [Set up ESLint with a configuration file](#set-up-eslint-with-a-configuration-file)
-
-# Prerequisites
-
-## Do a clean install of the OS
 On macOS download the new version from System Preferences, Software Update and create the bootable media with:
 ```Shell
 sudo /Applications/Install\ macOS\ Monterey.app/Contents/Resources/createinstallmedia --volume /Volumes/Untitled
