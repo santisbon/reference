@@ -1,0 +1,45 @@
+[user]
+        name = your_name
+        email = your_email
+[core]
+	editor = codium --wait
+[diff]
+	tool = codium
+[difftool "codium"]
+	cmd = codium --wait --diff $LOCAL $REMOTE
+[merge]
+	tool = codium
+[mergetool "codium"]
+	cmd = codium --wait $MERGED
+
+#############################################
+# AWS
+#############################################
+# Setting up for AWS CodeCommit (if applicable to your project)
+# http://docs.aws.amazon.com/codecommit/latest/userguide/setting-up.html
+[credential]
+        helper = !aws codecommit credential-helper $@
+        UseHttpPath = true
+
+#############################################
+# If you don't use zsh themes and want colors
+#############################################
+
+[color]
+    branch = auto
+    diff = auto
+    status = auto
+[color "branch"]
+    current = yellow reverse
+    local = yellow
+    remote = green
+[color "diff"]
+    meta = yellow bold
+    frag = magenta bold
+    old = red bold
+    new = green bold
+[color "status"]
+    added = yellow
+    changed = green
+    untracked = cyan
+#############################################

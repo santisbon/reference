@@ -1,0 +1,53 @@
+#FILES
+#       /bin/bash
+#              The bash executable
+#       /etc/profile
+#              The systemwide initialization file, executed for login shells
+#       ~/.bash_profile
+#              The personal initialization file, executed for login shells
+#       ~/.bashrc
+#              The individual per-interactive-shell startup file
+#       ~/.bash_logout
+#              The individual login shell cleanup file, executed when a login shell exits
+#       ~/.inputrc
+#              Individual readline initialization file
+
+# You can source your .bashrc from your .bash_profile file 
+# and put PATH and common settings in .bashrc so it executes for login and non-login shells.
+
+# An exception to the terminal window guidelines is Mac OS X’s Terminal.app, 
+# which runs a login shell by default for each new terminal window, calling .bash_profile instead of .bashrc
+
+# You can hit the tab key while typing a Git command and it will automatically complete the name of the command for you.
+# It also works for branch names, tag names, .git/remotes file names and more.
+# First download the auto completion script and rename the file
+# cd ~
+# curl -OL https://github.com/git/git/raw/master/contrib/completion/git-completion.bash
+# mv ~/git-completion.bash ~/.git-completion.bash
+
+if [ -f ~/.git-completion.bash ]; then
+   source ~/.git-completion.bash
+fi
+
+# Set your prompt to: 
+# user@host working_directory (current_branch)
+# $
+# Based on the one at https://coderwall.com/p/fasnya/add-git-branch-name-to-bash-prompt
+
+parse_git_branch() {
+     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+}
+export PS1="\u@\h \[\033[32m\]\w\[\033[33m\]\$(parse_git_branch)\[\033[00m\]\n$ "
+
+# Set your path, adding whatever your installed software needs.
+export PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin
+export PATH=~/Library/Python/2.7/bin:$PATH
+export PATH=/usr/local/mysql/bin:$PATH
+export PATH=~/.local/bin:$PATH
+
+# macOS only
+alias showFiles='defaults write com.apple.finder AppleShowAllFiles YES; killall Finder /System/Library/CoreServices/Finder.app'
+alias hideFiles='defaults write com.apple.finder AppleShowAllFiles NO; killall Finder /System/Library/CoreServices/Finder.app'
+
+# To apply to an existing Terminal session:
+# source ~/.bash_profile
