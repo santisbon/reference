@@ -1,7 +1,6 @@
 # Setting up a new machine
 
-Table of Contents
-=================
+## Table of Contents
 
 * [Do a clean install of the OS](#do-a-clean-install-of-the-os)
 * [Package manager](#package-manager)
