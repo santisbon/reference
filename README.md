@@ -1,7 +1,7 @@
 # Setting up a new machine
 
-## Table of Contents
-
+Table of Contents
+=================
 
 * [Do a clean install of the OS](#do-a-clean-install-of-the-os)
 * [Package manager](#package-manager)
@@ -12,6 +12,8 @@
    * [Zsh](#zsh)
    * [Terminal replacement](#terminal-replacement)
 * [Install utilities](#install-utilities)
+* [VSCode / VSCodium](#vscode--vscodium)
+   * [Useful extensions:](#useful-extensions)
 * [Git](#git)
    * [Install](#install)
    * [Configure](#configure)
@@ -182,11 +184,7 @@ brew install --cask 1password
 brew install --cask nordvpn
 brew install --cask google-chrome # or chromium
 brew install --cask firefox
-
 brew install --cask vscodium 
-# Q. VSCodium cannot be opened because Apple cannot check it for malicious software
-# A. You have to "right click" the .app and then hold the alt/option key, while clicking "Open" (only on first launch).
-
 brew install --cask kindle
 brew install --cask authy
 brew install --cask teamviewer
@@ -210,6 +208,17 @@ On macOS you can also install gcc by installing the xcode developer tools if you
 xcode-select -v # check if tools are installed
 xcode-select --install
 ```
+
+# VSCode / VSCodium
+
+Q. VSCodium cannot be opened because Apple cannot check it for malicious software
+A. You have to "right click" the .app and then hold the alt/option key, while clicking "Open" (only on first launch).
+
+## Useful extensions:
+
+Name: Compare Folders
+Description: Compare folders by contents, present the files that have differences and display the diffs side by side
+VS Marketplace Link: https://open-vsx.org/vscode/item?itemName=moshfeu.compare-folders
 
 # Git
 
