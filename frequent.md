@@ -14,6 +14,7 @@ gcmsg "Fixed x"       # git commit -m
 gdt main feature      # git diff-tree
 gdtl main feature     # git difftool with Codium
 
+git config pull.rebase true   # rebase
 gco bugFix            # git checkout bugFix
 grb main              # git rebase main
 gco main              # git checkout main
@@ -31,6 +32,15 @@ git diff --staged     # changes between the Staging Area and the HEAD
 gh pr list -R <user>/<repo> | grep something
 gh pr view <number> -R <user>/<repo> 
 ```
+
+For rebase behavior you have:
+```Shell
+git config pull.rebase false  # merge
+git config pull.rebase true   # rebase
+git config pull.ff only       # fast-forward only
+```
+Hint: You can replace ```git config``` with ```git config --global``` to set a default preference for all repositories. You can also pass ```--rebase```, ```--no-rebase```, or ```--ff-only``` on the command line to override the configured default per
+invocation.
 
 Docker
 ```Shell
