@@ -361,6 +361,8 @@ docker run -it --name mycontainer arm64v8/debian bash # NO warning. uname -m -> 
 
 
 ### Examples
+
+Running containers
 ```Shell
 # sanity check
 docker version
@@ -382,19 +384,28 @@ docker run -it --rm --name mycontainer debian # created and Up. Interactive tty.
 
 # Run bash in a new container with interactive tty, based on debian image.
 docker run -it --name mycontainer debian bash
+
+# Get the IDs of all stopped containers. Options: all, quiet (only IDs), filter.
+docker ps -aq -f status=exited
+
 ```
 
+Working with images and volumes
 ```Shell
 
 # Show all images (including intermediate images)
 docker image ls -a
 
-# Get the IDs of all stopped containers. Options: all, quiet (only IDs), filter.
-docker ps -aq -f status=exited
-
 # Build an image from a Dockerfile and give it a name (or name:tag).
 docker build -f mydockerfile -t santisbon/myimage .
 docker builder prune -a		# Remove all unused build cache, not just dangling ones
+
+# Volumes
+docker volume create my-vol
+docker volume ls
+docker volume inspect my-vol
+docker volume prune
+docker volume rm my-vol
 
 # Start a container from an image.
 docker run \
@@ -402,14 +413,6 @@ docker run \
 --hostname mycontainer \
 --mount source=my-vol,target=/data \
 santisbon/myimage
-
-# Volumes
-docker volume create my-vol
-docker volume ls
-docker volume inspect my-vol
-
-docker volume prune
-docker volume rm my-vol
 
 # Get rid of all stopped containers. Options: remove **anonymous volumes** associated with the container.
 docker rm -v $(docker ps -aq -f status=exited)
