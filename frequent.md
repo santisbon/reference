@@ -1,6 +1,6 @@
-If you have the OhMyZsh plugins and .zshrc file recommended here you can:  
+Some of these come when you have the OhMyZsh plugins and the .zshrc file recommended here.  
 
-Git
+# Git
 ```Shell
 gst                   # git status
 ga                    # git add
@@ -30,6 +30,7 @@ git diff HEAD         # changes between the Working Directory and the HEAD
 git diff --staged     # changes between the Staging Area and the HEAD
 
 git log --author="Armando"
+python3 scripts/dream.py --full_precision
 
 # Github CLI
 gh pr list -R <user>/<repo> | grep something
@@ -45,8 +46,19 @@ git config pull.ff only       # fast-forward only
 Hint: You can replace ```git config``` with ```git config --global``` to set a default preference for all repositories. You can also pass ```--rebase```, ```--no-rebase```, or ```--ff-only``` on the command line to override the configured default per
 invocation.
 
-Docker
+# Docker
 ```Shell
 drme  # docker rm -v $(docker ps -aq -f status=exited)
 dps   # docker ps -a
+```
+
+# Python
+```Shell
+# debug a script
+python3 -m pdb scripts/dream.py --full_precision
+# Pdb command to set breakpoint: b path/to/file.py:<line>
+(Pdb) b ../ldm/gfpgan/gfpgan_tools.py:10
+# Pdb commands: n(ext), s(tep), c(ont(inue))
+# print variable: p <variable>
+(Pdb) p model_path
 ```
