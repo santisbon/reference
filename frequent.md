@@ -12,9 +12,10 @@ gcb new-feature       # git checkout -b
 gcmsg "Fixed x"       # git commit -m
 
 gdt main feature      # git diff-tree
-gdtl main feature     # git difftool with Codium
+gdtl main feature     # git difftool 
 
 git config pull.rebase true   # rebase
+
 gco bugFix            # git checkout bugFix
 grb main              # git rebase main
 gco main              # git checkout main
@@ -27,6 +28,8 @@ gp origin -d feature  # git push origin --delete feature
 git diff              # changes between the Working Directory and the Staging Area
 git diff HEAD         # changes between the Working Directory and the HEAD
 git diff --staged     # changes between the Staging Area and the HEAD
+
+git log --author="Armando"
 
 # Github CLI
 gh pr list -R <user>/<repo> | grep something
