@@ -54,6 +54,11 @@ dps   # docker ps -a
 
 # Python
 ```Shell
+# conda envs
+conda create -y --name myenv && conda activate myenv
+conda env list
+conda env remove --name myenv
+
 # debug a script
 python3 -m pdb scripts/dream.py --full_precision
 # Pdb command to set breakpoint: b path/to/file.py:<line>
