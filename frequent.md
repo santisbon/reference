@@ -30,6 +30,10 @@ git diff HEAD         # changes between the Working Directory and the HEAD
 git diff --staged     # changes between the Staging Area and the HEAD
 
 git log --author="Armando"
+
+# oneline | short | medium | full | fuller
+git log --author=Armando --pretty=oneline --grep="Merge branch 'lstein"
+
 python3 scripts/dream.py --full_precision
 
 # Github CLI
