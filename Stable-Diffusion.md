@@ -6,15 +6,18 @@ There are also different ways to decouple storage and compute e.g. using Docker 
 
 # Option A - Cloud deployment
 
-Since my Macbook Air M2 with an 8-core GPU has an **arm**64 architecture and I don't have an **amd**64 machine with NVIDIA GPUs I'll use a cloud instance to illustrate the process.  
+Since my Macbook Air M2 with an 8-core GPU has an **arm**64 architecture and I don't have an **amd**64 machine with NVIDIA GPUs I'll use a cloud environment to illustrate the process of deploying to a container that can use CUDA.  
 
-For flexibility on our choice of container registry and other aspects of our target environment, we'll use a VM on the cloud (known as an *instance*) to build our own Docker image. For simplicity we'll store the model files in object storage that can be mounted on our container and used without changes to the application code. This example uses AWS but the concepts should translate to other options fairly easily.  
+For flexibility on our choice of container registry and other aspects of our target environment, we'll use a VM on the cloud (known as an *instance*) to build our own Docker image. For simplicity we'll store the model files in object storage that can be mounted on our container with the help of a utility called s3fs-fuse without changes to the application code. This example uses AWS but the concepts should translate to other platforms.  
 
-Make sure you have the AWS CLI installed and configured with your credentials. Then follow this guide.  
+You'll need an AWS account. Make sure you have the AWS CLI installed and configured with your AWS credentials. Then follow this guide.  
 
-## Create an S3 bucket for the models
+## Set up storage for the models and outputs
 
-Choose a bucket name. It needs to be unique so add something to it like your name. Then copy the model files to the bucket.  
+We will:
+- Choose a name for the S3 bucket. It needs to be unique so add something to it like your name.  
+- Copy the model files to the bucket.  
+- Create a role for the EC2 service. This sets the permissions for the application running on the instance to access the S3 bucket. Applications can obtain and refresh temporary security credentials from Amazon EC2 instance metadata. AWS SDKs (and in our case s3fs-fuse) do it transparently.
 
 On your laptop
 ```Shell
@@ -26,11 +29,12 @@ aws s3api create-bucket \
     --region $REGION \
     --acl private
 
-aws s3 cp ~/Downloads/sd-v1-4.ckpt s3://$BUCKET/sd-v1-4.ckpt
-aws s3 cp ~/Downloads/GFPGANv1.3.pth s3://$BUCKET/GFPGANv1.3.pth
+cd ~/Downloads
 
-# Create role with read permissions on the bucket, create instance profile, assign role to instance profile. Then when you launch the instance, specify the instance profile.
-# Applications can obtain temporary security credentials from Amazon EC2 instance metadata. AWS SDKs and s3fs-fuse do it transparently.
+aws s3 cp ./sd-v1-4.ckpt s3://$BUCKET/sd-v1-4.ckpt
+aws s3 cp ./GFPGANv1.3.pth s3://$BUCKET/GFPGANv1.3.pth
+
+# Create the policy files we'll need for EC2.
 
 cat << EOF > ./trustpolicyforec2.json
 {
@@ -48,36 +52,32 @@ cat << EOF > ./permissionspolicyforec2.json
   "Version": "2012-10-17",
   "Statement": {
     "Effect": "Allow",
-    "Action": "s3:GetObject",
+    "Action": ["s3:GetObject", "s3:PutObject"],
     "Resource": "arn:aws:s3:::${BUCKET}/*"
   }
 }
 EOF
 
 # Create the role and attach the trust policy that allows EC2 to assume this role.
-$ aws iam create-role --role-name S3-Role-for-EC2 --assume-role-policy-document ./trustpolicyforec2.json
-
+aws iam create-role --role-name S3-Role-for-EC2 --assume-role-policy-document file://./trustpolicyforec2.json
 # Embed the permissions policy (in this example an inline policy) to the role to specify what it is allowed to do.
-$ aws iam put-role-policy --role-name S3-Role-for-EC2 --policy-name Permissions-Policy-For-Ec2 --policy-document ./permissionspolicyforec2.json
-
+aws iam put-role-policy --role-name S3-Role-for-EC2 --policy-name Permissions-Policy-For-Ec2 --policy-document file://./permissionspolicyforec2.json
 # Create the instance profile required by EC2 to contain the role
-$ aws iam create-instance-profile --instance-profile-name EC2-ListBucket-S3
-
+aws iam create-instance-profile --instance-profile-name EC2-S3
 # Finally, add the role to the instance profile
-$ aws iam add-role-to-instance-profile --instance-profile-name EC2-ListBucket-S3 --role-name S3-Role-for-EC2
+aws iam add-role-to-instance-profile --instance-profile-name EC2-S3 --role-name S3-Role-for-EC2
 ```
 
 [Learn more](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-service.html)
 
 ## Launch an instance
 
-As you launch your intance from the AWS console you'll need to make some decisions.
-
 ### Choose an Amazon Machine Image (AMI) 
 
 First we'll get the ID for the image we want to use. We'll use the Deep Learning AMI (Ubuntu 18.04). It includes NVIDIA CUDA, Docker, and NVIDIA-Docker. This example uses the N. Virginia region; adjust for the one closest to your location.
 
 ```Shell
+# If you want to see all options
 aws ec2 describe-images \
 --region $REGION \
 --owners amazon \
@@ -87,33 +87,23 @@ aws ec2 describe-images \
 --query 'reverse(sort_by(Images, &CreationDate))[*].[ImageId,PlatformDetails,Name,Description]' \
 --output json
 
-aws ec2 describe-images \
+# Grab the ID for the Ubuntu 18 DLAMI
+AMI="$(aws ec2 describe-images \
 --region $REGION \
 --owners amazon \
 --filters 'Name=name,Values=Deep Learning AMI (Ubuntu 18.04) Version ??.?' \
           'Name=state,Values=available' \
-          'Name=architecture,Values=x86_64' \
---query 'reverse(sort_by(Images, &CreationDate))[:1]' \
---output json
+--query 'reverse(sort_by(Images, &CreationDate))[0].ImageId' | tr -d  '"')"
 
-aws ec2 describe-images \
---region $REGION \
---owners amazon \
---filters 'Name=name,Values=Deep Learning AMI (Ubuntu 18.04) Version ??.?' \
-          'Name=state,Values=available' \
---query 'reverse(sort_by(Images, &CreationDate))[:1].ImageId' \
---output text
+echo $AMI
 ```
 
 We can see that the AMI ID for this region is: *ami-07351ca9581da4fc7*.
 
 ### Choose an instance family
 
-*G4dn* instances feature NVIDIA T4 GPUs and custom Intel Cascade Lake CPUs, and are optimized for machine learning inference and small scale training. Ideal for NVIDIA software such as CUDA.
+*G4dn* instances feature NVIDIA T4 GPUs and custom Intel Cascade Lake CPUs, and are optimized for machine learning inference and small scale training. Ideal for NVIDIA software such as CUDA.  
 You can use the size appropriate for your needs but here we'll go with ```g4dn.xlarge```: 1 GPU, 4 vCPUs, 16 GiB memory. At the time of this writing in the selected region it costs $0.526 per hour on-demand. Feel free to explore cost optimization measures such as *spot instances*.
-
-### Create instance profile
-TODO: Create a role (the AWS console creates an instance profile automatically) and grant it permissions to read your S3 bucket.
 
 ### Set up storage access
 
@@ -129,11 +119,19 @@ export BUCKET="santisbon-models"
 sudo s3fs $BUCKET /mnt/sd-data -o iam_role=auto -o allow_other -o default_acl=private -o use_cache=/tmp/s3fs
 ```
 
-Test from the host instance. Connect to it via ssh 
+### Launch the instance
+
+- We'll use the default subnet on the default VPC.
+- TODO: Specify a security group that gives us SSH access.
 
 On your laptop
 ```Shell
-# TODO: 
+SG=
+
+aws ec2 run-instances --iam-instance-profile EC2-S3 \
+--image-id $AMI \
+--instance-type g4dn.xlarge \
+--security-group-ids $SG
 ```
 
 On the instance:
@@ -141,18 +139,21 @@ On the instance:
 # View contents of the S3 bucket and the mounted dir (should match).
 aws s3 ls s3://$BUCKET
 ll /mnt/sd-data
+
 # TODO: Build Docker image with Dockerfile and linux environment file
+
 # Run container with mount source = host dir and target = container dir
 docker run \
---mount type=bind,source=/mnt/sd-data,target=/data,readonly \
+--mount type=bind,source=/mnt/sd-data,target=/data \
 <your-container-image>
 ```
-You're now at the command line on the container. Follow the usage instructions to generate AI images.
+
+Now you are at the command line on a container running on a Linux instance with NVIDIA GPUs and CUDA in the cloud. Follow the usage instructions to generate AI images.  
+
 
 [Learn more about s3fs](https://github.com/s3fs-fuse/s3fs-fuse/blob/master/doc/man/s3fs.1.in)
 [Learn more about canned ACLs](https://docs.aws.amazon.com/AmazonS3/latest/userguide/acl-overview.html#canned-acl)
 [Larn more about cleanup to prevent charges when you're no longer using the instance](https://docs.aws.amazon.com/dlami/latest/devguide/launch-config-cleanup.html)
-Now you have a container running on a Linux instance with NVIDIA GPUs and CUDA in the cloud. Connect to it via ssh and follow the steps in the next section as if you were working directly on the Linux machine.
 
 # Option B - Local deployment
 
