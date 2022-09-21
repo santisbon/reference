@@ -80,6 +80,11 @@ aws iam add-role-to-instance-profile --instance-profile-name $INSTANCE_PROFILE -
 First we'll get the ID for the image we want to use. We'll use the Deep Learning AMI (Ubuntu 18.04). It includes NVIDIA CUDA, Docker, and NVIDIA-Docker. This example uses the N. Virginia region; adjust for the one closest to your location.
 
 ```Shell
+# platform: windows | <blank> for Linux
+# architecture: i386 | x86_64 | arm64
+# virtualization-type: paravirtual | hvm
+    # 'Name=virtualization-type,Values=hvm' \ 
+
 # If you want to see all options
 aws ec2 describe-images \
 --region $REGION \
@@ -87,7 +92,7 @@ aws ec2 describe-images \
 --filters 'Name=name,Values=Deep Learning AMI*Ubuntu 20*' \
           'Name=state,Values=available' \
           'Name=architecture,Values=x86_64' \
---query 'reverse(sort_by(Images, &CreationDate))[*].[ImageId,PlatformDetails,Name,Description]' \
+--query 'reverse(sort_by(Images, &CreationDate))[*].[ImageId,PlatformDetails,Architecture,Name,Description,RootDeviceType,VirtualizationType]' \
 --output json
 
 # Grab the ID for the Ubuntu 18 DLAMI
