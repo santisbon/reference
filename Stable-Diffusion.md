@@ -23,6 +23,9 @@ On your laptop
 ```Shell
 BUCKET="santisbon-models"
 REGION="us-east-1"
+INSTANCE_PROFILE="EC2-S3"
+INSTANCE_TYPE="g4dn.xlarge"
+MY_KEY="awsec2.pem"
 
 aws s3api create-bucket \
     --bucket $BUCKET \
@@ -63,9 +66,9 @@ aws iam create-role --role-name S3-Role-for-EC2 --assume-role-policy-document fi
 # Embed the permissions policy (in this example an inline policy) to the role to specify what it is allowed to do.
 aws iam put-role-policy --role-name S3-Role-for-EC2 --policy-name Permissions-Policy-For-Ec2 --policy-document file://./permissionspolicyforec2.json
 # Create the instance profile required by EC2 to contain the role
-aws iam create-instance-profile --instance-profile-name EC2-S3
+aws iam create-instance-profile --instance-profile-name $INSTANCE_PROFILE
 # Finally, add the role to the instance profile
-aws iam add-role-to-instance-profile --instance-profile-name EC2-S3 --role-name S3-Role-for-EC2
+aws iam add-role-to-instance-profile --instance-profile-name $INSTANCE_PROFILE --role-name S3-Role-for-EC2
 ```
 
 [Learn more](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-service.html)
@@ -103,23 +106,9 @@ We can see that the AMI ID for this region is: *ami-07351ca9581da4fc7*.
 ### Choose an instance family
 
 *G4dn* instances feature NVIDIA T4 GPUs and custom Intel Cascade Lake CPUs, and are optimized for machine learning inference and small scale training. Ideal for NVIDIA software such as CUDA.  
-You can use the size appropriate for your needs but here we'll go with ```g4dn.xlarge```: 1 GPU, 4 vCPUs, 16 GiB memory. At the time of this writing in the selected region it costs $0.526 per hour on-demand. Feel free to explore cost optimization measures such as *spot instances*.
+You can use the size appropriate for your needs but here we'll go with 1 GPU, 4 vCPUs, 16 GiB memory. At the time of this writing in the selected region it costs $0.526 per hour on-demand. Feel free to explore cost optimization measures such as *spot instances*.
 
-### Set up storage access
-
-User data on the instance.
-```Shell
-apt update
-apt upgrade
-
-# Mount storage on host instance
-sudo apt install s3fs
-sudo mkdir /mnt/sd-data
-export BUCKET="santisbon-models"
-sudo s3fs $BUCKET /mnt/sd-data -o iam_role=auto -o allow_other -o default_acl=private -o use_cache=/tmp/s3fs
-```
-
-### Launch the instance
+### Launch the instance with storag access
 
 - We'll use the default subnet on the default VPC.
 - TODO: Specify a security group that gives us SSH access.
@@ -128,11 +117,27 @@ On your laptop
 ```Shell
 SG=
 
-aws ec2 run-instances --iam-instance-profile EC2-S3 \
+cat << EOF > ./userdata.txt
+apt update
+apt upgrade
+
+# Mount storage on host instance
+sudo apt install s3fs
+sudo mkdir /mnt/sd-data
+export BUCKET="santisbon-models"
+sudo s3fs $BUCKET /mnt/sd-data -o iam_role=auto -o allow_other -o default_acl=private -o use_cache=/tmp/s3fs
+EOF
+
+aws ec2 run-instances \
+--region $REGION
 --image-id $AMI \
---instance-type g4dn.xlarge \
+--instance-type $INSTANCE_TYPE \
+--iam-instance-profile $INSTANCE_PROFILE \
 --security-group-ids $SG
+--key-name $MY_KEY
+--user-data file://./userdata.txt
 ```
+TODO: Connect to the instance via SSH
 
 On the instance:
 ```Shell
