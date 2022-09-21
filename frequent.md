@@ -71,3 +71,27 @@ python3 -m pdb scripts/dream.py --full_precision
 # print variable: p <variable>
 (Pdb) p model_path
 ```
+
+# AWS
+
+```Shell
+aws ec2 describe-images \
+--region $REGION \
+--owners amazon \
+--filters 'Name=name,Values=Deep Learning AMI*' \
+          'Name=state,Values=available' \
+          'Name=architecture,Values=x86_64' \
+          'Name=virtualization-type,Values=hvm' \
+--query 'reverse(sort_by(Images, &CreationDate))[*].[ImageId,PlatformDetails,Architecture,Name,Description,RootDeviceType,VirtualizationType]' \
+--output json
+
+aws ec2 describe-images --image-ids ami-XXXXXXXXXX
+
+aws ssm get-parameters-by-path \
+ --path /aws/service/ami-amazon-linux-latest \
+ --query 'Parameters[].Name'
+
+aws ssm get-parameters-by-path \
+ --path / \
+ --output json
+

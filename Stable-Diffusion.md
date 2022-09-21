@@ -12,90 +12,22 @@ For flexibility on our choice of container registry and other aspects of our tar
 
 You'll need an AWS account. Make sure you have the AWS CLI installed and configured with your AWS credentials. Then follow this guide.  
 
-## Set up storage for the models and outputs
+## Setup
 
-We will:
-- Choose a name for the S3 bucket. It needs to be unique so add something to it like your name.  
-- Copy the model files to the bucket.  
-- Create a role for the EC2 service. This sets the permissions for the application running on the instance to access the S3 bucket. Applications can obtain and refresh temporary security credentials from Amazon EC2 instance metadata. AWS SDKs (and in our case s3fs-fuse) do it transparently.
+We will:  
+- Use the Deep Learning AMI (Ubuntu 18.04). It includes NVIDIA CUDA, Docker, and NVIDIA-Docker.  
+- Use the ```G4dn``` instance family with NVIDIA T4 GPUs and custom Intel Cascade Lake CPUs.  
+Optimized for machine learning inference and small scale training. Ideal for NVIDIA software like CUDA.  
+You can use the size appropriate for your needs but here we'll go with ```xlarge``` (1 GPU, 4 vCPUs, 16 GiB memory).  
+- Use the default subnet on the default VPC.
+- Use Parameter Store to store the AMI ID so you can retrieve it while creating or updating the infrastructure.  
+- Connect to the host via ssh with an RSA key that we'll create.
 
-On your laptop
 ```Shell
-BUCKET="santisbon-models"
 REGION="us-east-1"
-INSTANCE_PROFILE="EC2-S3"
-INSTANCE_TYPE="g4dn.xlarge"
 MY_KEY="awsec2.pem"
-
-aws s3api create-bucket \
-    --bucket $BUCKET \
-    --region $REGION \
-    --acl private
-
-cd ~/Downloads
-
-aws s3 cp ./sd-v1-4.ckpt s3://$BUCKET/sd-v1-4.ckpt
-aws s3 cp ./GFPGANv1.3.pth s3://$BUCKET/GFPGANv1.3.pth
-
-# Create the policy files we'll need for EC2.
-
-cat << EOF > ./trustpolicyforec2.json
-{
-  "Version": "2012-10-17",
-  "Statement": {
-    "Effect": "Allow",
-    "Principal": {"Service": "ec2.amazonaws.com"},
-    "Action": "sts:AssumeRole"
-  }
-}
-EOF
-
-cat << EOF > ./permissionspolicyforec2.json
-{
-  "Version": "2012-10-17",
-  "Statement": {
-    "Effect": "Allow",
-    "Action": ["s3:GetObject", "s3:PutObject"],
-    "Resource": "arn:aws:s3:::${BUCKET}/*"
-  }
-}
-EOF
-
-# Create the role and attach the trust policy that allows EC2 to assume this role.
-aws iam create-role --role-name S3-Role-for-EC2 --assume-role-policy-document file://./trustpolicyforec2.json
-# Embed the permissions policy (in this example an inline policy) to the role to specify what it is allowed to do.
-aws iam put-role-policy --role-name S3-Role-for-EC2 --policy-name Permissions-Policy-For-Ec2 --policy-document file://./permissionspolicyforec2.json
-# Create the instance profile required by EC2 to contain the role
-aws iam create-instance-profile --instance-profile-name $INSTANCE_PROFILE
-# Finally, add the role to the instance profile
-aws iam add-role-to-instance-profile --instance-profile-name $INSTANCE_PROFILE --role-name S3-Role-for-EC2
-```
-
-[Learn more](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-service.html)
-
-## Launch an instance
-
-### Choose an Amazon Machine Image (AMI) 
-
-First we'll get the ID for the image we want to use. We'll use the Deep Learning AMI (Ubuntu 18.04). It includes NVIDIA CUDA, Docker, and NVIDIA-Docker. This example uses the N. Virginia region; adjust for the one closest to your location.
-
-```Shell
-# platform: windows | don't specify filter for Linux
-# architecture: i386 | x86_64 | arm64
-# virtualization-type: paravirtual | hvm
-
-# If you want to see all options
-aws ec2 describe-images \
---region $REGION \
---owners amazon \
---filters 'Name=name,Values=Deep Learning AMI*Ubuntu 20*' \
-          'Name=state,Values=available' \
-          'Name=architecture,Values=x86_64' \
-          'Name=virtualization-type,Values=hvm' \
---query 'reverse(sort_by(Images, &CreationDate))[*].[ImageId,PlatformDetails,Architecture,Name,Description,RootDeviceType,VirtualizationType]' \
---output json
-
-# Grab the ID for the Ubuntu 18 DLAMI
+BUCKET="santisbon-ai"
+INSTANCE_TYPE="g4dn.xlarge"
 AMI="$(aws ec2 describe-images \
 --region $REGION \
 --owners amazon \
@@ -103,26 +35,20 @@ AMI="$(aws ec2 describe-images \
           'Name=state,Values=available' \
 --query 'reverse(sort_by(Images, &CreationDate))[0].ImageId' | tr -d  '"')"
 
-echo $AMI
+mkdir -p ~/.ssh/
+aws ec2 create-key-pair --region $REGION --key-name $MY_KEY --query 'KeyMaterial' | tr -d  '"' > ~/.ssh/$MY_KEY
+chmod 400 ~/.ssh/$MY_KEY
 
-aws ec2 describe-images --image-ids $AMI
+aws ssm put-parameter \
+    --name "deep-learning-ami" \
+    --type "String" \
+    --data-type "aws:ec2:image"\
+    --value $AMI \
+    --overwrite
 ```
+------------------------------------------------
 
-We can see that the AMI ID for this region is: *ami-07351ca9581da4fc7*.
-
-### Choose an instance family
-
-*G4dn* instances feature NVIDIA T4 GPUs and custom Intel Cascade Lake CPUs, and are optimized for machine learning inference and small scale training. Ideal for NVIDIA software such as CUDA.  
-You can use the size appropriate for your needs but here we'll go with 1 GPU, 4 vCPUs, 16 GiB memory. At the time of this writing in the selected region it costs $0.526 per hour on-demand. Feel free to explore cost optimization measures such as *spot instances*.
-
-### Launch the instance with storag access
-
-- We'll use the default subnet on the default VPC.
-- TODO: Specify a security group that gives us SSH access.
-
-On your laptop
 ```Shell
-SG=
 
 cat << EOF > ./userdata.txt
 apt update
@@ -145,6 +71,12 @@ aws ec2 run-instances \
 --user-data file://./userdata.txt
 ```
 TODO: Connect to the instance via SSH
+
+```Shell
+cd ~/Downloads
+aws s3 cp ./sd-v1-4.ckpt s3://$BUCKET/sd-v1-4.ckpt
+aws s3 cp ./GFPGANv1.3.pth s3://$BUCKET/GFPGANv1.3.pth
+```
 
 On the instance:
 ```Shell
