@@ -94,4 +94,11 @@ aws ssm get-parameters-by-path \
 aws ssm get-parameters-by-path \
  --path / \
  --output json
+```
+
+In ```aws cloudformation create-stack --parameters```, param keys are from CF, values are names from SSM
+
+[Learn more about s3fs](https://github.com/s3fs-fuse/s3fs-fuse/blob/master/doc/man/s3fs.1.in)  
+[Learn more about canned ACLs](https://docs.aws.amazon.com/AmazonS3/latest/userguide/acl-overview.html#canned-acl)  
+[Larn more about cleanup to prevent charges when you're no longer using the instance](https://docs.aws.amazon.com/dlami/latest/devguide/launch-config-cleanup.html)  
 
