@@ -1,0 +1,95 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'AWS CloudFormation template for EC2 instance with S3 bucket mounted as file system and SSH access.'
+Parameters:
+  AmiId:
+    Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
+  InstanceType:
+    Type: 'AWS::SSM::Parameter::Value<String>'
+    Default: ai/ec2/instance-type-dev
+  KeyName:
+    Type: 'AWS::SSM::Parameter::Value<AWS::EC2::KeyPair::KeyName>'
+  BucketName:
+    Description: Bucket for storing model files and outputs
+    Type: String
+  SSHLocation:
+    Description: The IP address range that can be used to SSH to the EC2 instances
+    Type: String
+    MinLength: '9'
+    MaxLength: '18'
+    Default: 0.0.0.0/0
+    AllowedPattern: "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})"
+    ConstraintDescription: must be a valid IP CIDR range of the form x.x.x.x/x.  
+Resources:
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      AccessControl: Private
+      BucketName: 
+        Ref: BucketName
+  S3EC2Role:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      RoleName: S3Ec2Role
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Path: /
+      Policies:
+        - PolicyName: PermissionsForEC2
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              Effect: Allow
+              Action:
+                - s3:GetObject
+                - s3:PutObject
+                - s3:ListBucket
+              Resource: arn:aws:s3:::${BucketName}/*
+  S3EC2InstanceProfile:
+    Type: 'AWS::IAM::InstanceProfile'
+    Properties:
+      Path: /
+      Roles:
+        - !Ref S3EC2Role
+  HostInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !Ref AmiId
+      InstanceType: !Ref InstanceType
+      IamInstanceProfile: !Ref S3EC2InstanceProfile
+      KeyName: !Ref KeyName
+      Tags:
+        - Key: Name
+          Value: "DockerHost"
+      SecurityGroups:
+      - Ref: InstanceSecurityGroup
+      UserData:
+        Fn::Base64: !Sub |
+        #!/bin/bash
+        apt update
+        apt upgrade
+        sudo apt install s3fs
+        sudo mkdir /mnt/ai-data
+        sudo s3fs ${BucketName} /mnt/ai-data -o iam_role=auto -o allow_other -o default_acl=private -o use_cache=/tmp/s3fs
+  InstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Enable SSH access via port 22
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: '22'
+        ToPort: '22'
+        CidrIp: !Ref SSHLocation
+Outputs:
+  HostPublicDnsName:
+    Value:
+      Fn::GetAtt:
+      - HostInstance
+      - PublicDnsName
+    Description: EC2 instance Public DNS Name

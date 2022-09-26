@@ -54,6 +54,13 @@ invocation.
 ```Shell
 drme  # docker rm -v $(docker ps -aq -f status=exited)
 dps   # docker ps -a
+
+# Login to Docker Hub to scan images for vulnerabilities
+docker scan --login
+docker scan <image-name>
+# Create a snapshot of your project
+snyk monitor
+
 ```
 
 # Python
