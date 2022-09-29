@@ -59,9 +59,10 @@ Install your Oh My Zsh theme e.g. Spaceship
 ```Shell
 brew install spaceship
 # If the theme is not copied to your themes folder, sim link from the Homebrew dir to your custom themes folder e.g.
-ln -sf $(brew --prefix)/Cellar/spaceship/4.2.0/spaceship.zsh $ZSH_CUSTOM/themes/spaceship.zsh-theme
+ln -sf $(brew --prefix)/Cellar/spaceship/4.4.1/spaceship.zsh $ZSH_CUSTOM/themes/spaceship.zsh-theme
+
+touch ~/.spaceshiprc.zsh
 ```
-Set ```ZSH_THEME="spaceship"``` in your ```.zshrc```.  
 
 Any time you edit your zsh configuration file you can reload it to apply changes.
 ```Shell
