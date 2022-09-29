@@ -103,7 +103,12 @@ aws ssm get-parameters-by-path \
  --output json
 ```
 
-In ```aws cloudformation create-stack --parameters```, param keys are from CF, values are names from SSM
+You can retrieve the current Amazon [ECS GPU-optimized AMI](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-optimized_AMI.html) using the AWS CLI with the following command:
+```Shell
+aws ssm get-parameters \
+--names /aws/service/ecs/optimized-ami/amazon-linux-2/gpu/recommended \
+--query "Parameters[0].Value" 
+```
 
 [Learn more about s3fs](https://github.com/s3fs-fuse/s3fs-fuse/blob/master/doc/man/s3fs.1.in)  
 [Learn more about canned ACLs](https://docs.aws.amazon.com/AmazonS3/latest/userguide/acl-overview.html#canned-acl)  
