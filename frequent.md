@@ -60,7 +60,16 @@ docker scan --login
 docker scan <image-name>
 # Create a snapshot of your project
 snyk monitor
+```
 
+```scp``` is too slow for copying big files into a Docker host instance and volume. For small files it's fine.  
+Example:
+```Shell
+# On your local machine
+scp -i ~/.ssh/$MY_KEY".pem" ~/Downloads/big-file.pth ec2-user@$INSTANCE_PUBLIC_DNS:~/
+# On the docker host instance
+docker cp ~/big-file.pth <container-id>:/data
+rm -rf ~/big-file.pth
 ```
 
 # Python
