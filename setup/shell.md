@@ -32,6 +32,13 @@ plugins=(git macos python)
 
 You can also add custom plugins by cloning the repo into the plugins directory or with Homebrew. 
 
+This plugin auto suggests previous commands. 
+```Shell
+git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
+# add zsh-autosuggestions to plugins list in ~/.zshrc and:
+source ~/.zshrc
+```
+
 This plugin [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting) highlights valid commands green and invalid ones red so you don't have to test the command to see if it will work.
 ```Shell
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
