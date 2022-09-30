@@ -84,3 +84,22 @@ brew install --cask iterm2
 
 After you have installed the font(s) required by your Oh My Zsh theme set your iTerm preferences like default shell and font.  
 Verify that you're using the shell you want. In the output of the ```env``` command look for something like ```SHELL=/opt/homebrew/bin/zsh```.
+
+Install iTerm 2 color schemes
+```Shell
+git clone https://github.com/mbadolato/iTerm2-Color-Schemes.git
+cd iTerm2-Color-Schemes
+
+# Import all color schemes
+tools/import-scheme.sh schemes/*
+
+# Import all color schemes (verbose mode)
+tools/import-scheme.sh -v schemes/*
+
+# Import specific color schemes (quotations are needed for schemes with spaces in name)
+tools/import-scheme.sh 'schemes/SpaceGray Eighties.itermcolors' # by file path
+tools/import-scheme.sh 'SpaceGray Eighties'                     # by scheme name
+tools/import-scheme.sh Molokai 'SpaceGray Eighties'             # import multiple
+```
+Restart iTerm 2 (need to quit iTerm 2 to reload the configuration file).  
+iTerm2 > Preferences > Profile > Colors > Color Presets 
