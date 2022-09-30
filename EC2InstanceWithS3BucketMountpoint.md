@@ -10,7 +10,8 @@ AMI="$(aws ec2 describe-images \
 --owners amazon \
 --filters 'Name=name,Values=Deep Learning AMI (Ubuntu 18.04) Version ??.?' \
           'Name=state,Values=available' \
---query 'reverse(sort_by(Images, &CreationDate))[0].ImageId' | tr -d  '"')"
+--query 'reverse(sort_by(Images, &CreationDate))[0].ImageId' \
+--output text)"
 ```
 
 ```Shell
