@@ -10,7 +10,7 @@ brew install --cask 1password
 brew install --cask nordvpn
 brew install --cask google-chrome # or chromium
 brew install --cask firefox
-brew install --cask vscodium 
+brew install --cask visual-studio-code # or vscodium 
 brew install --cask kindle
 brew install --cask authy
 brew install --cask teamviewer
