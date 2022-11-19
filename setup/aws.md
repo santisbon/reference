@@ -10,13 +10,8 @@ sudo installer -pkg AWSCLIV2.pkg -target /
 
 ### Check if the AWS CLI is installed correctly
 ```Shell
-# you may need to reload your config with "source ~/.bashrc" on Linux (or ~/.bash_profile on macOS)
+# you may need to reload your shell's rc file first.
 aws --version
-```
-
-If you get a permission denied error on macOS, make yourself the owner 
-```Shell
-sudo chown -R $USER ~/Library/Python
 ```
 
 ### Configure the AWS CLI
