@@ -1,8 +1,8 @@
 # Do a clean install of the OS
 
-On macOS download the new version from System Preferences, Software Update and create the bootable media with:
+On macOS download the new version from System Preferences, Software Update (or the Mac App Store) and create the bootable media with:
 ```Shell
-sudo /Applications/Install\ macOS\ Monterey.app/Contents/Resources/createinstallmedia --volume /Volumes/Untitled
+sudo /Applications/Install\ macOS\ Ventura.app/Contents/Resources/createinstallmedia --volume /Volumes/MyVolume/
 ```
 where Untitled is the name of the external drive you are using.  
 
