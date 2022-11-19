@@ -1,4 +1,4 @@
-Some of these come when you have the OhMyZsh plugins and the .zshrc file recommended here.  
+Some of these come when you have the OhMyZsh plugins and .zshrc file recommended in this repo.  
 
 # Git
 ```Shell
