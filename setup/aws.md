@@ -4,19 +4,8 @@
 
 ### Install the AWS command line interface
 ```Shell
-sudo pip install --upgrade --user awscli
-```
-
-### Add the AWS CLI to your PATH
-macOS  
-Only if it's not already on your ~/.bash_profile e.g. ~/Library/Python/2.7/bin
-```Shell
-export PATH=~/Library/Python/3.10/bin:$PATH
-```
-Linux  
-If not on your ~/.bashrc
-```Shell
-export PATH=~/.local/bin:$PATH
+curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"
+sudo installer -pkg AWSCLIV2.pkg -target /
 ```
 
 ### Check if the AWS CLI is installed correctly
