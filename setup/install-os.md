@@ -4,7 +4,7 @@ On macOS download the new version from System Preferences, Software Update (or t
 ```Shell
 sudo /Applications/Install\ macOS\ Ventura.app/Contents/Resources/createinstallmedia --volume /Volumes/MyVolume/
 ```
-where Untitled is the name of the external drive you are using.  
+using the volume that matches the name of the external drive you are using.  
 
 If you have an Intel-powered Mac here's how to install macOS from a bootable installer:
 1. Plug in your bootable media.
