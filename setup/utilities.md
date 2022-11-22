@@ -24,6 +24,7 @@ brew install --cask rectangle # to snap windows
 brew install --cask avast-security # if it fails, download from website
 brew install --cask handbrake # if you need to rip DVDs
 brew install --cask virtualbox # currently Intel Macs only. ARM installer in beta.
+brew install --cask multipass # run Ubuntu VMs in a local mini-cloud.
 brew install --cask steam # if you want games
 brew tap homebrew/cask-drivers # add repository of drivers
 brew install logitech-options # driver for Logitech mouse
