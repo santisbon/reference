@@ -6,6 +6,7 @@ brew install wget
 brew install gcc
 brew install jq
 brew install --cask docker
+brew install kompose # translate Docker Compose files to Kubernetes resources
 brew install --cask 1password
 brew install --cask nordvpn
 brew install --cask google-chrome # or chromium
