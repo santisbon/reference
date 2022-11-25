@@ -23,7 +23,7 @@ getconf LONG_BIT
 pi@raspberrypi4:~ $ uname -m
 ```
 
-See Raspbian version or architecture
+See Raspbian version
 ```Shell
 cat /etc/os-release
 ```
