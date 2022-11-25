@@ -31,8 +31,8 @@ On Ubuntu this may mess up DNS resolution. To fix it: (To-Do).
 [Platform specifiers](https://github.com/containerd/containerd/blob/v1.4.3/platforms/platforms.go#L63)  
 
 |  Value  | Normalized |        Examples        | 
-| :-----: | :--------: | :-------------:        |
-| aarch64 | arm64      | M1/M2                  |
+| :-----: | :--------: | :--------------------: |
+| aarch64 | arm64      | Apple M1/M2            |
 | armhf   | arm        | Raspberry Pi 2 Model B |
 | armel   | arm/v6     |                        |   
 | i386    | 386        |                        |
