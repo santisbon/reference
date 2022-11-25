@@ -30,14 +30,14 @@ On Ubuntu this may mess up DNS resolution. To fix it: (To-Do).
 
 [Platform specifiers](https://github.com/containerd/containerd/blob/v1.4.3/platforms/platforms.go#L63)  
 
-|  Value  | Normalized |    Examples     | 
-| :-----: | :--------: | :-------------: |
-| aarch64 | arm64      | M1/M2           |
-| armhf   | arm        |                 |
-| armel   | arm/v6     |                 |   
-| i386    | 386        |                 |
-| x86_64  | amd64      | Intel (Default) |
-| x86-64  | amd64      | Intel (Default) |
+|  Value  | Normalized |        Examples        | 
+| :-----: | :--------: | :-------------:        |
+| aarch64 | arm64      | M1/M2                  |
+| armhf   | arm        | Raspberry Pi 2 Model B |
+| armel   | arm/v6     |                        |   
+| i386    | 386        |                        |
+| x86_64  | amd64      | Intel (Default)        |
+| x86-64  | amd64      | Intel (Default)        |
 
 Docker Desktop for Apple silicon can run (or build) an Intel image using emulation.  
 The ```--platform``` option sets the platform if server is multi-platform capable.  
