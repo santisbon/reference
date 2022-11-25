@@ -14,17 +14,18 @@ SSH into it with the ```pi``` user
 ```Shell
 $ ssh pi@192.168.xxx.xxx
 # You'll be asked for the password if applicable
+```
 
-# You can check which version of the OS you're running with the machine's hardware name
-# armv7l is 32-bit and aarch64 is 64-bit
+32 or 64-bit kernel?
+```Shell
+getconf LONG_BIT
+# or check machine's hardware name: armv7l is 32-bit and aarch64 is 64-bit
 pi@raspberrypi4:~ $ uname -m
 ```
 
 See Raspbian version or architecture
 ```Shell
 cat /etc/os-release
-# or
-hostnamectl
 ```
 
 Architecture    
@@ -32,6 +33,10 @@ If the following returns a ```Tag_ABI_VFP_args``` tag of ```VFP registers```, it
 A blank output means ```armel``` (```arm/v6```).
 ```Shell
 pi@raspberrypi2:~ $ readelf -A /proc/self/exe | grep Tag_ABI_VFP_args
+```
+Or check the architecture with:
+```Shell
+hostnamectl
 ```
 
 Now you can configure it:
