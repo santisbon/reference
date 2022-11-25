@@ -142,3 +142,34 @@ alias drm='sudo docker rm -v $(sudo docker ps -aq -f status=exited)'
 # - enter following namspaces of the target process: mount, UTS, network, IPC.
 docker run -it --privileged --pid=host debian nsenter -t 1 -m -u -n -i sh
 ```
+
+Docker Compose. Multi-container deployments in a compose.yaml file.
+
+```Shell
+docker compose -p mastodon-bot-project up --detach
+# or
+docker compose -p mastodon-bot-project create
+docker compose -p mastodon-bot-project start
+
+# connect to a running container
+docker exec -it bot-app bash
+
+docker compose -p mastodon-bot-project down
+# or
+docker compose -p mastodon-bot-project stop
+```
+
+Kubernetes
+
+```Shell
+# Convert the Docker Compose file to k8s files
+kompose --file compose.yaml convert
+
+# Make sure the container image is available in a repository. 
+# You can build it with ```docker build``` or ```docker compose create``` and push it to a public repository like Docker Hub.
+docker image push user/repo
+# multiple -f filenames or a folder 
+kubectl apply -f ./k8s
+kubectl get pods
+kubectl delete -f ./k8s
+```
