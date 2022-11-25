@@ -19,6 +19,13 @@ $ ssh pi@192.168.xxx.xxx
 # armv7l is 32-bit and aarch64 is 64-bit
 pi@raspberrypi4:~ $ uname -m
 ```
+
+If this returns a ```Tag_ABI_VFP_args``` tag of ```VFP registers```, it's an ```armhf``` (```arm```) system.  
+A blank output means ```armel``` (```arm/v6```).
+```Shell
+pi@raspberrypi2:~ $ readelf -A /proc/self/exe | grep Tag_ABI_VFP_args
+```
+
 Now you can configure it:
 ```Shell
 pi@raspberrypi4:~ $ sudo raspi-config
