@@ -20,15 +20,18 @@ $ ssh pi@192.168.xxx.xxx
 pi@raspberrypi4:~ $ uname -m
 ```
 
-If this returns a ```Tag_ABI_VFP_args``` tag of ```VFP registers```, it's an ```armhf``` (```arm```) system.  
+See Raspbian version or architecture
+```Shell
+cat /etc/os-release
+# or
+hostnamectl
+```
+
+Architecture    
+If the following returns a ```Tag_ABI_VFP_args``` tag of ```VFP registers```, it's an ```armhf``` (```arm```) system.  
 A blank output means ```armel``` (```arm/v6```).
 ```Shell
 pi@raspberrypi2:~ $ readelf -A /proc/self/exe | grep Tag_ABI_VFP_args
-```
-
-See Raspbian version
-```Shell
-cat /etc/os-release
 ```
 
 Now you can configure it:
