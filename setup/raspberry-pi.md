@@ -68,3 +68,8 @@ pi@raspberrypi4:~ $ sudo apt install libvorbisenc2 libwayland-server0 libxi6 lib
 pi@raspberrypi4:~ $ sudo pip3 install pygame
 pi@raspberrypi4:~ $ python3 -m pygame.examples.aliens
 ```
+
+Copy files from Pi to local machine. On local machine run:
+```Shell
+scp -r pi@raspberrypi2.local:/home/pi/Documents/ ~/Documents/pidocs
+```
