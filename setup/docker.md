@@ -26,11 +26,12 @@ On Ubuntu this may mess up DNS resolution. To fix it: (To-Do).
 
 [Platform specifiers](https://github.com/containerd/containerd/blob/v1.4.3/platforms/platforms.go#L63)  
 
-|  Value  | Normalized |          Examples           | 
-| :-----: | :--------: | :-----------------------:   |
-| aarch64 | arm64      | Apple M1/M2, Raspberry Pi 4 |
+|  Value  | Normalized |          Examples           |
+| :-----: | :--------: | :-------------------------: |
+| aarch64 | arm64      | Apple M1/M2                 |
+|         |            | Raspberry Pi 4              |
 | armhf   | arm        | Raspberry Pi 2              |
-| armel   | arm/v6     |                             |   
+| armel   | arm/v6     |                             |
 | i386    | 386        |                             |
 | x86_64  | amd64      | Intel (Default)             |
 | x86-64  | amd64      | Intel (Default)             |
