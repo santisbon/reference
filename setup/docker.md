@@ -166,7 +166,7 @@ Kubernetes
 kompose --file compose.yaml convert
 
 # Make sure the container image is available in a repository. 
-# You can build it with ```docker build``` or ```docker compose create``` and push it to a public repository like Docker Hub.
+# You can build it with ```docker build``` or ```docker compose create``` and push it to a public repository.
 docker image push user/repo
 # multiple -f filenames or a folder 
 kubectl apply -f ./k8s
