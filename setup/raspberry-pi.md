@@ -45,12 +45,12 @@ pi@raspberrypi4:~ $ sudo raspi-config
 # Go to Interface Options, VNC (for graphical remote access)
 # Tab to the Finish option and reboot.
 ```
-and update it:
+and update it.  
+```upgrade``` is used to install available upgrades of all packages currently installed on the system. New packages will be installed if required to satisfy dependencies, but existing packages will never be removed. If an upgrade for a package requires the removal of an installed package the upgrade for this package isn't performed.  
+```full-upgrade``` performs the function of upgrade but will remove currently installed packages if this is needed to upgrade the system as a whole.
 ```Shell
 # Update the package list
 pi@raspberrypi4:~ $ sudo apt update
-# Upgrade your installed packages to their latest versions.
-# full-upgrade is used in preference to a simple upgrade, as it also picks up any dependency changes that may have been made
 pi@raspberrypi4:~ $ sudo apt full-upgrade
 ```
 
