@@ -8,11 +8,11 @@
 2. Insert the SD card in your Raspberry Pi and turn it on. 
 3. Find the ip of your Raspberry Pi using its hostname e.g.
 ```Shell
-$ arp raspberrypi4.local # or find all devices on your network with arp -a
+arp raspberrypi4.local # or find all devices on your network with arp -a
 ```
 SSH into it with the ```pi``` user
 ```Shell
-$ ssh pi@192.168.xxx.xxx
+ssh pi@192.168.xxx.xxx
 # You'll be asked for the password if applicable
 ```
 
@@ -56,7 +56,7 @@ pi@raspberrypi4:~ $ sudo apt full-upgrade
 
 Now you'll need a VNC viewer on your laptop to connect to the Raspberry Pi using the graphical interface.
 ```Shell
-$ brew install --cask vnc-viewer
+brew install --cask vnc-viewer
 ```
 
 Apparently, on Raspberry Pi pip does not download from the python package index (PyPi), it downloads from PiWheels. PiWheels wheels do not come with pygame's dependencies that are bundled in normal releases.
