@@ -26,6 +26,11 @@ A blank output means ```armel``` (```arm/v6```).
 pi@raspberrypi2:~ $ readelf -A /proc/self/exe | grep Tag_ABI_VFP_args
 ```
 
+See Raspbian version
+```Shell
+cat /etc/os-release
+```
+
 Now you can configure it:
 ```Shell
 pi@raspberrypi4:~ $ sudo raspi-config
