@@ -13,6 +13,7 @@ Follow the appropriate [Installation method](https://docs.docker.com/engine/inst
 
 If you don't want to have to prefix commands with sudo add your user to the `docker` group. This is equivalent to giving that user root privileges.
 ```Shell
+cat /etc/group | grep docker # see if docker group exists
 sudo usermod -aG docker
 ```
 
