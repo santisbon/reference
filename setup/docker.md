@@ -28,8 +28,7 @@ On Ubuntu this may mess up DNS resolution. To fix it: (To-Do).
 
 |  Value  | Normalized |          Examples           |
 | :-----: | :--------: | :-------------------------: |
-| aarch64 | arm64      | Apple M1/M2                 |
-|         |            | Raspberry Pi 4              |
+| aarch64 | arm64      | Apple M1/M2, Raspberry Pi 4 |
 | armhf   | arm        | Raspberry Pi 2              |
 | armel   | arm/v6     |                             |
 | i386    | 386        |                             |
