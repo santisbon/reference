@@ -10,15 +10,15 @@ brew install --cask docker
 
 ### Linux / Raspberry Pi OS:  
 Follow the appropriate [Installation method](https://docs.docker.com/engine/install/debian/#install-using-the-convenience-script).  
-Follow [Post-installation steps](https://docs.docker.com/engine/install/linux-postinstall/).  
 
 If you don't want to have to prefix commands with sudo add your user to the `docker` group. This is equivalent to giving that user root privileges.
 ```Shell
 cat /etc/group | grep docker # see if docker group exists
 sudo usermod -aG docker $USER
 ```
-
 On Ubuntu this may mess up DNS resolution. To fix it: (To-Do).
+
+Follow [Post-installation steps](https://docs.docker.com/engine/install/linux-postinstall/) to configure log rotation.  
 
 ## Use
 
