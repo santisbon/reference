@@ -16,7 +16,6 @@ If you don't want to have to prefix commands with sudo add your user to the `doc
 cat /etc/group | grep docker # see if docker group exists
 sudo usermod -aG docker $USER
 ```
-On Ubuntu this may mess up DNS resolution. To fix it: (To-Do).
 
 Follow [Post-installation steps](https://docs.docker.com/engine/install/linux-postinstall/) to configure log rotation.  
 
