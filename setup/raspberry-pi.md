@@ -86,3 +86,12 @@ Or check the architecture with:
 ```Shell
 hostnamectl
 ```
+
+## Learn about electronics
+
+I've added some sample code from the [MagPi Essentials book](https://magpi.raspberrypi.com/books/essentials-gpio-zero-v1).  
+[Sample code](../raspberrypi/)
+
+### GPIO Header
+
+![GPIO header](../raspberrypi/raspberry_pi_3_model_b_plus_gpio.jpeg)
