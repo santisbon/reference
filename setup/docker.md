@@ -1,7 +1,6 @@
 # Containers
 
 ## Table of Contents
----
 
 * [Docker](#docker)
    * [Install](#install)
