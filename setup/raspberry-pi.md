@@ -1,5 +1,17 @@
 # Raspberry Pi
 
+Table of Contents
+=================
+
+* [Setup](#setup)
+* [Configuration](#configuration)
+* [Remote GUI access](#remote-gui-access)
+* [Copy files](#copy-files)
+* [Find info about your Pi](#find-info-about-your-pi)
+* [Learn about electronics](#learn-about-electronics)
+   * [GPIO Header](#gpio-header)
+
+
 ## Setup
 
 1. Write and preconfigure Raspberry Pi OS on the SD card using Raspberry Pi Imager (```brew install --cask raspberry-pi-imager```). Make sure you use the correct version of the OS (32-bit or 64-bit).
