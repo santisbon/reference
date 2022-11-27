@@ -8,8 +8,9 @@ brew install --cask docker
 ```
 * You must use the --cask version. Otherwise only the client is included and can't run the Docker daemon. Then open the Docker app and grant privileged access when asked. Only then will you be able to use docker.
 
-### Linux / Raspberry Pi OS:  
-Follow the appropriate [Installation method](https://docs.docker.com/engine/install/debian/#install-using-the-convenience-script).  
+### Linux / Raspberry Pi OS:
+If you just ran `apt upgrade` on your Raspberry Pi, reboot before installing Docker.  
+Follow the appropriate [installation method](https://docs.docker.com/engine/install/debian/#install-using-the-convenience-script).  
 
 If you don't want to have to prefix commands with sudo add your user to the `docker` group. This is equivalent to giving that user root privileges.
 ```Shell
