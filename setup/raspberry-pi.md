@@ -1,7 +1,6 @@
 # Raspberry Pi
 
 ## Table of Contents
----
 
 * [Setup](#setup)
 * [Configuration](#configuration)
