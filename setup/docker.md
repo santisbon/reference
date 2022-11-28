@@ -1,20 +1,13 @@
-# Containers
+# Docker
 
 ## Table of Contents
 
-* [Docker](#docker)
-   * [Install](#install)
-      * [macOS](#macos)
-      * [Linux / Raspberry Pi OS:](#linux--raspberry-pi-os)
-   * [Use](#use)
-      * [Architecture](#architecture)
-      * [Examples](#examples)
-* [Kubernetes](#kubernetes)
-   * [Interactive Diagram](#interactive-diagram)
-   * [Installation](#installation)
-   * [Use](#use-1)
-
-# Docker
+* [Install](#install)
+   * [macOS](#macos)
+   * [Linux / Raspberry Pi OS:](#linux--raspberry-pi-os)
+* [Use](#use)
+   * [Architecture](#architecture)
+   * [Examples](#examples)
 
 ## Install
 
@@ -188,26 +181,3 @@ kubectl get pods
 kubectl delete -f ./k8s
 ```
 
-# Kubernetes
-
-A Cloud Guru has instructions for their Kubernetes Essentials course using Ubuntu. It uses a specific version of docker in part because Kubeadm sometimes doesn't work with the latest and greatest version of docker right away.
-
-## Interactive Diagram
-
-[Diagram](https://lucid.app/lucidchart/6d5625be-9ef9-411d-8bea-888de55db5cf/view?page=0_0#)
-
-## Installation
- 
-[Installing Docker on all nodes](https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1597958284283-01_03_Installing%20Docker.pdf)  
-[Installing Kubeadm, Kubelet, and Kubectl on all nodes](https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1661131496999-Installing%20Kubeadm%2C%20Kubelet%2C%20and%20Kubectl.txt)  
-[Bootstrapping the Cluster](https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1661131679725-Bootstrapping%20the%20Cluster.txt)  
-[Configuring Networking with Flannel](https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1661131836671-Configuring%20Networking%20with%20Flannel.txt)
-
-## Use
-
-[Containers and Pods](https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1661512878582-Lesson%20Reference-Containers%20and%20Pods.txt)  
-[Clustering and nodes](https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1597958349080-02_02_Clustering%20and%20Nodes.pdf)  
-[Networking in Kubernetes](https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1661512922299-Lesson%20Reference-Networking%20in%20Kubernetes.txt)  
-[Kubernetes Architecture and components](https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1597958377028-02_04_Kubernetes%20Architecture%20and%20Components.pdf)  
-[Kubernetes Deployments](https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1638556999819-03_01_Kubernetes%20Deployments.txt)  *Corrected script [here](https://gist.github.com/santisbon/78909fd6775288f905e997de73cd46f3)  
-[Kubernetes Services](https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1661512983062-Lesson%20Reference-Kubernetes%20Services.txt)  
