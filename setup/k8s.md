@@ -138,6 +138,8 @@ kubectl get nodes
 ### Installing Docker
 
 [Reference](https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631214923454-1082%20-%20S01L03%20Installing%20Docker.pdf)  
+[Docker credentials store](https://docs.docker.com/engine/reference/commandline/login/#credentials-store) 
+to avoid storing your Docker Hub password unencrypted in `$HOME/.docker/config.json` when you `docker login` and `docker push` your images.  
 
 **On the system that will build Docker images from source code** e.g. a CI server, install and configure Docker.  
 For simplicity we'll use the control plane server just so we don't have to create another server for this exercise.  
@@ -178,6 +180,108 @@ Log out of the server and log back in.
 Test your setup:
 ```Shell
 docker version
+```
+
+### Kubernetes configuration with ConfigMaps and Secrets
+[Reference](https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631214961641-1082%20-%20S02L03%20III.%20Config%20with%20ConfigMaps%20and%20Secrets.pdf)
+
+[ConfigMaps](https://kubernetes.io/docs/concepts/configuration/configmap/)  
+[Secrets](https://kubernetes.io/docs/concepts/configuration/secret/)  
+
+Create a production Namespace:
+```Shell
+kubectl create namespace production
+```
+
+Get base64-encoded strings for a db username and password:
+```Shell
+echo -n my_user | base64
+echo -n my_password | base64
+```
+
+Example: Create a ConfigMap and Secret to configure the backing service connection information for the app, including the base64-encoded credentials:
+```Shell
+cat > my-app-config.yml <<End-of-message 
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-app-config
+data:
+  mongodb.host: "my-app-mongodb"
+  mongodb.port: "27017"
+
+---
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: my-app-secure-config
+type: Opaque
+data:
+  mongodb.username: dWxvZV91c2Vy
+  mongodb.password: SUxvdmVUaGVMaXN0
+
+End-of-message
+```
+
+```Shell
+kubectl apply -f my-app-config.yml -n production
+```
+
+Create a temporary Pod to test the configuration setup. Note that you need to supply your Docker Hub username as part of the image name in this file.
+This passes configuration data in env variables but you could also do it in files that will show up on the containers filesystem.
+```Shell
+cat > test-pod.yml <<End-of-message
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-pod
+spec:
+  containers:
+  - name: my-app-server
+    image: <YOUR_DOCKER_HUB_USERNAME>/my-app-server:0.0.1
+    ports:
+    - name: web
+      containerPort: 3001
+      protocol: TCP
+    env:
+    - name: MONGODB_HOST
+      valueFrom:
+        configMapKeyRef:
+          name: my-app-config
+          key: mongodb.host
+    - name: MONGODB_PORT
+      valueFrom:
+        configMapKeyRef:
+          name: my-app-config
+          key: mongodb.port
+    - name: MONGODB_USER
+      valueFrom:
+        secretKeyRef:
+          name: my-app-secure-config
+          key: mongodb.username
+    - name: MONGODB_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: my-app-secure-config
+          key: mongodb.password
+
+End-of-message
+```
+
+```Shell
+kubectl apply -f test-pod.yml -n production
+```
+
+Check the logs to verify the config data is being passed to the container:
+```Shell
+kubectl logs test-pod -n production
+```
+
+Clean up the test pod:
+```Shell
+kubectl delete pod test-pod -n production --force
 ```
 
 ## Kubernetes Essentials
