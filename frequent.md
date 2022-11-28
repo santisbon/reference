@@ -1,3 +1,4 @@
+# Frequently used commands
 Some of these come when you have the OhMyZsh plugins and .zshrc file recommended in this repo.  
 
 # Git
@@ -123,3 +124,54 @@ aws ssm get-parameters \
 [Learn more about canned ACLs](https://docs.aws.amazon.com/AmazonS3/latest/userguide/acl-overview.html#canned-acl)  
 [Larn more about cleanup to prevent charges when you're no longer using the instance](https://docs.aws.amazon.com/dlami/latest/devguide/launch-config-cleanup.html)  
 
+# Other
+
+[HERE Documents](https://stackoverflow.com/a/25903579)  
+
+To overwrite an existing file (or write to a new file) that you own, substituting variable references inside the heredoc:
+```Shell
+cat << EOF > /path/to/your/file
+This line will write to the file.
+${THIS} will also write to the file, with the variable contents substituted.
+EOF
+```
+
+To append an existing file (or write to a new file) that you own, substituting variable references inside the heredoc:
+```Shell
+cat << FOE >> /path/to/your/file
+This line will write to the file.
+${THIS} will also write to the file, with the variable contents substituted.
+FOE
+```
+
+To overwrite an existing file (or write to a new file) that you own, with the literal contents of the heredoc:
+```Shell
+cat << 'END_OF_FILE' > /path/to/your/file
+This line will write to the file.
+${THIS} will also write to the file, without the variable contents substituted.
+END_OF_FILE
+```
+
+To append an existing file (or write to a new file) that you own, with the literal contents of the heredoc:
+```Shell
+cat << 'eof' >> /path/to/your/file
+This line will write to the file.
+${THIS} will also write to the file, without the variable contents substituted.
+eof
+```
+
+To overwrite an existing file (or write to a new file) owned by root, substituting variable references inside the heredoc:
+```Shell
+cat << until_it_ends | sudo tee /path/to/your/file
+This line will write to the file.
+${THIS} will also write to the file, with the variable contents substituted.
+until_it_ends
+```
+
+To append an existing file (or write to a new file) owned by user=foo, with the literal contents of the heredoc:
+```Shell
+cat << 'Screw_you_Foo' | sudo -u foo tee -a /path/to/your/file
+This line will write to the file.
+${THIS} will also write to the file, without the variable contents substituted.
+Screw_you_Foo
+```
