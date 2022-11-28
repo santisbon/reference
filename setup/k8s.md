@@ -183,8 +183,9 @@ docker version
 ```
 
 ### Kubernetes configuration with ConfigMaps and Secrets
-[Reference](https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631214961641-1082%20-%20S02L03%20III.%20Config%20with%20ConfigMaps%20and%20Secrets.pdf)
+[Reference](https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631214961641-1082%20-%20S02L03%20III.%20Config%20with%20ConfigMaps%20and%20Secrets.pdf)  
 
+[Encrypting Secret Data at Rest](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/)  
 [ConfigMaps](https://kubernetes.io/docs/concepts/configuration/configmap/)  
 [Secrets](https://kubernetes.io/docs/concepts/configuration/secret/)  
 
@@ -284,8 +285,147 @@ Clean up the test pod:
 kubectl delete pod test-pod -n production --force
 ```
 
+### Build, Release, Run with Docker and Deployments
+[Reference](https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631215185856-1082%20-%20S03L02%20V.%20Build%2C%20Release%2C%20Run%20with%20Docker%20and%20Deployments.pdf)  
+
+Example: After you `docker build` and `docker push` your image to a repository, create a deployment file for your app.
+The `selector` selects pods that have the specified label name and value.  
+`template` is the pod template.  
+This example puts 2 containers in the same pod for simplicity but in the real world you'll want separate deployments to scale them independently.
+
+```Shell
+cat > my-app.yml <<End-of-message
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-app-config
+data:
+  mongodb.host: "my-app-mongodb"
+  mongodb.port: "27017"
+  .env: |
+    REACT_APP_API_PORT="30081"
+
+---
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: my-app-secure-config
+type: Opaque
+data:
+  mongodb.username: dWxvZV91c2Vy
+  mongodb.password: SUxvdmVUaGVMaXN0
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-app-svc
+spec:
+  type: NodePort
+  selector:
+    app: my-app
+  ports:
+  - name: frontend
+    protocol: TCP
+    port: 30080
+    nodePort: 30080
+    targetPort: 5000
+  - name: server
+    protocol: TCP
+    port: 30081
+    nodePort: 30081
+    targetPort: 3001
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+      - name: my-app-server
+        image: <Your Docker Hub username>/my-app-server:0.0.1
+        ports:
+        - name: web
+          containerPort: 3001
+          protocol: TCP
+        env:
+        - name: MONGODB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: my-app-config
+              key: mongodb.host
+        - name: MONGODB_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: my-app-config
+              key: mongodb.port
+        - name: MONGODB_USER
+          valueFrom:
+            secretKeyRef:
+              name: my-app-secure-config
+              key: mongodb.username
+        - name: MONGODB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: my-app-secure-config
+              key: mongodb.password
+      - name: my-app-frontend
+        image: <Your Docker Hub username>/my-app-frontend:0.0.1
+        ports:
+        - name: web
+          containerPort: 5000
+          protocol: TCP
+        volumeMounts:
+        - name: frontend-config
+          mountPath: /usr/src/app/.env
+          subPath: .env
+          readOnly: true
+      volumes:
+      - name: frontend-config
+        configMap:
+          name: my-app-config
+          items:
+          - key: .env
+            path: .env
+End-of-message
+```
+
+Deploy the app.
+```Shell
+kubectl apply -f my-app.yml -n production
+```
+
+Create a new container image version to test the rollout process:
+```Shell
+docker tag <Your Docker Hub username>/my-app-frontend:0.0.1 <Your Docker Hub username>/my-app-frontend:0.0.2
+docker push <Your Docker Hub username>/my-app-frontend:0.0.2
+```
+
+Edit the app manifest `my-app-app.yml` to use the `0.0.2` image version and then:
+```Shell
+kubectl apply -f my-app.yml -n production
+```
+
+Get the list of Pods to see the new version rollout:
+```Shell
+kubectl get pods -n production
+```
+
 ## Kubernetes Essentials
-A Cloud Guru has instructions for their Kubernetes Essentials course using Ubuntu. It uses a specific version of docker in part because Kubeadm sometimes doesn't work with the latest and greatest version of docker right away.
+A Cloud Guru course using Ubuntu 18. It uses a specific version of docker in part because Kubeadm sometimes doesn't work with the latest and greatest version of docker right away.
 
 ### Interactive Diagram
 
