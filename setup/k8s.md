@@ -1,6 +1,7 @@
 # Kubernetes
 
 ## Designing Applications for Kubernetes
+Based on the [12-Factor App Design Methodology](https://12factor.net/)
 
 A Cloud Guru course. It uses Ubuntu 20.04 Focal Fossa LTS and the Calico network plugin instead of Flannel.  
 Example with 1 control plane node and 2 worker nodes.
