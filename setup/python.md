@@ -1,5 +1,7 @@
 # Python
 
+[Packaging Python Projects](https://packaging.python.org/en/latest/tutorials/packaging-projects/)  
+
 ## Install Python, the pip Python package installer, and Setuptools
 ### With Homebrew
 Even if you already have Python on your OS it might be an outdated version. This installs python and pip.  
