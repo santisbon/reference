@@ -1,7 +1,5 @@
 # Guides
 
-## Table of Contents
-
 * [Do a clean install of the OS](/setup/install-os.md)
 * [Package manager](/setup/package-manager.md)
 * [Shell](/setup/shell.md)
