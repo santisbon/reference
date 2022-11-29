@@ -34,7 +34,6 @@ Follow [Post-installation steps](https://docs.docker.com/engine/install/linux-po
 ### Architecture
 
 [Supported Architectures](https://github.com/docker-library/official-images#architectures-other-than-amd64)  
-
 [Platform specifiers](https://github.com/containerd/containerd/blob/v1.4.3/platforms/platforms.go#L63)  
 
 |  Value  | Normalized |          Examples           |
@@ -150,7 +149,8 @@ alias drm='sudo docker rm -v $(sudo docker ps -aq -f status=exited)'
 docker run -it --privileged --pid=host debian nsenter -t 1 -m -u -n -i sh
 ```
 
-Docker Compose. Multi-container deployments in a compose.yaml file.
+Docker Compose. Multi-container deployments in a compose.yaml file.  
+[Using Compose in Production](https://docs.docker.com/compose/production/)  
 
 ```Shell
 docker compose -p mastodon-bot-project up --detach
