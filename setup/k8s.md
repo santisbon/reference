@@ -414,12 +414,137 @@ docker tag <Your Docker Hub username>/my-app-frontend:0.0.1 <Your Docker Hub use
 docker push <Your Docker Hub username>/my-app-frontend:0.0.2
 ```
 
-Edit the app manifest `my-app-app.yml` to use the `0.0.2` image version and then:
+Edit the app manifest `my-app.yml` to use the `0.0.2` image version and then:
 ```Shell
 kubectl apply -f my-app.yml -n production
 ```
 
 Get the list of Pods to see the new version rollout:
+```Shell
+kubectl get pods -n production
+```
+
+### Processes with stateless containers
+[Reference](https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1632153847308-1082%20-%20S03L03%20VI.%20Processes%20with%20Stateless%20Containers.pdf)  
+[Security Context](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/)  
+
+Edit the app deployment YAML `my-app.yml`. In the deployment Pod spec, add a new emptyDir volume under volumes:
+```Shell
+volumes:
+- name: added-items-log
+  emptyDir: {}
+...
+```
+
+Mount the volume to the server container:
+```Shell
+containers:
+...
+- name: my-app-server
+  ...
+  volumeMounts:
+  - name: added-items-log
+    mountPath: /usr/src/app/added_items.log
+    subPath: added_items.log
+    readOnly: false
+  ...
+```
+
+Make the container file system read only:
+```Shell
+containers:
+...
+- name: my-app-server
+  securityContext:
+    readOnlyRootFilesystem: true
+  ...
+```
+
+Deploy the changes:
+```Shell
+kubectl apply -f my-app.yml -n production
+```
+
+### Port Binding with Pods
+[Reference](https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631215167150-1082%20-%20S03L04%20VII.%20Port%20Binding%20with%20Pods.pdf)  
+[Cluster Networking](https://kubernetes.io/docs/concepts/cluster-administration/networking/)  
+
+Challenge: only 1 process can listen on a port per host. So how do all apps on the host use a unique port?  
+In k8s, each pod has its own network namespace and cluster IP address.  
+That IP address is unique within the cluster even if there are multiple worker nodes in the cluster.  
+Tht means ports only need to be unique within each pod.  
+2 pods can listen on the same port because they each have their own unique IP address within the cluster network.  
+The pods can communicate across nodes simply using the unique IPs.
+
+Get a list of Pods in the production namespace:
+```Shell
+kubectl get pods -n production -o wide
+```
+
+Copy the name of the IP address of the application Pod.  
+Example: Use the IP address to make a request to the port on the Pod that serves the frontend content:
+```Shell
+curl <Pod Cluster IP address>:5000
+```
+
+### Concurrency with Containers and Scaling
+[Reference](https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631215269199-1082%20-%20S04L01%20VIII.%20Concurrency%20with%20Containers%20and%20Scaling.pdf)  
+[Deployments](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/)  
+
+By using `services` to manage access to the app, the service automaticaly picks up the additional pods created during scaling and route traffic to those pods.
+When you have `services` alongside `deployments` you can dynamically change the number of replicas that you have and k8s will take care of everything.
+
+Edit the application deployment `my-app.yml`.  
+Change the number of replicas to 3:
+```Shell
+...
+replicas: 3
+```
+
+Apply the changes:
+```Shell
+kubectl apply -f my-app.yml -n production
+```
+
+Get a list of Pods:
+```Shell
+kubectl get pods -n production
+```
+
+Scale the deployment up again in `my-app.yml`.  
+Change the number of replicas to 5:
+```Shell
+...
+replicas: 5
+```
+
+Apply the changes:
+```Shell
+kubectl apply -f my-app .yml -n production
+```
+
+Get a list of Pods:
+```Shell
+kubectl get pods -n production
+```
+
+### Disposability with Stateless Containers
+[Reference](https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631215259805-1082%20-%20S04L02%20IX.%20Disposability%20with%20Stateless%20Containers.pdf)  
+[Security Context](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/)  
+[Pod Lifecycle](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/)  
+
+Get a list of Pods:
+```Shell
+kubectl get pods -n production
+```
+
+Locate one of the Pods from the uloe deployment and copy the Pod's name.  
+Delete the Pod using the Pod name:
+```Shell
+kubectl delete pod <Pod name> -n production
+```
+
+Get the list of Pods again. You will notice that the deployment is automatically creating a new Pod to replace the one that was deleted:
 ```Shell
 kubectl get pods -n production
 ```
