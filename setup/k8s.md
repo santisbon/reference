@@ -8,12 +8,14 @@ Example with 1 control plane node and 2 worker nodes.
 
 ### Building a Kubernetes Cluster
 
+[Reference](https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1658326918182-Building%20a%20Kubernetes%20Cluster.pdf)  
+[Installing kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/)  
+[Creating a cluster with kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/)  
+
 `kubeadm` simplifies the process of setting up a k8s cluster.  
 `containerd` manages the complete container lifecycle of its host system, from image transfer and storage to container execution and supervision to low-level storage to network attachments.  
 `kubelet` handles running containers on a node.  
 `kubectl` is a tool for managing the cluster.  
-
-[Reference](https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1658326918182-Building%20a%20Kubernetes%20Cluster.pdf)  
 
 If you wish, you can set an appropriate hostname for each node.  
 On the control plane node:  
@@ -138,6 +140,7 @@ kubectl get nodes
 ### Installing Docker
 
 [Reference](https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631214923454-1082%20-%20S01L03%20Installing%20Docker.pdf)  
+[Install Docker Engine on Ubuntu](https://docs.docker.com/engine/install/ubuntu/)  
 [Docker credentials store](https://docs.docker.com/engine/reference/commandline/login/#credentials-store) 
 to avoid storing your Docker Hub password unencrypted in `$HOME/.docker/config.json` when you `docker login` and `docker push` your images.  
 
@@ -287,6 +290,7 @@ kubectl delete pod test-pod -n production --force
 
 ### Build, Release, Run with Docker and Deployments
 [Reference](https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631215185856-1082%20-%20S03L02%20V.%20Build%2C%20Release%2C%20Run%20with%20Docker%20and%20Deployments.pdf)  
+[Deployments](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/)  
 
 Example: After you `docker build` and `docker push` your image to a repository, create a deployment file for your app.
 The `selector` selects pods that have the specified label name and value.  
@@ -532,6 +536,8 @@ kubectl get pods -n production
 [Reference](https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631215259805-1082%20-%20S04L02%20IX.%20Disposability%20with%20Stateless%20Containers.pdf)  
 [Security Context](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/)  
 [Pod Lifecycle](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/)  
+
+Deployments can be used to maintain a specified number of running replicas automatically replacing pods that fail or are deleted.
 
 Get a list of Pods:
 ```Shell
