@@ -1,4 +1,4 @@
-# Setting up a new machine
+# Guides
 
 ## Table of Contents
 
@@ -9,6 +9,7 @@
 * [Code editor](/setup/editor.md)
 * [Git](/setup/git.md)
 * [Docker](/setup/docker.md)
+* [Kubernetes](/setup/k8s.md)
 * [Python](/setup/python.md)
 * [Raspberry Pi](/setup/raspberry-pi.md)
 * [Amazon Web Services](/setup/aws.md)

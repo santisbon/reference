@@ -1,5 +1,23 @@
 # Kubernetes
 
+## Table of Contents
+* [Kubernetes Essentials](#kubernetes-essentials)
+* [Designing Applications for Kubernetes](#designing-applications-for-kubernetes)
+  * [Building a Kubernetes Cluster](#building-a-kubernetes-cluster)
+  * [Installing Docker](#installing-docker)
+  * [Kubernetes configuration with ConfigMaps and Secrets](#kubernetes-configuration-with-configmaps-and-secrets)
+  * [Build, Release, Run with Docker and Deployments](#build-release-run-with-docker-and-deployments)
+  * [Processes with stateless containers](#processes-with-stateless-containers)
+  * [Port Binding with Pods](#port-binding-with-pods)
+  * [Concurrency with Containers and Scaling](#concurrency-with-containers-and-scaling)
+  * [Disposability with Stateless Containers](#disposability-with-stateless-containers)
+  * [Dev/Prod Parity with Namespaces](#devprod-parity-with-namespaces)
+  * [Logs with k8s Container Logging](#logs-with-k8s-container-logging)
+  * [Admin Processes with Jobs](#admin-processes-with-jobs)
+
+## Kubernetes Essentials
+[Interactive Diagram](https://lucid.app/lucidchart/6d5625be-9ef9-411d-8bea-888de55db5cf/view?page=0_0#)
+
 ## Designing Applications for Kubernetes
 Based on the [12-Factor App Design Methodology](https://12factor.net/)
 
@@ -11,6 +29,7 @@ Example with 1 control plane node and 2 worker nodes.
 [Reference](https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1658326918182-Building%20a%20Kubernetes%20Cluster.pdf)  
 [Installing kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/)  
 [Creating a cluster with kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/)  
+* kubeadm sometimes doesn't work with the latest and greatest version of docker right away.
 
 `kubeadm` simplifies the process of setting up a k8s cluster.  
 `containerd` manages the complete container lifecycle of its host system, from image transfer and storage to container execution and supervision to low-level storage to network attachments.  
@@ -18,26 +37,26 @@ Example with 1 control plane node and 2 worker nodes.
 `kubectl` is a tool for managing the cluster.  
 
 If you wish, you can set an appropriate hostname for each node.  
-On the control plane node:  
+**On the control plane node**:  
 ```Shell
 sudo hostnamectl set-hostname k8s-control
 ```
 
-On the first worker node:  
+**On the first worker node**:  
 ```Shell
 sudo hostnamectl set-hostname k8s-worker1
 ```
-On the second worker node:  
+**On the second worker node**:  
 ```Shell
 sudo hostnamectl set-hostname k8s-worker2
 ```
 
-On all nodes, set up the hosts file to enable all the nodes to reach each other using these hostnames.
+**On all nodes**, set up the hosts file to enable all the nodes to reach each other using these hostnames.
 ```Shell
 sudo nano /etc/hosts
 ```
 
-On all nodes, add the following at the end of the file. You will need to supply the actual private IP address for each node.
+**On all nodes**, add the following at the end of the file. You will need to supply the actual private IP address for each node.
 ```Shell
 <control plane node private IP> k8s-control
 <worker node 1 private IP> k8s-worker1
@@ -186,6 +205,9 @@ docker version
 ```
 
 ### Kubernetes configuration with ConfigMaps and Secrets
+III. Config
+Store config in the environment
+
 [Reference](https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631214961641-1082%20-%20S02L03%20III.%20Config%20with%20ConfigMaps%20and%20Secrets.pdf)  
 
 [Encrypting Secret Data at Rest](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/)  
@@ -289,6 +311,9 @@ kubectl delete pod test-pod -n production --force
 ```
 
 ### Build, Release, Run with Docker and Deployments
+V. Build, release, run
+Strictly separate build and run stages
+
 [Reference](https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631215185856-1082%20-%20S03L02%20V.%20Build%2C%20Release%2C%20Run%20with%20Docker%20and%20Deployments.pdf)  
 [Deployments](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/)  
 
@@ -429,6 +454,9 @@ kubectl get pods -n production
 ```
 
 ### Processes with stateless containers
+VI. Processes
+Execute the app as one or more stateless processes
+
 [Reference](https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1632153847308-1082%20-%20S03L03%20VI.%20Processes%20with%20Stateless%20Containers.pdf)  
 [Security Context](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/)  
 
@@ -470,6 +498,9 @@ kubectl apply -f my-app.yml -n production
 ```
 
 ### Port Binding with Pods
+VII. Port binding
+Export services via port binding
+
 [Reference](https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631215167150-1082%20-%20S03L04%20VII.%20Port%20Binding%20with%20Pods.pdf)  
 [Cluster Networking](https://kubernetes.io/docs/concepts/cluster-administration/networking/)  
 
@@ -492,6 +523,9 @@ curl <Pod Cluster IP address>:5000
 ```
 
 ### Concurrency with Containers and Scaling
+VIII. Concurrency
+Scale out via the process model
+
 [Reference](https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631215269199-1082%20-%20S04L01%20VIII.%20Concurrency%20with%20Containers%20and%20Scaling.pdf)  
 [Deployments](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/)  
 
@@ -533,6 +567,9 @@ kubectl get pods -n production
 ```
 
 ### Disposability with Stateless Containers
+IX. Disposability
+Maximize robustness with fast startup and graceful shutdown
+
 [Reference](https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631215259805-1082%20-%20S04L02%20IX.%20Disposability%20with%20Stateless%20Containers.pdf)  
 [Security Context](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/)  
 [Pod Lifecycle](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/)  
@@ -544,7 +581,7 @@ Get a list of Pods:
 kubectl get pods -n production
 ```
 
-Locate one of the Pods from the uloe deployment and copy the Pod's name.  
+Locate one of the Pods from the my-app deployment and copy the Pod's name.  
 Delete the Pod using the Pod name:
 ```Shell
 kubectl delete pod <Pod name> -n production
@@ -555,18 +592,228 @@ Get the list of Pods again. You will notice that the deployment is automatically
 kubectl get pods -n production
 ```
 
-## Kubernetes Essentials
-A Cloud Guru course using Ubuntu 18. It uses a specific version of docker in part because Kubeadm sometimes doesn't work with the latest and greatest version of docker right away.
+### Dev/Prod Parity with Namespaces
+X. Dev/prod parity
+Keep development, staging, and production as similar as possible
 
-### Interactive Diagram
+[Reference](https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631215371092-1082%20-%20S05L01%20X.%20Dev%3AProd%20Parity%20with%20Namespaces.pdf)
+[Namespaces](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/)  
 
-[Diagram](https://lucid.app/lucidchart/6d5625be-9ef9-411d-8bea-888de55db5cf/view?page=0_0#)
+k8s namespaces allow us to have multiple environments in the same cluster. A namespace is like a virtual cluster.
 
-### Use
+Create a new namespace:
+```Shell
+kubectl create namespace dev
+```
 
-[Containers and Pods](https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1661512878582-Lesson%20Reference-Containers%20and%20Pods.txt)  
-[Clustering and nodes](https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1597958349080-02_02_Clustering%20and%20Nodes.pdf)  
-[Networking in Kubernetes](https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1661512922299-Lesson%20Reference-Networking%20in%20Kubernetes.txt)  
-[Kubernetes Architecture and components](https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1597958377028-02_04_Kubernetes%20Architecture%20and%20Components.pdf)  
-[Kubernetes Deployments](https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1638556999819-03_01_Kubernetes%20Deployments.txt)  *Corrected script [here](https://gist.github.com/santisbon/78909fd6775288f905e997de73cd46f3)  
-[Kubernetes Services](https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1661512983062-Lesson%20Reference-Kubernetes%20Services.txt)  
+Make a copy of the my-app app YAML:
+```
+cp my-app.yml my-app-dev.yml
+```
+
+`NodePort` `services` need to be unique within the cluster. We need to choose unique ports so dev doesn't conflict with production.  
+Edit the my-app-svc service in the `my-app-dev.yml` file to select different `nodePort`s. You will also need to edit the my-app-config ConfigMap to reflect the new port. 
+Set the nodePorts on the service:
+```Shell
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-app-svc
+spec:
+  type: NodePort
+  selector:
+    app: my-app
+  ports:
+  - name: frontend
+    protocol: TCP
+    port: 30082
+    nodePort: 30082
+    targetPort: 5000
+  - name: server
+    protocol: TCP
+    port: 30083
+    nodePort: 30083
+    targetPort: 3001
+```
+
+Update the configured port in the ConfigMap:
+```Shell
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-app-config
+data:
+  mongodb.host: "my-app-mongodb"
+  mongodb.port: "27017"
+  .env: |
+    REACT_APP_API_PORT="30083"
+```
+
+Deploy the backing service setup in the new namespace:
+```Shell
+kubectl apply -f k8s-my-app-mongodb.yml -n dev
+kubectl apply -f my-app-mongodb.yml -n dev
+```
+
+Deploy the app in the new namespace:
+```Shell
+kubectl apply -f my-app-dev.yml -n dev
+```
+Check the status of the Pods:
+```Shell
+kubectl get pods -n dev
+```
+
+Once all the Pods are up and running, you should be able to test the dev environment in a browser at  
+```<Control Plane Node Public IP>:30082```.
+
+### Logs with k8s Container Logging
+XI. Logs
+Treat logs as event streams
+
+[Reference](https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631215382492-1082%20-%20S05L02%20XI.%20Logs%20with%20k8s%20Container%20Logging.pdf)  
+[Logging Architecture](https://kubernetes.io/docs/concepts/cluster-administration/logging/)  
+[Kubectl cheatsheet](https://kubernetes.io/docs/reference/kubectl/cheatsheet/#interacting-with-running-pods)  
+
+k8s captures log data written to stdout by containers. We can use the k8s API, `kubectl logs` or external tools to interact with container logs.  
+
+Edit the source code for the server e.g. `src/server/index.js`. There is a log function that writes to a file. Change this function to simply write log data to the console:  
+```Javascript
+log = function(data) {
+console.log(data);
+}
+```
+
+Build a new server image because we changed the source code:
+```Shell
+docker build -t <Your Docker Hub username>/my-app-server:0.0.4 --target server .
+```
+
+Push the image:
+```Shell
+docker push <Your Docker Hub username>/my-app-server:0.0.4
+```
+
+Deploy the new code. Edit `my-app.yml`. Change the image version for the server to the new image:
+```Shell
+containers:
+- name: my-app-server
+  image: <Your Docker Hub username>/my-app-server:0.0.4
+```
+
+```Shell
+kubectl apply -f my-app.yml -n production
+```
+
+Get a list of Pods:
+```Shell
+kubectl get pods -n production
+```
+
+Copy the name of one of the my-app deployment Pods and view its logs specifying the pod, namespace, and container.
+```Shell
+kubectl logs <Pod name> -n production -c my-app-server
+```
+
+### Admin Processes with Jobs
+XII. Admin processes
+Run admin/management tasks as one-off processes
+
+[Reference](https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631215407613-1082%20-%20S05L03%20XII.%20Admin%20Processes%20with%20Jobs.pdf)  
+[Jobs](https://kubernetes.io/docs/concepts/workloads/controllers/job/)  
+
+A `Job` e.g. a database migration runs a container until its execution completes. Jobs handle re-trying execution if it fails.  
+Jobs have a `restartPolicy` of `Never` because once they complete they don't run again. 
+This example adds the administrative job to the server image but you could package it into its own image.  
+
+Edit the source code for the admin process in e.g. `src/jobs/deDeuplicateJob.js`.  
+Locate the block of code that begins with // Setup MongoDb backing database .  
+Change the code to make the database connection configurable:  
+
+```Javascript
+// Setup MongoDb backing database
+const MongoClient = require('mongodb').MongoClient
+// MongoDB credentials
+const username = encodeURIComponent(process.env.MONGODB_USER || "my-app_user");
+const password = encodeURIComponent(process.env.MONGODB_PASSWORD || "ILoveTheList");
+// MongoDB connection info
+const mongoPort = process.env.MONGODB_PORT || 27017;
+const mongoHost = process.env.MONGODB_HOST || 'localhost';
+// MongoDB connection string
+const mongoURI = `mongodb://${username}:${password}@${mongoHost}:${mongoPort}/my-app`;
+const mongoURISanitized = `mongodb://${username}:****@${mongoHost}:${mongoPort}/my-app`;
+console.log("MongoDB connection string %s", mongoURISanitized);
+const client = new MongoClient(mongoURI);
+```
+
+Edit the `Dockerfile` to include the admin job code in the server image.  
+Add the following line after the other COPY directives for the server image:
+```Shell
+...
+COPY --from=build /usr/src/app/src/jobs .
+```
+
+Build and push the server image:
+```Shell
+docker build -t <Your Docker Hub username>/my-app-server:0.0.5 --target server .
+docker push <Your Docker Hub username>/my-app-server:0.0.5
+```
+
+Create a Kubernetes Job to run the admin job:
+Create `de-duplicate-job.yml`.
+Supply your Docker Hub username in the image tag:
+```Shell
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: de-duplicate
+spec:
+  template:
+    spec:
+      containers:
+      - name: my-app-server
+        image: <Your Docker Hub username>/my-app-server:0.0.5
+        command: ["node", "deDeuplicateJob.js"]
+        env:
+        - name: MONGODB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: my-app-config
+              key: mongodb.host
+        - name: MONGODB_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: my-app-config
+              key: mongodb.port
+        - name: MONGODB_USER
+          valueFrom:
+            secretKeyRef:
+              name: my-app-secure-config
+              key: mongodb.username
+        - name: MONGODB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: my-app-secure-config
+              key: mongodb.password
+      restartPolicy: Never
+  backoffLimit: 4
+```
+
+Run the Job:
+```Shell
+kubectl apply -f de-duplicate-job.yml -n production
+```
+
+Check the Job status:
+```Shell
+kubectl get jobs -n production
+```
+Get the name of the Job Pod:
+```Shell
+kubectl get pods -n production
+```
+
+Use the Pod name to view the logs for the Job Pod:
+```Shell
+kubectl logs <Pod name> -n production
+```
