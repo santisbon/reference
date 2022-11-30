@@ -1,6 +1,7 @@
 # Kubernetes
 
 ## Table of Contents
+
 * [Kubernetes Essentials](#kubernetes-essentials)
 * [Designing Applications for Kubernetes](#designing-applications-for-kubernetes)
   * [Building a Kubernetes Cluster](#building-a-kubernetes-cluster)
@@ -8,6 +9,7 @@
   * [Kubernetes configuration with ConfigMaps and Secrets](#kubernetes-configuration-with-configmaps-and-secrets)
   * [Build, Release, Run with Docker and Deployments](#build-release-run-with-docker-and-deployments)
   * [Processes with stateless containers](#processes-with-stateless-containers)
+      * [Persistent Volumes](#persistent-volumes)
   * [Port Binding with Pods](#port-binding-with-pods)
   * [Concurrency with Containers and Scaling](#concurrency-with-containers-and-scaling)
   * [Disposability with Stateless Containers](#disposability-with-stateless-containers)
@@ -495,6 +497,121 @@ containers:
 Deploy the changes:
 ```Shell
 kubectl apply -f my-app.yml -n production
+```
+
+#### Persistent Volumes
+[Reference](https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1604349952306-devops-wb002%20-%20S10-L04%20Using%20K8s%20Persistent%20Volumes.pdf)  
+[Persistent Volumes (PV)](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)  
+[`local` PV](https://kubernetes.io/docs/concepts/storage/volumes/#local)  
+
+Create a `StorageClass` that supports volume expansion as `localdisk-sc.yml`
+```Shell
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: localdisk
+provisioner: kubernetes.io/no-provisioner
+allowVolumeExpansion: true
+```
+```Shell
+kubectl create -f localdisk-sc.yml
+```
+
+Create a PersistentVolume in `my-pv.yml`
+```Shell
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: my-pv
+spec:
+  storageClassName: localdisk
+  persistentVolumeReclaimPolicy: Recycle
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /var/output
+```
+```Shell
+kubectl create -f my-pv.yml
+```
+
+Check the status of the PersistentVolume.
+```Shell
+kubectl get pv
+```
+
+Create a PersistentVolumeClaim that will bind to the PersistentVolume as `my-pvc.yml`
+```Shell
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: my-pvc
+spec:
+  storageClassName: localdisk
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+```
+```Shell
+kubectl create -f my-pvc.yml
+```
+
+Check the status of the PersistentVolume and PersistentVolumeClaim to verify that they have been bound.
+```Shell
+kubectl get pv
+kubectl get pvc
+```
+
+Create a Pod that uses the PersistentVolumeClaim as `pv-pod.yml`.
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pv-pod
+spec:
+  restartPolicy: Never
+  containers:
+  - name: busybox
+    image: busybox
+    command: ['sh', '-c', 'echo Success! > /output/success.txt']
+    volumeMounts:
+    - name: pv-storage
+      mountPath: /output
+  volumes:
+  - name: pv-storage
+    persistentVolumeClaim:
+      claimName: my-pvc
+```
+```Shell
+kubectl create -f pv-pod.yml
+```
+
+Expand the PersistentVolumeClaim and record the process.
+```Shell
+kubectl edit pvc my-pvc --record
+```
+```Shell
+...
+spec:
+...
+  resources:
+    requests:
+      storage: 200Mi
+```
+
+Delete the Pod and the PersistentVolumeClaim.
+```Shell
+kubectl delete pod pv-pod
+kubectl delete pvc my-pvc
+```
+
+Check the status of the PersistentVolume to verify that it has been successfully recycled and is available again.
+```
+kubectl get pv
 ```
 
 ### Port Binding with Pods
