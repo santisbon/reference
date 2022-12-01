@@ -119,6 +119,7 @@ docker image ls -a
 # Build an image from a Dockerfile and give it a name (or name:tag).
 docker build -f mydockerfile -t santisbon/myimage .
 docker builder prune -a		# Remove all unused build cache, not just dangling ones
+docker image rm santisbon/myimage
 
 # Volumes
 docker volume create my-vol

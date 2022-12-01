@@ -56,8 +56,9 @@ invocation.
 drme  # docker rm -v $(docker ps -aq -f status=exited)
 dps   # docker ps -a
 
-# Specify the platform
-docker run -it --platform=amd64 --name stablediffusion santisbon/stablediffusion-amd64
+docker image inspect santisbon/stablediffusion-amd64
+docker image rm santisbon/stablediffusion-amd64
+docker run -it --platform=linux/amd64 --name stablediffusion santisbon/stablediffusion-amd64
 
 # Login to Docker Hub to scan images for vulnerabilities
 docker scan --login
@@ -127,9 +128,7 @@ aws ssm get-parameters \
 [Learn more about canned ACLs](https://docs.aws.amazon.com/AmazonS3/latest/userguide/acl-overview.html#canned-acl)  
 [Larn more about cleanup to prevent charges when you're no longer using the instance](https://docs.aws.amazon.com/dlami/latest/devguide/launch-config-cleanup.html)  
 
-# Other
-
-## [HERE Documents](https://stackoverflow.com/a/25903579)  
+# [HERE Documents](https://stackoverflow.com/a/25903579)  
 
 To overwrite an existing file (or write to a new file) that you own, substituting variable references inside the heredoc:
 ```Shell
