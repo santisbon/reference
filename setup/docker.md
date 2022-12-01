@@ -103,9 +103,10 @@ docker attach container4 # Interactive tty
 
 # To have it removed automatically when it's stopped 
 docker run -it --rm --name mycontainer debian # created and Up. Interactive tty. 
-
 # Run bash in a new container with interactive tty, based on debian image.
 docker run -it --name mycontainer debian bash
+# Specify the platform
+docker run -it --platform=amd64 --name stablediffusion santisbon/stablediffusion-amd64
 
 # Get the IDs of all stopped containers. Options: all, quiet (only IDs), filter.
 docker ps -aq -f status=exited
