@@ -20,6 +20,13 @@
 ## Kubernetes Essentials
 [Interactive Diagram](https://lucid.app/lucidchart/6d5625be-9ef9-411d-8bea-888de55db5cf/view?page=0_0#)
 
+In order for Kubernetes to pull your container image you need to first push it to an image repository like Docker Hub.  
+To avoid storing your Docker Hub password unencrypted in $HOME/.docker/config.json when you `docker login` to your account, use a [credentials store](https://docs.docker.com/engine/reference/commandline/login/#credentials-store). A helper program lets you interact with such a keychain or external store. 
+
+If you're doing this on your laptop with **Docker Desktop** it **already provides a store**.  
+**Otherwise**, **use** one of the stores supported by the [**`docker-credential-helper`**](https://docs.docker.com/engine/reference/commandline/login/#credential-helpers). Now `docker login` on your terminal or on the Docker Desktop app.  
+
+
 ## Designing Applications for Kubernetes
 Based on the [12-Factor App Design Methodology](https://12factor.net/)
 
