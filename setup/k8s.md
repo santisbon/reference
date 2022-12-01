@@ -18,7 +18,8 @@
   * [Admin Processes with Jobs](#admin-processes-with-jobs)
 
 ## Kubernetes Essentials
-[Interactive Diagram](https://lucid.app/lucidchart/6d5625be-9ef9-411d-8bea-888de55db5cf/view?page=0_0#)
+[Interactive Diagram](https://lucid.app/lucidchart/6d5625be-9ef9-411d-8bea-888de55db5cf/view?page=0_0#)  
+[Working with k8s objects](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/)  
 
 In order for Kubernetes to pull your container image you need to first push it to an image repository like Docker Hub.  
 To avoid storing your Docker Hub password unencrypted in $HOME/.docker/config.json when you `docker login` to your account, use a [credentials store](https://docs.docker.com/engine/reference/commandline/login/#credentials-store). A helper program lets you interact with such a keychain or external store. 
