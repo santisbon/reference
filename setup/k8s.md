@@ -525,7 +525,18 @@ allowVolumeExpansion: true
 kubectl create -f localdisk-sc.yml
 ```
 
-Create a PersistentVolume in `my-pv.yml`
+`persistentVolumeReclaimPolicy` says how storage can be reused when the volume's associated claims are deleted.  
+- Retain: Keeps all data. An admin must manually clean up and prepare the resource for reuse.
+- Recycle: Automatically deletes all data, allowing  the volume to be reused.
+- Delete: Deletes underlying storage resource automatically (applies to cloud only).  
+
+[`accessModes`](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes) can be:
+- ReadWriteOnce: The volume can be mounted as read-write by a single node. Still can allow multiple pods to access the volume when the pods are running on the same node.  
+- ReadOnlyMany: Can be mounted as read-only by many nodes.
+- ReadWriteMany: Can be mounted as read-write by many nodes.
+- ReadWriteOncePod: Can be mounted as read-write by a single Pod. Use ReadWriteOncePod access mode if you want to ensure that only one pod across whole cluster can read that PVC or write to it. This is only supported for CSI volumes.
+
+Create a PersistentVolume in `my-pv.yml`.
 ```Shell
 kind: PersistentVolume
 apiVersion: v1
