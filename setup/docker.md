@@ -79,6 +79,11 @@ docker run -it --name mycontainer arm64v8/debian bash # NO warning. uname -m -> 
 
 ### Examples
 
+Dockerfile instruction to keep a container running
+```Shell
+CMD tail -f /dev/null
+```
+
 Running containers
 ```Shell
 # sanity check
