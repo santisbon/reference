@@ -56,6 +56,9 @@ invocation.
 drme  # docker rm -v $(docker ps -aq -f status=exited)
 dps   # docker ps -a
 
+# Specify the platform
+docker run -it --platform=amd64 --name stablediffusion santisbon/stablediffusion-amd64
+
 # Login to Docker Hub to scan images for vulnerabilities
 docker scan --login
 docker scan <image-name>
