@@ -325,6 +325,7 @@ V. Build, release, run
 Strictly separate build and run stages
 
 [Reference](https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631215185856-1082%20-%20S03L02%20V.%20Build%2C%20Release%2C%20Run%20with%20Docker%20and%20Deployments.pdf)  
+[Labels and Selectors](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/)  
 [Deployments](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/)  
 
 Example: After you `docker build` and `docker push` your image to a repository, create a deployment file for your app.
