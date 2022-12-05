@@ -153,6 +153,15 @@ alias drm='sudo docker rm -v $(sudo docker ps -aq -f status=exited)'
 docker run -it --privileged --pid=host debian nsenter -t 1 -m -u -n -i sh
 ```
 
+If you want to build [multi-platform](https://docs.docker.com/build/building/multi-platform/#getting-started) docker images:
+```
+docker buildx create --name mybuilder --driver docker-container --bootstrap
+docker buildx use mybuilder
+
+docker buildx inspect
+docker buildx ls
+```
+
 Docker Compose. Multi-container deployments in a compose.yaml file.  
 [Using Compose in Production](https://docs.docker.com/compose/production/)  
 

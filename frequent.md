@@ -51,7 +51,7 @@ git config pull.ff only       # fast-forward only
 Hint: You can replace ```git config``` with ```git config --global``` to set a default preference for all repositories. You can also pass ```--rebase```, ```--no-rebase```, or ```--ff-only``` on the command line to override the configured default per
 invocation.
 
-# Docker
+# Docker / k8s
 ```Shell
 drme  # docker rm -v $(docker ps -aq -f status=exited)
 dps   # docker ps -a
@@ -75,6 +75,20 @@ scp -i ~/.ssh/$MY_KEY".pem" ~/Downloads/big-file.pth ec2-user@$INSTANCE_PUBLIC_D
 # On the docker host instance
 docker cp ~/big-file.pth <container-id>:/data
 rm -rf ~/big-file.pth
+```
+
+To remove termination protection from a pv or pvc, remove the finalizers section with `kubernetes.io/pv-protection` or `kubernetes.io/pvc-protection`.  
+```Shell
+`kubectl edit pvc (pvc name) -n mynamespace`
+```
+```Yaml
+metadata:
+  finalizers:
+  - kubernetes.io/pvc-protection
+```
+Then
+```Shell
+kubectl delete pv (pv name) --grace-period=0 --force
 ```
 
 # Python
