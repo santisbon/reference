@@ -16,6 +16,7 @@
   * [Dev/Prod Parity with Namespaces](#devprod-parity-with-namespaces)
   * [Logs with k8s Container Logging](#logs-with-k8s-container-logging)
   * [Admin Processes with Jobs](#admin-processes-with-jobs)
+* [Kubernetes Dashboard](#kubernetes-dashboard)
 
 ## Kubernetes Essentials
 [Interactive Diagram](https://lucid.app/lucidchart/6d5625be-9ef9-411d-8bea-888de55db5cf/view?page=0_0#)  
@@ -953,4 +954,43 @@ kubectl get pods -n production
 Use the Pod name to view the logs for the Job Pod:
 ```Shell
 kubectl logs <Pod name> -n production
+```
+
+## Kubernetes Dashboard
+
+[Documentation](https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/)
+```Shell
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.6.1/aio/deploy/recommended.yaml
+
+cat << EOF > dashboard-adminuser.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: admin-user
+  namespace: kubernetes-dashboard
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: admin-user
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: admin-user
+  namespace: kubernetes-dashboard
+EOF
+
+kubectl apply -f dashboard-adminuser.yaml
+
+kubectl proxy
+# Kubectl will make Dashboard available at 
+# http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
+
+kubectl -n kubernetes-dashboard create token admin-user
+# Now copy the token and paste it into the Enter token field on the login screen. 
 ```
