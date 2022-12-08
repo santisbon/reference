@@ -98,6 +98,11 @@ Or check the architecture with:
 hostnamectl
 ```
 
+You can find info about the hardware like ports, pins, RAM, SoC, connectivity, etc. with:
+```Shell
+pi@raspberrypi4:~ $ pinout
+```
+
 ## Learn about electronics
 
 I've added some sample code from the [MagPi Essentials book](https://magpi.raspberrypi.com/books/essentials-gpio-zero-v1).  
