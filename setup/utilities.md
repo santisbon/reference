@@ -5,8 +5,9 @@ These will vary for each person. Some examples on a Mac:
 brew install wget
 brew install gcc
 brew install jq
-brew install --cask docker
 brew install kompose # translate Docker Compose files to Kubernetes resources
+brew install --cask docker
+brew install --cask drawio # Diagrams (UML, AWS, etc.)
 brew install --cask 1password
 brew install --cask nordvpn
 brew install --cask google-chrome # or chromium
