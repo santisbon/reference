@@ -21,6 +21,7 @@
 ## Kubernetes Essentials
 [Interactive Diagram](https://lucid.app/lucidchart/6d5625be-9ef9-411d-8bea-888de55db5cf/view?page=0_0#)  
 [Working with k8s objects](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/)  
+[Log rotation](https://kubernetes.io/docs/concepts/cluster-administration/logging/#log-rotation)  
 
 In order for Kubernetes to pull your container image you need to first push it to an image repository like Docker Hub.  
 To avoid storing your Docker Hub password unencrypted in $HOME/.docker/config.json when you `docker login` to your account, use a [credentials store](https://docs.docker.com/engine/reference/commandline/login/#credentials-store). A helper program lets you interact with such a keychain or external store. 
@@ -954,6 +955,24 @@ kubectl get pods -n production
 Use the Pod name to view the logs for the Job Pod:
 ```Shell
 kubectl logs <Pod name> -n production
+```
+
+## microk8s
+
+[On Raspberry Pi](https://microk8s.io/docs/install-raspberry-pi)  
+
+```Shell
+pi@raspberrypi4:~ $ sudo snap install microk8s --classic
+pi@raspberrypi4:~ $ microk8s status --wait-ready
+pi@raspberrypi4:~ $ microk8s kubectl get all --all-namespaces
+pi@raspberrypi4:~ $ microk8s enable dns dashboard # or any other addons
+pi@raspberrypi4:~ $ alias mkctl="microk8s kubectl"
+pi@raspberrypi4:~ $ mkctl create deployment nginx --image nginx
+pi@raspberrypi4:~ $ mkctl expose deployment nginx --port 80 --target-port 80 --selector app=nginx --type ClustetIP --name nginx
+pi@raspberrypi4:~ $ watch microk8s kubectl get all
+pi@raspberrypi4:~ $ microk8s reset
+pi@raspberrypi4:~ $ microk8s status
+pi@raspberrypi4:~ $ microk8s stop # microk8s start
 ```
 
 ## Kubernetes Dashboard
