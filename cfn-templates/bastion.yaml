@@ -1,0 +1,155 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Parameters:
+
+  VpcId:
+    Description: What VPC would you like to associate with your Bastion Host Security Group?
+    Type: AWS::EC2::VPC::Id
+
+  LatestAMI:
+    Description: Static reference to latest Amazon Linux 2 AMI
+    Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
+    Default: '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
+    AllowedValues:
+      - '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
+
+  KeyPair:
+    Description: Which Key Pair would you like to use for remote access?
+    Type: 'AWS::EC2::KeyPair::KeyName'
+
+  Subnet1:
+    Description: The first subnet associated with the Bastion Host Autoscaling Group
+    Type: 'AWS::EC2::Subnet::Id'
+  
+  Subnet2:
+    Description: The second subnet associated with the Bastion Host Autoscaling Group
+    Type: 'AWS::EC2::Subnet::Id'
+
+  InstanceType:
+    Description: Instance size for the Bastion Host (default - t3.micro)
+    Type: String 
+    AllowedValues:
+      - t3.micro
+    Default: t3.micro
+
+  SourceCidr:
+    Description: What is the CIDR Block of IPv4 IP addresses allowed to access your Bastion Host via SSH?
+    Type: String
+    AllowedPattern: "^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(/([0-9]|[1-2][0-9]|3[0-2]))?$"
+    ConstraintDescription: The value must be valid IPv4 CIDR block.
+
+  SshPort:
+    Description: What port number would you like to use to connect to your Bastion Host over SSH?
+    Type: Number
+    Default: 22
+    MinValue: 22
+    MaxValue: 65535
+
+
+Metadata:
+
+  Authors:
+    Description:  Will Nave (will@1strategy.com)
+
+  Purpose:
+    Description: "This template is used to create a stack that leverages ec2 autoscaling 
+                  to implement a single bastion host ec2 instance and an associated security 
+                  group.  The security group provides secure access to the bastion host 
+                  based on the provided origin cidr block and SSH port.  SSH access to the 
+                  bastion host is granted using the default ec2-user credentials and the 
+                  keypair supplied via the KeyPair parameter."
+
+  License:
+    Description: 'Copyright 2019 1Strategy
+
+                  Licensed under the Apache License, Version 2.0 (the "License");
+                  you may not use this file except in compliance with the License.
+                  You may obtain a copy of the License at
+
+                      http://www.apache.org/licenses/LICENSE-2.0
+
+                  Unless required by applicable law or agreed to in writing, software
+                  distributed under the License is distributed on an "AS IS" BASIS,
+                  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+                  See the License for the specific language governing permissions and
+                  limitations under the License.'
+
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      -
+        Label:
+          default: "Bastion Host Parameters"
+        Parameters:
+          - VpcId
+          - KeyPair
+          - LatestAMI
+          - Subnet1
+          - Subnet2
+          - InstanceType
+          - SourceCidr
+          - SshPort
+    ParameterLabels:
+      VpcId:
+        default: "VPC Id"
+      KeyPair:
+        default: "Key Pair"
+      LatestAMI:
+        default: "AMI"
+      Subnet1:
+        default: "Bastion Host Subnet 1"
+      Subnet2:
+        default: "Bastion Host Subnet 2"
+      InstanceType:
+        default: "Instance Type"
+      SourceCidr:
+        default: "Origin CIDR block"
+      SshPort:
+        default: "SSH Port Number"
+
+
+Resources:
+
+  BastionASG:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      AutoScalingGroupName: !Join ["", [!Ref "AWS::StackName", "BastionHostASG"]]
+      LaunchConfigurationName: !Ref BastionLaunchConfig
+      VPCZoneIdentifier:
+        - !Ref Subnet1
+        - !Ref Subnet2
+      MinSize: "1"
+      DesiredCapacity: "1"
+      MaxSize: "1"
+      Tags:
+        -
+          Key: Name
+          Value: !Join ["", [!Ref "AWS::StackName", "BastionHost"]]
+          PropagateAtLaunch: true
+
+  BastionLaunchConfig:
+    Type: AWS::AutoScaling::LaunchConfiguration
+    Properties:
+      LaunchConfigurationName: !Join ["", [!Ref "AWS::StackName", "BastionHostLaunchConfiguration"]]
+      AssociatePublicIpAddress: true
+      ImageId: !Ref LatestAMI
+      InstanceType: !Ref InstanceType
+      KeyName: !Ref KeyPair
+      SecurityGroups:
+        - !Ref SecurityGroup
+
+  SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Bastion Host Security Group
+      VpcId: !Ref VpcId
+      GroupName: !Join ["", [ !Ref "AWS::StackName", "BastionHostSecurityGroup"]]
+
+  # Security Group Ingress rule for SSH access to Bastion Host
+  SecurityGroupSshIngressRule:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref SecurityGroup
+      IpProtocol: "tcp"
+      FromPort: !Ref SshPort
+      ToPort: !Ref SshPort
+      CidrIp: !Ref SourceCidr
