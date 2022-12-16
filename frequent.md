@@ -203,3 +203,11 @@ This line will write to the file.
 ${THIS} will also write to the file, without the variable contents substituted.
 Screw_you_Foo
 ```
+
+# Other
+
+Scan ports
+```Shell
+nc -zv raspberrypi4.local 32000
+echo "QUIT" | nc raspberrypi4.local 32000
+```

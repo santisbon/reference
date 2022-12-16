@@ -999,13 +999,20 @@ microk8s enable registry
 ```
 The containerd daemon used by MicroK8s is configured to trust this insecure registry. To upload images we have to tag them with localhost:32000/your-image before pushing them.
 
-### Dashboard
+### microk8s dashboard
 If RBAC is not enabled access the dashboard using the token retrieved with:
 ```Shell
 microk8s kubectl describe secret -n kube-system microk8s-dashboard-token
 ```
 Use this token in the https login UI of the kubernetes-dashboard service.
 In an RBAC enabled setup (microk8s enable RBAC) you need to create a user with restricted permissions as shown [here](https://github.com/kubernetes/dashboard/blob/master/docs/user/access-control/creating-sample-user.md)
+
+To access remotely from anywhere:
+```Shell
+microk8s kubectl port-forward -n kube-system service/kubernetes-dashboard 10443:443 --address 0.0.0.0
+```
+You can then access the Dashboard with IP or hostname as in https://raspberrypi4.local:10443/
+
 
 ### Troubleshooting
 ```Shell
