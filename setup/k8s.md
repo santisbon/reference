@@ -960,7 +960,10 @@ kubectl logs <Pod name> -n production
 ## microk8s
 
 [On Raspberry Pi](https://microk8s.io/docs/install-raspberry-pi)  
-Note: Your boot parameters might be in `/boot/cmdline.txt`.
+Note: Your boot parameters might be in `/boot/cmdline.txt`. Add these options at the end of the file, then `sudo reboot`.
+```Shell
+cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1
+```
 
 For Raspberry Pi OS [install](https://snapcraft.io/docs/installing-snap-on-raspbian) `snap` first.
 ```Shell
@@ -1000,6 +1003,11 @@ microk8s kubectl describe secret -n kube-system microk8s-dashboard-token
 Use this token in the https login UI of the kubernetes-dashboard service.
 In an RBAC enabled setup (microk8s enable RBAC) you need to create a user with restricted permissions as shown [here](https://github.com/kubernetes/dashboard/blob/master/docs/user/access-control/creating-sample-user.md)
 
+### Troubleshooting
+```Shell
+microk8s inspect
+```
+microk8s might not recognize that cgroup memory is enabled but you can check with `cat /proc/cgroups`.
 
 
 ## Kubernetes Dashboard
