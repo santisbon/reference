@@ -960,12 +960,22 @@ kubectl logs <Pod name> -n production
 ## microk8s
 
 [On Raspberry Pi](https://microk8s.io/docs/install-raspberry-pi)  
+Note: Your boot parameters might be in `/boot/cmdline.txt`.
 
+For Raspberry Pi OS [install](https://snapcraft.io/docs/installing-snap-on-raspbian) `snap` first.
+```Shell
+sudo apt update
+sudo apt install snapd
+sudo reboot
+# ...reconnect after reboot
+sudo snap install core
+```
+Then install microk8s.
 ```Shell
 pi@raspberrypi4:~ $ sudo snap install microk8s --classic
 pi@raspberrypi4:~ $ microk8s status --wait-ready
 pi@raspberrypi4:~ $ microk8s kubectl get all --all-namespaces
-pi@raspberrypi4:~ $ microk8s enable dns dashboard # or any other addons
+pi@raspberrypi4:~ $ microk8s enable dns dashboard registry hostpath-storage # or any other addons
 pi@raspberrypi4:~ $ alias mkctl="microk8s kubectl"
 pi@raspberrypi4:~ $ mkctl create deployment nginx --image nginx
 pi@raspberrypi4:~ $ mkctl expose deployment nginx --port 80 --target-port 80 --selector app=nginx --type ClustetIP --name nginx
@@ -974,6 +984,23 @@ pi@raspberrypi4:~ $ microk8s reset
 pi@raspberrypi4:~ $ microk8s status
 pi@raspberrypi4:~ $ microk8s stop # microk8s start
 ```
+
+### Registry
+[Registry doc](https://microk8s.io/docs/registry-built-in)
+```Shell
+microk8s enable registry
+```
+The containerd daemon used by MicroK8s is configured to trust this insecure registry. To upload images we have to tag them with localhost:32000/your-image before pushing them.
+
+### Dashboard
+If RBAC is not enabled access the dashboard using the token retrieved with:
+```Shell
+microk8s kubectl describe secret -n kube-system microk8s-dashboard-token
+```
+Use this token in the https login UI of the kubernetes-dashboard service.
+In an RBAC enabled setup (microk8s enable RBAC) you need to create a user with restricted permissions as shown [here](https://github.com/kubernetes/dashboard/blob/master/docs/user/access-control/creating-sample-user.md)
+
+
 
 ## Kubernetes Dashboard
 
