@@ -16,6 +16,10 @@
   * [Dev/Prod Parity with Namespaces](#devprod-parity-with-namespaces)
   * [Logs with k8s Container Logging](#logs-with-k8s-container-logging)
   * [Admin Processes with Jobs](#admin-processes-with-jobs)
+* [microk8s](#microk8s)
+  * [Registry](#registry)
+  * [Dashboard](#dashboard)
+  * [Troubleshooting](#troubleshooting)
 * [Kubernetes Dashboard](#kubernetes-dashboard)
 
 ## Kubernetes Essentials
