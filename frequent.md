@@ -97,7 +97,9 @@ kubectl delete pv (pv name) --grace-period=0 --force
 conda create -y --name myenv && conda activate myenv
 conda env list
 conda env remove --name myenv
+```
 
+```Shell
 # debug a script
 python3 -m pdb scripts/dream.py --full_precision
 # Pdb command to set breakpoint: b path/to/file.py:<line>
@@ -105,6 +107,16 @@ python3 -m pdb scripts/dream.py --full_precision
 # Pdb commands: n(ext), s(tep), c(ont(inue))
 # print variable: p <variable>
 (Pdb) p model_path
+```
+
+```Shell
+# debug SD
+python3 -m pdb scripts/orig_scripts/txt2img.py --precision=full
+# Pdb command to set breakpoint: b path/to/file.py:<line>
+(Pdb) b scripts/orig_scripts/txt2img.py:185
+# Pdb commands: n(ext), s(tep), c(ont(inue))
+# print variable: p <variable>
+(Pdb) p opt
 ```
 
 # AWS
