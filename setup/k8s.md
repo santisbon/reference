@@ -18,7 +18,7 @@
   * [Admin Processes with Jobs](#admin-processes-with-jobs)
 * [microk8s](#microk8s)
   * [Registry](#registry)
-  * [Dashboard](#dashboard)
+  * [microk8s dashboard](#microk8s-dashboard)
   * [Troubleshooting](#troubleshooting)
 * [Kubernetes Dashboard](#kubernetes-dashboard)
 
