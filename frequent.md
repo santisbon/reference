@@ -216,3 +216,10 @@ View available disk space.
 ```Shell
 df -H
 ```
+
+Different ways to see RAM usage.
+```Shell
+free --giga
+cat /proc/meminfo
+top
+```
