@@ -992,6 +992,13 @@ pi@raspberrypi4:~ $ microk8s status
 pi@raspberrypi4:~ $ microk8s stop # microk8s start
 ```
 
+You can update a snap package with `sudo snap refresh`.
+
+Configuration file. These are the arguments you can add regarding log rotation `--container-log-max-files` and `--container-log-max-size`. They have default values. [More info](https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/).
+```Shell
+cat /var/snap/microk8s/current/args/kubelet
+```
+
 ### Registry
 [Registry doc](https://microk8s.io/docs/registry-built-in)
 ```Shell

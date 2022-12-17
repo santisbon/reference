@@ -211,3 +211,8 @@ Scan ports
 nc -zv raspberrypi4.local 32000
 echo "QUIT" | nc raspberrypi4.local 32000
 ```
+
+View available disk space.
+```Shell
+df -H
+```
