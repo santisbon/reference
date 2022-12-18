@@ -21,6 +21,11 @@ export PATH="$(brew --prefix)/opt/python/libexec/bin:$PATH"
 ```
 See the [Homebrew Python](https://docs.brew.sh/Homebrew-and-Python) documentation for details.  
 
+`site-packages` is here. Example for python 3.10 on Homebrew
+```Shell
+ls -al $(brew --prefix)/lib/python3.10/site-packages
+```
+
 ### Without Homebrew
 Linux (Ubuntu)
 ```Shell
