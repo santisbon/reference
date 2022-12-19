@@ -36,6 +36,7 @@ Test the validity of the config file and restart the service (or reboot).
 ```Shell
 sudo sshd -t
 sudo service sshd restart
+sudo service sshd status
 ```
 
 ## Configuration
