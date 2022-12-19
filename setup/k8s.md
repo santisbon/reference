@@ -964,11 +964,13 @@ kubectl logs <Pod name> -n production
 ## kind
 [User Guide](https://kind.sigs.k8s.io/docs/user/quick-start)  
 
-Kubernetes cluster for local development using docker container "nodes".
+kind runs a local Kubernetes cluster by using Docker containers as “nodes”.
+By default, the cluster access configuration is stored in ${HOME}/.kube/config if $KUBECONFIG environment variable is not set.
 ```
 brew install kind
 kind create cluster
 kubectl cluster-info --context kind-kind
+kind get clusters
 kubectl get node
 kind delete cluster
 ```
