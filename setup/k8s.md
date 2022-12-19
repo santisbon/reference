@@ -961,6 +961,18 @@ Use the Pod name to view the logs for the Job Pod:
 kubectl logs <Pod name> -n production
 ```
 
+## kind
+[User Guide](https://kind.sigs.k8s.io/docs/user/quick-start)  
+
+Kubernetes cluster for local development using docker container "nodes".
+```
+brew install kind
+kind create cluster
+kubectl cluster-info --context kind-kind
+kubectl get node
+kind delete cluster
+```
+
 ## microk8s
 
 [On Raspberry Pi](https://microk8s.io/docs/install-raspberry-pi)  
