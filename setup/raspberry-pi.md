@@ -20,6 +20,24 @@
    - Take note of the hostname.
 2. Insert the SD card in your Raspberry Pi and turn it on. 
 
+If you didn't do so during setup, you can still generate and add an ssh key at any time. Example:
+```Shell
+# on your laptop
+ssh-keygen
+ssh-copy-id -i ~/.ssh/id_rsa pi@raspberrypi4.local
+```
+To remove password authentication:
+```Shell
+# on the Pi
+sudo nano /etc/ssh/sshd_config
+```
+and replace `#PasswordAuthentication yes` with `PasswordAuthentication no`.
+Test the validity of the config file and restart the service (or reboot).
+```Shell
+sudo sshd -t
+sudo service sshd restart
+```
+
 ## Configuration
 
 Find the IP of your Raspberry Pi using its hostname or find all devices on your network with `arp -a`.
