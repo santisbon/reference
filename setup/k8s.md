@@ -16,6 +16,7 @@
   * [Dev/Prod Parity with Namespaces](#devprod-parity-with-namespaces)
   * [Logs with k8s Container Logging](#logs-with-k8s-container-logging)
   * [Admin Processes with Jobs](#admin-processes-with-jobs)
+* [kind](#kind)
 * [microk8s](#microk8s)
   * [Registry](#registry)
   * [microk8s dashboard](#microk8s-dashboard)
