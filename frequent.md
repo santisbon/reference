@@ -206,6 +206,14 @@ Screw_you_Foo
 
 # Other
 
+To reset your Mac’s network settings run these and reboot the device. 
+```Shell
+cd /Library/Preferences/SystemConfiguration
+sudo rm com.apple.airport.preferences.plist
+sudo rm NetworkInterfaces.plist
+sudo rm preferences.plist
+```
+
 Scan ports
 ```Shell
 nc -zv raspberrypi4.local 32000
