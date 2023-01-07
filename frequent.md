@@ -235,4 +235,5 @@ top
 iCloud Drive
 ```Shell
 ls -al ~/Library/Mobile\ Documents/com~apple~CloudDocs
+cd ~ && ln -s ~/Library/Mobile\ Documents/com~apple~CloudDocs iCloud
 ```
