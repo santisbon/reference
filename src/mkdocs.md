@@ -22,11 +22,13 @@ pip install mkdocs python-markdown-math mkdocs-material
 
 ## Themes
 
-Examples: `mkdocs`, `readthedocs`, or `material`.
+Included: `mkdocs`, `readthedocs`.  
+Third-party: `material`.
 
 ## Extensions
 
-[Extensions documentation](https://python-markdown.github.io/extensions/).
+[Documentation](https://python-markdown.github.io/extensions/).  
+[Admonition](https://python-markdown.github.io/extensions/admonition/) types: `attention`, `caution`, `danger`, `error`, `hint`, `important`, `note`, `tip`, and `warning`.
 
 ## MathJax Test
 
