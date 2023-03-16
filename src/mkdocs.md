@@ -3,7 +3,7 @@
 For full documentation visit [mkdocs.org](https://www.mkdocs.org).
 
 ```zsh
-pip install mkdocs python-markdown-math
+pip install mkdocs python-markdown-math mkdocs-material
 ```
 
 ## Commands
@@ -19,6 +19,10 @@ pip install mkdocs python-markdown-math
     docs/
         index.md  # The documentation homepage.
         ...       # Other markdown pages, images and other files.
+
+## Themes
+
+Examples: `mkdocs`, `readthedocs`, or `material`.
 
 ## Extensions
 
