@@ -56,12 +56,16 @@
   
     
     
+      
+    
     
     
     
     <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
   
     
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
@@ -110,6 +114,26 @@
         </div>
       </div>
     </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-2.69L23.31 12 20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69Z"/></svg>
+            </label>
+          
+        
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 2c-1.05 0-2.05.16-3 .46 4.06 1.27 7 5.04 7 9.54 0 4.5-2.94 8.27-7 9.54.95.3 1.95.46 3 .46a10 10 0 0 0 10-10A10 10 0 0 0 9 2Z"/></svg>
+            </label>
+          
+        
+      </form>
     
     
     
@@ -590,43 +614,43 @@
 
 <h1 id="git">Git</h1>
 <h2 id="install">Install</h2>
-<p>macOS  </p>
-<pre><code class="language-zsh">brew install git
-git --version
+<p>macOS<br />
+<div class="highlight"><pre><span></span><code>brew<span class="w"> </span>install<span class="w"> </span>git
+git<span class="w"> </span>--version
 
-# GitHub CLI
-brew install gh 
-gh auth login
-gh config set editor &quot;codium -w&quot; # or code, nano, etc
-</code></pre>
-<p>GitHub CLI <a href="https://docs.github.com/en/github-cli/github-cli/github-cli-reference">reference</a>.</p>
-<p>Linux</p>
-<pre><code class="language-zsh">sudo yum install git # or git-all
-git --version
-</code></pre>
+<span class="c1"># GitHub CLI</span>
+brew<span class="w"> </span>install<span class="w"> </span>gh<span class="w"> </span>
+gh<span class="w"> </span>auth<span class="w"> </span>login
+gh<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>editor<span class="w"> </span><span class="s2">&quot;codium -w&quot;</span><span class="w"> </span><span class="c1"># or code, nano, etc</span>
+</code></pre></div>
+GitHub CLI <a href="https://docs.github.com/en/github-cli/github-cli/github-cli-reference">reference</a>.</p>
+<p>Linux
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>yum<span class="w"> </span>install<span class="w"> </span>git<span class="w"> </span><span class="c1"># or git-all</span>
+git<span class="w"> </span>--version
+</code></pre></div></p>
 <h2 id="configure">Configure</h2>
-<pre><code class="language-zsh">git config --global core.editor 'codium --wait'
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>core.editor<span class="w"> </span><span class="s1">&#39;codium --wait&#39;</span>
 
-git config --global diff.tool codium
-git config --global difftool.codium.cmd 'codium --wait --diff $LOCAL $REMOTE'
+git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>diff.tool<span class="w"> </span>codium
+git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>difftool.codium.cmd<span class="w"> </span><span class="s1">&#39;codium --wait --diff $LOCAL $REMOTE&#39;</span>
 
-git config --global merge.tool codium
-git config --global mergetool.codium.cmd 'codium --wait $MERGED'
+git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>merge.tool<span class="w"> </span>codium
+git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>mergetool.codium.cmd<span class="w"> </span><span class="s1">&#39;codium --wait $MERGED&#39;</span>
 
-# or
-codium ~/.gitconfig # and paste from sample dot file. Also: codium, vscode, nano
-</code></pre>
+<span class="c1"># or</span>
+codium<span class="w"> </span>~/.gitconfig<span class="w"> </span><span class="c1"># and paste from sample dot file. Also: codium, vscode, nano</span>
+</code></pre></div>
 <p>Then you can <code>git difftool main feature-branch</code>.  </p>
-<p>If using AWS CodeCommit do this after configuring the AWS CLI:</p>
-<pre><code class="language-zsh">git config --global credential.helper '!aws codecommit credential-helper $@'
-git config --global credential.UseHttpPath true
-</code></pre>
-<p><a href="https://docs.aws.amazon.com/codecommit/latest/userguide/troubleshooting-ch.html#troubleshooting-macoshttps">Troubleshooting CodeCommit</a></p>
-<p>To create a squash function:</p>
-<pre><code class="language-zsh">git config --global alias.squash-all '!f(){ git reset $(git commit-tree &quot;HEAD^{tree}&quot; &quot;$@&quot;);};f'
-</code></pre>
-<div class="admonition info">
-<p class="admonition-title">Info</p>
+<p>If using AWS CodeCommit do this after configuring the AWS CLI:
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>credential.helper<span class="w"> </span><span class="s1">&#39;!aws codecommit credential-helper $@&#39;</span>
+git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>credential.UseHttpPath<span class="w"> </span><span class="nb">true</span>
+</code></pre></div>
+<a href="https://docs.aws.amazon.com/codecommit/latest/userguide/troubleshooting-ch.html#troubleshooting-macoshttps">Troubleshooting CodeCommit</a></p>
+<p>To create a squash function:
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>alias.squash-all<span class="w"> </span><span class="s1">&#39;!f(){ git reset $(git commit-tree &quot;HEAD^{tree}&quot; &quot;$@&quot;);};f&#39;</span>
+</code></pre></div></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
 <ul>
 <li>Git allows you to escape to a shell (like bash or zsh) using the ! (bang). <a href="https://www.atlassian.com/blog/git/advanced-git-aliases">Learn more</a>.</li>
 <li><a href="https://git-scm.com/docs/git-commit-tree"><code>commit-tree</code></a> creates a new commit object based on the provided tree object and emits the new commit object id on stdout.</li>
@@ -636,34 +660,37 @@ git config --global credential.UseHttpPath true
 <li>If you’re using ZSH, the <code>^</code> character is used for globbing, so you have to enclose the whole expression in quotes: <code>"HEAD^{tree}"</code></li>
 </ul>
 </div>
-<p>Then just run:</p>
-<pre><code class="language-zsh">git squash-all -m &quot;a brand new start&quot;
-git push -f
-</code></pre>
+<p>Then just run:
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>squash-all<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;a brand new start&quot;</span>
+git<span class="w"> </span>push<span class="w"> </span>-f
+</code></pre></div></p>
 <h2 id="set-up-git-autocompletion-bash">Set up git autocompletion (bash)</h2>
-<pre><code class="language-bash">cd ~
-curl -OL https://github.com/git/git/raw/master/contrib/completion/git-completion.bash
-mv ~/git-completion.bash ~/.git-completion.bash
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>~
+curl<span class="w"> </span>-OL<span class="w"> </span>https://github.com/git/git/raw/master/contrib/completion/git-completion.bash
+mv<span class="w"> </span>~/git-completion.bash<span class="w"> </span>~/.git-completion.bash
+</code></pre></div>
 <h2 id="set-up-ssh-key">Set up SSH key</h2>
 <ol>
 <li><a href="https://help.github.com/articles/checking-for-existing-ssh-keys/">Check</a> for existing keys.</li>
 <li><a href="https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/">Generate</a> a new SSH key and add it to ssh-agent. You may need to set permissions to your key file with <code>chmod 600</code>.</li>
 <li><a href="https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/">Add</a> the public key to your GitHub account.</li>
 </ol>
-<p>If the terminal is no longer authenticating you:</p>
-<pre><code class="language-zsh">git remote -v # is it https or ssh? Should be ssh
-git remote remove origin
-git remote add origin git@github.com:user/repo.git
-</code></pre>
-<p>Still having issues? Start the ssh-agent in the background and add your SSH private key to the ssh-agent.</p>
-<pre><code class="language-zsh">ps -ax | grep ssh-agent
-eval &quot;$(ssh-agent -s)&quot;
-ssh-add --apple-use-keychain ~/.ssh/id_ed25519
-</code></pre>
-<p>If you need to add your public key to Github again copy and paste it on your Settings page on Github:</p>
-<pre><code class="language-zsh">pbcopy &lt; ~/.ssh/id_ed25519.pub
-</code></pre>
+<p>If the terminal is no longer authenticating you:
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>remote<span class="w"> </span>-v<span class="w"> </span><span class="c1"># is it https or ssh? Should be ssh</span>
+git<span class="w"> </span>remote<span class="w"> </span>remove<span class="w"> </span>origin
+git<span class="w"> </span>remote<span class="w"> </span>add<span class="w"> </span>origin<span class="w"> </span>git@github.com:user/repo.git
+</code></pre></div></p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Still having issues? Start the ssh-agent in the background and add your SSH private key to the ssh-agent.<br />
+<div class="highlight"><pre><span></span><code>ps<span class="w"> </span>-ax<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>ssh-agent
+<span class="nb">eval</span><span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>ssh-agent<span class="w"> </span>-s<span class="k">)</span><span class="s2">&quot;</span>
+ssh-add<span class="w"> </span>--apple-use-keychain<span class="w"> </span>~/.ssh/id_ed25519
+</code></pre></div></p>
+</div>
+<p>If you need to add your public key to Github again copy and paste it on your Settings page on Github:
+<div class="highlight"><pre><span></span><code>pbcopy<span class="w"> </span>&lt;<span class="w"> </span>~/.ssh/id_ed25519.pub
+</code></pre></div></p>
 
 
 
@@ -706,7 +733,7 @@ ssh-add --apple-use-keychain ~/.ssh/id_ed25519
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.expand", "navigation.top"], "search": "../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.expand", "navigation.top", "content.code.copy"], "search": "../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
       <script src="../assets/javascripts/bundle.efa0ade1.min.js"></script>

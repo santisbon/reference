@@ -27,10 +27,31 @@ Third-party: `material`.
 
 ## Extensions
 
-[Documentation](https://python-markdown.github.io/extensions/).  
-[Admonition](https://python-markdown.github.io/extensions/admonition/) types: `attention`, `caution`, `danger`, `error`, `hint`, `important`, `note`, `tip`, and `warning`.
+[Documentation](https://python-markdown.github.io/extensions/)  
 
-## MathJax Test
+### Admonition
+[Documentation](https://python-markdown.github.io/extensions/admonition/)  
+Types: `attention`, `caution`, `danger`, `error`, `hint`, `important`, `note`, `tip`, and `warning`. The text must be indented.
 
+```
+!!! hint
+    Text goes here.
+```
+!!! hint
+    Text goes here.
+
+### Keys
+[Documentation](https://facelessuser.github.io/pymdown-extensions/extensions/keys/#extendingmodifying-key-map-index)
+```
+++command+shift+n++
+```
+++command+shift+n++
+
+### MathJax
+
+```
 When \(a \ne 0\), there are two solutions to \(ax^2 + bx + c = 0\) and they are
-$$x = {-b \pm \sqrt{b^2-4ac} \over 2a}.$$
+$$x = {-b \pm \sqrt{b^2-4ac} \over 2a}$$
+```
+When \(a \ne 0\), there are two solutions to \(ax^2 + bx + c = 0\) and they are
+$$x = {-b \pm \sqrt{b^2-4ac} \over 2a}$$

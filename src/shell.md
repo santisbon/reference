@@ -24,7 +24,7 @@ sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.
 ```
 
 [Oh My Zsh](https://ohmyz.sh/)  
-Add any built-in [plugins](https://github.com/ohmyzsh/ohmyzsh/wiki/Plugins) you need to your ```~/.zshrc```
+Add any built-in [plugins](https://github.com/ohmyzsh/ohmyzsh/wiki/Plugins) you need to your `~/.zshrc`
 ```zsh
 plugins=(git macos python)
 ```
@@ -82,7 +82,7 @@ brew install --cask iterm2
 ```
 
 After you have installed the font(s) required by your Oh My Zsh theme set your iTerm preferences like default shell and font.  
-Verify that you're using the shell you want. In the output of the ```env``` command look for something like ```zsh=/opt/homebrew/bin/zsh```.
+Verify that you're using the shell you want. In the output of the `env` command look for something like `zsh=/opt/homebrew/bin/zsh`.
 
 Install iTerm 2 color schemes
 ```zsh

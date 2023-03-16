@@ -15,7 +15,7 @@ The python formulae install pip (as pip3) and Setuptools. Setuptools can be upda
 python3 -m pip install --upgrade setuptools
 python3 -m pip install --upgrade pip
 ```
-Add the unversioned symlinks to your ```$PATH``` by adding this to your ```.zshrc``` file.
+Add the unversioned symlinks to your `$PATH` by adding this to your `.zshrc` file.
 ```zsh
 export PATH="$(brew --prefix)/opt/python/libexec/bin:$PATH"
 ```
@@ -67,7 +67,7 @@ brew install --cask anaconda
 
 [Installing in silent mode](https://docs.anaconda.com/anaconda/install/silent-mode/)  
 
-Add anaconda to your ```PATH``` on your ```.zshrc``` and ```source ~/.zshrc``` to apply the changes.
+Add anaconda to your `PATH` on your `.zshrc` and `source ~/.zshrc` to apply the changes.
 ```zsh
 export PATH="$(brew --prefix)/anaconda3/bin:$PATH"
 ```
@@ -75,13 +75,13 @@ To use zsh:
 ```zsh
 conda init zsh
 ```
-If ```conda init zsh``` messed up the ```PATH``` in your ```~/.zshrc``` by adding the ```condabin``` directory instead of ```bin``` you can fix it with a symlink:
+If `conda init zsh` messed up the `PATH` in your `~/.zshrc` by adding the `condabin` directory instead of `bin` you can fix it with a symlink:
 ```zsh
 ln -sf $(brew --prefix)/anaconda3/bin/jupyter-lab $(brew --prefix)/anaconda3/condabin/jupyter-lab
 ln -sf $(brew --prefix)/anaconda3/bin/jupyter $(brew --prefix)/anaconda3/condabin/jupyter
 ```
 
-If you don't want to activate the ```base``` environment every time you open your terminal:
+If you don't want to activate the `base` environment every time you open your terminal:
 ```zsh
 conda config --set auto_activate_base false
 ```

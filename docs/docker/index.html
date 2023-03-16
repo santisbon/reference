@@ -56,12 +56,16 @@
   
     
     
+      
+    
     
     
     
     <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
   
     
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
@@ -110,6 +114,26 @@
         </div>
       </div>
     </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-2.69L23.31 12 20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69Z"/></svg>
+            </label>
+          
+        
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 2c-1.05 0-2.05.16-3 .46 4.06 1.27 7 5.04 7 9.54 0 4.5-2.94 8.27-7 9.54.95.3 1.95.46 3 .46a10 10 0 0 0 10-10A10 10 0 0 0 9 2Z"/></svg>
+            </label>
+          
+        
+      </form>
     
     
     
@@ -643,18 +667,19 @@
 <h1 id="docker">Docker</h1>
 <h2 id="install">Install</h2>
 <h3 id="macos">macOS</h3>
-<pre><code class="language-zsh">brew install --cask docker
-</code></pre>
-<ul>
-<li>You must use the --cask version. Otherwise only the client is included and can't run the Docker daemon. Then open the Docker app and grant privileged access when asked. Only then will you be able to use docker.</li>
-</ul>
+<div class="highlight"><pre><span></span><code>brew<span class="w"> </span>install<span class="w"> </span>--cask<span class="w"> </span>docker
+</code></pre></div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>You must use the --cask version. Otherwise only the client is included and can't run the Docker daemon. Then open the Docker app and grant privileged access when asked. Only then will you be able to use <code>docker</code>.</p>
+</div>
 <h3 id="linux-raspberry-pi-os">Linux / Raspberry Pi OS:</h3>
 <p>If you just ran <code>apt upgrade</code> on your Raspberry Pi, reboot before installing Docker.<br />
 Follow the appropriate <a href="https://docs.docker.com/engine/install/debian/#install-using-the-convenience-script">installation method</a>.  </p>
-<p>If you don't want to have to prefix commands with sudo add your user to the <code>docker</code> group. This is equivalent to giving that user root privileges.</p>
-<pre><code class="language-zsh">cat /etc/group | grep docker # see if docker group exists
-sudo usermod -aG docker $USER
-</code></pre>
+<p>If you don't want to have to prefix commands with sudo add your user to the <code>docker</code> group. This is equivalent to giving that user root privileges.
+<div class="highlight"><pre><span></span><code>cat<span class="w"> </span>/etc/group<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>docker<span class="w"> </span><span class="c1"># see if docker group exists</span>
+sudo<span class="w"> </span>usermod<span class="w"> </span>-aG<span class="w"> </span>docker<span class="w"> </span><span class="nv">$USER</span>
+</code></pre></div></p>
 <p>Follow <a href="https://docs.docker.com/engine/install/linux-postinstall/">Post-installation steps</a> to configure log rotation.  </p>
 <h2 id="use">Use</h2>
 <h3 id="architecture">Architecture</h3>
@@ -708,123 +733,121 @@ The <code>--platform</code> option sets the platform if server is multi-platform
 When installing apps on the container either install the package for the ARM platform if they provide one, or run an amd64 docker image (Docker will use emulation). </p>
 <p>See Docker host info.<br />
 You need to use the real field names (not display names) so we'll grab the info in json to get the real field names and use <code>jq</code> to display it nicely. Then we'll render them using Go templates.</p>
-<pre><code class="language-zsh">docker info --format '{{json .}}' | jq .
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>info<span class="w"> </span>--format<span class="w"> </span><span class="s1">&#39;{{json .}}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>.
 
-docker info --format &quot;{{.Plugins.Volume}}&quot;
-docker info --format &quot;{{.OSType}} - {{.Architecture}} CPUs: {{.NCPU}}&quot;
-</code></pre>
+docker<span class="w"> </span>info<span class="w"> </span>--format<span class="w"> </span><span class="s2">&quot;{{.Plugins.Volume}}&quot;</span>
+docker<span class="w"> </span>info<span class="w"> </span>--format<span class="w"> </span><span class="s2">&quot;{{.OSType}} - {{.Architecture}} CPUs: {{.NCPU}}&quot;</span>
+</code></pre></div>
 <p>With the default images, Docker Desktop for Apple silicon warns us the requested image's platform (linux/amd64) is different from the detected host platform (linux/arm64/v8) and no specific platform was requested.<br />
 <code>--platform linux/amd64</code> is the default and the same as  <code>--platform linux/x86_64</code>. It runs (or builds) an Intel image.<br />
 <code>--platform linux/arm64</code> runs (or builds) an aarch64 (arm64) image. Architecture used by Appple M1/M2.  </p>
-<pre><code class="language-zsh">docker run -it --name container1 debian # WARNING. uname -m -&gt; x86_64 (amd64)
-docker run -it --platform linux/amd64 --name container1 debian # NO warning. uname -m -&gt; x86_64 (amd64). On Mac it emulates Intel.
-docker run -it --platform linux/arm64 --name container1 debian # NO warning. uname -m -&gt; aarch64 (arm64). Mac native.
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>--name<span class="w"> </span>container1<span class="w"> </span>debian<span class="w"> </span><span class="c1"># WARNING. uname -m -&gt; x86_64 (amd64)</span>
+docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>--platform<span class="w"> </span>linux/amd64<span class="w"> </span>--name<span class="w"> </span>container1<span class="w"> </span>debian<span class="w"> </span><span class="c1"># NO warning. uname -m -&gt; x86_64 (amd64). On Mac it emulates Intel.</span>
+docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>--platform<span class="w"> </span>linux/arm64<span class="w"> </span>--name<span class="w"> </span>container1<span class="w"> </span>debian<span class="w"> </span><span class="c1"># NO warning. uname -m -&gt; aarch64 (arm64). Mac native.</span>
 
-# On a Mac M2 you can also use this image
-docker run -it --name mycontainer arm64v8/debian bash # NO warning. uname -m -&gt; aarch64 (arm64). Mac native.
-</code></pre>
+<span class="c1"># On a Mac M2 you can also use this image</span>
+docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>--name<span class="w"> </span>mycontainer<span class="w"> </span>arm64v8/debian<span class="w"> </span>bash<span class="w"> </span><span class="c1"># NO warning. uname -m -&gt; aarch64 (arm64). Mac native.</span>
+</code></pre></div>
 <h3 id="examples">Examples</h3>
-<p>Dockerfile instruction to keep a container running</p>
-<pre><code class="language-zsh">CMD tail -f /dev/null
-</code></pre>
-<p>Running containers</p>
-<pre><code class="language-zsh"># sanity check
-docker version
-docker --help
+<p>Dockerfile instruction to keep a container running
+<div class="highlight"><pre><span></span><code>CMD<span class="w"> </span>tail<span class="w"> </span>-f<span class="w"> </span>/dev/null
+</code></pre></div></p>
+<p>Running containers
+<div class="highlight"><pre><span></span><code><span class="c1"># sanity check</span>
+docker<span class="w"> </span>version
+docker<span class="w"> </span>--help
 
-# &quot;docker run&quot; = &quot;docker container run&quot;
+<span class="c1"># &quot;docker run&quot; = &quot;docker container run&quot;</span>
 
-docker run --name container1 debian # created and Exited
-docker run -it --name container2 debian # created and Up. Interactive tty
-docker run --detach --name container3 debian # created and Exited
-docker run -it --detach --name container4 debian # created and Up. Running in background
+docker<span class="w"> </span>run<span class="w"> </span>--name<span class="w"> </span>container1<span class="w"> </span>debian<span class="w"> </span><span class="c1"># created and Exited</span>
+docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>--name<span class="w"> </span>container2<span class="w"> </span>debian<span class="w"> </span><span class="c1"># created and Up. Interactive tty</span>
+docker<span class="w"> </span>run<span class="w"> </span>--detach<span class="w"> </span>--name<span class="w"> </span>container3<span class="w"> </span>debian<span class="w"> </span><span class="c1"># created and Exited</span>
+docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>--detach<span class="w"> </span>--name<span class="w"> </span>container4<span class="w"> </span>debian<span class="w"> </span><span class="c1"># created and Up. Running in background</span>
 
-docker stop container4 # Exited
-docker restart container4 # Up
-docker attach container4 # Interactive tty
+docker<span class="w"> </span>stop<span class="w"> </span>container4<span class="w"> </span><span class="c1"># Exited</span>
+docker<span class="w"> </span>restart<span class="w"> </span>container4<span class="w"> </span><span class="c1"># Up</span>
+docker<span class="w"> </span>attach<span class="w"> </span>container4<span class="w"> </span><span class="c1"># Interactive tty</span>
 
-# To have it removed automatically when it's stopped 
-docker run -it --rm --name mycontainer debian # created and Up. Interactive tty. 
-# Run bash in a new container with interactive tty, based on debian image.
-docker run -it --name mycontainer debian bash
-# Get the IDs of all stopped containers. Options: all, quiet (only IDs), filter.
-docker ps -aq -f status=exited
+<span class="c1"># To have it removed automatically when it&#39;s stopped </span>
+docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>--rm<span class="w"> </span>--name<span class="w"> </span>mycontainer<span class="w"> </span>debian<span class="w"> </span><span class="c1"># created and Up. Interactive tty. </span>
+<span class="c1"># Run bash in a new container with interactive tty, based on debian image.</span>
+docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>--name<span class="w"> </span>mycontainer<span class="w"> </span>debian<span class="w"> </span>bash
+<span class="c1"># Get the IDs of all stopped containers. Options: all, quiet (only IDs), filter.</span>
+docker<span class="w"> </span>ps<span class="w"> </span>-aq<span class="w"> </span>-f<span class="w"> </span><span class="nv">status</span><span class="o">=</span>exited
+</code></pre></div></p>
+<p>Working with images and volumes
+<div class="highlight"><pre><span></span><code><span class="c1"># Show all images (including intermediate images)</span>
+docker<span class="w"> </span>image<span class="w"> </span>ls<span class="w"> </span>-a
 
-</code></pre>
-<p>Working with images and volumes</p>
-<pre><code class="language-zsh">
-# Show all images (including intermediate images)
-docker image ls -a
+<span class="c1"># Build an image from a Dockerfile and give it a name (or name:tag).</span>
+docker<span class="w"> </span>build<span class="w"> </span>-f<span class="w"> </span>mydockerfile<span class="w"> </span>-t<span class="w"> </span>santisbon/myimage<span class="w"> </span>.
+docker<span class="w"> </span>builder<span class="w"> </span>prune<span class="w"> </span>-a<span class="w">     </span><span class="c1"># Remove all unused build cache, not just dangling ones</span>
+docker<span class="w"> </span>image<span class="w"> </span>rm<span class="w"> </span>santisbon/myimage
 
-# Build an image from a Dockerfile and give it a name (or name:tag).
-docker build -f mydockerfile -t santisbon/myimage .
-docker builder prune -a     # Remove all unused build cache, not just dangling ones
-docker image rm santisbon/myimage
+<span class="c1"># Volumes</span>
+docker<span class="w"> </span>volume<span class="w"> </span>create<span class="w"> </span>my-vol
+docker<span class="w"> </span>volume<span class="w"> </span>ls
+docker<span class="w"> </span>volume<span class="w"> </span>inspect<span class="w"> </span>my-vol
+docker<span class="w"> </span>volume<span class="w"> </span>prune
+docker<span class="w"> </span>volume<span class="w"> </span>rm<span class="w"> </span>my-vol
 
-# Volumes
-docker volume create my-vol
-docker volume ls
-docker volume inspect my-vol
-docker volume prune
-docker volume rm my-vol
-
-# Start a container from an image.
-docker run \
---name mycontainer \
---hostname mycontainer \
---mount source=my-vol,target=/data \
+<span class="c1"># Start a container from an image.</span>
+docker<span class="w"> </span>run<span class="w"> </span><span class="se">\</span>
+--name<span class="w"> </span>mycontainer<span class="w"> </span><span class="se">\</span>
+--hostname<span class="w"> </span>mycontainer<span class="w"> </span><span class="se">\</span>
+--mount<span class="w"> </span><span class="nv">source</span><span class="o">=</span>my-vol,target<span class="o">=</span>/data<span class="w"> </span><span class="se">\</span>
 santisbon/myimage
 
-# Get rid of all stopped containers. Options: remove **anonymous volumes** associated with the container.
-docker rm -v $(docker ps -aq -f status=exited)
-# You might want to make an alias:
-alias drm='docker rm -v $(docker ps -aq -f status=exited)'
-# or
-alias drm='sudo docker rm -v $(sudo docker ps -aq -f status=exited)'
+<span class="c1"># Get rid of all stopped containers. Options: remove **anonymous volumes** associated with the container.</span>
+docker<span class="w"> </span>rm<span class="w"> </span>-v<span class="w"> </span><span class="k">$(</span>docker<span class="w"> </span>ps<span class="w"> </span>-aq<span class="w"> </span>-f<span class="w"> </span><span class="nv">status</span><span class="o">=</span>exited<span class="k">)</span>
+<span class="c1"># You might want to make an alias:</span>
+<span class="nb">alias</span><span class="w"> </span><span class="nv">drm</span><span class="o">=</span><span class="s1">&#39;docker rm -v $(docker ps -aq -f status=exited)&#39;</span>
+<span class="c1"># or</span>
+<span class="nb">alias</span><span class="w"> </span><span class="nv">drm</span><span class="o">=</span><span class="s1">&#39;sudo docker rm -v $(sudo docker ps -aq -f status=exited)&#39;</span>
 
-# on macOS the volume mountpoint (/var/lib/docker/volumes/) is in the VM that Docker Desktop uses to provide the Linux environment.
-# You can read it through a container given extended privileges. 
-# Use: 
-# - the &quot;host&quot; PID namespace, 
-# - an image e.g. debian, 
-# - the nsenter command to run a program (sh) in a different namespace
-# - the target process with PID 1
-# - enter following namspaces of the target process: mount, UTS, network, IPC.
-docker run -it --privileged --pid=host debian nsenter -t 1 -m -u -n -i sh
-</code></pre>
-<p>If you want to build <a href="https://docs.docker.com/build/building/multi-platform/#getting-started">multi-platform</a> docker images:</p>
-<pre><code class="language-zsh">docker buildx create --name mybuilder --driver docker-container --bootstrap
-docker buildx use mybuilder
+<span class="c1"># on macOS the volume mountpoint (/var/lib/docker/volumes/) is in the VM that Docker Desktop uses to provide the Linux environment.</span>
+<span class="c1"># You can read it through a container given extended privileges. </span>
+<span class="c1"># Use: </span>
+<span class="c1"># - the &quot;host&quot; PID namespace, </span>
+<span class="c1"># - an image e.g. debian, </span>
+<span class="c1"># - the nsenter command to run a program (sh) in a different namespace</span>
+<span class="c1"># - the target process with PID 1</span>
+<span class="c1"># - enter following namspaces of the target process: mount, UTS, network, IPC.</span>
+docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>--privileged<span class="w"> </span>--pid<span class="o">=</span>host<span class="w"> </span>debian<span class="w"> </span>nsenter<span class="w"> </span>-t<span class="w"> </span><span class="m">1</span><span class="w"> </span>-m<span class="w"> </span>-u<span class="w"> </span>-n<span class="w"> </span>-i<span class="w"> </span>sh
+</code></pre></div></p>
+<p>If you want to build <a href="https://docs.docker.com/build/building/multi-platform/#getting-started">multi-platform</a> docker images:
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>buildx<span class="w"> </span>create<span class="w"> </span>--name<span class="w"> </span>mybuilder<span class="w"> </span>--driver<span class="w"> </span>docker-container<span class="w"> </span>--bootstrap
+docker<span class="w"> </span>buildx<span class="w"> </span>use<span class="w"> </span>mybuilder
 
-docker buildx inspect
-docker buildx ls
-</code></pre>
+docker<span class="w"> </span>buildx<span class="w"> </span>inspect
+docker<span class="w"> </span>buildx<span class="w"> </span>ls
+</code></pre></div></p>
 <p>Docker Compose. Multi-container deployments in a compose.yaml file.<br />
 <a href="https://docs.docker.com/compose/production/">Using Compose in Production</a>  </p>
-<pre><code class="language-zsh">docker compose -p mastodon-bot-project up --detach
-# or
-docker compose -p mastodon-bot-project create
-docker compose -p mastodon-bot-project start
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>compose<span class="w"> </span>-p<span class="w"> </span>mastodon-bot-project<span class="w"> </span>up<span class="w"> </span>--detach
+<span class="c1"># or</span>
+docker<span class="w"> </span>compose<span class="w"> </span>-p<span class="w"> </span>mastodon-bot-project<span class="w"> </span>create
+docker<span class="w"> </span>compose<span class="w"> </span>-p<span class="w"> </span>mastodon-bot-project<span class="w"> </span>start
 
-# connect to a running container
-docker exec -it bot-app bash
+<span class="c1"># connect to a running container</span>
+docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>bot-app<span class="w"> </span>bash
 
-docker compose -p mastodon-bot-project down
-# or
-docker compose -p mastodon-bot-project stop
-</code></pre>
+docker<span class="w"> </span>compose<span class="w"> </span>-p<span class="w"> </span>mastodon-bot-project<span class="w"> </span>down
+<span class="c1"># or</span>
+docker<span class="w"> </span>compose<span class="w"> </span>-p<span class="w"> </span>mastodon-bot-project<span class="w"> </span>stop
+</code></pre></div>
 <p>Kubernetes</p>
-<pre><code class="language-zsh"># Convert the Docker Compose file to k8s files
-kompose --file compose.yaml convert
+<div class="highlight"><pre><span></span><code><span class="c1"># Convert the Docker Compose file to k8s files</span>
+kompose<span class="w"> </span>--file<span class="w"> </span>compose.yaml<span class="w"> </span>convert
 
-# Make sure the container image is available in a repository. 
-# You can build it with ```docker build``` or ```docker compose create``` and push it to a public repository.
-docker image push user/repo
-# multiple -f filenames or a folder 
-kubectl apply -f ./k8s
-kubectl get pods
-kubectl delete -f ./k8s
-</code></pre>
+<span class="c1"># Make sure the container image is available in a repository. </span>
+<span class="c1"># You can build it with `docker build` or `docker compose create` and push it to a public repository.</span>
+docker<span class="w"> </span>image<span class="w"> </span>push<span class="w"> </span>user/repo
+<span class="c1"># multiple -f filenames or a folder </span>
+kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>./k8s
+kubectl<span class="w"> </span>get<span class="w"> </span>pods
+kubectl<span class="w"> </span>delete<span class="w"> </span>-f<span class="w"> </span>./k8s
+</code></pre></div>
 
 
 
@@ -867,7 +890,7 @@ kubectl delete -f ./k8s
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.expand", "navigation.top"], "search": "../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.expand", "navigation.top", "content.code.copy"], "search": "../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
       <script src="../assets/javascripts/bundle.efa0ade1.min.js"></script>

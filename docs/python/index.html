@@ -56,12 +56,16 @@
   
     
     
+      
+    
     
     
     
     <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
   
     
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
@@ -110,6 +114,26 @@
         </div>
       </div>
     </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-2.69L23.31 12 20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69Z"/></svg>
+            </label>
+          
+        
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 2c-1.05 0-2.05.16-3 .46 4.06 1.27 7 5.04 7 9.54 0 4.5-2.94 8.27-7 9.54.95.3 1.95.46 3 .46a10 10 0 0 0 10-10A10 10 0 0 0 9 2Z"/></svg>
+            </label>
+          
+        
+      </form>
     
     
     
@@ -645,77 +669,77 @@
 <h2 id="install-python-the-pip-python-package-installer-and-setuptools">Install Python, the pip Python package installer, and Setuptools</h2>
 <h3 id="with-homebrew">With Homebrew</h3>
 <p>Even if you already have Python on your OS it might be an outdated version. This installs python and pip.<br />
-macOS</p>
-<pre><code class="language-zsh">brew install python
-python3 --version
-</code></pre>
-<p>The python formulae install pip (as pip3) and Setuptools. Setuptools can be updated via pip3 and pip3 can be used to upgrade itself.</p>
-<pre><code class="language-zsh">python3 -m pip install --upgrade setuptools
-python3 -m pip install --upgrade pip
-</code></pre>
-<p>Add the unversioned symlinks to your <code>$PATH</code> by adding this to your <code>.zshrc</code> file.</p>
-<pre><code class="language-zsh">export PATH=&quot;$(brew --prefix)/opt/python/libexec/bin:$PATH&quot;
-</code></pre>
-<p>See the <a href="https://docs.brew.sh/Homebrew-and-Python">Homebrew Python</a> documentation for details.  </p>
-<p><code>site-packages</code> is here. Example for python 3.10 on Homebrew</p>
-<pre><code class="language-zsh">ls -al $(brew --prefix)/lib/python3.10/site-packages
-</code></pre>
+macOS
+<div class="highlight"><pre><span></span><code>brew<span class="w"> </span>install<span class="w"> </span>python
+python3<span class="w"> </span>--version
+</code></pre></div>
+The python formulae install pip (as pip3) and Setuptools. Setuptools can be updated via pip3 and pip3 can be used to upgrade itself.
+<div class="highlight"><pre><span></span><code>python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>setuptools
+python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>pip
+</code></pre></div>
+Add the unversioned symlinks to your <code>$PATH</code> by adding this to your <code>.zshrc</code> file.
+<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>brew<span class="w"> </span>--prefix<span class="k">)</span><span class="s2">/opt/python/libexec/bin:</span><span class="nv">$PATH</span><span class="s2">&quot;</span>
+</code></pre></div>
+See the <a href="https://docs.brew.sh/Homebrew-and-Python">Homebrew Python</a> documentation for details.  </p>
+<p><code>site-packages</code> is here. Example for python 3.10 on Homebrew
+<div class="highlight"><pre><span></span><code>ls<span class="w"> </span>-al<span class="w"> </span><span class="k">$(</span>brew<span class="w"> </span>--prefix<span class="k">)</span>/lib/python3.10/site-packages
+</code></pre></div></p>
 <h3 id="without-homebrew">Without Homebrew</h3>
-<p>Linux (Ubuntu)</p>
-<pre><code class="language-zsh">sudo apt install python3
-</code></pre>
+<p>Linux (Ubuntu)
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>python3
+</code></pre></div></p>
 <p>macOS<br />
-Download .pkg installer from pythong.org. Then get pip.</p>
-<pre><code class="language-zsh">curl -o get-pip.py https://bootstrap.pypa.io/get-pip.py
-sudo python get-pip.py
-</code></pre>
-<p>Linux</p>
-<pre><code class="language-zsh">sudo apt install python-pip
-</code></pre>
-<pre><code class="language-zsh">pip install --upgrade pip setuptools
-</code></pre>
-<p>On Ubuntu, upgrading to pip 10 may break pip. If this happens you need to:</p>
-<pre><code class="language-zsh">sudo nano /usr/bin/pip
-# change &quot;from pip import main&quot; to &quot;from pip._internal import main&quot;
-</code></pre>
+Download .pkg installer from pythong.org. Then get pip.
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-o<span class="w"> </span>get-pip.py<span class="w"> </span>https://bootstrap.pypa.io/get-pip.py
+sudo<span class="w"> </span>python<span class="w"> </span>get-pip.py
+</code></pre></div></p>
+<p>Linux
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>python-pip
+</code></pre></div></p>
+<p><div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>pip<span class="w"> </span>setuptools
+</code></pre></div>
+On Ubuntu, upgrading to pip 10 may break pip. If this happens you need to:
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>nano<span class="w"> </span>/usr/bin/pip
+<span class="c1"># change &quot;from pip import main&quot; to &quot;from pip._internal import main&quot;</span>
+</code></pre></div></p>
 <h2 id="get-the-pep8-python-style-checker">Get the pep8 python style checker</h2>
-<pre><code class="language-zsh"># On Linux you may need to use sudo.
-pip install pep8
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="c1"># On Linux you may need to use sudo.</span>
+pip<span class="w"> </span>install<span class="w"> </span>pep8
+</code></pre></div>
 <h2 id="anaconda">Anaconda</h2>
-<p>For data science and machine learning. <a href="https://docs.anaconda.com/anaconda/">Anaconda</a> is a distribution of the Python and R programming languages for scientific computing. See <a href="https://conda.io/projects/conda/en/latest/user-guide/getting-started.html">Getting Started</a>.</p>
-<pre><code class="language-zsh">brew install --cask anaconda
-</code></pre>
+<p>For data science and machine learning. <a href="https://docs.anaconda.com/anaconda/">Anaconda</a> is a distribution of the Python and R programming languages for scientific computing. See <a href="https://conda.io/projects/conda/en/latest/user-guide/getting-started.html">Getting Started</a>.
+<div class="highlight"><pre><span></span><code>brew<span class="w"> </span>install<span class="w"> </span>--cask<span class="w"> </span>anaconda
+</code></pre></div></p>
 <p><a href="https://docs.anaconda.com/anaconda/install/silent-mode/">Installing in silent mode</a>  </p>
-<p>Add anaconda to your <code>PATH</code> on your <code>.zshrc</code> and <code>source ~/.zshrc</code> to apply the changes.</p>
-<pre><code class="language-zsh">export PATH=&quot;$(brew --prefix)/anaconda3/bin:$PATH&quot;
-</code></pre>
-<p>To use zsh:</p>
-<pre><code class="language-zsh">conda init zsh
-</code></pre>
-<p>If <code>conda init zsh</code> messed up the <code>PATH</code> in your <code>~/.zshrc</code> by adding the <code>condabin</code> directory instead of <code>bin</code> you can fix it with a symlink:</p>
-<pre><code class="language-zsh">ln -sf $(brew --prefix)/anaconda3/bin/jupyter-lab $(brew --prefix)/anaconda3/condabin/jupyter-lab
-ln -sf $(brew --prefix)/anaconda3/bin/jupyter $(brew --prefix)/anaconda3/condabin/jupyter
-</code></pre>
-<p>If you don't want to activate the <code>base</code> environment every time you open your terminal:</p>
-<pre><code class="language-zsh">conda config --set auto_activate_base false
-</code></pre>
-<p>When creating a conda environment you can use optionally use a configuration file. You can also of course, save a config file from an existing environment to back it up.</p>
-<pre><code class="language-zsh">conda env create -f myenv.yml
-conda activate myenv
+<p>Add anaconda to your <code>PATH</code> on your <code>.zshrc</code> and <code>source ~/.zshrc</code> to apply the changes.
+<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>brew<span class="w"> </span>--prefix<span class="k">)</span><span class="s2">/anaconda3/bin:</span><span class="nv">$PATH</span><span class="s2">&quot;</span>
+</code></pre></div>
+To use zsh:
+<div class="highlight"><pre><span></span><code>conda<span class="w"> </span>init<span class="w"> </span>zsh
+</code></pre></div>
+If <code>conda init zsh</code> messed up the <code>PATH</code> in your <code>~/.zshrc</code> by adding the <code>condabin</code> directory instead of <code>bin</code> you can fix it with a symlink:
+<div class="highlight"><pre><span></span><code>ln<span class="w"> </span>-sf<span class="w"> </span><span class="k">$(</span>brew<span class="w"> </span>--prefix<span class="k">)</span>/anaconda3/bin/jupyter-lab<span class="w"> </span><span class="k">$(</span>brew<span class="w"> </span>--prefix<span class="k">)</span>/anaconda3/condabin/jupyter-lab
+ln<span class="w"> </span>-sf<span class="w"> </span><span class="k">$(</span>brew<span class="w"> </span>--prefix<span class="k">)</span>/anaconda3/bin/jupyter<span class="w"> </span><span class="k">$(</span>brew<span class="w"> </span>--prefix<span class="k">)</span>/anaconda3/condabin/jupyter
+</code></pre></div></p>
+<p>If you don't want to activate the <code>base</code> environment every time you open your terminal:
+<div class="highlight"><pre><span></span><code>conda<span class="w"> </span>config<span class="w"> </span>--set<span class="w"> </span>auto_activate_base<span class="w"> </span><span class="nb">false</span>
+</code></pre></div></p>
+<p>When creating a conda environment you can use optionally use a configuration file. You can also of course, save a config file from an existing environment to back it up.
+<div class="highlight"><pre><span></span><code>conda<span class="w"> </span>env<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>myenv.yml
+conda<span class="w"> </span>activate<span class="w"> </span>myenv
 
-conda env list
-conda env remove --name ldm
-</code></pre>
+conda<span class="w"> </span>env<span class="w"> </span>list
+conda<span class="w"> </span>env<span class="w"> </span>remove<span class="w"> </span>--name<span class="w"> </span>ldm
+</code></pre></div></p>
 <h3 id="notebooks">Notebooks</h3>
-<p>Fresh installs of Anaconda no longer include notebook extensions in their Jupyter installer. This means that the nb_conda libraries need to be added into your environment separately to access conda environments from your Jupyter notebook. Just run these to add them and you should be able to select your environment as a kernel within a Jupyter notebook.</p>
-<pre><code class="language-zsh">conda activate &lt;myenv&gt;
-conda install ipykernel
-conda install nb_conda_kernels # or defaults::nb_conda_kernels
-</code></pre>
-<p>Now you can launch the new JupyterLab or the classic Jupyter Notebook.</p>
-<pre><code class="language-zsh">jupyter-lab # or the classic &quot;jupyter notebook&quot;
-</code></pre>
+<p>Fresh installs of Anaconda no longer include notebook extensions in their Jupyter installer. This means that the nb_conda libraries need to be added into your environment separately to access conda environments from your Jupyter notebook. Just run these to add them and you should be able to select your environment as a kernel within a Jupyter notebook.
+<div class="highlight"><pre><span></span><code>conda<span class="w"> </span>activate<span class="w"> </span>&lt;myenv&gt;
+conda<span class="w"> </span>install<span class="w"> </span>ipykernel
+conda<span class="w"> </span>install<span class="w"> </span>nb_conda_kernels<span class="w"> </span><span class="c1"># or defaults::nb_conda_kernels</span>
+</code></pre></div></p>
+<p>Now you can launch the new JupyterLab or the classic Jupyter Notebook.
+<div class="highlight"><pre><span></span><code>jupyter-lab<span class="w"> </span><span class="c1"># or the classic &quot;jupyter notebook&quot;</span>
+</code></pre></div></p>
 
 
 
@@ -758,7 +782,7 @@ conda install nb_conda_kernels # or defaults::nb_conda_kernels
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.expand", "navigation.top"], "search": "../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.expand", "navigation.top", "content.code.copy"], "search": "../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
       <script src="../assets/javascripts/bundle.efa0ade1.min.js"></script>

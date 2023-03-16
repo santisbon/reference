@@ -10,7 +10,7 @@ If you have an Intel-powered Mac here's how to install macOS from a bootable ins
 
 1. Plug in your bootable media.
 2. Turn off your Mac.
-3. Press and hold Option/Alt while the Mac starts up - keep pressing the key until you see a screen showing the bootable volume.
+3. Press and hold ++option++ while the Mac starts up - keep pressing the key until you see a screen showing the bootable volume.
 
 If you have an Apple silicon Mac here's how to install macOS from a bootable installer:
 

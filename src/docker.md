@@ -4,7 +4,8 @@
 ```zsh
 brew install --cask docker
 ```
-* You must use the --cask version. Otherwise only the client is included and can't run the Docker daemon. Then open the Docker app and grant privileged access when asked. Only then will you be able to use docker.
+!!! important
+    You must use the --cask version. Otherwise only the client is included and can't run the Docker daemon. Then open the Docker app and grant privileged access when asked. Only then will you be able to use `docker`.
 
 ### Linux / Raspberry Pi OS:
 If you just ran `apt upgrade` on your Raspberry Pi, reboot before installing Docker.  
@@ -34,7 +35,7 @@ Follow [Post-installation steps](https://docs.docker.com/engine/install/linux-po
 | x86-64  | amd64      | Intel (Default)             |
 
 Docker Desktop for Apple silicon can run (or build) an Intel image using emulation.  
-The ```--platform``` option sets the platform if server is multi-platform capable.  
+The `--platform` option sets the platform if server is multi-platform capable.  
 
 Macbook **M1/M2** is based on **ARM**. The Docker host is detected as **linux/arm64/v8** by Docker.  
 
@@ -42,7 +43,7 @@ On a Macbook M1/M2 running a native arm64 linux image instead of an amd64 (x86-6
 When installing apps on the container either install the package for the ARM platform if they provide one, or run an amd64 docker image (Docker will use emulation). 
 
 See Docker host info.  
-You need to use the real field names (not display names) so we'll grab the info in json to get the real field names and use ```jq``` to display it nicely. Then we'll render them using Go templates.
+You need to use the real field names (not display names) so we'll grab the info in json to get the real field names and use `jq` to display it nicely. Then we'll render them using Go templates.
 
 ```zsh
 docker info --format '{{json .}}' | jq .
@@ -52,8 +53,8 @@ docker info --format "{{.OSType}} - {{.Architecture}} CPUs: {{.NCPU}}"
 ```
 
 With the default images, Docker Desktop for Apple silicon warns us the requested image's platform (linux/amd64) is different from the detected host platform (linux/arm64/v8) and no specific platform was requested.  
-```--platform linux/amd64``` is the default and the same as  ```--platform linux/x86_64```. It runs (or builds) an Intel image.  
-```--platform linux/arm64``` runs (or builds) an aarch64 (arm64) image. Architecture used by Appple M1/M2.  
+`--platform linux/amd64` is the default and the same as  `--platform linux/x86_64`. It runs (or builds) an Intel image.  
+`--platform linux/arm64` runs (or builds) an aarch64 (arm64) image. Architecture used by Appple M1/M2.  
 
 ```zsh
 docker run -it --name container1 debian # WARNING. uname -m -> x86_64 (amd64)
@@ -173,7 +174,7 @@ Kubernetes
 kompose --file compose.yaml convert
 
 # Make sure the container image is available in a repository. 
-# You can build it with ```docker build``` or ```docker compose create``` and push it to a public repository.
+# You can build it with `docker build` or `docker compose create` and push it to a public repository.
 docker image push user/repo
 # multiple -f filenames or a folder 
 kubectl apply -f ./k8s

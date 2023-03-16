@@ -56,12 +56,16 @@
   
     
     
+      
+    
     
     
     
     <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
   
     
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
@@ -110,6 +114,26 @@
         </div>
       </div>
     </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-2.69L23.31 12 20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69Z"/></svg>
+            </label>
+          
+        
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 2c-1.05 0-2.05.16-3 .46 4.06 1.27 7 5.04 7 9.54 0 4.5-2.94 8.27-7 9.54.95.3 1.95.46 3 .46a10 10 0 0 0 10-10A10 10 0 0 0 9 2Z"/></svg>
+            </label>
+          
+        
+      </form>
     
     
     
@@ -631,23 +655,23 @@
 <h1 id="amazon-web-services">Amazon Web Services</h1>
 <h2 id="aws-cli">AWS CLI</h2>
 <h3 id="install-the-aws-command-line-interface">Install the AWS command line interface</h3>
-<pre><code class="language-zsh">curl &quot;https://awscli.amazonaws.com/AWSCLIV2.pkg&quot; -o &quot;AWSCLIV2.pkg&quot;
-sudo installer -pkg AWSCLIV2.pkg -target /
-</code></pre>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span><span class="s2">&quot;https://awscli.amazonaws.com/AWSCLIV2.pkg&quot;</span><span class="w"> </span>-o<span class="w"> </span><span class="s2">&quot;AWSCLIV2.pkg&quot;</span>
+sudo<span class="w"> </span>installer<span class="w"> </span>-pkg<span class="w"> </span>AWSCLIV2.pkg<span class="w"> </span>-target<span class="w"> </span>/
+</code></pre></div>
 <h3 id="check-if-the-aws-cli-is-installed-correctly">Check if the AWS CLI is installed correctly</h3>
-<pre><code class="language-zsh"># you may need to reload your shell's rc file first.
-aws --version
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="c1"># you may need to reload your shell&#39;s rc file first.</span>
+aws<span class="w"> </span>--version
+</code></pre></div>
 <h3 id="configure-the-aws-cli">Configure the AWS CLI</h3>
-<pre><code class="language-zsh">aws configure
-</code></pre>
+<div class="highlight"><pre><span></span><code>aws<span class="w"> </span>configure
+</code></pre></div>
 <h2 id="alexa-skills-kit-ask-cli">Alexa Skills Kit (ASK) CLI</h2>
 <p><a href="https://developer.amazon.com/docs/smapi/set-up-credentials-for-an-amazon-web-services-account.html">Set up credentials for AWS account</a><br />
 <a href="https://developer.amazon.com/docs/smapi/quick-start-alexa-skills-kit-command-line-interface.html">Quick Start ASK CLI</a></p>
 <h2 id="aws-amplify">AWS Amplify</h2>
-<pre><code class="language-zsh">npm install -g @aws-amplify/cli
-amplify configure
-</code></pre>
+<div class="highlight"><pre><span></span><code>npm<span class="w"> </span>install<span class="w"> </span>-g<span class="w"> </span>@aws-amplify/cli
+amplify<span class="w"> </span>configure
+</code></pre></div>
 
 
 
@@ -690,7 +714,7 @@ amplify configure
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.expand", "navigation.top"], "search": "../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.expand", "navigation.top", "content.code.copy"], "search": "../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
       <script src="../assets/javascripts/bundle.efa0ade1.min.js"></script>

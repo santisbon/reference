@@ -46,7 +46,7 @@ To create a squash function:
 ```zsh
 git config --global alias.squash-all '!f(){ git reset $(git commit-tree "HEAD^{tree}" "$@");};f'
 ```
-!!! info
+!!! note
     - Git allows you to escape to a shell (like bash or zsh) using the ! (bang). [Learn more](https://www.atlassian.com/blog/git/advanced-git-aliases).
     - [`commit-tree`](https://git-scm.com/docs/git-commit-tree) creates a new commit object based on the provided tree object and emits the new commit object id on stdout.
     - [`tree` objects](https://git-scm.com/book/en/v2/Git-Internals-Git-Objects#Tree-Objects) correspond to UNIX directory entries. 
@@ -80,12 +80,15 @@ git remote -v # is it https or ssh? Should be ssh
 git remote remove origin
 git remote add origin git@github.com:user/repo.git
 ```
-Still having issues? Start the ssh-agent in the background and add your SSH private key to the ssh-agent.
-```zsh
-ps -ax | grep ssh-agent
-eval "$(ssh-agent -s)"
-ssh-add --apple-use-keychain ~/.ssh/id_ed25519
-```
+
+!!! tip
+    Still having issues? Start the ssh-agent in the background and add your SSH private key to the ssh-agent.  
+    ```zsh
+    ps -ax | grep ssh-agent
+    eval "$(ssh-agent -s)"
+    ssh-add --apple-use-keychain ~/.ssh/id_ed25519
+    ```
+
 If you need to add your public key to Github again copy and paste it on your Settings page on Github:
 ```zsh
 pbcopy < ~/.ssh/id_ed25519.pub

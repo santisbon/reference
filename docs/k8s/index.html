@@ -56,12 +56,16 @@
   
     
     
+      
+    
     
     
     
     <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
   
     
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
@@ -110,6 +114,26 @@
         </div>
       </div>
     </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-2.69L23.31 12 20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69Z"/></svg>
+            </label>
+          
+        
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 2c-1.05 0-2.05.16-3 .46 4.06 1.27 7 5.04 7 9.54 0 4.5-2.94 8.27-7 9.54.95.3 1.95.46 3 .46a10 10 0 0 0 10-10A10 10 0 0 0 9 2Z"/></svg>
+            </label>
+          
+        
+      </form>
     
     
     
@@ -405,6 +429,14 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    Prerequisites
+  </a>
+  
+    <nav class="md-nav" aria-label="Prerequisites">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#building-a-kubernetes-cluster" class="md-nav__link">
     Building a Kubernetes Cluster
   </a>
@@ -418,12 +450,59 @@
   
 </li>
         
+      </ul>
+    </nav>
+  
+</li>
+        
           <li class="md-nav__item">
-  <a href="#kubernetes-configuration-with-configmaps-and-secrets" class="md-nav__link">
-    Kubernetes configuration with ConfigMaps and Secrets
+  <a href="#i-codebase" class="md-nav__link">
+    I. Codebase
   </a>
   
 </li>
+        
+          <li class="md-nav__item">
+  <a href="#ii-dependencies" class="md-nav__link">
+    II. Dependencies
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iii-config" class="md-nav__link">
+    III. Config
+  </a>
+  
+    <nav class="md-nav" aria-label="III. Config">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configmaps-and-secrets" class="md-nav__link">
+    ConfigMaps and Secrets
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iv-backing-services" class="md-nav__link">
+    IV. Backing services
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v-build-release-run" class="md-nav__link">
+    V. Build, release, run
+  </a>
+  
+    <nav class="md-nav" aria-label="V. Build, release, run">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#build-release-run-with-docker-and-deployments" class="md-nav__link">
@@ -431,6 +510,19 @@
   </a>
   
 </li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vi-processes" class="md-nav__link">
+    VI. Processes
+  </a>
+  
+    <nav class="md-nav" aria-label="VI. Processes">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#processes-with-stateless-containers" class="md-nav__link">
@@ -446,12 +538,38 @@
   
 </li>
         
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vii-port-binding" class="md-nav__link">
+    VII. Port binding
+  </a>
+  
+    <nav class="md-nav" aria-label="VII. Port binding">
+      <ul class="md-nav__list">
+        
           <li class="md-nav__item">
   <a href="#port-binding-with-pods" class="md-nav__link">
     Port Binding with Pods
   </a>
   
 </li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#viii-concurrency" class="md-nav__link">
+    VIII. Concurrency
+  </a>
+  
+    <nav class="md-nav" aria-label="VIII. Concurrency">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#concurrency-with-containers-and-scaling" class="md-nav__link">
@@ -460,12 +578,38 @@
   
 </li>
         
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ix-disposability" class="md-nav__link">
+    IX. Disposability
+  </a>
+  
+    <nav class="md-nav" aria-label="IX. Disposability">
+      <ul class="md-nav__list">
+        
           <li class="md-nav__item">
   <a href="#disposability-with-stateless-containers" class="md-nav__link">
     Disposability with Stateless Containers
   </a>
   
 </li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#x-devprod-parity" class="md-nav__link">
+    X. Dev/prod parity
+  </a>
+  
+    <nav class="md-nav" aria-label="X. Dev/prod parity">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#devprod-parity-with-namespaces" class="md-nav__link">
@@ -474,17 +618,48 @@
   
 </li>
         
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xi-logs" class="md-nav__link">
+    XI. Logs
+  </a>
+  
+    <nav class="md-nav" aria-label="XI. Logs">
+      <ul class="md-nav__list">
+        
           <li class="md-nav__item">
   <a href="#logs-with-k8s-container-logging" class="md-nav__link">
-    Logs with k8s Container Logging
+    Logs with K8s Container Logging
   </a>
   
 </li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xii-admin-processes" class="md-nav__link">
+    XII. Admin processes
+  </a>
+  
+    <nav class="md-nav" aria-label="XII. Admin processes">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#admin-processes-with-jobs" class="md-nav__link">
     Admin Processes with Jobs
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -675,6 +850,14 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    Prerequisites
+  </a>
+  
+    <nav class="md-nav" aria-label="Prerequisites">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#building-a-kubernetes-cluster" class="md-nav__link">
     Building a Kubernetes Cluster
   </a>
@@ -688,12 +871,59 @@
   
 </li>
         
+      </ul>
+    </nav>
+  
+</li>
+        
           <li class="md-nav__item">
-  <a href="#kubernetes-configuration-with-configmaps-and-secrets" class="md-nav__link">
-    Kubernetes configuration with ConfigMaps and Secrets
+  <a href="#i-codebase" class="md-nav__link">
+    I. Codebase
   </a>
   
 </li>
+        
+          <li class="md-nav__item">
+  <a href="#ii-dependencies" class="md-nav__link">
+    II. Dependencies
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iii-config" class="md-nav__link">
+    III. Config
+  </a>
+  
+    <nav class="md-nav" aria-label="III. Config">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configmaps-and-secrets" class="md-nav__link">
+    ConfigMaps and Secrets
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iv-backing-services" class="md-nav__link">
+    IV. Backing services
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v-build-release-run" class="md-nav__link">
+    V. Build, release, run
+  </a>
+  
+    <nav class="md-nav" aria-label="V. Build, release, run">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#build-release-run-with-docker-and-deployments" class="md-nav__link">
@@ -701,6 +931,19 @@
   </a>
   
 </li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vi-processes" class="md-nav__link">
+    VI. Processes
+  </a>
+  
+    <nav class="md-nav" aria-label="VI. Processes">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#processes-with-stateless-containers" class="md-nav__link">
@@ -716,12 +959,38 @@
   
 </li>
         
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vii-port-binding" class="md-nav__link">
+    VII. Port binding
+  </a>
+  
+    <nav class="md-nav" aria-label="VII. Port binding">
+      <ul class="md-nav__list">
+        
           <li class="md-nav__item">
   <a href="#port-binding-with-pods" class="md-nav__link">
     Port Binding with Pods
   </a>
   
 </li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#viii-concurrency" class="md-nav__link">
+    VIII. Concurrency
+  </a>
+  
+    <nav class="md-nav" aria-label="VIII. Concurrency">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#concurrency-with-containers-and-scaling" class="md-nav__link">
@@ -730,12 +999,38 @@
   
 </li>
         
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ix-disposability" class="md-nav__link">
+    IX. Disposability
+  </a>
+  
+    <nav class="md-nav" aria-label="IX. Disposability">
+      <ul class="md-nav__list">
+        
           <li class="md-nav__item">
   <a href="#disposability-with-stateless-containers" class="md-nav__link">
     Disposability with Stateless Containers
   </a>
   
 </li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#x-devprod-parity" class="md-nav__link">
+    X. Dev/prod parity
+  </a>
+  
+    <nav class="md-nav" aria-label="X. Dev/prod parity">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#devprod-parity-with-namespaces" class="md-nav__link">
@@ -744,17 +1039,48 @@
   
 </li>
         
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xi-logs" class="md-nav__link">
+    XI. Logs
+  </a>
+  
+    <nav class="md-nav" aria-label="XI. Logs">
+      <ul class="md-nav__list">
+        
           <li class="md-nav__item">
   <a href="#logs-with-k8s-container-logging" class="md-nav__link">
-    Logs with k8s Container Logging
+    Logs with K8s Container Logging
   </a>
   
 </li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xii-admin-processes" class="md-nav__link">
+    XII. Admin processes
+  </a>
+  
+    <nav class="md-nav" aria-label="XII. Admin processes">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#admin-processes-with-jobs" class="md-nav__link">
     Admin Processes with Jobs
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -825,240 +1151,254 @@
 <h1 id="kubernetes">Kubernetes</h1>
 <h2 id="kubernetes-essentials">Kubernetes Essentials</h2>
 <p><a href="https://lucid.app/lucidchart/6d5625be-9ef9-411d-8bea-888de55db5cf/view?page=0_0#">Interactive Diagram</a><br />
-<a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/">Working with k8s objects</a><br />
+<a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/">Working with K8s objects</a><br />
 <a href="https://kubernetes.io/docs/concepts/cluster-administration/logging/#log-rotation">Log rotation</a>  </p>
 <p>In order for Kubernetes to pull your container image you need to first push it to an image repository like Docker Hub.<br />
 To avoid storing your Docker Hub password unencrypted in $HOME/.docker/config.json when you <code>docker login</code> to your account, use a <a href="https://docs.docker.com/engine/reference/commandline/login/#credentials-store">credentials store</a>. A helper program lets you interact with such a keychain or external store. </p>
 <p>If you're doing this on your laptop with <strong>Docker Desktop</strong> it <strong>already provides a store</strong>.<br />
 <strong>Otherwise</strong>, <strong>use</strong> one of the stores supported by the <a href="https://docs.docker.com/engine/reference/commandline/login/#credential-helpers"><strong><code>docker-credential-helper</code></strong></a>. Now <code>docker login</code> on your terminal or on the Docker Desktop app.  </p>
 <h2 id="designing-applications-for-kubernetes">Designing Applications for Kubernetes</h2>
-<p>Based on the <a href="https://12factor.net/">12-Factor App Design Methodology</a></p>
-<p>A Cloud Guru course. It uses Ubuntu 20.04 Focal Fossa LTS and the Calico network plugin instead of Flannel.<br />
-Example with 1 control plane node and 2 worker nodes.</p>
-<h3 id="building-a-kubernetes-cluster">Building a Kubernetes Cluster</h3>
+<p>Implements the <a href="https://12factor.net/">12-Factor App Design Methodology</a> and based on a Cloud Guru course. It uses Ubuntu 20.04 Focal Fossa LTS and the Calico network plugin instead of Flannel. Example with 1 control plane node and 2 worker nodes.</p>
+<h3 id="prerequisites">Prerequisites</h3>
+<h4 id="building-a-kubernetes-cluster">Building a Kubernetes Cluster</h4>
 <p><a href="https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1658326918182-Building%20a%20Kubernetes%20Cluster.pdf">Reference</a><br />
 <a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/">Installing kubeadm</a><br />
 <a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/">Creating a cluster with kubeadm</a>  </p>
 <ul>
 <li>kubeadm sometimes doesn't work with the latest and greatest version of docker right away.</li>
 </ul>
-<p><code>kubeadm</code> simplifies the process of setting up a k8s cluster.<br />
+<p><code>kubeadm</code> simplifies the process of setting up a K8s cluster.<br />
 <code>containerd</code> manages the complete container lifecycle of its host system, from image transfer and storage to container execution and supervision to low-level storage to network attachments.<br />
 <code>kubelet</code> handles running containers on a node.<br />
 <code>kubectl</code> is a tool for managing the cluster.  </p>
 <p>If you wish, you can set an appropriate hostname for each node.<br />
-<strong>On the control plane node</strong>:  </p>
-<pre><code class="language-zsh">sudo hostnamectl set-hostname k8s-control
-</code></pre>
-<p><strong>On the first worker node</strong>:  </p>
-<pre><code class="language-zsh">sudo hostnamectl set-hostname k8s-worker1
-</code></pre>
-<p><strong>On the second worker node</strong>:  </p>
-<pre><code class="language-zsh">sudo hostnamectl set-hostname k8s-worker2
-</code></pre>
-<p><strong>On all nodes</strong>, set up the hosts file to enable all the nodes to reach each other using these hostnames.</p>
-<pre><code class="language-zsh">sudo nano /etc/hosts
-</code></pre>
-<p><strong>On all nodes</strong>, add the following at the end of the file. You will need to supply the actual private IP address for each node.</p>
-<pre><code class="language-zsh">&lt;control plane node private IP&gt; k8s-control
-&lt;worker node 1 private IP&gt; k8s-worker1
-&lt;worker node 2 private IP&gt; k8s-worker2
-</code></pre>
+<strong>On the control plane node</strong>:<br />
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>hostnamectl<span class="w"> </span>set-hostname<span class="w"> </span>k8s-control
+</code></pre></div></p>
+<p><strong>On the first worker node</strong>:<br />
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>hostnamectl<span class="w"> </span>set-hostname<span class="w"> </span>k8s-worker1
+</code></pre></div>
+<strong>On the second worker node</strong>:<br />
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>hostnamectl<span class="w"> </span>set-hostname<span class="w"> </span>k8s-worker2
+</code></pre></div></p>
+<p><strong>On all nodes</strong>, set up the hosts file to enable all the nodes to reach each other using these hostnames.
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>nano<span class="w"> </span>/etc/hosts
+</code></pre></div></p>
+<p><strong>On all nodes</strong>, add the following at the end of the file. You will need to supply the actual private IP address for each node.
+<div class="highlight"><pre><span></span><code>&lt;control<span class="w"> </span>plane<span class="w"> </span>node<span class="w"> </span>private<span class="w"> </span>IP&gt;<span class="w"> </span>k8s-control
+&lt;worker<span class="w"> </span>node<span class="w"> </span><span class="m">1</span><span class="w"> </span>private<span class="w"> </span>IP&gt;<span class="w"> </span>k8s-worker1
+&lt;worker<span class="w"> </span>node<span class="w"> </span><span class="m">2</span><span class="w"> </span>private<span class="w"> </span>IP&gt;<span class="w"> </span>k8s-worker2
+</code></pre></div></p>
 <p>Log out of all three servers and log back in to see these changes take effect.  </p>
 <p><strong>On all nodes, set up containerd</strong>. You will need to load some kernel modules and modify some system settings as part of this
-process.  </p>
-<pre><code class="language-zsh"># Enable them when the server start up
-cat &lt;&lt; EOF | sudo tee /etc/modules-load.d/containerd.conf
-overlay
-br_netfilter
-EOF
+process.<br />
+<div class="highlight"><pre><span></span><code><span class="c1"># Enable them when the server start up</span>
+cat<span class="w"> </span><span class="s">&lt;&lt; EOF | sudo tee /etc/modules-load.d/containerd.conf</span>
+<span class="s">overlay</span>
+<span class="s">br_netfilter</span>
+<span class="s">EOF</span>
 
-# Enable them right now without having to restart the server
-sudo modprobe overlay
-sudo modprobe br_netfilter
+<span class="c1"># Enable them right now without having to restart the server</span>
+sudo<span class="w"> </span>modprobe<span class="w"> </span>overlay
+sudo<span class="w"> </span>modprobe<span class="w"> </span>br_netfilter
 
-# Add network configurations k8s will need
-cat &lt;&lt;EOF | sudo tee /etc/sysctl.d/99-kubernetes-cri.conf
-net.bridge.bridge-nf-call-iptables = 1
-net.ipv4.ip_forward = 1
-net.bridge.bridge-nf-call-ip6tables = 1
-EOF
+<span class="c1"># Add network configurations K8s will need</span>
+cat<span class="w"> </span><span class="s">&lt;&lt;EOF | sudo tee /etc/sysctl.d/99-kubernetes-cri.conf</span>
+<span class="s">net.bridge.bridge-nf-call-iptables = 1</span>
+<span class="s">net.ipv4.ip_forward = 1</span>
+<span class="s">net.bridge.bridge-nf-call-ip6tables = 1</span>
+<span class="s">EOF</span>
 
-# Apply them immediately
-sudo sysctl --system
-</code></pre>
-<p>Install and configure containerd.  </p>
-<pre><code class="language-zsh">sudo apt-get update &amp;&amp; sudo apt-get install -y containerd
-sudo mkdir -p /etc/containerd
-# Generate the contents of a default config file and save it
-sudo containerd config default | sudo tee /etc/containerd/config.toml
-# Restart containerd to make sure it's using that configuration
-sudo systemctl restart containerd
-</code></pre>
-<p><strong>On all nodes, disable swap</strong>.</p>
-<pre><code class="language-zsh">sudo swapoff -a
-</code></pre>
-<p><strong>On all nodes, install kubeadm, kubelet, and kubectl</strong>.</p>
-<pre><code class="language-zsh"># Some required packages
-sudo apt-get update &amp;&amp; sudo apt-get install -y apt-transport-https curl
-# Set up the package repo for k8s packages. Download the key for the repo and add it
-curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
-# Configure the repo
-cat &lt;&lt; EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
-deb https://apt.kubernetes.io/ kubernetes-xenial main
-EOF
-sudo apt-get update
-# Install the k8s packages. Make sure the versions for all 3 are the same.
-sudo apt-get install -y kubelet=1.24.0-00 kubeadm=1.24.0-00 kubectl=1.24.0-00
-# Make sure they're not automatically upgraded. Have manual control over when to update k8s
-sudo apt-mark hold kubelet kubeadm kubectl
-</code></pre>
-<p><strong>On the control plane node only</strong>, initialize the cluster and set up kubectl access.</p>
-<pre><code class="language-zsh">sudo kubeadm init --pod-network-cidr 192.168.0.0/16 --kubernetes-version 1.24.0
-# Config File to authenticate and interact with the cluster with kubectl commands
-# These are in the output of the previous step
-mkdir -p $HOME/.kube
-sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-sudo chown $(id -u):$(id -g) $HOME/.kube/config
-</code></pre>
-<p>Verify the cluster is working. It will be in Not Ready status because we haven't configured the networking plugin.</p>
-<pre><code class="language-zsh">kubectl get nodes
-</code></pre>
-<p>Install the Calico network add-on.</p>
-<pre><code class="language-zsh">kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
-</code></pre>
-<p>Get the join command (this command is also printed during kubeadm init . Feel free to simply copy it from there).</p>
-<pre><code class="language-zsh">kubeadm token create --print-join-command
-</code></pre>
-<p>Copy the join command from the control plane node. Run it <strong>on each worker node</strong> as root (i.e. with sudo ).</p>
-<pre><code class="language-zsh">sudo kubeadm join ...
-</code></pre>
+<span class="c1"># Apply them immediately</span>
+sudo<span class="w"> </span>sysctl<span class="w"> </span>--system
+</code></pre></div></p>
+<p>Install and configure containerd.<br />
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt-get<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>containerd
+sudo<span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span>/etc/containerd
+<span class="c1"># Generate the contents of a default config file and save it</span>
+sudo<span class="w"> </span>containerd<span class="w"> </span>config<span class="w"> </span>default<span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>/etc/containerd/config.toml
+<span class="c1"># Restart containerd to make sure it&#39;s using that configuration</span>
+sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>containerd
+</code></pre></div></p>
+<p><strong>On all nodes, disable swap</strong>.
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>swapoff<span class="w"> </span>-a
+</code></pre></div>
+<strong>On all nodes, install kubeadm, kubelet, and kubectl</strong>.
+<div class="highlight"><pre><span></span><code><span class="c1"># Some required packages</span>
+sudo<span class="w"> </span>apt-get<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>apt-transport-https<span class="w"> </span>curl
+<span class="c1"># Set up the package repo for K8s packages. Download the key for the repo and add it</span>
+curl<span class="w"> </span>-s<span class="w"> </span>https://packages.cloud.google.com/apt/doc/apt-key.gpg<span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>apt-key<span class="w"> </span>add<span class="w"> </span>-
+<span class="c1"># Configure the repo</span>
+cat<span class="w"> </span><span class="s">&lt;&lt; EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list</span>
+<span class="s">deb https://apt.kubernetes.io/ kubernetes-xenial main</span>
+<span class="s">EOF</span>
+sudo<span class="w"> </span>apt-get<span class="w"> </span>update
+<span class="c1"># Install the K8s packages. Make sure the versions for all 3 are the same.</span>
+sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span><span class="nv">kubelet</span><span class="o">=</span><span class="m">1</span>.24.0-00<span class="w"> </span><span class="nv">kubeadm</span><span class="o">=</span><span class="m">1</span>.24.0-00<span class="w"> </span><span class="nv">kubectl</span><span class="o">=</span><span class="m">1</span>.24.0-00
+<span class="c1"># Make sure they&#39;re not automatically upgraded. Have manual control over when to update K8s</span>
+sudo<span class="w"> </span>apt-mark<span class="w"> </span>hold<span class="w"> </span>kubelet<span class="w"> </span>kubeadm<span class="w"> </span>kubectl
+</code></pre></div></p>
+<p><strong>On the control plane node only</strong>, initialize the cluster and set up kubectl access.
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>kubeadm<span class="w"> </span>init<span class="w"> </span>--pod-network-cidr<span class="w"> </span><span class="m">192</span>.168.0.0/16<span class="w"> </span>--kubernetes-version<span class="w"> </span><span class="m">1</span>.24.0
+<span class="c1"># Config File to authenticate and interact with the cluster with kubectl commands</span>
+<span class="c1"># These are in the output of the previous step</span>
+mkdir<span class="w"> </span>-p<span class="w"> </span><span class="nv">$HOME</span>/.kube
+sudo<span class="w"> </span>cp<span class="w"> </span>-i<span class="w"> </span>/etc/kubernetes/admin.conf<span class="w"> </span><span class="nv">$HOME</span>/.kube/config
+sudo<span class="w"> </span>chown<span class="w"> </span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span>:<span class="k">$(</span>id<span class="w"> </span>-g<span class="k">)</span><span class="w"> </span><span class="nv">$HOME</span>/.kube/config
+</code></pre></div></p>
+<p>Verify the cluster is working. It will be in Not Ready status because we haven't configured the networking plugin.
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>nodes
+</code></pre></div></p>
+<p>Install the Calico network add-on.
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://docs.projectcalico.org/manifests/calico.yaml
+</code></pre></div></p>
+<p>Get the join command (this command is also printed during kubeadm init . Feel free to simply copy it from there).
+<div class="highlight"><pre><span></span><code>kubeadm<span class="w"> </span>token<span class="w"> </span>create<span class="w"> </span>--print-join-command
+</code></pre></div></p>
+<p>Copy the join command from the control plane node. Run it <strong>on each worker node</strong> as root (i.e. with sudo ).
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>kubeadm<span class="w"> </span>join<span class="w"> </span>...
+</code></pre></div></p>
 <p><strong>On the control plane node</strong>, verify all nodes in your cluster are ready. Note that it may take a few moments for all of the nodes to
-enter the READY state.</p>
-<pre><code class="language-zsh">kubectl get nodes
-</code></pre>
-<h3 id="installing-docker">Installing Docker</h3>
+enter the READY state.
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>nodes
+</code></pre></div></p>
+<h4 id="installing-docker">Installing Docker</h4>
 <p><a href="https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631214923454-1082%20-%20S01L03%20Installing%20Docker.pdf">Reference</a><br />
 <a href="https://docs.docker.com/engine/install/ubuntu/">Install Docker Engine on Ubuntu</a><br />
 <a href="https://docs.docker.com/engine/reference/commandline/login/#credentials-store">Docker credentials store</a> 
 to avoid storing your Docker Hub password unencrypted in <code>$HOME/.docker/config.json</code> when you <code>docker login</code> and <code>docker push</code> your images.  </p>
 <p><strong>On the system that will build Docker images from source code</strong> e.g. a CI server, install and configure Docker.<br />
 For simplicity we'll use the control plane server just so we don't have to create another server for this exercise.  </p>
-<p>Create a docker group. Users in this group will have permission to use Docker on the system:</p>
-<pre><code class="language-zsh">sudo groupadd docker
-</code></pre>
+<p>Create a docker group. Users in this group will have permission to use Docker on the system:
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>groupadd<span class="w"> </span>docker
+</code></pre></div></p>
 <p>Install required packages.<br />
-Note: Some of these packages may already be present on the system, but including them here will not cause any problems:</p>
-<pre><code class="language-zsh">sudo apt-get update &amp;&amp; sudo apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release
-</code></pre>
-<p>Set up the Docker GPG key and package repository:</p>
-<pre><code class="language-zsh">curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-echo &quot;deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable&quot; | sudo tee /etc/apt/sources.list.d/docker.list &gt; /dev/null
-</code></pre>
-<p>Install the Docker Engine:</p>
-<pre><code class="language-zsh">sudo apt-get update &amp;&amp; sudo apt-get install -y docker-ce docker-ce-cli
-# Type N (default) or enter to keep your current containerd configuration
-</code></pre>
-<p>Test the Docker setup:</p>
-<pre><code class="language-zsh">sudo docker version
-</code></pre>
-<p>Add cloud_user to the docker group in order to give cloud_user access to use Docker:</p>
-<pre><code class="language-zsh">sudo usermod -aG docker cloud_user
-</code></pre>
-<p>Log out of the server and log back in.<br />
-Test your setup:</p>
-<pre><code class="language-zsh">docker version
-</code></pre>
-<h3 id="kubernetes-configuration-with-configmaps-and-secrets">Kubernetes configuration with ConfigMaps and Secrets</h3>
-<p>III. Config
-Store config in the environment</p>
+Note: Some of these packages may already be present on the system, but including them here will not cause any problems:
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt-get<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>apt-transport-https<span class="w"> </span>ca-certificates<span class="w"> </span>curl<span class="w"> </span>gnupg<span class="w"> </span>lsb-release
+</code></pre></div></p>
+<p>Set up the Docker GPG key and package repository:
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://download.docker.com/linux/ubuntu/gpg<span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>gpg<span class="w"> </span>--dearmor<span class="w"> </span>-o<span class="w"> </span>/usr/share/keyrings/docker-archive-keyring.gpg
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu </span><span class="k">$(</span>lsb_release<span class="w"> </span>-cs<span class="k">)</span><span class="s2"> stable&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>/etc/apt/sources.list.d/docker.list<span class="w"> </span>&gt;<span class="w"> </span>/dev/null
+</code></pre></div></p>
+<p>Install the Docker Engine:
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt-get<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>docker-ce<span class="w"> </span>docker-ce-cli
+<span class="c1"># Type N (default) or enter to keep your current containerd configuration</span>
+</code></pre></div></p>
+<p>Test the Docker setup:
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>docker<span class="w"> </span>version
+</code></pre></div></p>
+<p>Add cloud_user to the docker group in order to give cloud_user access to use Docker:
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>usermod<span class="w"> </span>-aG<span class="w"> </span>docker<span class="w"> </span>cloud_user
+</code></pre></div>
+Log out of the server and log back in.<br />
+Test your setup:
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>version
+</code></pre></div></p>
+<h3 id="i-codebase">I. Codebase</h3>
+<p><strong>One codebase tracked in revision control, many deploys</strong>  </p>
+<p>Keep your codebase in a version control system like Git. There's a one-to-one relationship between the codebase and the app.<br />
+If there are multiple codebases it's not an app - it's a distributed system where each component is an app.<br />
+Factor shared code into libraries which can be included through the dependency manager.<br />
+A deploy is a running instance of the app.</p>
+<p>Your apps can be implemented as containers/pods, built and deployed independently of other apps.</p>
+<h3 id="ii-dependencies">II. Dependencies</h3>
+<p><strong>Explicitly declare and isolate dependencies</strong></p>
+<p>Don't rely on implicit existence of system-wide packages. Declare all dependencies, completely and exactly, via a dependency declaration manifest.
+With containers, your app and its dependencies are deployed as a unit, allowing it to run almost anywhere - a desktop, a traditional IT infrastructure, or the cloud.</p>
+<h3 id="iii-config">III. Config</h3>
+<p><strong>Store config in the environment</strong></p>
+<h4 id="configmaps-and-secrets">ConfigMaps and Secrets</h4>
 <p><a href="https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631214961641-1082%20-%20S02L03%20III.%20Config%20with%20ConfigMaps%20and%20Secrets.pdf">Reference</a>  </p>
 <p><a href="https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/">Encrypting Secret Data at Rest</a><br />
 <a href="https://kubernetes.io/docs/concepts/configuration/configmap/">ConfigMaps</a><br />
 <a href="https://kubernetes.io/docs/concepts/configuration/secret/">Secrets</a>  </p>
-<p>Create a production Namespace:</p>
-<pre><code class="language-zsh">kubectl create namespace production
-</code></pre>
-<p>Get base64-encoded strings for a db username and password:</p>
-<pre><code class="language-zsh">echo -n my_user | base64
-echo -n my_password | base64
-</code></pre>
-<p>Example: Create a ConfigMap and Secret to configure the backing service connection information for the app, including the base64-encoded credentials:</p>
-<pre><code class="language-zsh">cat &gt; my-app-config.yml &lt;&lt;End-of-message 
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: my-app-config
-data:
-  mongodb.host: &quot;my-app-mongodb&quot;
-  mongodb.port: &quot;27017&quot;
+<p>Create a production Namespace:
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>create<span class="w"> </span>namespace<span class="w"> </span>production
+</code></pre></div></p>
+<p>Get base64-encoded strings for a db username and password:
+<div class="highlight"><pre><span></span><code><span class="nb">echo</span><span class="w"> </span>-n<span class="w"> </span>my_user<span class="w"> </span><span class="p">|</span><span class="w"> </span>base64
+<span class="nb">echo</span><span class="w"> </span>-n<span class="w"> </span>my_password<span class="w"> </span><span class="p">|</span><span class="w"> </span>base64
+</code></pre></div></p>
+<p>Example: Create a <code>ConfigMap</code> and <code>Secret</code> to configure the backing service connection information for the app, including the base64-encoded credentials:
+<div class="highlight"><pre><span></span><code>cat<span class="w"> </span>&gt;<span class="w"> </span>my-app-config.yml<span class="w"> </span><span class="s">&lt;&lt;End-of-message </span>
+<span class="s">apiVersion: v1</span>
+<span class="s">kind: ConfigMap</span>
+<span class="s">metadata:</span>
+<span class="s">  name: my-app-config</span>
+<span class="s">data:</span>
+<span class="s">  mongodb.host: &quot;my-app-mongodb&quot;</span>
+<span class="s">  mongodb.port: &quot;27017&quot;</span>
 
----
+<span class="s">---</span>
 
-apiVersion: v1
-kind: Secret
-metadata:
-  name: my-app-secure-config
-type: Opaque
-data:
-  mongodb.username: dWxvZV91c2Vy
-  mongodb.password: SUxvdmVUaGVMaXN0
+<span class="s">apiVersion: v1</span>
+<span class="s">kind: Secret</span>
+<span class="s">metadata:</span>
+<span class="s">  name: my-app-secure-config</span>
+<span class="s">type: Opaque</span>
+<span class="s">data:</span>
+<span class="s">  mongodb.username: dWxvZV91c2Vy</span>
+<span class="s">  mongodb.password: SUxvdmVUaGVMaXN0</span>
 
-End-of-message
-</code></pre>
-<pre><code class="language-zsh">kubectl apply -f my-app-config.yml -n production
-</code></pre>
-<p>Create a temporary Pod to test the configuration setup. Note that you need to supply your Docker Hub username as part of the image name in this file.
-This passes configuration data in env variables but you could also do it in files that will show up on the containers filesystem.</p>
-<pre><code class="language-zsh">cat &gt; test-pod.yml &lt;&lt;End-of-message
+<span class="s">End</span>-of-message
+</code></pre></div></p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>my-app-config.yml<span class="w"> </span>-n<span class="w"> </span>production
+</code></pre></div>
+<p>Create a temporary <code>Pod</code> to test the configuration setup. Note that you need to supply your Docker Hub username as part of the image name in this file.
+This passes configuration data in env variables but you could also do it in files that will show up on the containers filesystem.
+<div class="highlight"><pre><span></span><code>cat<span class="w"> </span>&gt;<span class="w"> </span>test-pod.yml<span class="w"> </span><span class="s">&lt;&lt;End-of-message</span>
 
-apiVersion: v1
-kind: Pod
-metadata:
-  name: test-pod
-spec:
-  containers:
-  - name: my-app-server
-    image: &lt;YOUR_DOCKER_HUB_USERNAME&gt;/my-app-server:0.0.1
-    ports:
-    - name: web
-      containerPort: 3001
-      protocol: TCP
-    env:
-    - name: MONGODB_HOST
-      valueFrom:
-        configMapKeyRef:
-          name: my-app-config
-          key: mongodb.host
-    - name: MONGODB_PORT
-      valueFrom:
-        configMapKeyRef:
-          name: my-app-config
-          key: mongodb.port
-    - name: MONGODB_USER
-      valueFrom:
-        secretKeyRef:
-          name: my-app-secure-config
-          key: mongodb.username
-    - name: MONGODB_PASSWORD
-      valueFrom:
-        secretKeyRef:
-          name: my-app-secure-config
-          key: mongodb.password
+<span class="s">apiVersion: v1</span>
+<span class="s">kind: Pod</span>
+<span class="s">metadata:</span>
+<span class="s">  name: test-pod</span>
+<span class="s">spec:</span>
+<span class="s">  containers:</span>
+<span class="s">  - name: my-app-server</span>
+<span class="s">    image: &lt;YOUR_DOCKER_HUB_USERNAME&gt;/my-app-server:0.0.1</span>
+<span class="s">    ports:</span>
+<span class="s">    - name: web</span>
+<span class="s">      containerPort: 3001</span>
+<span class="s">      protocol: TCP</span>
+<span class="s">    env:</span>
+<span class="s">    - name: MONGODB_HOST</span>
+<span class="s">      valueFrom:</span>
+<span class="s">        configMapKeyRef:</span>
+<span class="s">          name: my-app-config</span>
+<span class="s">          key: mongodb.host</span>
+<span class="s">    - name: MONGODB_PORT</span>
+<span class="s">      valueFrom:</span>
+<span class="s">        configMapKeyRef:</span>
+<span class="s">          name: my-app-config</span>
+<span class="s">          key: mongodb.port</span>
+<span class="s">    - name: MONGODB_USER</span>
+<span class="s">      valueFrom:</span>
+<span class="s">        secretKeyRef:</span>
+<span class="s">          name: my-app-secure-config</span>
+<span class="s">          key: mongodb.username</span>
+<span class="s">    - name: MONGODB_PASSWORD</span>
+<span class="s">      valueFrom:</span>
+<span class="s">        secretKeyRef:</span>
+<span class="s">          name: my-app-secure-config</span>
+<span class="s">          key: mongodb.password</span>
 
-End-of-message
-</code></pre>
-<pre><code class="language-zsh">kubectl apply -f test-pod.yml -n production
-</code></pre>
-<p>Check the logs to verify the config data is being passed to the container:</p>
-<pre><code class="language-zsh">kubectl logs test-pod -n production
-</code></pre>
-<p>Clean up the test pod:</p>
-<pre><code class="language-zsh">kubectl delete pod test-pod -n production --force
-</code></pre>
-<h3 id="build-release-run-with-docker-and-deployments">Build, Release, Run with Docker and Deployments</h3>
-<p>V. Build, release, run
-Strictly separate build and run stages</p>
+<span class="s">End</span>-of-message
+</code></pre></div></p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>test-pod.yml<span class="w"> </span>-n<span class="w"> </span>production
+</code></pre></div>
+<p>Check the logs to verify the config data is being passed to the container:
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>logs<span class="w"> </span>test-pod<span class="w"> </span>-n<span class="w"> </span>production
+</code></pre></div></p>
+<p>Clean up the test pod:
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>test-pod<span class="w"> </span>-n<span class="w"> </span>production<span class="w"> </span>--force
+</code></pre></div></p>
+<h3 id="iv-backing-services">IV. Backing services</h3>
+<p><strong>Treat backing services as attached resources</strong></p>
+<p>Makes no distinction between local and third party services. To the app, both are attached resources, accessed via a URL or other locator/credentials stored in the config. You should be able to swap out a local MySQL database with one managed by a third party (such as Amazon RDS) without any changes to the app’s code.</p>
+<p>By implementing attached resources as containers/pods you achieve loose coupling between those resources and the deploy they are attached to.</p>
+<h3 id="v-build-release-run">V. Build, release, run</h3>
+<p><strong>Strictly separate build and run stages</strong></p>
+<h4 id="build-release-run-with-docker-and-deployments">Build, Release, Run with Docker and Deployments</h4>
 <p><a href="https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631215185856-1082%20-%20S03L02%20V.%20Build%2C%20Release%2C%20Run%20with%20Docker%20and%20Deployments.pdf">Reference</a><br />
 <a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/">Labels and Selectors</a><br />
 <a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/">Deployments</a>  </p>
@@ -1066,175 +1406,175 @@ Strictly separate build and run stages</p>
 The <code>selector</code> selects pods that have the specified label name and value.<br />
 <code>template</code> is the pod template.<br />
 This example puts 2 containers in the same pod for simplicity but in the real world you'll want separate deployments to scale them independently.</p>
-<pre><code class="language-zsh">cat &gt; my-app.yml &lt;&lt;End-of-message
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: my-app-config
-data:
-  mongodb.host: &quot;my-app-mongodb&quot;
-  mongodb.port: &quot;27017&quot;
-  .env: |
-    REACT_APP_API_PORT=&quot;30081&quot;
+<div class="highlight"><pre><span></span><code>cat<span class="w"> </span>&gt;<span class="w"> </span>my-app.yml<span class="w"> </span><span class="s">&lt;&lt;End-of-message</span>
+<span class="s">apiVersion: v1</span>
+<span class="s">kind: ConfigMap</span>
+<span class="s">metadata:</span>
+<span class="s">  name: my-app-config</span>
+<span class="s">data:</span>
+<span class="s">  mongodb.host: &quot;my-app-mongodb&quot;</span>
+<span class="s">  mongodb.port: &quot;27017&quot;</span>
+<span class="s">  .env: |</span>
+<span class="s">    REACT_APP_API_PORT=&quot;30081&quot;</span>
 
----
+<span class="s">---</span>
 
-apiVersion: v1
-kind: Secret
-metadata:
-  name: my-app-secure-config
-type: Opaque
-data:
-  mongodb.username: dWxvZV91c2Vy
-  mongodb.password: SUxvdmVUaGVMaXN0
+<span class="s">apiVersion: v1</span>
+<span class="s">kind: Secret</span>
+<span class="s">metadata:</span>
+<span class="s">  name: my-app-secure-config</span>
+<span class="s">type: Opaque</span>
+<span class="s">data:</span>
+<span class="s">  mongodb.username: dWxvZV91c2Vy</span>
+<span class="s">  mongodb.password: SUxvdmVUaGVMaXN0</span>
 
----
+<span class="s">---</span>
 
-apiVersion: v1
-kind: Service
-metadata:
-  name: my-app-svc
-spec:
-  type: NodePort
-  selector:
-    app: my-app
-  ports:
-  - name: frontend
-    protocol: TCP
-    port: 30080
-    nodePort: 30080
-    targetPort: 5000
-  - name: server
-    protocol: TCP
-    port: 30081
-    nodePort: 30081
-    targetPort: 3001
+<span class="s">apiVersion: v1</span>
+<span class="s">kind: Service</span>
+<span class="s">metadata:</span>
+<span class="s">  name: my-app-svc</span>
+<span class="s">spec:</span>
+<span class="s">  type: NodePort</span>
+<span class="s">  selector:</span>
+<span class="s">    app: my-app</span>
+<span class="s">  ports:</span>
+<span class="s">  - name: frontend</span>
+<span class="s">    protocol: TCP</span>
+<span class="s">    port: 30080</span>
+<span class="s">    nodePort: 30080</span>
+<span class="s">    targetPort: 5000</span>
+<span class="s">  - name: server</span>
+<span class="s">    protocol: TCP</span>
+<span class="s">    port: 30081</span>
+<span class="s">    nodePort: 30081</span>
+<span class="s">    targetPort: 3001</span>
 
----
+<span class="s">---</span>
 
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: my-app
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: my-app
-  template:
-    metadata:
-      labels:
-        app: my-app
-    spec:
-      containers:
-      - name: my-app-server
-        image: &lt;Your Docker Hub username&gt;/my-app-server:0.0.1
-        ports:
-        - name: web
-          containerPort: 3001
-          protocol: TCP
-        env:
-        - name: MONGODB_HOST
-          valueFrom:
-            configMapKeyRef:
-              name: my-app-config
-              key: mongodb.host
-        - name: MONGODB_PORT
-          valueFrom:
-            configMapKeyRef:
-              name: my-app-config
-              key: mongodb.port
-        - name: MONGODB_USER
-          valueFrom:
-            secretKeyRef:
-              name: my-app-secure-config
-              key: mongodb.username
-        - name: MONGODB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: my-app-secure-config
-              key: mongodb.password
-      - name: my-app-frontend
-        image: &lt;Your Docker Hub username&gt;/my-app-frontend:0.0.1
-        ports:
-        - name: web
-          containerPort: 5000
-          protocol: TCP
-        volumeMounts:
-        - name: frontend-config
-          mountPath: /usr/src/app/.env
-          subPath: .env
-          readOnly: true
-      volumes:
-      - name: frontend-config
-        configMap:
-          name: my-app-config
-          items:
-          - key: .env
-            path: .env
-End-of-message
-</code></pre>
-<p>Deploy the app.</p>
-<pre><code class="language-zsh">kubectl apply -f my-app.yml -n production
-</code></pre>
-<p>Create a new container image version to test the rollout process:</p>
-<pre><code class="language-zsh">docker tag &lt;Your Docker Hub username&gt;/my-app-frontend:0.0.1 &lt;Your Docker Hub username&gt;/my-app-frontend:0.0.2
-docker push &lt;Your Docker Hub username&gt;/my-app-frontend:0.0.2
-</code></pre>
-<p>Edit the app manifest <code>my-app.yml</code> to use the <code>0.0.2</code> image version and then:</p>
-<pre><code class="language-zsh">kubectl apply -f my-app.yml -n production
-</code></pre>
-<p>Get the list of Pods to see the new version rollout:</p>
-<pre><code class="language-zsh">kubectl get pods -n production
-</code></pre>
-<h3 id="processes-with-stateless-containers">Processes with stateless containers</h3>
-<p>VI. Processes
-Execute the app as one or more stateless processes</p>
+<span class="s">apiVersion: apps/v1</span>
+<span class="s">kind: Deployment</span>
+<span class="s">metadata:</span>
+<span class="s">  name: my-app</span>
+<span class="s">spec:</span>
+<span class="s">  replicas: 1</span>
+<span class="s">  selector:</span>
+<span class="s">    matchLabels:</span>
+<span class="s">      app: my-app</span>
+<span class="s">  template:</span>
+<span class="s">    metadata:</span>
+<span class="s">      labels:</span>
+<span class="s">        app: my-app</span>
+<span class="s">    spec:</span>
+<span class="s">      containers:</span>
+<span class="s">      - name: my-app-server</span>
+<span class="s">        image: &lt;Your Docker Hub username&gt;/my-app-server:0.0.1</span>
+<span class="s">        ports:</span>
+<span class="s">        - name: web</span>
+<span class="s">          containerPort: 3001</span>
+<span class="s">          protocol: TCP</span>
+<span class="s">        env:</span>
+<span class="s">        - name: MONGODB_HOST</span>
+<span class="s">          valueFrom:</span>
+<span class="s">            configMapKeyRef:</span>
+<span class="s">              name: my-app-config</span>
+<span class="s">              key: mongodb.host</span>
+<span class="s">        - name: MONGODB_PORT</span>
+<span class="s">          valueFrom:</span>
+<span class="s">            configMapKeyRef:</span>
+<span class="s">              name: my-app-config</span>
+<span class="s">              key: mongodb.port</span>
+<span class="s">        - name: MONGODB_USER</span>
+<span class="s">          valueFrom:</span>
+<span class="s">            secretKeyRef:</span>
+<span class="s">              name: my-app-secure-config</span>
+<span class="s">              key: mongodb.username</span>
+<span class="s">        - name: MONGODB_PASSWORD</span>
+<span class="s">          valueFrom:</span>
+<span class="s">            secretKeyRef:</span>
+<span class="s">              name: my-app-secure-config</span>
+<span class="s">              key: mongodb.password</span>
+<span class="s">      - name: my-app-frontend</span>
+<span class="s">        image: &lt;Your Docker Hub username&gt;/my-app-frontend:0.0.1</span>
+<span class="s">        ports:</span>
+<span class="s">        - name: web</span>
+<span class="s">          containerPort: 5000</span>
+<span class="s">          protocol: TCP</span>
+<span class="s">        volumeMounts:</span>
+<span class="s">        - name: frontend-config</span>
+<span class="s">          mountPath: /usr/src/app/.env</span>
+<span class="s">          subPath: .env</span>
+<span class="s">          readOnly: true</span>
+<span class="s">      volumes:</span>
+<span class="s">      - name: frontend-config</span>
+<span class="s">        configMap:</span>
+<span class="s">          name: my-app-config</span>
+<span class="s">          items:</span>
+<span class="s">          - key: .env</span>
+<span class="s">            path: .env</span>
+<span class="s">End</span>-of-message
+</code></pre></div>
+<p>Deploy the app.
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>my-app.yml<span class="w"> </span>-n<span class="w"> </span>production
+</code></pre></div></p>
+<p>Create a new container image version to test the rollout process:
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>tag<span class="w"> </span>&lt;Your<span class="w"> </span>Docker<span class="w"> </span>Hub<span class="w"> </span>username&gt;/my-app-frontend:0.0.1<span class="w"> </span>&lt;Your<span class="w"> </span>Docker<span class="w"> </span>Hub<span class="w"> </span>username&gt;/my-app-frontend:0.0.2
+docker<span class="w"> </span>push<span class="w"> </span>&lt;Your<span class="w"> </span>Docker<span class="w"> </span>Hub<span class="w"> </span>username&gt;/my-app-frontend:0.0.2
+</code></pre></div></p>
+<p>Edit the app manifest <code>my-app.yml</code> to use the <code>0.0.2</code> image version and then:
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>my-app.yml<span class="w"> </span>-n<span class="w"> </span>production
+</code></pre></div></p>
+<p>Get the list of Pods to see the new version rollout:
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>production
+</code></pre></div></p>
+<h3 id="vi-processes">VI. Processes</h3>
+<p><strong>Execute the app as one or more stateless processes</strong></p>
+<h4 id="processes-with-stateless-containers">Processes with stateless containers</h4>
 <p><a href="https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1632153847308-1082%20-%20S03L03%20VI.%20Processes%20with%20Stateless%20Containers.pdf">Reference</a><br />
 <a href="https://kubernetes.io/docs/tasks/configure-pod-container/security-context/">Security Context</a>  </p>
-<p>Edit the app deployment YAML <code>my-app.yml</code>. In the deployment Pod spec, add a new emptyDir volume under volumes:</p>
-<pre><code class="language-yaml">volumes:
-- name: added-items-log
-  emptyDir: {}
-...
-</code></pre>
-<p>Mount the volume to the server container:</p>
-<pre><code class="language-yaml">containers:
-...
-- name: my-app-server
-  ...
-  volumeMounts:
-  - name: added-items-log
-    mountPath: /usr/src/app/added_items.log
-    subPath: added_items.log
-    readOnly: false
-  ...
-</code></pre>
-<p>Make the container file system read only:</p>
-<pre><code class="language-yaml">containers:
-...
-- name: my-app-server
-  securityContext:
-    readOnlyRootFilesystem: true
-  ...
-</code></pre>
-<p>Deploy the changes:</p>
-<pre><code class="language-zsh">kubectl apply -f my-app.yml -n production
-</code></pre>
-<h3 id="persistent-volumes">Persistent Volumes</h3>
+<p>Edit the app deployment <code>my-app.yml</code>. In the deployment Pod spec, add a new <code>emptyDir</code> volume under <code>volumes</code>:
+<div class="highlight"><pre><span></span><code><span class="nt">volumes</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">added-items-log</span>
+<span class="w">  </span><span class="nt">emptyDir</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<span class="nn">...</span>
+</code></pre></div></p>
+<p>Mount the volume to the server container:
+<div class="highlight"><pre><span></span><code><span class="nt">containers</span><span class="p">:</span>
+<span class="nn">...</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app-server</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">  </span><span class="nt">volumeMounts</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">added-items-log</span>
+<span class="w">    </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/usr/src/app/added_items.log</span>
+<span class="w">    </span><span class="nt">subPath</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">added_items.log</span>
+<span class="w">    </span><span class="nt">readOnly</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+</code></pre></div></p>
+<p>Make the container file system read only:
+<div class="highlight"><pre><span></span><code><span class="nt">containers</span><span class="p">:</span>
+<span class="nn">...</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app-server</span>
+<span class="w">  </span><span class="nt">securityContext</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">readOnlyRootFilesystem</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+</code></pre></div></p>
+<p>Deploy the changes:
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>my-app.yml<span class="w"> </span>-n<span class="w"> </span>production
+</code></pre></div></p>
+<h4 id="persistent-volumes">Persistent Volumes</h4>
 <p><a href="https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1604349952306-devops-wb002%20-%20S10-L04%20Using%20K8s%20Persistent%20Volumes.pdf">Reference</a><br />
 <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/">Persistent Volumes (PV)</a><br />
 <a href="https://kubernetes.io/docs/concepts/storage/volumes/#local"><code>local</code> PV</a>  </p>
-<p>Create a <code>StorageClass</code> that supports volume expansion as <code>localdisk-sc.yml</code></p>
-<pre><code class="language-yaml">apiVersion: storage.k8s.io/v1
-kind: StorageClass
-metadata:
-  name: localdisk
-provisioner: kubernetes.io/no-provisioner
-allowVolumeExpansion: true
-</code></pre>
-<pre><code class="language-zsh">kubectl create -f localdisk-sc.yml
-</code></pre>
+<p>Create a <code>StorageClass</code> that supports volume expansion as <code>localdisk-sc.yml</code>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">storage.k8s.io/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">StorageClass</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localdisk</span>
+<span class="nt">provisioner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubernetes.io/no-provisioner</span>
+<span class="nt">allowVolumeExpansion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>localdisk-sc.yml
+</code></pre></div></p>
 <p><code>persistentVolumeReclaimPolicy</code> says how storage can be reused when the volume's associated claims are deleted.  </p>
 <ul>
 <li>Retain: Keeps all data. An admin must manually clean up and prepare the resource for reuse.</li>
@@ -1248,239 +1588,243 @@ allowVolumeExpansion: true
 <li>ReadWriteMany: Can be mounted as read-write by many nodes.</li>
 <li>ReadWriteOncePod: Can be mounted as read-write by a single Pod. Use ReadWriteOncePod access mode if you want to ensure that only one pod across whole cluster can read that PVC or write to it. This is only supported for CSI volumes.</li>
 </ul>
-<p>Create a PersistentVolume in <code>my-pv.yml</code>.</p>
-<pre><code class="language-yaml">kind: PersistentVolume
-apiVersion: v1
-metadata:
-  name: my-pv
-spec:
-  storageClassName: localdisk
-  persistentVolumeReclaimPolicy: Recycle
-  capacity:
-    storage: 1Gi
-  accessModes:
-    - ReadWriteOnce
-  hostPath:
-    path: /var/output
-</code></pre>
-<pre><code class="language-zsh">kubectl create -f my-pv.yml
-</code></pre>
-<p>Check the status of the PersistentVolume.</p>
-<pre><code class="language-zsh">kubectl get pv
-</code></pre>
-<p>Create a PersistentVolumeClaim that will bind to the PersistentVolume as <code>my-pvc.yml</code></p>
-<pre><code class="language-yaml">apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: my-pvc
-spec:
-  storageClassName: localdisk
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 100Mi
-</code></pre>
-<pre><code class="language-zsh">kubectl create -f my-pvc.yml
-</code></pre>
-<p>Check the status of the PersistentVolume and PersistentVolumeClaim to verify that they have been bound.</p>
-<pre><code class="language-zsh">kubectl get pv
-kubectl get pvc
-</code></pre>
-<p>Create a Pod that uses the PersistentVolumeClaim as <code>pv-pod.yml</code>.</p>
-<pre><code class="language-yaml">apiVersion: v1
-kind: Pod
-metadata:
-  name: pv-pod
-spec:
-  restartPolicy: Never
-  containers:
-  - name: busybox
-    image: busybox
-    command: ['sh', '-c', 'echo Success! &gt; /output/success.txt']
-    volumeMounts:
-    - name: pv-storage
-      mountPath: /output
-  volumes:
-  - name: pv-storage
-    persistentVolumeClaim:
-      claimName: my-pvc
-</code></pre>
-<pre><code class="language-zsh">kubectl create -f pv-pod.yml
-</code></pre>
-<p>Expand the PersistentVolumeClaim and record the process.</p>
-<pre><code class="language-zsh">kubectl edit pvc my-pvc --record
-</code></pre>
-<pre><code class="language-yaml">...
-spec:
-...
-  resources:
-    requests:
-      storage: 200Mi
-</code></pre>
-<p>Delete the Pod and the PersistentVolumeClaim.</p>
-<pre><code class="language-zsh">kubectl delete pod pv-pod
-kubectl delete pvc my-pvc
-</code></pre>
-<p>Check the status of the PersistentVolume to verify that it has been successfully recycled and is available again.</p>
-<pre><code class="language-zsh">kubectl get pv
-</code></pre>
-<h3 id="port-binding-with-pods">Port Binding with Pods</h3>
-<p>VII. Port binding
-Export services via port binding</p>
+<p>Create a <code>PersistentVolume</code> in <code>my-pv.yml</code>.
+<div class="highlight"><pre><span></span><code><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PersistentVolume</span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-pv</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">storageClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localdisk</span>
+<span class="w">  </span><span class="nt">persistentVolumeReclaimPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Recycle</span>
+<span class="w">  </span><span class="nt">capacity</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1Gi</span>
+<span class="w">  </span><span class="nt">accessModes</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ReadWriteOnce</span>
+<span class="w">  </span><span class="nt">hostPath</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/var/output</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>my-pv.yml
+</code></pre></div></p>
+<p>Check the status of the <code>PersistentVolume</code>.
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pv
+</code></pre></div></p>
+<p>Create a <code>PersistentVolumeClaim</code> that will bind to the <code>PersistentVolume</code> as <code>my-pvc.yml</code>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PersistentVolumeClaim</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-pvc</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">storageClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localdisk</span>
+<span class="w">  </span><span class="nt">accessModes</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ReadWriteOnce</span>
+<span class="w">  </span><span class="nt">resources</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">requests</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100Mi</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>my-pvc.yml
+</code></pre></div></p>
+<p>Check the status of the <code>PersistentVolume</code> and <code>PersistentVolumeClaim</code> to verify that they have been bound.
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pv
+kubectl<span class="w"> </span>get<span class="w"> </span>pvc
+</code></pre></div></p>
+<p>Create a <code>Pod</code> that uses the <code>PersistentVolumeClaim</code> as <code>pv-pod.yml</code>.
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Pod</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pv-pod</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">restartPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Never</span>
+<span class="w">  </span><span class="nt">containers</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">busybox</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">busybox</span>
+<span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;sh&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;-c&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;echo</span><span class="nv"> </span><span class="s">Success!</span><span class="nv"> </span><span class="s">&gt;</span><span class="nv"> </span><span class="s">/output/success.txt&#39;</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">volumeMounts</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pv-storage</span>
+<span class="w">      </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/output</span>
+<span class="w">  </span><span class="nt">volumes</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pv-storage</span>
+<span class="w">    </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">claimName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-pvc</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>pv-pod.yml
+</code></pre></div></p>
+<p>Expand the <code>PersistentVolumeClaim</code> and record the process.
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>edit<span class="w"> </span>pvc<span class="w"> </span>my-pvc<span class="w"> </span>--record
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="nn">...</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="nn">...</span>
+<span class="w">  </span><span class="nt">resources</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">requests</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">200Mi</span>
+</code></pre></div></p>
+<p>Delete the <code>Pod</code> and the <code>PersistentVolumeClaim</code>.
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>pv-pod
+kubectl<span class="w"> </span>delete<span class="w"> </span>pvc<span class="w"> </span>my-pvc
+</code></pre></div></p>
+<p>Check the status of the <code>PersistentVolume</code> to verify that it has been successfully recycled and is available again.
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pv
+</code></pre></div></p>
+<h3 id="vii-port-binding">VII. Port binding</h3>
+<p><strong>Export services via port binding</strong></p>
+<h4 id="port-binding-with-pods">Port Binding with Pods</h4>
 <p><a href="https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631215167150-1082%20-%20S03L04%20VII.%20Port%20Binding%20with%20Pods.pdf">Reference</a><br />
 <a href="https://kubernetes.io/docs/concepts/cluster-administration/networking/">Cluster Networking</a>  </p>
-<p>Challenge: only 1 process can listen on a port per host. So how do all apps on the host use a unique port?<br />
-In k8s, each pod has its own network namespace and cluster IP address.<br />
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Challenge: Only 1 process can listen on a port per host. So how do all apps on the host use a unique port?<br />
+In K8s, each pod has its own network namespace and cluster IP address.<br />
 That IP address is unique within the cluster even if there are multiple worker nodes in the cluster.<br />
-Tht means ports only need to be unique within each pod.<br />
-2 pods can listen on the same port because they each have their own unique IP address within the cluster network.<br />
+That means ports only need to be unique within each pod.<br />
+Two pods can listen on the same port because they each have their own unique IP address within the cluster network.<br />
 The pods can communicate across nodes simply using the unique IPs.</p>
-<p>Get a list of Pods in the production namespace:</p>
-<pre><code class="language-zsh">kubectl get pods -n production -o wide
-</code></pre>
+</div>
+<p>Get a list of Pods in the production namespace:
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>production<span class="w"> </span>-o<span class="w"> </span>wide
+</code></pre></div></p>
 <p>Copy the name of the IP address of the application Pod.<br />
-Example: Use the IP address to make a request to the port on the Pod that serves the frontend content:</p>
-<pre><code class="language-zsh">curl &lt;Pod Cluster IP address&gt;:5000
-</code></pre>
-<h3 id="concurrency-with-containers-and-scaling">Concurrency with Containers and Scaling</h3>
-<p>VIII. Concurrency
-Scale out via the process model</p>
+Example: Use the IP address to make a request to the port on the Pod that serves the frontend content:
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>&lt;Pod<span class="w"> </span>Cluster<span class="w"> </span>IP<span class="w"> </span>address&gt;:5000
+</code></pre></div></p>
+<h3 id="viii-concurrency">VIII. Concurrency</h3>
+<p><strong>Scale out via the process model</strong></p>
+<h4 id="concurrency-with-containers-and-scaling">Concurrency with Containers and Scaling</h4>
 <p><a href="https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631215269199-1082%20-%20S04L01%20VIII.%20Concurrency%20with%20Containers%20and%20Scaling.pdf">Reference</a><br />
 <a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/">Deployments</a>  </p>
 <p>By using <code>services</code> to manage access to the app, the service automaticaly picks up the additional pods created during scaling and route traffic to those pods.
-When you have <code>services</code> alongside <code>deployments</code> you can dynamically change the number of replicas that you have and k8s will take care of everything.</p>
+When you have <code>services</code> alongside <code>deployments</code> you can dynamically change the number of replicas that you have and K8s will take care of everything.</p>
 <p>Edit the application deployment <code>my-app.yml</code>.<br />
-Change the number of replicas to 3:</p>
-<pre><code class="language-yaml">...
-replicas: 3
-</code></pre>
-<p>Apply the changes:</p>
-<pre><code class="language-zsh">kubectl apply -f my-app.yml -n production
-</code></pre>
-<p>Get a list of Pods:</p>
-<pre><code class="language-zsh">kubectl get pods -n production
-</code></pre>
+Change the number of replicas to 3:
+<div class="highlight"><pre><span></span><code><span class="nn">...</span>
+<span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+</code></pre></div></p>
+<p>Apply the changes:
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>my-app.yml<span class="w"> </span>-n<span class="w"> </span>production
+</code></pre></div></p>
+<p>Get a list of Pods:
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>production
+</code></pre></div></p>
 <p>Scale the deployment up again in <code>my-app.yml</code>.<br />
-Change the number of replicas to 5:</p>
-<pre><code class="language-yaml">...
-replicas: 5
-</code></pre>
-<p>Apply the changes:</p>
-<pre><code class="language-zsh">kubectl apply -f my-app .yml -n production
-</code></pre>
-<p>Get a list of Pods:</p>
-<pre><code class="language-zsh">kubectl get pods -n production
-</code></pre>
-<h3 id="disposability-with-stateless-containers">Disposability with Stateless Containers</h3>
-<p>IX. Disposability
-Maximize robustness with fast startup and graceful shutdown</p>
+Change the number of replicas to 5:
+<div class="highlight"><pre><span></span><code><span class="nn">...</span>
+<span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+</code></pre></div></p>
+<p>Apply the changes:
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>my-app<span class="w"> </span>.yml<span class="w"> </span>-n<span class="w"> </span>production
+</code></pre></div></p>
+<p>Get a list of Pods:
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>production
+</code></pre></div></p>
+<h3 id="ix-disposability">IX. Disposability</h3>
+<p><strong>Maximize robustness with fast startup and graceful shutdown</strong></p>
+<h4 id="disposability-with-stateless-containers">Disposability with Stateless Containers</h4>
 <p><a href="https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631215259805-1082%20-%20S04L02%20IX.%20Disposability%20with%20Stateless%20Containers.pdf">Reference</a><br />
 <a href="https://kubernetes.io/docs/tasks/configure-pod-container/security-context/">Security Context</a><br />
 <a href="https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/">Pod Lifecycle</a>  </p>
 <p>Deployments can be used to maintain a specified number of running replicas automatically replacing pods that fail or are deleted.</p>
-<p>Get a list of Pods:</p>
-<pre><code class="language-zsh">kubectl get pods -n production
-</code></pre>
-<p>Locate one of the Pods from the my-app deployment and copy the Pod's name.<br />
-Delete the Pod using the Pod name:</p>
-<pre><code class="language-zsh">kubectl delete pod &lt;Pod name&gt; -n production
-</code></pre>
-<p>Get the list of Pods again. You will notice that the deployment is automatically creating a new Pod to replace the one that was deleted:</p>
-<pre><code class="language-zsh">kubectl get pods -n production
-</code></pre>
-<h3 id="devprod-parity-with-namespaces">Dev/Prod Parity with Namespaces</h3>
-<p>X. Dev/prod parity
-Keep development, staging, and production as similar as possible</p>
+<p>Get a list of Pods:
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>production
+</code></pre></div></p>
+<p>Locate one of the Pods from the <code>my-app</code> deployment and copy the Pod's name.<br />
+Delete the Pod using the Pod name:
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>&lt;Pod<span class="w"> </span>name&gt;<span class="w"> </span>-n<span class="w"> </span>production
+</code></pre></div></p>
+<p>Get the list of Pods again. You will notice that the deployment is automatically creating a new Pod to replace the one that was deleted:
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>production
+</code></pre></div></p>
+<h3 id="x-devprod-parity">X. Dev/prod parity</h3>
+<p><strong>Keep development, staging, and production as similar as possible</strong></p>
+<h4 id="devprod-parity-with-namespaces">Dev/Prod Parity with Namespaces</h4>
 <p><a href="https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631215371092-1082%20-%20S05L01%20X.%20Dev%3AProd%20Parity%20with%20Namespaces.pdf">Reference</a><br />
 <a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/">Namespaces</a>  </p>
-<p>k8s namespaces allow us to have multiple environments in the same cluster. A namespace is like a virtual cluster.</p>
-<p>Create a new namespace:</p>
-<pre><code class="language-zsh">kubectl create namespace dev
-</code></pre>
-<p>Make a copy of the my-app app YAML:</p>
-<pre><code class="language-zsh">cp my-app.yml my-app-dev.yml
-</code></pre>
+<p>K8s namespaces allow us to have multiple environments in the same cluster. A namespace is like a virtual cluster.</p>
+<p>Create a new <code>namespace</code>:
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>create<span class="w"> </span>namespace<span class="w"> </span>dev
+</code></pre></div></p>
+<p>Make a copy of the my-app app YAML:
+<div class="highlight"><pre><span></span><code>cp<span class="w"> </span>my-app.yml<span class="w"> </span>my-app-dev.yml
+</code></pre></div></p>
 <p><code>NodePort</code> <code>services</code> need to be unique within the cluster. We need to choose unique ports so dev doesn't conflict with production.<br />
-Edit the my-app-svc service in the <code>my-app-dev.yml</code> file to select different <code>nodePort</code>s. You will also need to edit the my-app-config ConfigMap to reflect the new port. 
-Set the nodePorts on the service:</p>
-<pre><code class="language-yaml">apiVersion: v1
-kind: Service
-metadata:
-  name: my-app-svc
-spec:
-  type: NodePort
-  selector:
-    app: my-app
-  ports:
-  - name: frontend
-    protocol: TCP
-    port: 30082
-    nodePort: 30082
-    targetPort: 5000
-  - name: server
-    protocol: TCP
-    port: 30083
-    nodePort: 30083
-    targetPort: 3001
-</code></pre>
-<p>Update the configured port in the ConfigMap:</p>
-<pre><code class="language-yaml">apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: my-app-config
-data:
-  mongodb.host: &quot;my-app-mongodb&quot;
-  mongodb.port: &quot;27017&quot;
-  .env: |
-    REACT_APP_API_PORT=&quot;30083&quot;
-</code></pre>
-<p>Deploy the backing service setup in the new namespace:</p>
-<pre><code class="language-zsh">kubectl apply -f k8s-my-app-mongodb.yml -n dev
-kubectl apply -f my-app-mongodb.yml -n dev
-</code></pre>
-<p>Deploy the app in the new namespace:</p>
-<pre><code class="language-zsh">kubectl apply -f my-app-dev.yml -n dev
-</code></pre>
-<p>Check the status of the Pods:</p>
-<pre><code class="language-zsh">kubectl get pods -n dev
-</code></pre>
+Edit the <code>my-app-svc</code> service in the <code>my-app-dev.yml</code> file to select different <code>nodePort</code>s. You will also need to edit the <code>my-app-config</code> <code>ConfigMap</code> to reflect the new port. 
+Set the <code>nodePort</code>s on the service:
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Service</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app-svc</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NodePort</span>
+<span class="w">  </span><span class="nt">selector</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app</span>
+<span class="w">  </span><span class="nt">ports</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">frontend</span>
+<span class="w">    </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TCP</span>
+<span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30082</span>
+<span class="w">    </span><span class="nt">nodePort</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30082</span>
+<span class="w">    </span><span class="nt">targetPort</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5000</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">server</span>
+<span class="w">    </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TCP</span>
+<span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30083</span>
+<span class="w">    </span><span class="nt">nodePort</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30083</span>
+<span class="w">    </span><span class="nt">targetPort</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3001</span>
+</code></pre></div></p>
+<p>Update the configured port in the <code>ConfigMap</code>:
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ConfigMap</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app-config</span>
+<span class="nt">data</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">mongodb.host</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;my-app-mongodb&quot;</span>
+<span class="w">  </span><span class="nt">mongodb.port</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;27017&quot;</span>
+<span class="w">  </span><span class="nt">.env</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">    </span><span class="no">REACT_APP_API_PORT=&quot;30083&quot;</span>
+</code></pre></div></p>
+<p>Deploy the backing service setup in the new namespace:
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>k8s-my-app-mongodb.yml<span class="w"> </span>-n<span class="w"> </span>dev
+kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>my-app-mongodb.yml<span class="w"> </span>-n<span class="w"> </span>dev
+</code></pre></div></p>
+<p>Deploy the app in the new namespace:
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>my-app-dev.yml<span class="w"> </span>-n<span class="w"> </span>dev
+</code></pre></div>
+Check the status of the Pods:
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>dev
+</code></pre></div></p>
 <p>Once all the Pods are up and running, you should be able to test the dev environment in a browser at<br />
-<code>&lt;Control Plane Node Public IP&gt;:30082</code>.</p>
-<h3 id="logs-with-k8s-container-logging">Logs with k8s Container Logging</h3>
-<p>XI. Logs
-Treat logs as event streams</p>
+<div class="highlight"><pre><span></span><code>&lt;Control Plane Node Public IP&gt;:30082
+</code></pre></div></p>
+<h3 id="xi-logs">XI. Logs</h3>
+<p><strong>Treat logs as event streams</strong></p>
+<h4 id="logs-with-k8s-container-logging">Logs with K8s Container Logging</h4>
 <p><a href="https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631215382492-1082%20-%20S05L02%20XI.%20Logs%20with%20k8s%20Container%20Logging.pdf">Reference</a><br />
 <a href="https://kubernetes.io/docs/concepts/cluster-administration/logging/">Logging Architecture</a><br />
 <a href="https://kubernetes.io/docs/reference/kubectl/cheatsheet/#interacting-with-running-pods">Kubectl cheatsheet</a>  </p>
-<p>k8s captures log data written to stdout by containers. We can use the k8s API, <code>kubectl logs</code> or external tools to interact with container logs.  </p>
-<p>Edit the source code for the server e.g. <code>src/server/index.js</code>. There is a log function that writes to a file. Change this function to simply write log data to the console:  </p>
-<pre><code class="language-javascript">log = function(data) {
-console.log(data);
-}
-</code></pre>
-<p>Build a new server image because we changed the source code:</p>
-<pre><code class="language-zsh">docker build -t &lt;Your Docker Hub username&gt;/my-app-server:0.0.4 --target server .
-</code></pre>
-<p>Push the image:</p>
-<pre><code class="language-zsh">docker push &lt;Your Docker Hub username&gt;/my-app-server:0.0.4
-</code></pre>
-<p>Deploy the new code. Edit <code>my-app.yml</code>. Change the image version for the server to the new image:</p>
-<pre><code class="language-yaml">containers:
-- name: my-app-server
-  image: &lt;Your Docker Hub username&gt;/my-app-server:0.0.4
-</code></pre>
-<pre><code class="language-zsh">kubectl apply -f my-app.yml -n production
-</code></pre>
-<p>Get a list of Pods:</p>
-<pre><code class="language-zsh">kubectl get pods -n production
-</code></pre>
-<p>Copy the name of one of the my-app deployment Pods and view its logs specifying the pod, namespace, and container.</p>
-<pre><code class="language-zsh">kubectl logs &lt;Pod name&gt; -n production -c my-app-server
-</code></pre>
-<h3 id="admin-processes-with-jobs">Admin Processes with Jobs</h3>
-<p>XII. Admin processes
-Run admin/management tasks as one-off processes</p>
+<p>K8s captures log data written to stdout by containers. We can use the K8s API, <code>kubectl logs</code> or external tools to interact with container logs.  </p>
+<p>Edit the source code for the server e.g. <code>src/server/index.js</code>. There is a log function that writes to a file. Change this function to simply write log data to the console:<br />
+<div class="highlight"><pre><span></span><code><span class="nx">log</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p>Build a new server image because we changed the source code:
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>&lt;Your<span class="w"> </span>Docker<span class="w"> </span>Hub<span class="w"> </span>username&gt;/my-app-server:0.0.4<span class="w"> </span>--target<span class="w"> </span>server<span class="w"> </span>.
+</code></pre></div></p>
+<p>Push the image:
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>push<span class="w"> </span>&lt;Your<span class="w"> </span>Docker<span class="w"> </span>Hub<span class="w"> </span>username&gt;/my-app-server:0.0.4
+</code></pre></div></p>
+<p>Deploy the new code. Edit <code>my-app.yml</code>. Change the image version for the server to the new image:
+<div class="highlight"><pre><span></span><code><span class="nt">containers</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app-server</span>
+<span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;Your Docker Hub username&gt;/my-app-server:0.0.4</span>
+</code></pre></div></p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>my-app.yml<span class="w"> </span>-n<span class="w"> </span>production
+</code></pre></div>
+<p>Get a list of Pods:
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>production
+</code></pre></div></p>
+<p>Copy the name of one of the my-app deployment Pods and view its logs specifying the pod, namespace, and container.
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>logs<span class="w"> </span>&lt;Pod<span class="w"> </span>name&gt;<span class="w"> </span>-n<span class="w"> </span>production<span class="w"> </span>-c<span class="w"> </span>my-app-server
+</code></pre></div></p>
+<h3 id="xii-admin-processes">XII. Admin processes</h3>
+<p><strong>Run admin/management tasks as one-off processes</strong></p>
+<h4 id="admin-processes-with-jobs">Admin Processes with Jobs</h4>
 <p><a href="https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631215407613-1082%20-%20S05L03%20XII.%20Admin%20Processes%20with%20Jobs.pdf">Reference</a><br />
 <a href="https://kubernetes.io/docs/concepts/workloads/controllers/job/">Jobs</a>  </p>
 <p>A <code>Job</code> e.g. a database migration runs a container until its execution completes. Jobs handle re-trying execution if it fails.<br />
@@ -1489,165 +1833,165 @@ This example adds the administrative job to the server image but you could packa
 <p>Edit the source code for the admin process in e.g. <code>src/jobs/deDeuplicateJob.js</code>.<br />
 Locate the block of code that begins with // Setup MongoDb backing database .<br />
 Change the code to make the database connection configurable:  </p>
-<pre><code class="language-javascript">// Setup MongoDb backing database
-const MongoClient = require('mongodb').MongoClient
-// MongoDB credentials
-const username = encodeURIComponent(process.env.MONGODB_USER || &quot;my-app_user&quot;);
-const password = encodeURIComponent(process.env.MONGODB_PASSWORD || &quot;ILoveTheList&quot;);
-// MongoDB connection info
-const mongoPort = process.env.MONGODB_PORT || 27017;
-const mongoHost = process.env.MONGODB_HOST || 'localhost';
-// MongoDB connection string
-const mongoURI = `mongodb://${username}:${password}@${mongoHost}:${mongoPort}/my-app`;
-const mongoURISanitized = `mongodb://${username}:****@${mongoHost}:${mongoPort}/my-app`;
-console.log(&quot;MongoDB connection string %s&quot;, mongoURISanitized);
-const client = new MongoClient(mongoURI);
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="c1">// Setup MongoDb backing database</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">MongoClient</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;mongodb&#39;</span><span class="p">).</span><span class="nx">MongoClient</span>
+<span class="c1">// MongoDB credentials</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">username</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">encodeURIComponent</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">MONGODB_USER</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="s2">&quot;my-app_user&quot;</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">password</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">encodeURIComponent</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">MONGODB_PASSWORD</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="s2">&quot;ILoveTheList&quot;</span><span class="p">);</span>
+<span class="c1">// MongoDB connection info</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">mongoPort</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">MONGODB_PORT</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="mf">27017</span><span class="p">;</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">mongoHost</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">MONGODB_HOST</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="s1">&#39;localhost&#39;</span><span class="p">;</span>
+<span class="c1">// MongoDB connection string</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">mongoURI</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sb">`mongodb://</span><span class="si">${</span><span class="nx">username</span><span class="si">}</span><span class="sb">:</span><span class="si">${</span><span class="nx">password</span><span class="si">}</span><span class="sb">@</span><span class="si">${</span><span class="nx">mongoHost</span><span class="si">}</span><span class="sb">:</span><span class="si">${</span><span class="nx">mongoPort</span><span class="si">}</span><span class="sb">/my-app`</span><span class="p">;</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">mongoURISanitized</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sb">`mongodb://</span><span class="si">${</span><span class="nx">username</span><span class="si">}</span><span class="sb">:****@</span><span class="si">${</span><span class="nx">mongoHost</span><span class="si">}</span><span class="sb">:</span><span class="si">${</span><span class="nx">mongoPort</span><span class="si">}</span><span class="sb">/my-app`</span><span class="p">;</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;MongoDB connection string %s&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">mongoURISanitized</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">client</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">MongoClient</span><span class="p">(</span><span class="nx">mongoURI</span><span class="p">);</span>
+</code></pre></div>
 <p>Edit the <code>Dockerfile</code> to include the admin job code in the server image.<br />
-Add the following line after the other COPY directives for the server image:</p>
-<pre><code class="language-dockerfile">...
-COPY --from=build /usr/src/app/src/jobs .
-</code></pre>
-<p>Build and push the server image:</p>
-<pre><code class="language-zsh">docker build -t &lt;Your Docker Hub username&gt;/my-app-server:0.0.5 --target server .
-docker push &lt;Your Docker Hub username&gt;/my-app-server:0.0.5
-</code></pre>
+Add the following line after the other COPY directives for the server image:
+<div class="highlight"><pre><span></span><code>...
+<span class="k">COPY</span><span class="w"> </span>--from<span class="o">=</span>build<span class="w"> </span>/usr/src/app/src/jobs<span class="w"> </span>.
+</code></pre></div></p>
+<p>Build and push the server image:
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>&lt;Your<span class="w"> </span>Docker<span class="w"> </span>Hub<span class="w"> </span>username&gt;/my-app-server:0.0.5<span class="w"> </span>--target<span class="w"> </span>server<span class="w"> </span>.
+docker<span class="w"> </span>push<span class="w"> </span>&lt;Your<span class="w"> </span>Docker<span class="w"> </span>Hub<span class="w"> </span>username&gt;/my-app-server:0.0.5
+</code></pre></div></p>
 <p>Create a Kubernetes Job to run the admin job:
 Create <code>de-duplicate-job.yml</code>.
-Supply your Docker Hub username in the image tag:</p>
-<pre><code class="language-yaml">apiVersion: batch/v1
-kind: Job
-metadata:
-  name: de-duplicate
-spec:
-  template:
-    spec:
-      containers:
-      - name: my-app-server
-        image: &lt;Your Docker Hub username&gt;/my-app-server:0.0.5
-        command: [&quot;node&quot;, &quot;deDeuplicateJob.js&quot;]
-        env:
-        - name: MONGODB_HOST
-          valueFrom:
-            configMapKeyRef:
-              name: my-app-config
-              key: mongodb.host
-        - name: MONGODB_PORT
-          valueFrom:
-            configMapKeyRef:
-              name: my-app-config
-              key: mongodb.port
-        - name: MONGODB_USER
-          valueFrom:
-            secretKeyRef:
-              name: my-app-secure-config
-              key: mongodb.username
-        - name: MONGODB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: my-app-secure-config
-              key: mongodb.password
-      restartPolicy: Never
-  backoffLimit: 4
-</code></pre>
-<p>Run the Job:</p>
-<pre><code class="language-zsh">kubectl apply -f de-duplicate-job.yml -n production
-</code></pre>
-<p>Check the Job status:</p>
-<pre><code class="language-zsh">kubectl get jobs -n production
-</code></pre>
-<p>Get the name of the Job Pod:</p>
-<pre><code class="language-zsh">kubectl get pods -n production
-</code></pre>
-<p>Use the Pod name to view the logs for the Job Pod:</p>
-<pre><code class="language-zsh">kubectl logs &lt;Pod name&gt; -n production
-</code></pre>
+Supply your Docker Hub username in the image tag:
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">batch/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Job</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">de-duplicate</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">template</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">spec</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">containers</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app-server</span>
+<span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;Your Docker Hub username&gt;/my-app-server:0.0.5</span>
+<span class="w">        </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;node&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;deDeuplicateJob.js&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">        </span><span class="nt">env</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MONGODB_HOST</span>
+<span class="w">          </span><span class="nt">valueFrom</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">configMapKeyRef</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app-config</span>
+<span class="w">              </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mongodb.host</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MONGODB_PORT</span>
+<span class="w">          </span><span class="nt">valueFrom</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">configMapKeyRef</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app-config</span>
+<span class="w">              </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mongodb.port</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MONGODB_USER</span>
+<span class="w">          </span><span class="nt">valueFrom</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">secretKeyRef</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app-secure-config</span>
+<span class="w">              </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mongodb.username</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MONGODB_PASSWORD</span>
+<span class="w">          </span><span class="nt">valueFrom</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">secretKeyRef</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app-secure-config</span>
+<span class="w">              </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mongodb.password</span>
+<span class="w">      </span><span class="nt">restartPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Never</span>
+<span class="w">  </span><span class="nt">backoffLimit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span>
+</code></pre></div></p>
+<p>Run the Job:
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>de-duplicate-job.yml<span class="w"> </span>-n<span class="w"> </span>production
+</code></pre></div></p>
+<p>Check the Job status:
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span><span class="nb">jobs</span><span class="w"> </span>-n<span class="w"> </span>production
+</code></pre></div>
+Get the name of the Job Pod:
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>production
+</code></pre></div></p>
+<p>Use the Pod name to view the logs for the Job Pod:
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>logs<span class="w"> </span>&lt;Pod<span class="w"> </span>name&gt;<span class="w"> </span>-n<span class="w"> </span>production
+</code></pre></div></p>
 <h2 id="microk8s">MicroK8s</h2>
 <p><a href="https://microk8s.io/docs/install-raspberry-pi">On Raspberry Pi</a><br />
-Note: Your boot parameters might be in <code>/boot/cmdline.txt</code>. Add these options at the end of the file, then <code>sudo reboot</code>.</p>
-<pre><code>cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1
-</code></pre>
-<p>For Raspberry Pi OS <a href="https://snapcraft.io/docs/installing-snap-on-raspbian">install</a> <code>snap</code> first.</p>
-<pre><code class="language-zsh">sudo apt update
-sudo apt install snapd
-sudo reboot
-# ...reconnect after reboot
-sudo snap install core
-</code></pre>
-<p>Then install MicroK8s.</p>
-<pre><code class="language-zsh">pi@raspberrypi4:~ $ sudo snap install microk8s --classic
-pi@raspberrypi4:~ $ microk8s status --wait-ready
-pi@raspberrypi4:~ $ microk8s kubectl get all --all-namespaces
-pi@raspberrypi4:~ $ microk8s enable dns dashboard registry hostpath-storage # or any other addons
-pi@raspberrypi4:~ $ alias mkctl=&quot;microk8s kubectl&quot;
-pi@raspberrypi4:~ $ alias mkhelm=&quot;microk8s helm&quot;
-pi@raspberrypi4:~ $ mkctl create deployment nginx --image nginx
-pi@raspberrypi4:~ $ mkctl expose deployment nginx --port 80 --target-port 80 --selector app=nginx --type ClustetIP --name nginx
-pi@raspberrypi4:~ $ watch microk8s kubectl get all
-pi@raspberrypi4:~ $ microk8s reset
-pi@raspberrypi4:~ $ microk8s status
-pi@raspberrypi4:~ $ microk8s stop # microk8s start
-pi@raspberrypi4:~ $ microk8s kubectl version --output=yaml
-</code></pre>
+Note: Your boot parameters might be in <code>/boot/cmdline.txt</code>. Add these options at the end of the file, then <code>sudo reboot</code>.
+<div class="highlight"><pre><span></span><code>cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1
+</code></pre></div></p>
+<p>For Raspberry Pi OS <a href="https://snapcraft.io/docs/installing-snap-on-raspbian">install</a> <code>snap</code> first.
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>update
+sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>snapd
+sudo<span class="w"> </span>reboot
+<span class="c1"># ...reconnect after reboot</span>
+sudo<span class="w"> </span>snap<span class="w"> </span>install<span class="w"> </span>core
+</code></pre></div>
+Then install MicroK8s.
+<div class="highlight"><pre><span></span><code>pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>sudo<span class="w"> </span>snap<span class="w"> </span>install<span class="w"> </span>microk8s<span class="w"> </span>--classic
+pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>microk8s<span class="w"> </span>status<span class="w"> </span>--wait-ready
+pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>all<span class="w"> </span>--all-namespaces
+pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>dns<span class="w"> </span>dashboard<span class="w"> </span>registry<span class="w"> </span>hostpath-storage<span class="w"> </span><span class="c1"># or any other addons</span>
+pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span><span class="nb">alias</span><span class="w"> </span><span class="nv">mkctl</span><span class="o">=</span><span class="s2">&quot;microk8s kubectl&quot;</span>
+pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span><span class="nb">alias</span><span class="w"> </span><span class="nv">mkhelm</span><span class="o">=</span><span class="s2">&quot;microk8s helm&quot;</span>
+pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>mkctl<span class="w"> </span>create<span class="w"> </span>deployment<span class="w"> </span>nginx<span class="w"> </span>--image<span class="w"> </span>nginx
+pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>mkctl<span class="w"> </span>expose<span class="w"> </span>deployment<span class="w"> </span>nginx<span class="w"> </span>--port<span class="w"> </span><span class="m">80</span><span class="w"> </span>--target-port<span class="w"> </span><span class="m">80</span><span class="w"> </span>--selector<span class="w"> </span><span class="nv">app</span><span class="o">=</span>nginx<span class="w"> </span>--type<span class="w"> </span>ClustetIP<span class="w"> </span>--name<span class="w"> </span>nginx
+pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>watch<span class="w"> </span>microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>all
+pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>microk8s<span class="w"> </span>reset
+pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>microk8s<span class="w"> </span>status
+pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>microk8s<span class="w"> </span>stop<span class="w"> </span><span class="c1"># microk8s start</span>
+pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>microk8s<span class="w"> </span>kubectl<span class="w"> </span>version<span class="w"> </span>--output<span class="o">=</span>yaml
+</code></pre></div></p>
 <p>You can update a snap package with <code>sudo snap refresh</code>.</p>
-<p>Configuration file. These are the arguments you can add regarding log rotation <code>--container-log-max-files</code> and <code>--container-log-max-size</code>. They have default values. <a href="https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/">More info</a>.</p>
-<pre><code class="language-zsh">cat /var/snap/microk8s/current/args/kubelet
-</code></pre>
+<p>Configuration file. These are the arguments you can add regarding log rotation <code>--container-log-max-files</code> and <code>--container-log-max-size</code>. They have default values. <a href="https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/">More info</a>.
+<div class="highlight"><pre><span></span><code>cat<span class="w"> </span>/var/snap/microk8s/current/args/kubelet
+</code></pre></div></p>
 <h3 id="registry">Registry</h3>
-<p><a href="https://microk8s.io/docs/registry-built-in">Registry doc</a></p>
-<pre><code class="language-zsh">microk8s enable registry
-</code></pre>
-<p>The containerd daemon used by MicroK8s is configured to trust this insecure registry. To upload images we have to tag them with <code>localhost:32000/your-image</code> before pushing them.</p>
+<p><a href="https://microk8s.io/docs/registry-built-in">Registry doc</a>
+<div class="highlight"><pre><span></span><code>microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>registry
+</code></pre></div>
+The containerd daemon used by MicroK8s is configured to trust this insecure registry. To upload images we have to tag them with <code>localhost:32000/your-image</code> before pushing them.</p>
 <h3 id="microk8s-dashboard">MicroK8s dashboard</h3>
-<p>If RBAC is not enabled access the dashboard using the token retrieved with:</p>
-<pre><code class="language-zsh">microk8s kubectl describe secret -n kube-system microk8s-dashboard-token
-</code></pre>
-<p>Use this token in the https login UI of the <code>kubernetes-dashboard</code> service.
+<p>If RBAC is not enabled access the dashboard using the token retrieved with:
+<div class="highlight"><pre><span></span><code>microk8s<span class="w"> </span>kubectl<span class="w"> </span>describe<span class="w"> </span>secret<span class="w"> </span>-n<span class="w"> </span>kube-system<span class="w"> </span>microk8s-dashboard-token
+</code></pre></div>
+Use this token in the https login UI of the <code>kubernetes-dashboard</code> service.
 In an RBAC enabled setup (<code>microk8s enable rbac</code>) you need to create a user with restricted permissions as shown <a href="https://github.com/kubernetes/dashboard/blob/master/docs/user/access-control/creating-sample-user.md">here</a>.</p>
-<p>To access remotely from anywhere with <a href="https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#port-forward"><code>port-forward</code></a>:</p>
-<pre><code class="language-zsh">microk8s kubectl port-forward -n kube-system service/kubernetes-dashboard 10443:443 --address 0.0.0.0
-</code></pre>
+<p>To access remotely from anywhere with <a href="https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#port-forward"><code>port-forward</code></a>:
+<div class="highlight"><pre><span></span><code>microk8s<span class="w"> </span>kubectl<span class="w"> </span>port-forward<span class="w"> </span>-n<span class="w"> </span>kube-system<span class="w"> </span>service/kubernetes-dashboard<span class="w"> </span><span class="m">10443</span>:443<span class="w"> </span>--address<span class="w"> </span><span class="m">0</span>.0.0.0
+</code></pre></div></p>
 <p>You can then access the Dashboard with IP or hostname as in https://raspberrypi4.local:10443/</p>
 <h3 id="troubleshooting">Troubleshooting</h3>
-<pre><code class="language-zsh">microk8s inspect
-</code></pre>
-<p>MicroK8s might not recognize that cgroup memory is enabled but you can check with <code>cat /proc/cgroups</code>.</p>
+<p><div class="highlight"><pre><span></span><code>microk8s<span class="w"> </span>inspect
+</code></pre></div>
+MicroK8s might not recognize that cgroup memory is enabled but you can check with <code>cat /proc/cgroups</code>.</p>
 <h2 id="kubernetes-dashboard">Kubernetes Dashboard</h2>
-<p><a href="https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/">Documentation</a></p>
-<pre><code class="language-zsh">kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.6.1/aio/deploy/recommended.yaml
-</code></pre>
-<pre><code class="language-zsh">cat &lt;&lt; EOF &gt; dashboard-adminuser.yaml
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: admin-user
-  namespace: kubernetes-dashboard
+<p><a href="https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/">Documentation</a>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://raw.githubusercontent.com/kubernetes/dashboard/v2.6.1/aio/deploy/recommended.yaml
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>cat<span class="w"> </span><span class="s">&lt;&lt; EOF &gt; dashboard-adminuser.yaml</span>
+<span class="s">apiVersion: v1</span>
+<span class="s">kind: ServiceAccount</span>
+<span class="s">metadata:</span>
+<span class="s">  name: admin-user</span>
+<span class="s">  namespace: kubernetes-dashboard</span>
 
----
+<span class="s">---</span>
 
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: admin-user
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: cluster-admin
-subjects:
-- kind: ServiceAccount
-  name: admin-user
-  namespace: kubernetes-dashboard
-EOF
-</code></pre>
-<pre><code class="language-zsh">kubectl apply -f dashboard-adminuser.yaml
+<span class="s">apiVersion: rbac.authorization.k8s.io/v1</span>
+<span class="s">kind: ClusterRoleBinding</span>
+<span class="s">metadata:</span>
+<span class="s">  name: admin-user</span>
+<span class="s">roleRef:</span>
+<span class="s">  apiGroup: rbac.authorization.k8s.io</span>
+<span class="s">  kind: ClusterRole</span>
+<span class="s">  name: cluster-admin</span>
+<span class="s">subjects:</span>
+<span class="s">- kind: ServiceAccount</span>
+<span class="s">  name: admin-user</span>
+<span class="s">  namespace: kubernetes-dashboard</span>
+<span class="s">EOF</span>
+</code></pre></div></p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>dashboard-adminuser.yaml
 
-kubectl proxy
-# Kubectl will make Dashboard available at 
-# http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
+kubectl<span class="w"> </span>proxy
+<span class="c1"># Kubectl will make Dashboard available at </span>
+<span class="c1"># http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/</span>
 
-kubectl -n kubernetes-dashboard create token admin-user
-# Now copy the token and paste it into the Enter token field on the login screen. 
-</code></pre>
+kubectl<span class="w"> </span>-n<span class="w"> </span>kubernetes-dashboard<span class="w"> </span>create<span class="w"> </span>token<span class="w"> </span>admin-user
+<span class="c1"># Now copy the token and paste it into the Enter token field on the login screen. </span>
+</code></pre></div>
 
 
 
@@ -1690,7 +2034,7 @@ kubectl -n kubernetes-dashboard create token admin-user
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.expand", "navigation.top"], "search": "../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.expand", "navigation.top", "content.code.copy"], "search": "../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
       <script src="../assets/javascripts/bundle.efa0ade1.min.js"></script>

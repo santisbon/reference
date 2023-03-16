@@ -19,20 +19,38 @@ nav:
     - Node: 'node.md'
     - MkDocs: 'mkdocs.md'
 markdown_extensions:
-    - toc:
-        permalink: "#"
+  - toc:
+    permalink: "#"
 theme:
-    name: material
-    features:
-        #- navigation.sections
-        - navigation.expand
-        - navigation.top
+  name: material
+  features:
+    #- navigation.sections
+    - navigation.expand
+    - navigation.top
+    - content.code.copy
+  palette:
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/brightness-5
+        name: Switch to dark mode
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-3
+        name: Switch to light mode
 extra_javascript: 
-    - https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML
+  - https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML
 markdown_extensions:
-    - mdx_math
-    - admonition
-    - sane_lists
+  - mdx_math
+  - admonition
+  - sane_lists
+  - pymdownx.highlight:
+      auto_title: false
+  - pymdownx.superfences
+  - pymdownx.keys
 docs_dir: src
 edit_uri: edit/main/src/
 site_dir: docs

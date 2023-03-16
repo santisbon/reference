@@ -56,12 +56,16 @@
   
     
     
+      
+    
     
     
     
     <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
   
     
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
@@ -110,6 +114,26 @@
         </div>
       </div>
     </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-2.69L23.31 12 20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69Z"/></svg>
+            </label>
+          
+        
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 2c-1.05 0-2.05.16-3 .46 4.06 1.27 7 5.04 7 9.54 0 4.5-2.94 8.27-7 9.54.95.3 1.95.46 3 .46a10 10 0 0 0 10-10A10 10 0 0 0 9 2Z"/></svg>
+            </label>
+          
+        
+      </form>
     
     
     
@@ -504,48 +528,48 @@
 <p><strong>Install MySQL Community Edition </strong>
 Use your OS package manager or download .dmg installer for macOS. Take note of the root password.</p>
 <p><strong>Configure your PATH</strong>
-Add the mysql location to your PATH. Typically as part of your ~/.bash_profile</p>
-<pre><code class="language-zsh">export PATH=/usr/local/mysql/bin:$PATH
-</code></pre>
+Add the mysql location to your PATH. Typically as part of your ~/.bash_profile
+<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span>/usr/local/mysql/bin:<span class="nv">$PATH</span>
+</code></pre></div></p>
 <p><strong>Start the MySQL service</strong>
-On macOS</p>
-<pre><code class="language-zsh">sudo launchctl load -F /Library/LaunchDaemons/com.oracle.oss.mysql.mysqld.plist
-</code></pre>
+On macOS
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>launchctl<span class="w"> </span>load<span class="w"> </span>-F<span class="w"> </span>/Library/LaunchDaemons/com.oracle.oss.mysql.mysqld.plist
+</code></pre></div></p>
 <p><strong>Verify it's running</strong>
-On macOS</p>
-<pre><code class="language-zsh">sudo launchctl list | grep mysql
-</code></pre>
+On macOS
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>launchctl<span class="w"> </span>list<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>mysql
+</code></pre></div></p>
 <p><strong>Connect to your MySQL instance</strong>
 Use MySQL Workbench or other client tool.</p>
 <p><strong>To stop MySQL</strong>
-On macOS</p>
-<pre><code class="language-zsh">sudo launchctl unload -F /Library/LaunchDaemons/com.oracle.oss.mysql.mysqld.plist
-</code></pre>
+On macOS
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>launchctl<span class="w"> </span>unload<span class="w"> </span>-F<span class="w"> </span>/Library/LaunchDaemons/com.oracle.oss.mysql.mysqld.plist
+</code></pre></div></p>
 <p><strong>Exporting data</strong>
 If you need to export data you may need to disable or set a security setting. On macOS:</p>
-<p>View the variable using your SQL client. If it's NULL you will be restricted regarding file operations.</p>
-<pre><code class="language-sql">show variables like 'secure_file_priv';
-</code></pre>
-<p>Open the configuration file.</p>
-<pre><code class="language-zsh">cd /Library/LaunchDaemons
-sudo nano com.oracle.oss.mysql.mysqld.plist
-</code></pre>
-<p>and set the --secure-file-priv to an empty string (to disable the restriction) or a dir of your choice.</p>
-<pre><code class="language-xml">&lt;key&gt;ProgramArguments&lt;/key&gt;
-    &lt;array&gt;
-        &lt;string&gt;--secure-file-priv=&lt;/string&gt;
-    &lt;/array&gt;
-</code></pre>
-<p>Then restart MySQL. Now you can export data:</p>
-<pre><code class="language-sql">SELECT  *
-INTO    OUTFILE 'your_file.csv'
-        FIELDS TERMINATED BY ',' 
-        ENCLOSED BY '&quot;'
-FROM    `your_db`.`your_table`
-</code></pre>
-<p>You can find your exported data:</p>
-<pre><code class="language-zsh">sudo find /usr/local/mysql/data -name your_file.csv
-</code></pre>
+<p>View the variable using your SQL client. If it's NULL you will be restricted regarding file operations.
+<div class="highlight"><pre><span></span><code><span class="k">show</span><span class="w"> </span><span class="n">variables</span><span class="w"> </span><span class="k">like</span><span class="w"> </span><span class="s1">&#39;secure_file_priv&#39;</span><span class="p">;</span>
+</code></pre></div></p>
+<p>Open the configuration file.
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>/Library/LaunchDaemons
+sudo<span class="w"> </span>nano<span class="w"> </span>com.oracle.oss.mysql.mysqld.plist
+</code></pre></div>
+and set the --secure-file-priv to an empty string (to disable the restriction) or a dir of your choice.
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;key&gt;</span>ProgramArguments<span class="nt">&lt;/key&gt;</span>
+<span class="w">    </span><span class="nt">&lt;array&gt;</span>
+<span class="w">        </span><span class="nt">&lt;string&gt;</span>--secure-file-priv=<span class="nt">&lt;/string&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/array&gt;</span>
+</code></pre></div></p>
+<p>Then restart MySQL. Now you can export data:
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w">  </span><span class="o">*</span>
+<span class="k">INTO</span><span class="w">    </span><span class="n">OUTFILE</span><span class="w"> </span><span class="s1">&#39;your_file.csv&#39;</span>
+<span class="w">        </span><span class="n">FIELDS</span><span class="w"> </span><span class="n">TERMINATED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="s1">&#39;,&#39;</span><span class="w"> </span>
+<span class="w">        </span><span class="n">ENCLOSED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="s1">&#39;&quot;&#39;</span>
+<span class="k">FROM</span><span class="w">    </span><span class="o">`</span><span class="n">your_db</span><span class="o">`</span><span class="p">.</span><span class="o">`</span><span class="n">your_table</span><span class="o">`</span>
+</code></pre></div></p>
+<p>You can find your exported data:
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>find<span class="w"> </span>/usr/local/mysql/data<span class="w"> </span>-name<span class="w"> </span>your_file.csv
+</code></pre></div></p>
 
 
 
@@ -588,7 +612,7 @@ FROM    `your_db`.`your_table`
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.expand", "navigation.top"], "search": "../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.expand", "navigation.top", "content.code.copy"], "search": "../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
       <script src="../assets/javascripts/bundle.efa0ade1.min.js"></script>

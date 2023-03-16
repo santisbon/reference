@@ -56,12 +56,16 @@
   
     
     
+      
+    
     
     
     
     <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
   
     
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
@@ -110,6 +114,26 @@
         </div>
       </div>
     </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-2.69L23.31 12 20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69Z"/></svg>
+            </label>
+          
+        
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 2c-1.05 0-2.05.16-3 .46 4.06 1.27 7 5.04 7 9.54 0 4.5-2.94 8.27-7 9.54.95.3 1.95.46 3 .46a10 10 0 0 0 10-10A10 10 0 0 0 9 2Z"/></svg>
+            </label>
+          
+        
+      </form>
     
     
     
@@ -504,42 +528,42 @@
 <p><strong>Install</strong></p>
 <p>macOS<br />
 Download the Node.js installer from https://nodejs.org/en/download/<br />
-or</p>
-<pre><code class="language-zsh">brew install node
-</code></pre>
-<p>Linux  </p>
-<pre><code class="language-zsh">sudo apt install nodejs
-sudo apt install npm
-</code></pre>
+or
+<div class="highlight"><pre><span></span><code>brew<span class="w"> </span>install<span class="w"> </span>node
+</code></pre></div></p>
+<p>Linux<br />
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>nodejs
+sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>npm
+</code></pre></div></p>
 <p>[Optional] Install nvm from https://github.com/creationix/nvm to manage multiple versions of node and npm.  </p>
 <p>Windows Subsystem for Linux<br />
-On WSL the recommended approach for installing a current version of Node.js is nvm.</p>
-<pre><code class="language-zsh">touch ~/.bashrc
-curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
-# Reload your configuration
-source ~/.bashrc
-nvm install node
-# Upgrade npm. You may need to run this twice on WSL.
-npm install npm@latest -g
-</code></pre>
+On WSL the recommended approach for installing a current version of Node.js is nvm.
+<div class="highlight"><pre><span></span><code>touch<span class="w"> </span>~/.bashrc
+curl<span class="w"> </span>-o-<span class="w"> </span>https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>bash
+<span class="c1"># Reload your configuration</span>
+<span class="nb">source</span><span class="w"> </span>~/.bashrc
+nvm<span class="w"> </span>install<span class="w"> </span>node
+<span class="c1"># Upgrade npm. You may need to run this twice on WSL.</span>
+npm<span class="w"> </span>install<span class="w"> </span>npm@latest<span class="w"> </span>-g
+</code></pre></div></p>
 <p><strong>Update npm</strong>
-If you installed npm as part of node you may need to update npm.</p>
-<pre><code class="language-zsh">sudo npm install -g npm
-</code></pre>
-<p><strong>Initialize a node project by creating a package.json</strong></p>
-<pre><code class="language-zsh">npm init
-</code></pre>
-<p><strong>Installing dependencies examples</strong></p>
-<pre><code class="language-zsh">sudo npm install --save ask-sdk moment
-sudo npm install --save-dev mocha chai eslint virtual-alexa
-</code></pre>
-<p><strong>Troubleshooting mocha</strong>
+If you installed npm as part of node you may need to update npm.
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>npm<span class="w"> </span>install<span class="w"> </span>-g<span class="w"> </span>npm
+</code></pre></div></p>
+<p><strong>Initialize a node project by creating a package.json</strong>
+<div class="highlight"><pre><span></span><code>npm<span class="w"> </span>init
+</code></pre></div></p>
+<p><strong>Installing dependencies examples</strong>
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>npm<span class="w"> </span>install<span class="w"> </span>--save<span class="w"> </span>ask-sdk<span class="w"> </span>moment
+sudo<span class="w"> </span>npm<span class="w"> </span>install<span class="w"> </span>--save-dev<span class="w"> </span>mocha<span class="w"> </span>chai<span class="w"> </span>eslint<span class="w"> </span>virtual-alexa
+</code></pre></div>
+<strong>Troubleshooting mocha</strong>
 If you get an error running mocha tests e.g. <code>node_modules/.bin/mocha</code> not having execute permissions or <em>mocha Error: Cannot find module './options'</em> delete your node_modules folder and <code>npm install</code>.</p>
-<p><strong>Set up ESLint with a configuration file</strong></p>
-<pre><code class="language-zsh">eslint --init
-# you may need to run it as:
-# sudo ./node_modules/.bin/eslint --init
-</code></pre>
+<p><strong>Set up ESLint with a configuration file</strong>
+<div class="highlight"><pre><span></span><code>eslint<span class="w"> </span>--init
+<span class="c1"># you may need to run it as:</span>
+<span class="c1"># sudo ./node_modules/.bin/eslint --init</span>
+</code></pre></div></p>
 
 
 
@@ -582,7 +606,7 @@ If you get an error running mocha tests e.g. <code>node_modules/.bin/mocha</code
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.expand", "navigation.top"], "search": "../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.expand", "navigation.top", "content.code.copy"], "search": "../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
       <script src="../assets/javascripts/bundle.efa0ade1.min.js"></script>

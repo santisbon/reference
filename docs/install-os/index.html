@@ -56,12 +56,16 @@
   
     
     
+      
+    
     
     
     
     <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
   
     
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
@@ -110,6 +114,26 @@
         </div>
       </div>
     </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-2.69L23.31 12 20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69Z"/></svg>
+            </label>
+          
+        
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 2c-1.05 0-2.05.16-3 .46 4.06 1.27 7 5.04 7 9.54 0 4.5-2.94 8.27-7 9.54.95.3 1.95.46 3 .46a10 10 0 0 0 10-10A10 10 0 0 0 9 2Z"/></svg>
+            </label>
+          
+        
+      </form>
     
     
     
@@ -501,15 +525,15 @@
 
 
 <h1 id="do-a-clean-install-of-the-os">Do a clean install of the OS</h1>
-<p>On macOS download the new version from System Preferences, Software Update (or the Mac App Store) and create the bootable media with:</p>
-<pre><code class="language-zsh">sudo /Applications/Install\ macOS\ Ventura.app/Contents/Resources/createinstallmedia --volume /Volumes/MyVolume/
-</code></pre>
-<p>using the volume that matches the name of the external drive you are using.  </p>
+<p>On macOS download the new version from System Preferences, Software Update (or the Mac App Store) and create the bootable media with:
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>/Applications/Install<span class="se">\ </span>macOS<span class="se">\ </span>Ventura.app/Contents/Resources/createinstallmedia<span class="w"> </span>--volume<span class="w"> </span>/Volumes/MyVolume/
+</code></pre></div>
+using the volume that matches the name of the external drive you are using.  </p>
 <p>If you have an Intel-powered Mac here's how to install macOS from a bootable installer:</p>
 <ol>
 <li>Plug in your bootable media.</li>
 <li>Turn off your Mac.</li>
-<li>Press and hold Option/Alt while the Mac starts up - keep pressing the key until you see a screen showing the bootable volume.</li>
+<li>Press and hold <span class="keys"><kbd class="key-option">Option</kbd></span> while the Mac starts up - keep pressing the key until you see a screen showing the bootable volume.</li>
 </ol>
 <p>If you have an Apple silicon Mac here's how to install macOS from a bootable installer:</p>
 <ol>
@@ -517,9 +541,9 @@
 <li>Turn off your Mac.</li>
 <li>Press the power button to turn on the Mac - but keep it pressed until you see the startup options window including your bootable volume.  </li>
 </ol>
-<p>Open Finder and show hidden files with Command + Shift + . (period) or with</p>
-<pre><code class="language-zsh">defaults write com.apple.finder AppleShowAllFiles TRUE; killall Finder
-</code></pre>
+<p>Open Finder and show hidden files with Command + Shift + . (period) or with
+<div class="highlight"><pre><span></span><code>defaults<span class="w"> </span>write<span class="w"> </span>com.apple.finder<span class="w"> </span>AppleShowAllFiles<span class="w"> </span>TRUE<span class="p">;</span><span class="w"> </span>killall<span class="w"> </span>Finder
+</code></pre></div></p>
 
 
 
@@ -562,7 +586,7 @@
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.expand", "navigation.top"], "search": "../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.expand", "navigation.top", "content.code.copy"], "search": "../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
       <script src="../assets/javascripts/bundle.efa0ade1.min.js"></script>

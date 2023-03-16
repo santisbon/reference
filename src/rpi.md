@@ -1,22 +1,20 @@
 # Raspberry Pi
 ## Setup
 
-1. Write and preconfigure Raspberry Pi OS on the SD card using Raspberry Pi Imager (```brew install --cask raspberry-pi-imager```). Make sure you use the correct version of the OS (32-bit or 64-bit).  
-    1.1. Change the default password for the ```pi``` user.  
+1. Write and preconfigure Raspberry Pi OS on the SD card using Raspberry Pi Imager (`brew install --cask raspberry-pi-imager`). Make sure you use the correct version of the OS (32-bit or 64-bit).  
+    1.1. Change the default password for the `pi` user.  
     1.2. Enable SSH (password or ssh keys).  
     1.3. Configure WiFi if needed.  
     1.4. Take note of the hostname.  
 2. Insert the SD card in your Raspberry Pi and turn it on. 
 
 If you didn't do so during setup, you can still generate and add an ssh key at any time. Example:
-```zsh
-# on your laptop
+```zsh title="on your laptop"
 ssh-keygen
 ssh-copy-id -i ~/.ssh/id_rsa pi@raspberrypi4.local
 ```
 To remove password authentication:
-```zsh
-# on the Pi
+```zsh title="on the Pi"
 sudo nano /etc/ssh/sshd_config
 ```
 and replace `#PasswordAuthentication yes` with `PasswordAuthentication no`.
@@ -33,7 +31,7 @@ Find the IP of your Raspberry Pi using its hostname or find all devices on your 
 ```zsh
 arp raspberrypi4.local 
 ```
-SSH into it with the ```pi``` user and the IP address or hostname. Examples:
+SSH into it with the `pi` user and the IP address or hostname. Examples:
 ```zsh
 ssh pi@192.168.xxx.xxx
 ssh pi@raspberrypi4.local
@@ -47,8 +45,8 @@ pi@raspberrypi4:~ $ sudo raspi-config
 # Tab to the Finish option and reboot.
 ```
 Update it.  
-```upgrade``` is used to install available upgrades of all packages currently installed on the system. New packages will be installed if required to satisfy dependencies, but existing packages will never be removed. If an upgrade for a package requires the removal of an installed package the upgrade for this package isn't performed.  
-```full-upgrade``` performs the function of upgrade but will remove currently installed packages if this is needed to upgrade the system as a whole.
+`upgrade` is used to install available upgrades of all packages currently installed on the system. New packages will be installed if required to satisfy dependencies, but existing packages will never be removed. If an upgrade for a package requires the removal of an installed package the upgrade for this package isn't performed.  
+`full-upgrade` performs the function of upgrade but will remove currently installed packages if this is needed to upgrade the system as a whole.
 ```zsh
 pi@raspberrypi4:~ $ sudo apt update # updates the package list
 pi@raspberrypi4:~ $ sudo apt full-upgrade
@@ -127,8 +125,8 @@ cat /etc/os-release
 ```
 
 Architecture    
-If the following returns a ```Tag_ABI_VFP_args``` tag of ```VFP registers```, it's an ```armhf``` (```arm```) system.  
-A blank output means ```armel``` (```arm/v6```).
+If the following returns a `Tag_ABI_VFP_args` tag of `VFP registers`, it's an `armhf` (`arm`) system.  
+A blank output means `armel` (`arm/v6`).
 ```zsh
 pi@raspberrypi2:~ $ readelf -A /proc/self/exe | grep Tag_ABI_VFP_args
 ```

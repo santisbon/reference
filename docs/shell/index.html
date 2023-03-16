@@ -56,12 +56,16 @@
   
     
     
+      
+    
     
     
     
     <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
   
     
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
@@ -110,6 +114,26 @@
         </div>
       </div>
     </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-2.69L23.31 12 20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69Z"/></svg>
+            </label>
+          
+        
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 2c-1.05 0-2.05.16-3 .46 4.06 1.27 7 5.04 7 9.54 0 4.5-2.94 8.27-7 9.54.95.3 1.95.46 3 .46a10 10 0 0 0 10-10A10 10 0 0 0 9 2Z"/></svg>
+            </label>
+          
+        
+      </form>
     
     
     
@@ -576,75 +600,75 @@
 
 <h1 id="shell">Shell</h1>
 <h2 id="bash">Bash</h2>
-<p>If you want to use bash</p>
-<pre><code class="language-zsh">brew install bash # get the latest version of bash
-chsh -s $(which bash)
-nano ~/.bash_profile # and paste from sample dot file
-</code></pre>
+<p>If you want to use bash
+<div class="highlight"><pre><span></span><code>brew<span class="w"> </span>install<span class="w"> </span>bash<span class="w"> </span><span class="c1"># get the latest version of bash</span>
+chsh<span class="w"> </span>-s<span class="w"> </span><span class="k">$(</span>which<span class="w"> </span>bash<span class="k">)</span>
+nano<span class="w"> </span>~/.bash_profile<span class="w"> </span><span class="c1"># and paste from sample dot file</span>
+</code></pre></div></p>
 <h2 id="zsh">Zsh</h2>
-<pre><code class="language-zsh">brew install zsh # get the latest version
+<div class="highlight"><pre><span></span><code>brew<span class="w"> </span>install<span class="w"> </span>zsh<span class="w"> </span><span class="c1"># get the latest version</span>
 
-# You may need to add the Homebrew version of Zsh to the list on /etc/shells
-sudo nano /etc/shells # add the output of &quot;which zsh&quot; to the top of the list, save the file.
+<span class="c1"># You may need to add the Homebrew version of Zsh to the list on /etc/shells</span>
+sudo<span class="w"> </span>nano<span class="w"> </span>/etc/shells<span class="w"> </span><span class="c1"># add the output of &quot;which zsh&quot; to the top of the list, save the file.</span>
 
-where zsh # you might see both the shell that came with your Mac and the latest from Homebrew
-which zsh # make sure this returns the one from Homebrew.
+where<span class="w"> </span>zsh<span class="w"> </span><span class="c1"># you might see both the shell that came with your Mac and the latest from Homebrew</span>
+which<span class="w"> </span>zsh<span class="w"> </span><span class="c1"># make sure this returns the one from Homebrew.</span>
 
-chsh -s $(which zsh)
-# Install Oh My Zsh, a framework for managing your Zsh configuration with plugins and themes
-sh -c &quot;$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)&quot;
-</code></pre>
+chsh<span class="w"> </span>-s<span class="w"> </span><span class="k">$(</span>which<span class="w"> </span>zsh<span class="k">)</span>
+<span class="c1"># Install Oh My Zsh, a framework for managing your Zsh configuration with plugins and themes</span>
+sh<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh<span class="k">)</span><span class="s2">&quot;</span>
+</code></pre></div>
 <p><a href="https://ohmyz.sh/">Oh My Zsh</a><br />
-Add any built-in <a href="https://github.com/ohmyzsh/ohmyzsh/wiki/Plugins">plugins</a> you need to your <code>~/.zshrc</code></p>
-<pre><code class="language-zsh">plugins=(git macos python)
-</code></pre>
+Add any built-in <a href="https://github.com/ohmyzsh/ohmyzsh/wiki/Plugins">plugins</a> you need to your <code>~/.zshrc</code>
+<div class="highlight"><pre><span></span><code><span class="nv">plugins</span><span class="o">=(</span>git<span class="w"> </span>macos<span class="w"> </span>python<span class="o">)</span>
+</code></pre></div></p>
 <p>You can also add custom plugins by cloning the repo into the plugins directory or with Homebrew. </p>
-<p>This plugin auto suggests previous commands. </p>
-<pre><code class="language-zsh">git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
-# add zsh-autosuggestions to plugins list in ~/.zshrc and:
-source ~/.zshrc
-</code></pre>
-<p>This plugin <a href="https://github.com/zsh-users/zsh-syntax-highlighting">zsh-syntax-highlighting</a> highlights valid commands green and invalid ones red so you don't have to test the command to see if it will work.</p>
-<pre><code class="language-zsh">git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-</code></pre>
-<p>Or just use Homebrew:</p>
-<pre><code class="language-zsh">brew install zsh-syntax-highlighting
-# To activate the syntax highlighting, add the following at the end of your ~/.zshrc:
-source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-</code></pre>
-<p>Some Oh My Zsh themes like <a href="https://spaceship-prompt.sh/">Spaceship</a> have requirements like the Powerline Fonts. Get them with:</p>
-<pre><code class="language-zsh">git clone https://github.com/powerline/fonts.git --depth=1
+<p>This plugin auto suggests previous commands. 
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/zsh-users/zsh-autosuggestions<span class="w"> </span><span class="nv">$ZSH_CUSTOM</span>/plugins/zsh-autosuggestions
+<span class="c1"># add zsh-autosuggestions to plugins list in ~/.zshrc and:</span>
+<span class="nb">source</span><span class="w"> </span>~/.zshrc
+</code></pre></div></p>
+<p>This plugin <a href="https://github.com/zsh-users/zsh-syntax-highlighting">zsh-syntax-highlighting</a> highlights valid commands green and invalid ones red so you don't have to test the command to see if it will work.
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/zsh-users/zsh-syntax-highlighting.git<span class="w"> </span><span class="si">${</span><span class="nv">ZSH_CUSTOM</span><span class="k">:-</span><span class="p">~/.oh-my-zsh/custom</span><span class="si">}</span>/plugins/zsh-syntax-highlighting
+</code></pre></div>
+Or just use Homebrew:
+<div class="highlight"><pre><span></span><code>brew<span class="w"> </span>install<span class="w"> </span>zsh-syntax-highlighting
+<span class="c1"># To activate the syntax highlighting, add the following at the end of your ~/.zshrc:</span>
+<span class="nb">source</span><span class="w"> </span><span class="k">$(</span>brew<span class="w"> </span>--prefix<span class="k">)</span>/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+</code></pre></div></p>
+<p>Some Oh My Zsh themes like <a href="https://spaceship-prompt.sh/">Spaceship</a> have requirements like the Powerline Fonts. Get them with:
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/powerline/fonts.git<span class="w"> </span>--depth<span class="o">=</span><span class="m">1</span>
 ./fonts/install.sh
-rm -rf fonts
-</code></pre>
-<p>You can also install fonts with Homebrew by adding the fonts repository. <a href="https://github.com/tonsky/FiraCode/wiki/VS-Code-Instructions">Fira Code</a> is a good one for programming and computer science.</p>
-<pre><code class="language-zsh">brew tap homebrew/cask-fonts
-brew install --cask font-fira-code
-</code></pre>
-<p>Install your Oh My Zsh theme e.g. Spaceship</p>
-<pre><code class="language-zsh">brew install spaceship
-# If the theme is not copied to your themes folder, sim link from the Homebrew dir to your custom themes folder e.g.
-ln -sf $(brew --prefix)/Cellar/spaceship/4.4.1/spaceship.zsh $ZSH_CUSTOM/themes/spaceship.zsh-theme
+rm<span class="w"> </span>-rf<span class="w"> </span>fonts
+</code></pre></div></p>
+<p>You can also install fonts with Homebrew by adding the fonts repository. <a href="https://github.com/tonsky/FiraCode/wiki/VS-Code-Instructions">Fira Code</a> is a good one for programming and computer science.
+<div class="highlight"><pre><span></span><code>brew<span class="w"> </span>tap<span class="w"> </span>homebrew/cask-fonts
+brew<span class="w"> </span>install<span class="w"> </span>--cask<span class="w"> </span>font-fira-code
+</code></pre></div>
+Install your Oh My Zsh theme e.g. Spaceship
+<div class="highlight"><pre><span></span><code>brew<span class="w"> </span>install<span class="w"> </span>spaceship
+<span class="c1"># If the theme is not copied to your themes folder, sim link from the Homebrew dir to your custom themes folder e.g.</span>
+ln<span class="w"> </span>-sf<span class="w"> </span><span class="k">$(</span>brew<span class="w"> </span>--prefix<span class="k">)</span>/Cellar/spaceship/4.4.1/spaceship.zsh<span class="w"> </span><span class="nv">$ZSH_CUSTOM</span>/themes/spaceship.zsh-theme
 
-touch ~/.spaceshiprc.zsh
-</code></pre>
-<p>Any time you edit your zsh configuration file you can reload it to apply changes.</p>
-<pre><code class="language-zsh">source ~/.zshrc
-</code></pre>
+touch<span class="w"> </span>~/.spaceshiprc.zsh
+</code></pre></div></p>
+<p>Any time you edit your zsh configuration file you can reload it to apply changes.
+<div class="highlight"><pre><span></span><code><span class="nb">source</span><span class="w"> </span>~/.zshrc
+</code></pre></div></p>
 <h2 id="terminal-replacement">Terminal replacement</h2>
-<p>You can use <a href="https://iterm2.com/index.html">iTerm2</a></p>
-<pre><code class="language-zsh">brew install --cask iterm2
-</code></pre>
+<p>You can use <a href="https://iterm2.com/index.html">iTerm2</a>
+<div class="highlight"><pre><span></span><code>brew<span class="w"> </span>install<span class="w"> </span>--cask<span class="w"> </span>iterm2
+</code></pre></div></p>
 <p>After you have installed the font(s) required by your Oh My Zsh theme set your iTerm preferences like default shell and font.<br />
 Verify that you're using the shell you want. In the output of the <code>env</code> command look for something like <code>zsh=/opt/homebrew/bin/zsh</code>.</p>
-<p>Install iTerm 2 color schemes</p>
-<pre><code class="language-zsh">git clone https://github.com/mbadolato/iTerm2-Color-Schemes.git
-cd iTerm2-Color-Schemes
+<p>Install iTerm 2 color schemes
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/mbadolato/iTerm2-Color-Schemes.git
+<span class="nb">cd</span><span class="w"> </span>iTerm2-Color-Schemes
 
-# Import all color schemes
-tools/import-scheme.sh schemes/*
-</code></pre>
-<p>Restart iTerm 2 (need to quit iTerm 2 to reload the configuration file).<br />
+<span class="c1"># Import all color schemes</span>
+tools/import-scheme.sh<span class="w"> </span>schemes/*
+</code></pre></div>
+Restart iTerm 2 (need to quit iTerm 2 to reload the configuration file).<br />
 iTerm2 &gt; Preferences &gt; Profile &gt; Colors &gt; Color Presets </p>
 
 
@@ -688,7 +712,7 @@ iTerm2 &gt; Preferences &gt; Profile &gt; Colors &gt; Color Presets </p>
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.expand", "navigation.top"], "search": "../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.expand", "navigation.top", "content.code.copy"], "search": "../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
       <script src="../assets/javascripts/bundle.efa0ade1.min.js"></script>
