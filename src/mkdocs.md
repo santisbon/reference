@@ -13,7 +13,7 @@ pip install mkdocs python-markdown-math
 * `mkdocs build` - Build the documentation site.
 * `mkdocs -h` - Print help message and exit.
 
-## Project layout
+## Default project layout
 
     mkdocs.yml    # The configuration file.
     docs/
