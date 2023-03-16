@@ -53,10 +53,11 @@ and set the --secure-file-priv to an empty string (to disable the restriction) o
 
 Then restart MySQL. Now you can export data:
 ```sql
-SELECT *
-INTO OUTFILE 'your_file.csv'
-FIELDS TERMINATED BY ',' ENCLOSED BY '"'
-FROM `your_db`.`your_table`
+SELECT  *
+INTO    OUTFILE 'your_file.csv'
+        FIELDS TERMINATED BY ',' 
+        ENCLOSED BY '"'
+FROM    `your_db`.`your_table`
 ```
 
 You can find your exported data:

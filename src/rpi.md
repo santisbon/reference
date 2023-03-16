@@ -1,11 +1,11 @@
 # Raspberry Pi
 ## Setup
 
-1. Write and preconfigure Raspberry Pi OS on the SD card using Raspberry Pi Imager (```brew install --cask raspberry-pi-imager```). Make sure you use the correct version of the OS (32-bit or 64-bit).
-   - Change the default password for the ```pi``` user.
-   - Enable SSH (password or ssh keys).
-   - Configure WiFi if needed.
-   - Take note of the hostname.
+1. Write and preconfigure Raspberry Pi OS on the SD card using Raspberry Pi Imager (```brew install --cask raspberry-pi-imager```). Make sure you use the correct version of the OS (32-bit or 64-bit).  
+    1.1. Change the default password for the ```pi``` user.  
+    1.2. Enable SSH (password or ssh keys).  
+    1.3. Configure WiFi if needed.  
+    1.4. Take note of the hostname.  
 2. Insert the SD card in your Raspberry Pi and turn it on. 
 
 If you didn't do so during setup, you can still generate and add an ssh key at any time. Example:
@@ -149,6 +149,6 @@ I've added some sample code from the [MagPi Essentials book](https://magpi.raspb
 
 ### GPIO Header
 
-![](https://i.imgur.com/3Zroadt.jpg)
+![GPIO](https://i.imgur.com/3Zroadt.jpg)
 
 

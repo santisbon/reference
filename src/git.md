@@ -40,22 +40,21 @@ If using AWS CodeCommit do this after configuring the AWS CLI:
 git config --global credential.helper '!aws codecommit credential-helper $@'
 git config --global credential.UseHttpPath true
 ```
-Troubleshooting CodeCommit  
-https://docs.aws.amazon.com/codecommit/latest/userguide/troubleshooting-ch.html#troubleshooting-macoshttps
+[Troubleshooting CodeCommit](https://docs.aws.amazon.com/codecommit/latest/userguide/troubleshooting-ch.html#troubleshooting-macoshttps)
 
 To create a squash function:
 ```zsh
 git config --global alias.squash-all '!f(){ git reset $(git commit-tree "HEAD^{tree}" "$@");};f'
 ```
-:::info
-:information_source: 
-- Git allows you to escape to a shell (like bash or zsh) using the ! (bang). [Learn more](https://www.atlassian.com/blog/git/advanced-git-aliases).
-- [`commit-tree`](https://git-scm.com/docs/git-commit-tree) creates a new commit object based on the provided tree object and emits the new commit object id on stdout.
-- [`tree` objects](https://git-scm.com/book/en/v2/Git-Internals-Git-Objects#Tree-Objects) correspond to UNIX directory entries. 
-- `reset` resets current HEAD to the specified state e.g a commit.
-- The `master^{tree}` syntax specifies the tree object that is pointed to by the last commit on your `master` branch. So `HEAD^{tree}` is the tree object pointed to by the last commit on your current branch.
-- If you’re using ZSH, the `^` character is used for globbing, so you have to enclose the whole expression in quotes: `"HEAD^{tree}"`
-:::
+!!! info
+    - Git allows you to escape to a shell (like bash or zsh) using the ! (bang). [Learn more](https://www.atlassian.com/blog/git/advanced-git-aliases).
+    - [`commit-tree`](https://git-scm.com/docs/git-commit-tree) creates a new commit object based on the provided tree object and emits the new commit object id on stdout.
+    - [`tree` objects](https://git-scm.com/book/en/v2/Git-Internals-Git-Objects#Tree-Objects) correspond to UNIX directory entries. 
+    - `reset` resets current HEAD to the specified state e.g a commit.
+    - The `master^{tree}` syntax specifies the tree object that is pointed to by the last commit on your `master` branch. So `HEAD^{tree}` is the tree object pointed to by the last commit on your current branch.
+    - If you’re using ZSH, the `^` character is used for globbing, so you have to enclose the whole expression in quotes: `"HEAD^{tree}"`
+
+
 Then just run:
 ```zsh
 git squash-all -m "a brand new start"

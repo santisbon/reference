@@ -22,6 +22,7 @@ Example with 1 control plane node and 2 worker nodes.
 [Reference](https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1658326918182-Building%20a%20Kubernetes%20Cluster.pdf)  
 [Installing kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/)  
 [Creating a cluster with kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/)  
+
 * kubeadm sometimes doesn't work with the latest and greatest version of docker right away.
 
 `kubeadm` simplifies the process of setting up a k8s cluster.  
@@ -510,11 +511,13 @@ kubectl create -f localdisk-sc.yml
 ```
 
 `persistentVolumeReclaimPolicy` says how storage can be reused when the volume's associated claims are deleted.  
+
 - Retain: Keeps all data. An admin must manually clean up and prepare the resource for reuse.
 - Recycle: Automatically deletes all data, allowing  the volume to be reused.
 - Delete: Deletes underlying storage resource automatically (applies to cloud only).  
 
 [`accessModes`](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes) can be:
+
 - ReadWriteOnce: The volume can be mounted as read-write by a single node. Still can allow multiple pods to access the volume when the pods are running on the same node.  
 - ReadOnlyMany: Can be mounted as read-only by many nodes.
 - ReadWriteMany: Can be mounted as read-write by many nodes.
@@ -716,7 +719,7 @@ kubectl get pods -n production
 X. Dev/prod parity
 Keep development, staging, and production as similar as possible
 
-[Reference](https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631215371092-1082%20-%20S05L01%20X.%20Dev%3AProd%20Parity%20with%20Namespaces.pdf)
+[Reference](https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631215371092-1082%20-%20S05L01%20X.%20Dev%3AProd%20Parity%20with%20Namespaces.pdf)  
 [Namespaces](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/)  
 
 k8s namespaces allow us to have multiple environments in the same cluster. A namespace is like a virtual cluster.

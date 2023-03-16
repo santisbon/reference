@@ -27,6 +27,8 @@ extra_javascript:
     - https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML
 markdown_extensions:
     - mdx_math
+    - admonition
+    - sane_lists
 docs_dir: src
 edit_uri: edit/main/src/
 site_dir: docs

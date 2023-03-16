@@ -19,8 +19,8 @@ aws configure
 ```
 
 ## Alexa Skills Kit (ASK) CLI
-https://developer.amazon.com/docs/smapi/set-up-credentials-for-an-amazon-web-services-account.html  
-https://developer.amazon.com/docs/smapi/quick-start-alexa-skills-kit-command-line-interface.html
+[Set up credentials for AWS account](https://developer.amazon.com/docs/smapi/set-up-credentials-for-an-amazon-web-services-account.html)  
+[Quick Start ASK CLI](https://developer.amazon.com/docs/smapi/quick-start-alexa-skills-kit-command-line-interface.html)
 
 ## AWS Amplify
 ```zsh
