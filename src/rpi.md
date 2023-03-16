@@ -145,7 +145,7 @@ pi@raspberrypi4:~ $ pinout
 ## Learn about electronics
 
 I've added some sample code from the [MagPi Essentials book](https://magpi.raspberrypi.com/books/essentials-gpio-zero-v1).  
-[Sample code](https://github.com/santisbon/guides/tree/main/raspberrypi)
+[Sample code](https://github.com/santisbon/guides/tree/main/assets/raspberrypi)
 
 ### GPIO Header
 
