@@ -1,4 +1,6 @@
 site_name: Reference
+site_url: https://santisbon.github.io/reference/
+repo_url: https://github.com/santisbon/reference
 nav:
   - Home: 'index.md'
   - Set up a new machine:
@@ -26,4 +28,5 @@ extra_javascript:
 markdown_extensions:
     - mdx_math
 docs_dir: src
+edit_uri: edit/main/src/
 site_dir: docs
