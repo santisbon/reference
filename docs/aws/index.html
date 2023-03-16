@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>AWS - Reference</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "AWS";
+        var mkdocs_page_input_path = "aws.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <script src="../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Reference
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Set up a new machine</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../install-os/">Install the OS</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../package-mgmt/">Package Manager</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../shell/">Shell</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../utilities/">Utilities</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../editor/">Code Editor</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../git/">Git</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../docker/">Docker</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../k8s/">Kubernetes</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../python/">Python</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../rpi/">Raspberry Pi</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="./">AWS</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#aws-cli">AWS CLI</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#install-the-aws-command-line-interface">Install the AWS command line interface</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#check-if-the-aws-cli-is-installed-correctly">Check if the AWS CLI is installed correctly</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#configure-the-aws-cli">Configure the AWS CLI</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#alexa-skills-kit-ask-cli">Alexa Skills Kit (ASK) CLI</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#aws-amplify">AWS Amplify</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../mysql/">MySQL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../node/">Node</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../mkdocs/">MkDocs</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Reference</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li>
+          <li>Set up a new machine &raquo;</li>
+      <li>AWS</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="amazon-web-services">Amazon Web Services</h1>
+<h2 id="aws-cli">AWS CLI</h2>
+<h3 id="install-the-aws-command-line-interface">Install the AWS command line interface</h3>
+<pre><code class="language-Shell">curl &quot;https://awscli.amazonaws.com/AWSCLIV2.pkg&quot; -o &quot;AWSCLIV2.pkg&quot;
+sudo installer -pkg AWSCLIV2.pkg -target /
+</code></pre>
+<h3 id="check-if-the-aws-cli-is-installed-correctly">Check if the AWS CLI is installed correctly</h3>
+<pre><code class="language-Shell"># you may need to reload your shell's rc file first.
+aws --version
+</code></pre>
+<h3 id="configure-the-aws-cli">Configure the AWS CLI</h3>
+<pre><code class="language-Shell">aws configure
+</code></pre>
+<h2 id="alexa-skills-kit-ask-cli">Alexa Skills Kit (ASK) CLI</h2>
+<p>https://developer.amazon.com/docs/smapi/set-up-credentials-for-an-amazon-web-services-account.html<br />
+https://developer.amazon.com/docs/smapi/quick-start-alexa-skills-kit-command-line-interface.html</p>
+<h2 id="aws-amplify">AWS Amplify</h2>
+<pre><code class="language-Shell">npm install -g @aws-amplify/cli
+amplify configure
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../rpi/" class="btn btn-neutral float-left" title="Raspberry Pi"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../mysql/" class="btn btn-neutral float-right" title="MySQL">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../rpi/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../mysql/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Git - Reference</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Git";
+        var mkdocs_page_input_path = "git.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <script src="../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Reference
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Set up a new machine</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../install-os/">Install the OS</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../package-mgmt/">Package Manager</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../shell/">Shell</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../utilities/">Utilities</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../editor/">Code Editor</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="./">Git</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#install">Install</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#configure">Configure</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#set-up-git-autocompletion-bash">Set up git autocompletion (bash)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#set-up-ssh-key">Set up SSH key</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../docker/">Docker</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../k8s/">Kubernetes</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../python/">Python</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../rpi/">Raspberry Pi</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../aws/">AWS</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../mysql/">MySQL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../node/">Node</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../mkdocs/">MkDocs</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Reference</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li>
+          <li>Set up a new machine &raquo;</li>
+      <li>Git</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="git">Git</h1>
+<h2 id="install">Install</h2>
+<p>macOS  </p>
+<pre><code class="language-Shell">brew install git
+git --version
+
+# GitHub CLI
+brew install gh 
+gh auth login
+gh config set editor &quot;codium -w&quot; # or code, nano, etc
+</code></pre>
+<p>GitHub CLI <a href="https://docs.github.com/en/github-cli/github-cli/github-cli-reference">reference</a>.</p>
+<p>Linux</p>
+<pre><code class="language-Shell">sudo yum install git # or git-all
+git --version
+</code></pre>
+<h2 id="configure">Configure</h2>
+<pre><code class="language-Shell">git config --global core.editor 'codium --wait'
+
+git config --global diff.tool codium
+git config --global difftool.codium.cmd 'codium --wait --diff $LOCAL $REMOTE'
+
+git config --global merge.tool codium
+git config --global mergetool.codium.cmd 'codium --wait $MERGED'
+
+# or
+codium ~/.gitconfig # and paste from sample dot file. Also: codium, vscode, nano
+</code></pre>
+<p>Then you can <code>git difftool main feature-branch</code>.  </p>
+<p>If using AWS CodeCommit do this after configuring the AWS CLI:</p>
+<pre><code class="language-Shell">git config --global credential.helper '!aws codecommit credential-helper $@'
+git config --global credential.UseHttpPath true
+</code></pre>
+<p>Troubleshooting CodeCommit<br />
+https://docs.aws.amazon.com/codecommit/latest/userguide/troubleshooting-ch.html#troubleshooting-macoshttps</p>
+<p>To create a squash function:</p>
+<pre><code class="language-Shell">git config --global alias.squash-all '!f(){ git reset $(git commit-tree &quot;HEAD^{tree}&quot; &quot;$@&quot;);};f'
+</code></pre>
+<p>:::info
+:information_source: 
+- Git allows you to escape to a shell (like bash or zsh) using the ! (bang). <a href="https://www.atlassian.com/blog/git/advanced-git-aliases">Learn more</a>.
+- <a href="https://git-scm.com/docs/git-commit-tree"><code>commit-tree</code></a> creates a new commit object based on the provided tree object and emits the new commit object id on stdout.
+- <a href="https://git-scm.com/book/en/v2/Git-Internals-Git-Objects#Tree-Objects"><code>tree</code> objects</a> correspond to UNIX directory entries. 
+- <code>reset</code> resets current HEAD to the specified state e.g a commit.
+- The <code>master^{tree}</code> syntax specifies the tree object that is pointed to by the last commit on your <code>master</code> branch. So <code>HEAD^{tree}</code> is the tree object pointed to by the last commit on your current branch.
+- If you’re using ZSH, the <code>^</code> character is used for globbing, so you have to enclose the whole expression in quotes: <code>"HEAD^{tree}"</code>
+:::
+Then just run:</p>
+<pre><code class="language-Shell">git squash-all -m &quot;a brand new start&quot;
+git push -f
+</code></pre>
+<h2 id="set-up-git-autocompletion-bash">Set up git autocompletion (bash)</h2>
+<pre><code class="language-bash">cd ~
+curl -OL https://github.com/git/git/raw/master/contrib/completion/git-completion.bash
+mv ~/git-completion.bash ~/.git-completion.bash
+</code></pre>
+<h2 id="set-up-ssh-key">Set up SSH key</h2>
+<ol>
+<li><a href="https://help.github.com/articles/checking-for-existing-ssh-keys/">Check</a> for existing keys.</li>
+<li><a href="https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/">Generate</a> a new SSH key and add it to ssh-agent. You may need to set permissions to your key file with <code>chmod 600</code>.</li>
+<li><a href="https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/">Add</a> the public key to your GitHub account.</li>
+</ol>
+<p>If the terminal is no longer authenticating you:</p>
+<pre><code class="language-Shell">git remote -v # is it https or ssh? Should be ssh
+git remote remove origin
+git remote add origin git@github.com:user/repo.git
+</code></pre>
+<p>Still having issues? Start the ssh-agent in the background and add your SSH private key to the ssh-agent.</p>
+<pre><code class="language-Shell">ps -ax | grep ssh-agent
+eval &quot;$(ssh-agent -s)&quot;
+ssh-add --apple-use-keychain ~/.ssh/id_ed25519
+</code></pre>
+<p>If you need to add your public key to Github again copy and paste it on your Settings page on Github:</p>
+<pre><code class="language-Shell">pbcopy &lt; ~/.ssh/id_ed25519.pub
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../editor/" class="btn btn-neutral float-left" title="Code Editor"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../docker/" class="btn btn-neutral float-right" title="Docker">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../editor/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../docker/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Python - Reference</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Python";
+        var mkdocs_page_input_path = "python.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <script src="../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Reference
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Set up a new machine</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../install-os/">Install the OS</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../package-mgmt/">Package Manager</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../shell/">Shell</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../utilities/">Utilities</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../editor/">Code Editor</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../git/">Git</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../docker/">Docker</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../k8s/">Kubernetes</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="./">Python</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#install-python-the-pip-python-package-installer-and-setuptools">Install Python, the pip Python package installer, and Setuptools</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#with-homebrew">With Homebrew</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#without-homebrew">Without Homebrew</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#get-the-pep8-python-style-checker">Get the pep8 python style checker</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#anaconda">Anaconda</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#notebooks">Notebooks</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../rpi/">Raspberry Pi</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../aws/">AWS</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../mysql/">MySQL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../node/">Node</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../mkdocs/">MkDocs</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Reference</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li>
+          <li>Set up a new machine &raquo;</li>
+      <li>Python</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="python">Python</h1>
+<p><a href="https://packaging.python.org/en/latest/tutorials/packaging-projects/">Packaging Python Projects</a>  </p>
+<h2 id="install-python-the-pip-python-package-installer-and-setuptools">Install Python, the pip Python package installer, and Setuptools</h2>
+<h3 id="with-homebrew">With Homebrew</h3>
+<p>Even if you already have Python on your OS it might be an outdated version. This installs python and pip.<br />
+macOS</p>
+<pre><code class="language-Shell">brew install python
+python3 --version
+</code></pre>
+<p>The python formulae install pip (as pip3) and Setuptools. Setuptools can be updated via pip3 and pip3 can be used to upgrade itself.</p>
+<pre><code class="language-Shell">python3 -m pip install --upgrade setuptools
+python3 -m pip install --upgrade pip
+</code></pre>
+<p>Add the unversioned symlinks to your <code>$PATH</code> by adding this to your <code>.zshrc</code> file.</p>
+<pre><code class="language-Shell">export PATH=&quot;$(brew --prefix)/opt/python/libexec/bin:$PATH&quot;
+</code></pre>
+<p>See the <a href="https://docs.brew.sh/Homebrew-and-Python">Homebrew Python</a> documentation for details.  </p>
+<p><code>site-packages</code> is here. Example for python 3.10 on Homebrew</p>
+<pre><code class="language-Shell">ls -al $(brew --prefix)/lib/python3.10/site-packages
+</code></pre>
+<h3 id="without-homebrew">Without Homebrew</h3>
+<p>Linux (Ubuntu)</p>
+<pre><code class="language-Shell">sudo apt install python3
+</code></pre>
+<p>macOS<br />
+Download .pkg installer from pythong.org. Then get pip.</p>
+<pre><code class="language-Shell">curl -o get-pip.py https://bootstrap.pypa.io/get-pip.py
+sudo python get-pip.py
+</code></pre>
+<p>Linux</p>
+<pre><code class="language-Shell">sudo apt install python-pip
+</code></pre>
+<pre><code class="language-Shell">pip install --upgrade pip setuptools
+</code></pre>
+<p>On Ubuntu, upgrading to pip 10 may break pip. If this happens you need to:</p>
+<pre><code class="language-Shell">sudo nano /usr/bin/pip
+# change &quot;from pip import main&quot; to &quot;from pip._internal import main&quot;
+</code></pre>
+<h2 id="get-the-pep8-python-style-checker">Get the pep8 python style checker</h2>
+<pre><code class="language-Shell"># On Linux you may need to use sudo.
+pip install pep8
+</code></pre>
+<h2 id="anaconda">Anaconda</h2>
+<p>For data science and machine learning. <a href="https://docs.anaconda.com/anaconda/">Anaconda</a> is a distribution of the Python and R programming languages for scientific computing. See <a href="https://conda.io/projects/conda/en/latest/user-guide/getting-started.html">Getting Started</a>.</p>
+<pre><code class="language-Shell">brew install --cask anaconda
+</code></pre>
+<p><a href="https://docs.anaconda.com/anaconda/install/silent-mode/">Installing in silent mode</a>  </p>
+<p>Add anaconda to your <code>PATH</code> on your <code>.zshrc</code> and <code>source ~/.zshrc</code> to apply the changes.</p>
+<pre><code class="language-Shell">export PATH=&quot;$(brew --prefix)/anaconda3/bin:$PATH&quot;
+</code></pre>
+<p>To use zsh:</p>
+<pre><code class="language-Shell">conda init zsh
+</code></pre>
+<p>If <code>conda init zsh</code> messed up the <code>PATH</code> in your <code>~/.zshrc</code> by adding the <code>condabin</code> directory instead of <code>bin</code> you can fix it with a symlink:</p>
+<pre><code class="language-Shell">ln -sf $(brew --prefix)/anaconda3/bin/jupyter-lab $(brew --prefix)/anaconda3/condabin/jupyter-lab
+ln -sf $(brew --prefix)/anaconda3/bin/jupyter $(brew --prefix)/anaconda3/condabin/jupyter
+</code></pre>
+<p>If you don't want to activate the <code>base</code> environment every time you open your terminal:</p>
+<pre><code class="language-Shell">conda config --set auto_activate_base false
+</code></pre>
+<p>When creating a conda environment you can use optionally use a configuration file. You can also of course, save a config file from an existing environment to back it up.</p>
+<pre><code class="language-Shell">conda env create -f myenv.yml
+conda activate myenv
+
+conda env list
+conda env remove --name ldm
+</code></pre>
+<h3 id="notebooks">Notebooks</h3>
+<p>Fresh installs of Anaconda no longer include notebook extensions in their Jupyter installer. This means that the nb_conda libraries need to be added into your environment separately to access conda environments from your Jupyter notebook. Just run these to add them and you should be able to select your environment as a kernel within a Jupyter notebook.</p>
+<pre><code class="language-Shell">conda activate &lt;myenv&gt;
+conda install ipykernel
+conda install nb_conda_kernels # or defaults::nb_conda_kernels
+</code></pre>
+<p>Now you can launch the new JupyterLab or the classic Jupyter Notebook.</p>
+<pre><code class="language-Shell">jupyter-lab # or the classic &quot;jupyter notebook&quot;
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../k8s/" class="btn btn-neutral float-left" title="Kubernetes"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../rpi/" class="btn btn-neutral float-right" title="Raspberry Pi">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../k8s/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../rpi/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

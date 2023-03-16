@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>MySQL - Reference</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "MySQL";
+        var mkdocs_page_input_path = "mysql.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <script src="../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Reference
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Set up a new machine</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../install-os/">Install the OS</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../package-mgmt/">Package Manager</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../shell/">Shell</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../utilities/">Utilities</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../editor/">Code Editor</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../git/">Git</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../docker/">Docker</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../k8s/">Kubernetes</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../python/">Python</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../rpi/">Raspberry Pi</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../aws/">AWS</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="./">MySQL</a>
+    <ul class="current">
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../node/">Node</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../mkdocs/">MkDocs</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Reference</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li>
+          <li>Set up a new machine &raquo;</li>
+      <li>MySQL</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="mysql-development">MySQL development</h1>
+<p><strong>Install MySQL Community Edition </strong>
+Use your OS package manager or download .dmg installer for macOS. Take note of the root password.</p>
+<p><strong>Configure your PATH</strong>
+Add the mysql location to your PATH. Typically as part of your ~/.bash_profile</p>
+<pre><code class="language-Shell">export PATH=/usr/local/mysql/bin:$PATH
+</code></pre>
+<p><strong>Start the MySQL service</strong>
+On macOS</p>
+<pre><code class="language-Shell">sudo launchctl load -F /Library/LaunchDaemons/com.oracle.oss.mysql.mysqld.plist
+</code></pre>
+<p><strong>Verify it's running</strong>
+On macOS</p>
+<pre><code class="language-Shell">sudo launchctl list | grep mysql
+</code></pre>
+<p><strong>Connect to your MySQL instance</strong>
+Use MySQL Workbench or other client tool.</p>
+<p><strong>To stop MySQL</strong>
+On macOS</p>
+<pre><code class="language-Shell">sudo launchctl unload -F /Library/LaunchDaemons/com.oracle.oss.mysql.mysqld.plist
+</code></pre>
+<p><strong>Exporting data</strong>
+If you need to export data you may need to disable or set a security setting. On macOS:</p>
+<p>View the variable using your SQL client. If it's NULL you will be restricted regarding file operations.</p>
+<pre><code class="language-sql">show variables like 'secure_file_priv';
+</code></pre>
+<p>Open the configuration file.</p>
+<pre><code class="language-Shell">cd /Library/LaunchDaemons
+sudo nano com.oracle.oss.mysql.mysqld.plist
+</code></pre>
+<p>and set the --secure-file-priv to an empty string (to disable the restriction) or a dir of your choice.</p>
+<pre><code class="language-xml">&lt;key&gt;ProgramArguments&lt;/key&gt;
+    &lt;array&gt;
+        &lt;string&gt;--secure-file-priv=&lt;/string&gt;
+    &lt;/array&gt;
+</code></pre>
+<p>Then restart MySQL. Now you can export data:</p>
+<pre><code class="language-sql">SELECT *
+INTO OUTFILE 'your_file.csv'
+FIELDS TERMINATED BY ',' ENCLOSED BY '&quot;'
+FROM `your_db`.`your_table`
+</code></pre>
+<p>You can find your exported data:</p>
+<pre><code class="language-Shell">sudo find /usr/local/mysql/data -name your_file.csv
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../aws/" class="btn btn-neutral float-left" title="AWS"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../node/" class="btn btn-neutral float-right" title="Node">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../aws/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../node/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

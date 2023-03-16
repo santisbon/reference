@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Kubernetes - Reference</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Kubernetes";
+        var mkdocs_page_input_path = "k8s.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <script src="../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Reference
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Set up a new machine</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../install-os/">Install the OS</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../package-mgmt/">Package Manager</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../shell/">Shell</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../utilities/">Utilities</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../editor/">Code Editor</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../git/">Git</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../docker/">Docker</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="./">Kubernetes</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#kubernetes-essentials">Kubernetes Essentials</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#designing-applications-for-kubernetes">Designing Applications for Kubernetes</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#building-a-kubernetes-cluster">Building a Kubernetes Cluster</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#installing-docker">Installing Docker</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#kubernetes-configuration-with-configmaps-and-secrets">Kubernetes configuration with ConfigMaps and Secrets</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#build-release-run-with-docker-and-deployments">Build, Release, Run with Docker and Deployments</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#processes-with-stateless-containers">Processes with stateless containers</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#persistent-volumes">Persistent Volumes</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#port-binding-with-pods">Port Binding with Pods</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#concurrency-with-containers-and-scaling">Concurrency with Containers and Scaling</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#disposability-with-stateless-containers">Disposability with Stateless Containers</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#devprod-parity-with-namespaces">Dev/Prod Parity with Namespaces</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#logs-with-k8s-container-logging">Logs with k8s Container Logging</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#admin-processes-with-jobs">Admin Processes with Jobs</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#microk8s">MicroK8s</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#registry">Registry</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#microk8s-dashboard">MicroK8s dashboard</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#troubleshooting">Troubleshooting</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#kubernetes-dashboard">Kubernetes Dashboard</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../python/">Python</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../rpi/">Raspberry Pi</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../aws/">AWS</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../mysql/">MySQL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../node/">Node</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../mkdocs/">MkDocs</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Reference</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li>
+          <li>Set up a new machine &raquo;</li>
+      <li>Kubernetes</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="kubernetes">Kubernetes</h1>
+<h2 id="kubernetes-essentials">Kubernetes Essentials</h2>
+<p><a href="https://lucid.app/lucidchart/6d5625be-9ef9-411d-8bea-888de55db5cf/view?page=0_0#">Interactive Diagram</a><br />
+<a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/">Working with k8s objects</a><br />
+<a href="https://kubernetes.io/docs/concepts/cluster-administration/logging/#log-rotation">Log rotation</a>  </p>
+<p>In order for Kubernetes to pull your container image you need to first push it to an image repository like Docker Hub.<br />
+To avoid storing your Docker Hub password unencrypted in $HOME/.docker/config.json when you <code>docker login</code> to your account, use a <a href="https://docs.docker.com/engine/reference/commandline/login/#credentials-store">credentials store</a>. A helper program lets you interact with such a keychain or external store. </p>
+<p>If you're doing this on your laptop with <strong>Docker Desktop</strong> it <strong>already provides a store</strong>.<br />
+<strong>Otherwise</strong>, <strong>use</strong> one of the stores supported by the <a href="https://docs.docker.com/engine/reference/commandline/login/#credential-helpers"><strong><code>docker-credential-helper</code></strong></a>. Now <code>docker login</code> on your terminal or on the Docker Desktop app.  </p>
+<h2 id="designing-applications-for-kubernetes">Designing Applications for Kubernetes</h2>
+<p>Based on the <a href="https://12factor.net/">12-Factor App Design Methodology</a></p>
+<p>A Cloud Guru course. It uses Ubuntu 20.04 Focal Fossa LTS and the Calico network plugin instead of Flannel.<br />
+Example with 1 control plane node and 2 worker nodes.</p>
+<h3 id="building-a-kubernetes-cluster">Building a Kubernetes Cluster</h3>
+<p><a href="https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1658326918182-Building%20a%20Kubernetes%20Cluster.pdf">Reference</a><br />
+<a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/">Installing kubeadm</a><br />
+<a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/">Creating a cluster with kubeadm</a><br />
+* kubeadm sometimes doesn't work with the latest and greatest version of docker right away.</p>
+<p><code>kubeadm</code> simplifies the process of setting up a k8s cluster.<br />
+<code>containerd</code> manages the complete container lifecycle of its host system, from image transfer and storage to container execution and supervision to low-level storage to network attachments.<br />
+<code>kubelet</code> handles running containers on a node.<br />
+<code>kubectl</code> is a tool for managing the cluster.  </p>
+<p>If you wish, you can set an appropriate hostname for each node.<br />
+<strong>On the control plane node</strong>:  </p>
+<pre><code class="language-Shell">sudo hostnamectl set-hostname k8s-control
+</code></pre>
+<p><strong>On the first worker node</strong>:  </p>
+<pre><code class="language-Shell">sudo hostnamectl set-hostname k8s-worker1
+</code></pre>
+<p><strong>On the second worker node</strong>:  </p>
+<pre><code class="language-Shell">sudo hostnamectl set-hostname k8s-worker2
+</code></pre>
+<p><strong>On all nodes</strong>, set up the hosts file to enable all the nodes to reach each other using these hostnames.</p>
+<pre><code class="language-Shell">sudo nano /etc/hosts
+</code></pre>
+<p><strong>On all nodes</strong>, add the following at the end of the file. You will need to supply the actual private IP address for each node.</p>
+<pre><code class="language-Shell">&lt;control plane node private IP&gt; k8s-control
+&lt;worker node 1 private IP&gt; k8s-worker1
+&lt;worker node 2 private IP&gt; k8s-worker2
+</code></pre>
+<p>Log out of all three servers and log back in to see these changes take effect.  </p>
+<p><strong>On all nodes, set up containerd</strong>. You will need to load some kernel modules and modify some system settings as part of this
+process.  </p>
+<pre><code class="language-Shell"># Enable them when the server start up
+cat &lt;&lt; EOF | sudo tee /etc/modules-load.d/containerd.conf
+overlay
+br_netfilter
+EOF
+
+# Enable them right now without having to restart the server
+sudo modprobe overlay
+sudo modprobe br_netfilter
+
+# Add network configurations k8s will need
+cat &lt;&lt;EOF | sudo tee /etc/sysctl.d/99-kubernetes-cri.conf
+net.bridge.bridge-nf-call-iptables = 1
+net.ipv4.ip_forward = 1
+net.bridge.bridge-nf-call-ip6tables = 1
+EOF
+
+# Apply them immediately
+sudo sysctl --system
+</code></pre>
+<p>Install and configure containerd.  </p>
+<pre><code class="language-Shell">sudo apt-get update &amp;&amp; sudo apt-get install -y containerd
+sudo mkdir -p /etc/containerd
+# Generate the contents of a default config file and save it
+sudo containerd config default | sudo tee /etc/containerd/config.toml
+# Restart containerd to make sure it's using that configuration
+sudo systemctl restart containerd
+</code></pre>
+<p><strong>On all nodes, disable swap</strong>.</p>
+<pre><code class="language-Shell">sudo swapoff -a
+</code></pre>
+<p><strong>On all nodes, install kubeadm, kubelet, and kubectl</strong>.</p>
+<pre><code class="language-Shell"># Some required packages
+sudo apt-get update &amp;&amp; sudo apt-get install -y apt-transport-https curl
+# Set up the package repo for k8s packages. Download the key for the repo and add it
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+# Configure the repo
+cat &lt;&lt; EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
+deb https://apt.kubernetes.io/ kubernetes-xenial main
+EOF
+sudo apt-get update
+# Install the k8s packages. Make sure the versions for all 3 are the same.
+sudo apt-get install -y kubelet=1.24.0-00 kubeadm=1.24.0-00 kubectl=1.24.0-00
+# Make sure they're not automatically upgraded. Have manual control over when to update k8s
+sudo apt-mark hold kubelet kubeadm kubectl
+</code></pre>
+<p><strong>On the control plane node only</strong>, initialize the cluster and set up kubectl access.</p>
+<pre><code class="language-Shell">sudo kubeadm init --pod-network-cidr 192.168.0.0/16 --kubernetes-version 1.24.0
+# Config File to authenticate and interact with the cluster with kubectl commands
+# These are in the output of the previous step
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+</code></pre>
+<p>Verify the cluster is working. It will be in Not Ready status because we haven't configured the networking plugin.</p>
+<pre><code class="language-Shell">kubectl get nodes
+</code></pre>
+<p>Install the Calico network add-on.</p>
+<pre><code class="language-Shell">kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+</code></pre>
+<p>Get the join command (this command is also printed during kubeadm init . Feel free to simply copy it from there).</p>
+<pre><code class="language-Shell">kubeadm token create --print-join-command
+</code></pre>
+<p>Copy the join command from the control plane node. Run it <strong>on each worker node</strong> as root (i.e. with sudo ).</p>
+<pre><code class="language-Shell">sudo kubeadm join ...
+</code></pre>
+<p><strong>On the control plane node</strong>, verify all nodes in your cluster are ready. Note that it may take a few moments for all of the nodes to
+enter the READY state.</p>
+<pre><code class="language-Shell">kubectl get nodes
+</code></pre>
+<h3 id="installing-docker">Installing Docker</h3>
+<p><a href="https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631214923454-1082%20-%20S01L03%20Installing%20Docker.pdf">Reference</a><br />
+<a href="https://docs.docker.com/engine/install/ubuntu/">Install Docker Engine on Ubuntu</a><br />
+<a href="https://docs.docker.com/engine/reference/commandline/login/#credentials-store">Docker credentials store</a> 
+to avoid storing your Docker Hub password unencrypted in <code>$HOME/.docker/config.json</code> when you <code>docker login</code> and <code>docker push</code> your images.  </p>
+<p><strong>On the system that will build Docker images from source code</strong> e.g. a CI server, install and configure Docker.<br />
+For simplicity we'll use the control plane server just so we don't have to create another server for this exercise.  </p>
+<p>Create a docker group. Users in this group will have permission to use Docker on the system:</p>
+<pre><code class="language-Shell">sudo groupadd docker
+</code></pre>
+<p>Install required packages.<br />
+Note: Some of these packages may already be present on the system, but including them here will not cause any problems:</p>
+<pre><code class="language-Shell">sudo apt-get update &amp;&amp; sudo apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release
+</code></pre>
+<p>Set up the Docker GPG key and package repository:</p>
+<pre><code class="language-Shell">curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+echo &quot;deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable&quot; | sudo tee /etc/apt/sources.list.d/docker.list &gt; /dev/null
+</code></pre>
+<p>Install the Docker Engine:</p>
+<pre><code class="language-Shell">sudo apt-get update &amp;&amp; sudo apt-get install -y docker-ce docker-ce-cli
+# Type N (default) or enter to keep your current containerd configuration
+</code></pre>
+<p>Test the Docker setup:</p>
+<pre><code class="language-Shell">sudo docker version
+</code></pre>
+<p>Add cloud_user to the docker group in order to give cloud_user access to use Docker:</p>
+<pre><code class="language-Shell">sudo usermod -aG docker cloud_user
+</code></pre>
+<p>Log out of the server and log back in.<br />
+Test your setup:</p>
+<pre><code class="language-Shell">docker version
+</code></pre>
+<h3 id="kubernetes-configuration-with-configmaps-and-secrets">Kubernetes configuration with ConfigMaps and Secrets</h3>
+<p>III. Config
+Store config in the environment</p>
+<p><a href="https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631214961641-1082%20-%20S02L03%20III.%20Config%20with%20ConfigMaps%20and%20Secrets.pdf">Reference</a>  </p>
+<p><a href="https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/">Encrypting Secret Data at Rest</a><br />
+<a href="https://kubernetes.io/docs/concepts/configuration/configmap/">ConfigMaps</a><br />
+<a href="https://kubernetes.io/docs/concepts/configuration/secret/">Secrets</a>  </p>
+<p>Create a production Namespace:</p>
+<pre><code class="language-Shell">kubectl create namespace production
+</code></pre>
+<p>Get base64-encoded strings for a db username and password:</p>
+<pre><code class="language-Shell">echo -n my_user | base64
+echo -n my_password | base64
+</code></pre>
+<p>Example: Create a ConfigMap and Secret to configure the backing service connection information for the app, including the base64-encoded credentials:</p>
+<pre><code class="language-Shell">cat &gt; my-app-config.yml &lt;&lt;End-of-message 
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-app-config
+data:
+  mongodb.host: &quot;my-app-mongodb&quot;
+  mongodb.port: &quot;27017&quot;
+
+---
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: my-app-secure-config
+type: Opaque
+data:
+  mongodb.username: dWxvZV91c2Vy
+  mongodb.password: SUxvdmVUaGVMaXN0
+
+End-of-message
+</code></pre>
+<pre><code class="language-Shell">kubectl apply -f my-app-config.yml -n production
+</code></pre>
+<p>Create a temporary Pod to test the configuration setup. Note that you need to supply your Docker Hub username as part of the image name in this file.
+This passes configuration data in env variables but you could also do it in files that will show up on the containers filesystem.</p>
+<pre><code class="language-Shell">cat &gt; test-pod.yml &lt;&lt;End-of-message
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-pod
+spec:
+  containers:
+  - name: my-app-server
+    image: &lt;YOUR_DOCKER_HUB_USERNAME&gt;/my-app-server:0.0.1
+    ports:
+    - name: web
+      containerPort: 3001
+      protocol: TCP
+    env:
+    - name: MONGODB_HOST
+      valueFrom:
+        configMapKeyRef:
+          name: my-app-config
+          key: mongodb.host
+    - name: MONGODB_PORT
+      valueFrom:
+        configMapKeyRef:
+          name: my-app-config
+          key: mongodb.port
+    - name: MONGODB_USER
+      valueFrom:
+        secretKeyRef:
+          name: my-app-secure-config
+          key: mongodb.username
+    - name: MONGODB_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: my-app-secure-config
+          key: mongodb.password
+
+End-of-message
+</code></pre>
+<pre><code class="language-Shell">kubectl apply -f test-pod.yml -n production
+</code></pre>
+<p>Check the logs to verify the config data is being passed to the container:</p>
+<pre><code class="language-Shell">kubectl logs test-pod -n production
+</code></pre>
+<p>Clean up the test pod:</p>
+<pre><code class="language-Shell">kubectl delete pod test-pod -n production --force
+</code></pre>
+<h3 id="build-release-run-with-docker-and-deployments">Build, Release, Run with Docker and Deployments</h3>
+<p>V. Build, release, run
+Strictly separate build and run stages</p>
+<p><a href="https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631215185856-1082%20-%20S03L02%20V.%20Build%2C%20Release%2C%20Run%20with%20Docker%20and%20Deployments.pdf">Reference</a><br />
+<a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/">Labels and Selectors</a><br />
+<a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/">Deployments</a>  </p>
+<p>Example: After you <code>docker build</code> and <code>docker push</code> your image to a repository, create a deployment file for your app.
+The <code>selector</code> selects pods that have the specified label name and value.<br />
+<code>template</code> is the pod template.<br />
+This example puts 2 containers in the same pod for simplicity but in the real world you'll want separate deployments to scale them independently.</p>
+<pre><code class="language-Shell">cat &gt; my-app.yml &lt;&lt;End-of-message
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-app-config
+data:
+  mongodb.host: &quot;my-app-mongodb&quot;
+  mongodb.port: &quot;27017&quot;
+  .env: |
+    REACT_APP_API_PORT=&quot;30081&quot;
+
+---
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: my-app-secure-config
+type: Opaque
+data:
+  mongodb.username: dWxvZV91c2Vy
+  mongodb.password: SUxvdmVUaGVMaXN0
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-app-svc
+spec:
+  type: NodePort
+  selector:
+    app: my-app
+  ports:
+  - name: frontend
+    protocol: TCP
+    port: 30080
+    nodePort: 30080
+    targetPort: 5000
+  - name: server
+    protocol: TCP
+    port: 30081
+    nodePort: 30081
+    targetPort: 3001
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+      - name: my-app-server
+        image: &lt;Your Docker Hub username&gt;/my-app-server:0.0.1
+        ports:
+        - name: web
+          containerPort: 3001
+          protocol: TCP
+        env:
+        - name: MONGODB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: my-app-config
+              key: mongodb.host
+        - name: MONGODB_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: my-app-config
+              key: mongodb.port
+        - name: MONGODB_USER
+          valueFrom:
+            secretKeyRef:
+              name: my-app-secure-config
+              key: mongodb.username
+        - name: MONGODB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: my-app-secure-config
+              key: mongodb.password
+      - name: my-app-frontend
+        image: &lt;Your Docker Hub username&gt;/my-app-frontend:0.0.1
+        ports:
+        - name: web
+          containerPort: 5000
+          protocol: TCP
+        volumeMounts:
+        - name: frontend-config
+          mountPath: /usr/src/app/.env
+          subPath: .env
+          readOnly: true
+      volumes:
+      - name: frontend-config
+        configMap:
+          name: my-app-config
+          items:
+          - key: .env
+            path: .env
+End-of-message
+</code></pre>
+<p>Deploy the app.</p>
+<pre><code class="language-Shell">kubectl apply -f my-app.yml -n production
+</code></pre>
+<p>Create a new container image version to test the rollout process:</p>
+<pre><code class="language-Shell">docker tag &lt;Your Docker Hub username&gt;/my-app-frontend:0.0.1 &lt;Your Docker Hub username&gt;/my-app-frontend:0.0.2
+docker push &lt;Your Docker Hub username&gt;/my-app-frontend:0.0.2
+</code></pre>
+<p>Edit the app manifest <code>my-app.yml</code> to use the <code>0.0.2</code> image version and then:</p>
+<pre><code class="language-Shell">kubectl apply -f my-app.yml -n production
+</code></pre>
+<p>Get the list of Pods to see the new version rollout:</p>
+<pre><code class="language-Shell">kubectl get pods -n production
+</code></pre>
+<h3 id="processes-with-stateless-containers">Processes with stateless containers</h3>
+<p>VI. Processes
+Execute the app as one or more stateless processes</p>
+<p><a href="https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1632153847308-1082%20-%20S03L03%20VI.%20Processes%20with%20Stateless%20Containers.pdf">Reference</a><br />
+<a href="https://kubernetes.io/docs/tasks/configure-pod-container/security-context/">Security Context</a>  </p>
+<p>Edit the app deployment YAML <code>my-app.yml</code>. In the deployment Pod spec, add a new emptyDir volume under volumes:</p>
+<pre><code class="language-yaml">volumes:
+- name: added-items-log
+  emptyDir: {}
+...
+</code></pre>
+<p>Mount the volume to the server container:</p>
+<pre><code class="language-yaml">containers:
+...
+- name: my-app-server
+  ...
+  volumeMounts:
+  - name: added-items-log
+    mountPath: /usr/src/app/added_items.log
+    subPath: added_items.log
+    readOnly: false
+  ...
+</code></pre>
+<p>Make the container file system read only:</p>
+<pre><code class="language-yaml">containers:
+...
+- name: my-app-server
+  securityContext:
+    readOnlyRootFilesystem: true
+  ...
+</code></pre>
+<p>Deploy the changes:</p>
+<pre><code class="language-Shell">kubectl apply -f my-app.yml -n production
+</code></pre>
+<h3 id="persistent-volumes">Persistent Volumes</h3>
+<p><a href="https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1604349952306-devops-wb002%20-%20S10-L04%20Using%20K8s%20Persistent%20Volumes.pdf">Reference</a><br />
+<a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/">Persistent Volumes (PV)</a><br />
+<a href="https://kubernetes.io/docs/concepts/storage/volumes/#local"><code>local</code> PV</a>  </p>
+<p>Create a <code>StorageClass</code> that supports volume expansion as <code>localdisk-sc.yml</code></p>
+<pre><code class="language-yaml">apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: localdisk
+provisioner: kubernetes.io/no-provisioner
+allowVolumeExpansion: true
+</code></pre>
+<pre><code class="language-Shell">kubectl create -f localdisk-sc.yml
+</code></pre>
+<p><code>persistentVolumeReclaimPolicy</code> says how storage can be reused when the volume's associated claims are deleted.<br />
+- Retain: Keeps all data. An admin must manually clean up and prepare the resource for reuse.
+- Recycle: Automatically deletes all data, allowing  the volume to be reused.
+- Delete: Deletes underlying storage resource automatically (applies to cloud only).  </p>
+<p><a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes"><code>accessModes</code></a> can be:
+- ReadWriteOnce: The volume can be mounted as read-write by a single node. Still can allow multiple pods to access the volume when the pods are running on the same node.<br />
+- ReadOnlyMany: Can be mounted as read-only by many nodes.
+- ReadWriteMany: Can be mounted as read-write by many nodes.
+- ReadWriteOncePod: Can be mounted as read-write by a single Pod. Use ReadWriteOncePod access mode if you want to ensure that only one pod across whole cluster can read that PVC or write to it. This is only supported for CSI volumes.</p>
+<p>Create a PersistentVolume in <code>my-pv.yml</code>.</p>
+<pre><code class="language-yaml">kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: my-pv
+spec:
+  storageClassName: localdisk
+  persistentVolumeReclaimPolicy: Recycle
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /var/output
+</code></pre>
+<pre><code class="language-Shell">kubectl create -f my-pv.yml
+</code></pre>
+<p>Check the status of the PersistentVolume.</p>
+<pre><code class="language-Shell">kubectl get pv
+</code></pre>
+<p>Create a PersistentVolumeClaim that will bind to the PersistentVolume as <code>my-pvc.yml</code></p>
+<pre><code class="language-yaml">apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: my-pvc
+spec:
+  storageClassName: localdisk
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+</code></pre>
+<pre><code class="language-Shell">kubectl create -f my-pvc.yml
+</code></pre>
+<p>Check the status of the PersistentVolume and PersistentVolumeClaim to verify that they have been bound.</p>
+<pre><code class="language-Shell">kubectl get pv
+kubectl get pvc
+</code></pre>
+<p>Create a Pod that uses the PersistentVolumeClaim as <code>pv-pod.yml</code>.</p>
+<pre><code class="language-yaml">apiVersion: v1
+kind: Pod
+metadata:
+  name: pv-pod
+spec:
+  restartPolicy: Never
+  containers:
+  - name: busybox
+    image: busybox
+    command: ['sh', '-c', 'echo Success! &gt; /output/success.txt']
+    volumeMounts:
+    - name: pv-storage
+      mountPath: /output
+  volumes:
+  - name: pv-storage
+    persistentVolumeClaim:
+      claimName: my-pvc
+</code></pre>
+<pre><code class="language-Shell">kubectl create -f pv-pod.yml
+</code></pre>
+<p>Expand the PersistentVolumeClaim and record the process.</p>
+<pre><code class="language-Shell">kubectl edit pvc my-pvc --record
+</code></pre>
+<pre><code class="language-yaml">...
+spec:
+...
+  resources:
+    requests:
+      storage: 200Mi
+</code></pre>
+<p>Delete the Pod and the PersistentVolumeClaim.</p>
+<pre><code class="language-Shell">kubectl delete pod pv-pod
+kubectl delete pvc my-pvc
+</code></pre>
+<p>Check the status of the PersistentVolume to verify that it has been successfully recycled and is available again.</p>
+<pre><code class="language-Shell">kubectl get pv
+</code></pre>
+<h3 id="port-binding-with-pods">Port Binding with Pods</h3>
+<p>VII. Port binding
+Export services via port binding</p>
+<p><a href="https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631215167150-1082%20-%20S03L04%20VII.%20Port%20Binding%20with%20Pods.pdf">Reference</a><br />
+<a href="https://kubernetes.io/docs/concepts/cluster-administration/networking/">Cluster Networking</a>  </p>
+<p>Challenge: only 1 process can listen on a port per host. So how do all apps on the host use a unique port?<br />
+In k8s, each pod has its own network namespace and cluster IP address.<br />
+That IP address is unique within the cluster even if there are multiple worker nodes in the cluster.<br />
+Tht means ports only need to be unique within each pod.<br />
+2 pods can listen on the same port because they each have their own unique IP address within the cluster network.<br />
+The pods can communicate across nodes simply using the unique IPs.</p>
+<p>Get a list of Pods in the production namespace:</p>
+<pre><code class="language-Shell">kubectl get pods -n production -o wide
+</code></pre>
+<p>Copy the name of the IP address of the application Pod.<br />
+Example: Use the IP address to make a request to the port on the Pod that serves the frontend content:</p>
+<pre><code class="language-Shell">curl &lt;Pod Cluster IP address&gt;:5000
+</code></pre>
+<h3 id="concurrency-with-containers-and-scaling">Concurrency with Containers and Scaling</h3>
+<p>VIII. Concurrency
+Scale out via the process model</p>
+<p><a href="https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631215269199-1082%20-%20S04L01%20VIII.%20Concurrency%20with%20Containers%20and%20Scaling.pdf">Reference</a><br />
+<a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/">Deployments</a>  </p>
+<p>By using <code>services</code> to manage access to the app, the service automaticaly picks up the additional pods created during scaling and route traffic to those pods.
+When you have <code>services</code> alongside <code>deployments</code> you can dynamically change the number of replicas that you have and k8s will take care of everything.</p>
+<p>Edit the application deployment <code>my-app.yml</code>.<br />
+Change the number of replicas to 3:</p>
+<pre><code class="language-yaml">...
+replicas: 3
+</code></pre>
+<p>Apply the changes:</p>
+<pre><code class="language-Shell">kubectl apply -f my-app.yml -n production
+</code></pre>
+<p>Get a list of Pods:</p>
+<pre><code class="language-Shell">kubectl get pods -n production
+</code></pre>
+<p>Scale the deployment up again in <code>my-app.yml</code>.<br />
+Change the number of replicas to 5:</p>
+<pre><code class="language-yaml">...
+replicas: 5
+</code></pre>
+<p>Apply the changes:</p>
+<pre><code class="language-Shell">kubectl apply -f my-app .yml -n production
+</code></pre>
+<p>Get a list of Pods:</p>
+<pre><code class="language-Shell">kubectl get pods -n production
+</code></pre>
+<h3 id="disposability-with-stateless-containers">Disposability with Stateless Containers</h3>
+<p>IX. Disposability
+Maximize robustness with fast startup and graceful shutdown</p>
+<p><a href="https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631215259805-1082%20-%20S04L02%20IX.%20Disposability%20with%20Stateless%20Containers.pdf">Reference</a><br />
+<a href="https://kubernetes.io/docs/tasks/configure-pod-container/security-context/">Security Context</a><br />
+<a href="https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/">Pod Lifecycle</a>  </p>
+<p>Deployments can be used to maintain a specified number of running replicas automatically replacing pods that fail or are deleted.</p>
+<p>Get a list of Pods:</p>
+<pre><code class="language-Shell">kubectl get pods -n production
+</code></pre>
+<p>Locate one of the Pods from the my-app deployment and copy the Pod's name.<br />
+Delete the Pod using the Pod name:</p>
+<pre><code class="language-Shell">kubectl delete pod &lt;Pod name&gt; -n production
+</code></pre>
+<p>Get the list of Pods again. You will notice that the deployment is automatically creating a new Pod to replace the one that was deleted:</p>
+<pre><code class="language-Shell">kubectl get pods -n production
+</code></pre>
+<h3 id="devprod-parity-with-namespaces">Dev/Prod Parity with Namespaces</h3>
+<p>X. Dev/prod parity
+Keep development, staging, and production as similar as possible</p>
+<p><a href="https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631215371092-1082%20-%20S05L01%20X.%20Dev%3AProd%20Parity%20with%20Namespaces.pdf">Reference</a>
+<a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/">Namespaces</a>  </p>
+<p>k8s namespaces allow us to have multiple environments in the same cluster. A namespace is like a virtual cluster.</p>
+<p>Create a new namespace:</p>
+<pre><code class="language-Shell">kubectl create namespace dev
+</code></pre>
+<p>Make a copy of the my-app app YAML:</p>
+<pre><code class="language-Shell">cp my-app.yml my-app-dev.yml
+</code></pre>
+<p><code>NodePort</code> <code>services</code> need to be unique within the cluster. We need to choose unique ports so dev doesn't conflict with production.<br />
+Edit the my-app-svc service in the <code>my-app-dev.yml</code> file to select different <code>nodePort</code>s. You will also need to edit the my-app-config ConfigMap to reflect the new port. 
+Set the nodePorts on the service:</p>
+<pre><code class="language-yaml">apiVersion: v1
+kind: Service
+metadata:
+  name: my-app-svc
+spec:
+  type: NodePort
+  selector:
+    app: my-app
+  ports:
+  - name: frontend
+    protocol: TCP
+    port: 30082
+    nodePort: 30082
+    targetPort: 5000
+  - name: server
+    protocol: TCP
+    port: 30083
+    nodePort: 30083
+    targetPort: 3001
+</code></pre>
+<p>Update the configured port in the ConfigMap:</p>
+<pre><code class="language-yaml">apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-app-config
+data:
+  mongodb.host: &quot;my-app-mongodb&quot;
+  mongodb.port: &quot;27017&quot;
+  .env: |
+    REACT_APP_API_PORT=&quot;30083&quot;
+</code></pre>
+<p>Deploy the backing service setup in the new namespace:</p>
+<pre><code class="language-Shell">kubectl apply -f k8s-my-app-mongodb.yml -n dev
+kubectl apply -f my-app-mongodb.yml -n dev
+</code></pre>
+<p>Deploy the app in the new namespace:</p>
+<pre><code class="language-Shell">kubectl apply -f my-app-dev.yml -n dev
+</code></pre>
+<p>Check the status of the Pods:</p>
+<pre><code class="language-Shell">kubectl get pods -n dev
+</code></pre>
+<p>Once all the Pods are up and running, you should be able to test the dev environment in a browser at<br />
+<code>&lt;Control Plane Node Public IP&gt;:30082</code>.</p>
+<h3 id="logs-with-k8s-container-logging">Logs with k8s Container Logging</h3>
+<p>XI. Logs
+Treat logs as event streams</p>
+<p><a href="https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631215382492-1082%20-%20S05L02%20XI.%20Logs%20with%20k8s%20Container%20Logging.pdf">Reference</a><br />
+<a href="https://kubernetes.io/docs/concepts/cluster-administration/logging/">Logging Architecture</a><br />
+<a href="https://kubernetes.io/docs/reference/kubectl/cheatsheet/#interacting-with-running-pods">Kubectl cheatsheet</a>  </p>
+<p>k8s captures log data written to stdout by containers. We can use the k8s API, <code>kubectl logs</code> or external tools to interact with container logs.  </p>
+<p>Edit the source code for the server e.g. <code>src/server/index.js</code>. There is a log function that writes to a file. Change this function to simply write log data to the console:  </p>
+<pre><code class="language-javascript">log = function(data) {
+console.log(data);
+}
+</code></pre>
+<p>Build a new server image because we changed the source code:</p>
+<pre><code class="language-Shell">docker build -t &lt;Your Docker Hub username&gt;/my-app-server:0.0.4 --target server .
+</code></pre>
+<p>Push the image:</p>
+<pre><code class="language-Shell">docker push &lt;Your Docker Hub username&gt;/my-app-server:0.0.4
+</code></pre>
+<p>Deploy the new code. Edit <code>my-app.yml</code>. Change the image version for the server to the new image:</p>
+<pre><code class="language-yaml">containers:
+- name: my-app-server
+  image: &lt;Your Docker Hub username&gt;/my-app-server:0.0.4
+</code></pre>
+<pre><code class="language-Shell">kubectl apply -f my-app.yml -n production
+</code></pre>
+<p>Get a list of Pods:</p>
+<pre><code class="language-Shell">kubectl get pods -n production
+</code></pre>
+<p>Copy the name of one of the my-app deployment Pods and view its logs specifying the pod, namespace, and container.</p>
+<pre><code class="language-Shell">kubectl logs &lt;Pod name&gt; -n production -c my-app-server
+</code></pre>
+<h3 id="admin-processes-with-jobs">Admin Processes with Jobs</h3>
+<p>XII. Admin processes
+Run admin/management tasks as one-off processes</p>
+<p><a href="https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631215407613-1082%20-%20S05L03%20XII.%20Admin%20Processes%20with%20Jobs.pdf">Reference</a><br />
+<a href="https://kubernetes.io/docs/concepts/workloads/controllers/job/">Jobs</a>  </p>
+<p>A <code>Job</code> e.g. a database migration runs a container until its execution completes. Jobs handle re-trying execution if it fails.<br />
+Jobs have a <code>restartPolicy</code> of <code>Never</code> because once they complete they don't run again. 
+This example adds the administrative job to the server image but you could package it into its own image.  </p>
+<p>Edit the source code for the admin process in e.g. <code>src/jobs/deDeuplicateJob.js</code>.<br />
+Locate the block of code that begins with // Setup MongoDb backing database .<br />
+Change the code to make the database connection configurable:  </p>
+<pre><code class="language-javascript">// Setup MongoDb backing database
+const MongoClient = require('mongodb').MongoClient
+// MongoDB credentials
+const username = encodeURIComponent(process.env.MONGODB_USER || &quot;my-app_user&quot;);
+const password = encodeURIComponent(process.env.MONGODB_PASSWORD || &quot;ILoveTheList&quot;);
+// MongoDB connection info
+const mongoPort = process.env.MONGODB_PORT || 27017;
+const mongoHost = process.env.MONGODB_HOST || 'localhost';
+// MongoDB connection string
+const mongoURI = `mongodb://${username}:${password}@${mongoHost}:${mongoPort}/my-app`;
+const mongoURISanitized = `mongodb://${username}:****@${mongoHost}:${mongoPort}/my-app`;
+console.log(&quot;MongoDB connection string %s&quot;, mongoURISanitized);
+const client = new MongoClient(mongoURI);
+</code></pre>
+<p>Edit the <code>Dockerfile</code> to include the admin job code in the server image.<br />
+Add the following line after the other COPY directives for the server image:</p>
+<pre><code class="language-dockerfile">...
+COPY --from=build /usr/src/app/src/jobs .
+</code></pre>
+<p>Build and push the server image:</p>
+<pre><code class="language-Shell">docker build -t &lt;Your Docker Hub username&gt;/my-app-server:0.0.5 --target server .
+docker push &lt;Your Docker Hub username&gt;/my-app-server:0.0.5
+</code></pre>
+<p>Create a Kubernetes Job to run the admin job:
+Create <code>de-duplicate-job.yml</code>.
+Supply your Docker Hub username in the image tag:</p>
+<pre><code class="language-yaml">apiVersion: batch/v1
+kind: Job
+metadata:
+  name: de-duplicate
+spec:
+  template:
+    spec:
+      containers:
+      - name: my-app-server
+        image: &lt;Your Docker Hub username&gt;/my-app-server:0.0.5
+        command: [&quot;node&quot;, &quot;deDeuplicateJob.js&quot;]
+        env:
+        - name: MONGODB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: my-app-config
+              key: mongodb.host
+        - name: MONGODB_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: my-app-config
+              key: mongodb.port
+        - name: MONGODB_USER
+          valueFrom:
+            secretKeyRef:
+              name: my-app-secure-config
+              key: mongodb.username
+        - name: MONGODB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: my-app-secure-config
+              key: mongodb.password
+      restartPolicy: Never
+  backoffLimit: 4
+</code></pre>
+<p>Run the Job:</p>
+<pre><code class="language-Shell">kubectl apply -f de-duplicate-job.yml -n production
+</code></pre>
+<p>Check the Job status:</p>
+<pre><code class="language-Shell">kubectl get jobs -n production
+</code></pre>
+<p>Get the name of the Job Pod:</p>
+<pre><code class="language-Shell">kubectl get pods -n production
+</code></pre>
+<p>Use the Pod name to view the logs for the Job Pod:</p>
+<pre><code class="language-Shell">kubectl logs &lt;Pod name&gt; -n production
+</code></pre>
+<h2 id="microk8s">MicroK8s</h2>
+<p><a href="https://microk8s.io/docs/install-raspberry-pi">On Raspberry Pi</a><br />
+Note: Your boot parameters might be in <code>/boot/cmdline.txt</code>. Add these options at the end of the file, then <code>sudo reboot</code>.</p>
+<pre><code>cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1
+</code></pre>
+<p>For Raspberry Pi OS <a href="https://snapcraft.io/docs/installing-snap-on-raspbian">install</a> <code>snap</code> first.</p>
+<pre><code class="language-Shell">sudo apt update
+sudo apt install snapd
+sudo reboot
+# ...reconnect after reboot
+sudo snap install core
+</code></pre>
+<p>Then install MicroK8s.</p>
+<pre><code class="language-Shell">pi@raspberrypi4:~ $ sudo snap install microk8s --classic
+pi@raspberrypi4:~ $ microk8s status --wait-ready
+pi@raspberrypi4:~ $ microk8s kubectl get all --all-namespaces
+pi@raspberrypi4:~ $ microk8s enable dns dashboard registry hostpath-storage # or any other addons
+pi@raspberrypi4:~ $ alias mkctl=&quot;microk8s kubectl&quot;
+pi@raspberrypi4:~ $ alias mkhelm=&quot;microk8s helm&quot;
+pi@raspberrypi4:~ $ mkctl create deployment nginx --image nginx
+pi@raspberrypi4:~ $ mkctl expose deployment nginx --port 80 --target-port 80 --selector app=nginx --type ClustetIP --name nginx
+pi@raspberrypi4:~ $ watch microk8s kubectl get all
+pi@raspberrypi4:~ $ microk8s reset
+pi@raspberrypi4:~ $ microk8s status
+pi@raspberrypi4:~ $ microk8s stop # microk8s start
+pi@raspberrypi4:~ $ microk8s kubectl version --output=yaml
+</code></pre>
+<p>You can update a snap package with <code>sudo snap refresh</code>.</p>
+<p>Configuration file. These are the arguments you can add regarding log rotation <code>--container-log-max-files</code> and <code>--container-log-max-size</code>. They have default values. <a href="https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/">More info</a>.</p>
+<pre><code class="language-Shell">cat /var/snap/microk8s/current/args/kubelet
+</code></pre>
+<h3 id="registry">Registry</h3>
+<p><a href="https://microk8s.io/docs/registry-built-in">Registry doc</a></p>
+<pre><code class="language-Shell">microk8s enable registry
+</code></pre>
+<p>The containerd daemon used by MicroK8s is configured to trust this insecure registry. To upload images we have to tag them with <code>localhost:32000/your-image</code> before pushing them.</p>
+<h3 id="microk8s-dashboard">MicroK8s dashboard</h3>
+<p>If RBAC is not enabled access the dashboard using the token retrieved with:</p>
+<pre><code class="language-Shell">microk8s kubectl describe secret -n kube-system microk8s-dashboard-token
+</code></pre>
+<p>Use this token in the https login UI of the <code>kubernetes-dashboard</code> service.
+In an RBAC enabled setup (<code>microk8s enable rbac</code>) you need to create a user with restricted permissions as shown <a href="https://github.com/kubernetes/dashboard/blob/master/docs/user/access-control/creating-sample-user.md">here</a>.</p>
+<p>To access remotely from anywhere with <a href="https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#port-forward"><code>port-forward</code></a>:</p>
+<pre><code class="language-Shell">microk8s kubectl port-forward -n kube-system service/kubernetes-dashboard 10443:443 --address 0.0.0.0
+</code></pre>
+<p>You can then access the Dashboard with IP or hostname as in https://raspberrypi4.local:10443/</p>
+<h3 id="troubleshooting">Troubleshooting</h3>
+<pre><code class="language-Shell">microk8s inspect
+</code></pre>
+<p>MicroK8s might not recognize that cgroup memory is enabled but you can check with <code>cat /proc/cgroups</code>.</p>
+<h2 id="kubernetes-dashboard">Kubernetes Dashboard</h2>
+<p><a href="https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/">Documentation</a></p>
+<pre><code class="language-Shell">kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.6.1/aio/deploy/recommended.yaml
+</code></pre>
+<pre><code class="language-Shell">cat &lt;&lt; EOF &gt; dashboard-adminuser.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: admin-user
+  namespace: kubernetes-dashboard
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: admin-user
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: admin-user
+  namespace: kubernetes-dashboard
+EOF
+</code></pre>
+<pre><code class="language-Shell">kubectl apply -f dashboard-adminuser.yaml
+
+kubectl proxy
+# Kubectl will make Dashboard available at 
+# http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
+
+kubectl -n kubernetes-dashboard create token admin-user
+# Now copy the token and paste it into the Enter token field on the login screen. 
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../docker/" class="btn btn-neutral float-left" title="Docker"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../python/" class="btn btn-neutral float-right" title="Python">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../docker/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../python/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

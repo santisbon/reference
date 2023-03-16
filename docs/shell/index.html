@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Shell - Reference</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Shell";
+        var mkdocs_page_input_path = "shell.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <script src="../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Reference
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Set up a new machine</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../install-os/">Install the OS</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../package-mgmt/">Package Manager</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="./">Shell</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#bash">Bash</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#zsh">Zsh</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#terminal-replacement">Terminal replacement</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../utilities/">Utilities</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../editor/">Code Editor</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../git/">Git</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../docker/">Docker</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../k8s/">Kubernetes</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../python/">Python</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../rpi/">Raspberry Pi</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../aws/">AWS</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../mysql/">MySQL</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../node/">Node</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../mkdocs/">MkDocs</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Reference</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li>
+          <li>Set up a new machine &raquo;</li>
+      <li>Shell</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="shell">Shell</h1>
+<h2 id="bash">Bash</h2>
+<p>If you want to use bash</p>
+<pre><code class="language-Shell">brew install bash # get the latest version of bash
+chsh -s $(which bash)
+nano ~/.bash_profile # and paste from sample dot file
+</code></pre>
+<h2 id="zsh">Zsh</h2>
+<pre><code class="language-zsh">brew install zsh # get the latest version
+
+# You may need to add the Homebrew version of Zsh to the list on /etc/shells
+sudo nano /etc/shells # add the output of &quot;which zsh&quot; to the top of the list, save the file.
+
+where zsh # you might see both the shell that came with your Mac and the latest from Homebrew
+which zsh # make sure this returns the one from Homebrew.
+
+chsh -s $(which zsh)
+# Install Oh My Zsh, a framework for managing your Zsh configuration with plugins and themes
+sh -c &quot;$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)&quot;
+</code></pre>
+<p><a href="https://ohmyz.sh/">Oh My Zsh</a><br />
+Add any built-in <a href="https://github.com/ohmyzsh/ohmyzsh/wiki/Plugins">plugins</a> you need to your <code>~/.zshrc</code></p>
+<pre><code class="language-Shell">plugins=(git macos python)
+</code></pre>
+<p>You can also add custom plugins by cloning the repo into the plugins directory or with Homebrew. </p>
+<p>This plugin auto suggests previous commands. </p>
+<pre><code class="language-Shell">git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
+# add zsh-autosuggestions to plugins list in ~/.zshrc and:
+source ~/.zshrc
+</code></pre>
+<p>This plugin <a href="https://github.com/zsh-users/zsh-syntax-highlighting">zsh-syntax-highlighting</a> highlights valid commands green and invalid ones red so you don't have to test the command to see if it will work.</p>
+<pre><code class="language-Shell">git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+</code></pre>
+<p>Or just use Homebrew:</p>
+<pre><code class="language-Shell">brew install zsh-syntax-highlighting
+# To activate the syntax highlighting, add the following at the end of your ~/.zshrc:
+source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+</code></pre>
+<p>Some Oh My Zsh themes like <a href="https://spaceship-prompt.sh/">Spaceship</a> have requirements like the Powerline Fonts. Get them with:</p>
+<pre><code class="language-Shell">git clone https://github.com/powerline/fonts.git --depth=1
+./fonts/install.sh
+rm -rf fonts
+</code></pre>
+<p>You can also install fonts with Homebrew by adding the fonts repository. <a href="https://github.com/tonsky/FiraCode/wiki/VS-Code-Instructions">Fira Code</a> is a good one for programming and computer science.</p>
+<pre><code class="language-Shell">brew tap homebrew/cask-fonts
+brew install --cask font-fira-code
+</code></pre>
+<p>Install your Oh My Zsh theme e.g. Spaceship</p>
+<pre><code class="language-Shell">brew install spaceship
+# If the theme is not copied to your themes folder, sim link from the Homebrew dir to your custom themes folder e.g.
+ln -sf $(brew --prefix)/Cellar/spaceship/4.4.1/spaceship.zsh $ZSH_CUSTOM/themes/spaceship.zsh-theme
+
+touch ~/.spaceshiprc.zsh
+</code></pre>
+<p>Any time you edit your zsh configuration file you can reload it to apply changes.</p>
+<pre><code class="language-Shell">source ~/.zshrc
+</code></pre>
+<h2 id="terminal-replacement">Terminal replacement</h2>
+<p>You can use <a href="https://iterm2.com/index.html">iTerm2</a></p>
+<pre><code class="language-Shell">brew install --cask iterm2
+</code></pre>
+<p>After you have installed the font(s) required by your Oh My Zsh theme set your iTerm preferences like default shell and font.<br />
+Verify that you're using the shell you want. In the output of the <code>env</code> command look for something like <code>Shell=/opt/homebrew/bin/zsh</code>.</p>
+<p>Install iTerm 2 color schemes</p>
+<pre><code class="language-Shell">git clone https://github.com/mbadolato/iTerm2-Color-Schemes.git
+cd iTerm2-Color-Schemes
+
+# Import all color schemes
+tools/import-scheme.sh schemes/*
+</code></pre>
+<p>Restart iTerm 2 (need to quit iTerm 2 to reload the configuration file).<br />
+iTerm2 &gt; Preferences &gt; Profile &gt; Colors &gt; Color Presets </p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../package-mgmt/" class="btn btn-neutral float-left" title="Package Manager"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../utilities/" class="btn btn-neutral float-right" title="Utilities">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../package-mgmt/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../utilities/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>
