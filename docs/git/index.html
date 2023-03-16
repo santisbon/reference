@@ -113,7 +113,7 @@
                 <h1 id="git">Git</h1>
 <h2 id="install">Install</h2>
 <p>macOS  </p>
-<pre><code class="language-Shell">brew install git
+<pre><code class="language-zsh">brew install git
 git --version
 
 # GitHub CLI
@@ -123,11 +123,11 @@ gh config set editor &quot;codium -w&quot; # or code, nano, etc
 </code></pre>
 <p>GitHub CLI <a href="https://docs.github.com/en/github-cli/github-cli/github-cli-reference">reference</a>.</p>
 <p>Linux</p>
-<pre><code class="language-Shell">sudo yum install git # or git-all
+<pre><code class="language-zsh">sudo yum install git # or git-all
 git --version
 </code></pre>
 <h2 id="configure">Configure</h2>
-<pre><code class="language-Shell">git config --global core.editor 'codium --wait'
+<pre><code class="language-zsh">git config --global core.editor 'codium --wait'
 
 git config --global diff.tool codium
 git config --global difftool.codium.cmd 'codium --wait --diff $LOCAL $REMOTE'
@@ -140,25 +140,26 @@ codium ~/.gitconfig # and paste from sample dot file. Also: codium, vscode, nano
 </code></pre>
 <p>Then you can <code>git difftool main feature-branch</code>.  </p>
 <p>If using AWS CodeCommit do this after configuring the AWS CLI:</p>
-<pre><code class="language-Shell">git config --global credential.helper '!aws codecommit credential-helper $@'
+<pre><code class="language-zsh">git config --global credential.helper '!aws codecommit credential-helper $@'
 git config --global credential.UseHttpPath true
 </code></pre>
-<p>Troubleshooting CodeCommit<br />
-https://docs.aws.amazon.com/codecommit/latest/userguide/troubleshooting-ch.html#troubleshooting-macoshttps</p>
+<p><a href="https://docs.aws.amazon.com/codecommit/latest/userguide/troubleshooting-ch.html#troubleshooting-macoshttps">Troubleshooting CodeCommit</a></p>
 <p>To create a squash function:</p>
-<pre><code class="language-Shell">git config --global alias.squash-all '!f(){ git reset $(git commit-tree &quot;HEAD^{tree}&quot; &quot;$@&quot;);};f'
+<pre><code class="language-zsh">git config --global alias.squash-all '!f(){ git reset $(git commit-tree &quot;HEAD^{tree}&quot; &quot;$@&quot;);};f'
 </code></pre>
-<p>:::info
-:information_source: 
-- Git allows you to escape to a shell (like bash or zsh) using the ! (bang). <a href="https://www.atlassian.com/blog/git/advanced-git-aliases">Learn more</a>.
-- <a href="https://git-scm.com/docs/git-commit-tree"><code>commit-tree</code></a> creates a new commit object based on the provided tree object and emits the new commit object id on stdout.
-- <a href="https://git-scm.com/book/en/v2/Git-Internals-Git-Objects#Tree-Objects"><code>tree</code> objects</a> correspond to UNIX directory entries. 
-- <code>reset</code> resets current HEAD to the specified state e.g a commit.
-- The <code>master^{tree}</code> syntax specifies the tree object that is pointed to by the last commit on your <code>master</code> branch. So <code>HEAD^{tree}</code> is the tree object pointed to by the last commit on your current branch.
-- If you’re using ZSH, the <code>^</code> character is used for globbing, so you have to enclose the whole expression in quotes: <code>"HEAD^{tree}"</code>
-:::
-Then just run:</p>
-<pre><code class="language-Shell">git squash-all -m &quot;a brand new start&quot;
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<ul>
+<li>Git allows you to escape to a shell (like bash or zsh) using the ! (bang). <a href="https://www.atlassian.com/blog/git/advanced-git-aliases">Learn more</a>.</li>
+<li><a href="https://git-scm.com/docs/git-commit-tree"><code>commit-tree</code></a> creates a new commit object based on the provided tree object and emits the new commit object id on stdout.</li>
+<li><a href="https://git-scm.com/book/en/v2/Git-Internals-Git-Objects#Tree-Objects"><code>tree</code> objects</a> correspond to UNIX directory entries. </li>
+<li><code>reset</code> resets current HEAD to the specified state e.g a commit.</li>
+<li>The <code>master^{tree}</code> syntax specifies the tree object that is pointed to by the last commit on your <code>master</code> branch. So <code>HEAD^{tree}</code> is the tree object pointed to by the last commit on your current branch.</li>
+<li>If you’re using ZSH, the <code>^</code> character is used for globbing, so you have to enclose the whole expression in quotes: <code>"HEAD^{tree}"</code></li>
+</ul>
+</div>
+<p>Then just run:</p>
+<pre><code class="language-zsh">git squash-all -m &quot;a brand new start&quot;
 git push -f
 </code></pre>
 <h2 id="set-up-git-autocompletion-bash">Set up git autocompletion (bash)</h2>
@@ -173,17 +174,17 @@ mv ~/git-completion.bash ~/.git-completion.bash
 <li><a href="https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/">Add</a> the public key to your GitHub account.</li>
 </ol>
 <p>If the terminal is no longer authenticating you:</p>
-<pre><code class="language-Shell">git remote -v # is it https or ssh? Should be ssh
+<pre><code class="language-zsh">git remote -v # is it https or ssh? Should be ssh
 git remote remove origin
 git remote add origin git@github.com:user/repo.git
 </code></pre>
 <p>Still having issues? Start the ssh-agent in the background and add your SSH private key to the ssh-agent.</p>
-<pre><code class="language-Shell">ps -ax | grep ssh-agent
+<pre><code class="language-zsh">ps -ax | grep ssh-agent
 eval &quot;$(ssh-agent -s)&quot;
 ssh-add --apple-use-keychain ~/.ssh/id_ed25519
 </code></pre>
 <p>If you need to add your public key to Github again copy and paste it on your Settings page on Github:</p>
-<pre><code class="language-Shell">pbcopy &lt; ~/.ssh/id_ed25519.pub
+<pre><code class="language-zsh">pbcopy &lt; ~/.ssh/id_ed25519.pub
 </code></pre>
               
             </div>

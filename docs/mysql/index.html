@@ -107,21 +107,21 @@
 Use your OS package manager or download .dmg installer for macOS. Take note of the root password.</p>
 <p><strong>Configure your PATH</strong>
 Add the mysql location to your PATH. Typically as part of your ~/.bash_profile</p>
-<pre><code class="language-Shell">export PATH=/usr/local/mysql/bin:$PATH
+<pre><code class="language-zsh">export PATH=/usr/local/mysql/bin:$PATH
 </code></pre>
 <p><strong>Start the MySQL service</strong>
 On macOS</p>
-<pre><code class="language-Shell">sudo launchctl load -F /Library/LaunchDaemons/com.oracle.oss.mysql.mysqld.plist
+<pre><code class="language-zsh">sudo launchctl load -F /Library/LaunchDaemons/com.oracle.oss.mysql.mysqld.plist
 </code></pre>
 <p><strong>Verify it's running</strong>
 On macOS</p>
-<pre><code class="language-Shell">sudo launchctl list | grep mysql
+<pre><code class="language-zsh">sudo launchctl list | grep mysql
 </code></pre>
 <p><strong>Connect to your MySQL instance</strong>
 Use MySQL Workbench or other client tool.</p>
 <p><strong>To stop MySQL</strong>
 On macOS</p>
-<pre><code class="language-Shell">sudo launchctl unload -F /Library/LaunchDaemons/com.oracle.oss.mysql.mysqld.plist
+<pre><code class="language-zsh">sudo launchctl unload -F /Library/LaunchDaemons/com.oracle.oss.mysql.mysqld.plist
 </code></pre>
 <p><strong>Exporting data</strong>
 If you need to export data you may need to disable or set a security setting. On macOS:</p>
@@ -129,7 +129,7 @@ If you need to export data you may need to disable or set a security setting. On
 <pre><code class="language-sql">show variables like 'secure_file_priv';
 </code></pre>
 <p>Open the configuration file.</p>
-<pre><code class="language-Shell">cd /Library/LaunchDaemons
+<pre><code class="language-zsh">cd /Library/LaunchDaemons
 sudo nano com.oracle.oss.mysql.mysqld.plist
 </code></pre>
 <p>and set the --secure-file-priv to an empty string (to disable the restriction) or a dir of your choice.</p>
@@ -139,13 +139,14 @@ sudo nano com.oracle.oss.mysql.mysqld.plist
     &lt;/array&gt;
 </code></pre>
 <p>Then restart MySQL. Now you can export data:</p>
-<pre><code class="language-sql">SELECT *
-INTO OUTFILE 'your_file.csv'
-FIELDS TERMINATED BY ',' ENCLOSED BY '&quot;'
-FROM `your_db`.`your_table`
+<pre><code class="language-sql">SELECT  *
+INTO    OUTFILE 'your_file.csv'
+        FIELDS TERMINATED BY ',' 
+        ENCLOSED BY '&quot;'
+FROM    `your_db`.`your_table`
 </code></pre>
 <p>You can find your exported data:</p>
-<pre><code class="language-Shell">sudo find /usr/local/mysql/data -name your_file.csv
+<pre><code class="language-zsh">sudo find /usr/local/mysql/data -name your_file.csv
 </code></pre>
               
             </div>

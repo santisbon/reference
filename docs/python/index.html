@@ -124,62 +124,62 @@
 <h3 id="with-homebrew">With Homebrew</h3>
 <p>Even if you already have Python on your OS it might be an outdated version. This installs python and pip.<br />
 macOS</p>
-<pre><code class="language-Shell">brew install python
+<pre><code class="language-zsh">brew install python
 python3 --version
 </code></pre>
 <p>The python formulae install pip (as pip3) and Setuptools. Setuptools can be updated via pip3 and pip3 can be used to upgrade itself.</p>
-<pre><code class="language-Shell">python3 -m pip install --upgrade setuptools
+<pre><code class="language-zsh">python3 -m pip install --upgrade setuptools
 python3 -m pip install --upgrade pip
 </code></pre>
 <p>Add the unversioned symlinks to your <code>$PATH</code> by adding this to your <code>.zshrc</code> file.</p>
-<pre><code class="language-Shell">export PATH=&quot;$(brew --prefix)/opt/python/libexec/bin:$PATH&quot;
+<pre><code class="language-zsh">export PATH=&quot;$(brew --prefix)/opt/python/libexec/bin:$PATH&quot;
 </code></pre>
 <p>See the <a href="https://docs.brew.sh/Homebrew-and-Python">Homebrew Python</a> documentation for details.  </p>
 <p><code>site-packages</code> is here. Example for python 3.10 on Homebrew</p>
-<pre><code class="language-Shell">ls -al $(brew --prefix)/lib/python3.10/site-packages
+<pre><code class="language-zsh">ls -al $(brew --prefix)/lib/python3.10/site-packages
 </code></pre>
 <h3 id="without-homebrew">Without Homebrew</h3>
 <p>Linux (Ubuntu)</p>
-<pre><code class="language-Shell">sudo apt install python3
+<pre><code class="language-zsh">sudo apt install python3
 </code></pre>
 <p>macOS<br />
 Download .pkg installer from pythong.org. Then get pip.</p>
-<pre><code class="language-Shell">curl -o get-pip.py https://bootstrap.pypa.io/get-pip.py
+<pre><code class="language-zsh">curl -o get-pip.py https://bootstrap.pypa.io/get-pip.py
 sudo python get-pip.py
 </code></pre>
 <p>Linux</p>
-<pre><code class="language-Shell">sudo apt install python-pip
+<pre><code class="language-zsh">sudo apt install python-pip
 </code></pre>
-<pre><code class="language-Shell">pip install --upgrade pip setuptools
+<pre><code class="language-zsh">pip install --upgrade pip setuptools
 </code></pre>
 <p>On Ubuntu, upgrading to pip 10 may break pip. If this happens you need to:</p>
-<pre><code class="language-Shell">sudo nano /usr/bin/pip
+<pre><code class="language-zsh">sudo nano /usr/bin/pip
 # change &quot;from pip import main&quot; to &quot;from pip._internal import main&quot;
 </code></pre>
 <h2 id="get-the-pep8-python-style-checker">Get the pep8 python style checker</h2>
-<pre><code class="language-Shell"># On Linux you may need to use sudo.
+<pre><code class="language-zsh"># On Linux you may need to use sudo.
 pip install pep8
 </code></pre>
 <h2 id="anaconda">Anaconda</h2>
 <p>For data science and machine learning. <a href="https://docs.anaconda.com/anaconda/">Anaconda</a> is a distribution of the Python and R programming languages for scientific computing. See <a href="https://conda.io/projects/conda/en/latest/user-guide/getting-started.html">Getting Started</a>.</p>
-<pre><code class="language-Shell">brew install --cask anaconda
+<pre><code class="language-zsh">brew install --cask anaconda
 </code></pre>
 <p><a href="https://docs.anaconda.com/anaconda/install/silent-mode/">Installing in silent mode</a>  </p>
 <p>Add anaconda to your <code>PATH</code> on your <code>.zshrc</code> and <code>source ~/.zshrc</code> to apply the changes.</p>
-<pre><code class="language-Shell">export PATH=&quot;$(brew --prefix)/anaconda3/bin:$PATH&quot;
+<pre><code class="language-zsh">export PATH=&quot;$(brew --prefix)/anaconda3/bin:$PATH&quot;
 </code></pre>
 <p>To use zsh:</p>
-<pre><code class="language-Shell">conda init zsh
+<pre><code class="language-zsh">conda init zsh
 </code></pre>
 <p>If <code>conda init zsh</code> messed up the <code>PATH</code> in your <code>~/.zshrc</code> by adding the <code>condabin</code> directory instead of <code>bin</code> you can fix it with a symlink:</p>
-<pre><code class="language-Shell">ln -sf $(brew --prefix)/anaconda3/bin/jupyter-lab $(brew --prefix)/anaconda3/condabin/jupyter-lab
+<pre><code class="language-zsh">ln -sf $(brew --prefix)/anaconda3/bin/jupyter-lab $(brew --prefix)/anaconda3/condabin/jupyter-lab
 ln -sf $(brew --prefix)/anaconda3/bin/jupyter $(brew --prefix)/anaconda3/condabin/jupyter
 </code></pre>
 <p>If you don't want to activate the <code>base</code> environment every time you open your terminal:</p>
-<pre><code class="language-Shell">conda config --set auto_activate_base false
+<pre><code class="language-zsh">conda config --set auto_activate_base false
 </code></pre>
 <p>When creating a conda environment you can use optionally use a configuration file. You can also of course, save a config file from an existing environment to back it up.</p>
-<pre><code class="language-Shell">conda env create -f myenv.yml
+<pre><code class="language-zsh">conda env create -f myenv.yml
 conda activate myenv
 
 conda env list
@@ -187,12 +187,12 @@ conda env remove --name ldm
 </code></pre>
 <h3 id="notebooks">Notebooks</h3>
 <p>Fresh installs of Anaconda no longer include notebook extensions in their Jupyter installer. This means that the nb_conda libraries need to be added into your environment separately to access conda environments from your Jupyter notebook. Just run these to add them and you should be able to select your environment as a kernel within a Jupyter notebook.</p>
-<pre><code class="language-Shell">conda activate &lt;myenv&gt;
+<pre><code class="language-zsh">conda activate &lt;myenv&gt;
 conda install ipykernel
 conda install nb_conda_kernels # or defaults::nb_conda_kernels
 </code></pre>
 <p>Now you can launch the new JupyterLab or the classic Jupyter Notebook.</p>
-<pre><code class="language-Shell">jupyter-lab # or the classic &quot;jupyter notebook&quot;
+<pre><code class="language-zsh">jupyter-lab # or the classic &quot;jupyter notebook&quot;
 </code></pre>
               
             </div>

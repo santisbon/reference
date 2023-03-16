@@ -111,7 +111,7 @@
                 <h1 id="shell">Shell</h1>
 <h2 id="bash">Bash</h2>
 <p>If you want to use bash</p>
-<pre><code class="language-Shell">brew install bash # get the latest version of bash
+<pre><code class="language-zsh">brew install bash # get the latest version of bash
 chsh -s $(which bash)
 nano ~/.bash_profile # and paste from sample dot file
 </code></pre>
@@ -130,49 +130,49 @@ sh -c &quot;$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/ins
 </code></pre>
 <p><a href="https://ohmyz.sh/">Oh My Zsh</a><br />
 Add any built-in <a href="https://github.com/ohmyzsh/ohmyzsh/wiki/Plugins">plugins</a> you need to your <code>~/.zshrc</code></p>
-<pre><code class="language-Shell">plugins=(git macos python)
+<pre><code class="language-zsh">plugins=(git macos python)
 </code></pre>
 <p>You can also add custom plugins by cloning the repo into the plugins directory or with Homebrew. </p>
 <p>This plugin auto suggests previous commands. </p>
-<pre><code class="language-Shell">git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
+<pre><code class="language-zsh">git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
 # add zsh-autosuggestions to plugins list in ~/.zshrc and:
 source ~/.zshrc
 </code></pre>
 <p>This plugin <a href="https://github.com/zsh-users/zsh-syntax-highlighting">zsh-syntax-highlighting</a> highlights valid commands green and invalid ones red so you don't have to test the command to see if it will work.</p>
-<pre><code class="language-Shell">git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+<pre><code class="language-zsh">git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 </code></pre>
 <p>Or just use Homebrew:</p>
-<pre><code class="language-Shell">brew install zsh-syntax-highlighting
+<pre><code class="language-zsh">brew install zsh-syntax-highlighting
 # To activate the syntax highlighting, add the following at the end of your ~/.zshrc:
 source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 </code></pre>
 <p>Some Oh My Zsh themes like <a href="https://spaceship-prompt.sh/">Spaceship</a> have requirements like the Powerline Fonts. Get them with:</p>
-<pre><code class="language-Shell">git clone https://github.com/powerline/fonts.git --depth=1
+<pre><code class="language-zsh">git clone https://github.com/powerline/fonts.git --depth=1
 ./fonts/install.sh
 rm -rf fonts
 </code></pre>
 <p>You can also install fonts with Homebrew by adding the fonts repository. <a href="https://github.com/tonsky/FiraCode/wiki/VS-Code-Instructions">Fira Code</a> is a good one for programming and computer science.</p>
-<pre><code class="language-Shell">brew tap homebrew/cask-fonts
+<pre><code class="language-zsh">brew tap homebrew/cask-fonts
 brew install --cask font-fira-code
 </code></pre>
 <p>Install your Oh My Zsh theme e.g. Spaceship</p>
-<pre><code class="language-Shell">brew install spaceship
+<pre><code class="language-zsh">brew install spaceship
 # If the theme is not copied to your themes folder, sim link from the Homebrew dir to your custom themes folder e.g.
 ln -sf $(brew --prefix)/Cellar/spaceship/4.4.1/spaceship.zsh $ZSH_CUSTOM/themes/spaceship.zsh-theme
 
 touch ~/.spaceshiprc.zsh
 </code></pre>
 <p>Any time you edit your zsh configuration file you can reload it to apply changes.</p>
-<pre><code class="language-Shell">source ~/.zshrc
+<pre><code class="language-zsh">source ~/.zshrc
 </code></pre>
 <h2 id="terminal-replacement">Terminal replacement</h2>
 <p>You can use <a href="https://iterm2.com/index.html">iTerm2</a></p>
-<pre><code class="language-Shell">brew install --cask iterm2
+<pre><code class="language-zsh">brew install --cask iterm2
 </code></pre>
 <p>After you have installed the font(s) required by your Oh My Zsh theme set your iTerm preferences like default shell and font.<br />
-Verify that you're using the shell you want. In the output of the <code>env</code> command look for something like <code>Shell=/opt/homebrew/bin/zsh</code>.</p>
+Verify that you're using the shell you want. In the output of the <code>env</code> command look for something like <code>zsh=/opt/homebrew/bin/zsh</code>.</p>
 <p>Install iTerm 2 color schemes</p>
-<pre><code class="language-Shell">git clone https://github.com/mbadolato/iTerm2-Color-Schemes.git
+<pre><code class="language-zsh">git clone https://github.com/mbadolato/iTerm2-Color-Schemes.git
 cd iTerm2-Color-Schemes
 
 # Import all color schemes

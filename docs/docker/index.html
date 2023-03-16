@@ -121,7 +121,7 @@
                 <h1 id="docker">Docker</h1>
 <h2 id="install">Install</h2>
 <h3 id="macos">macOS</h3>
-<pre><code class="language-Shell">brew install --cask docker
+<pre><code class="language-zsh">brew install --cask docker
 </code></pre>
 <ul>
 <li>You must use the --cask version. Otherwise only the client is included and can't run the Docker daemon. Then open the Docker app and grant privileged access when asked. Only then will you be able to use docker.</li>
@@ -130,7 +130,7 @@
 <p>If you just ran <code>apt upgrade</code> on your Raspberry Pi, reboot before installing Docker.<br />
 Follow the appropriate <a href="https://docs.docker.com/engine/install/debian/#install-using-the-convenience-script">installation method</a>.  </p>
 <p>If you don't want to have to prefix commands with sudo add your user to the <code>docker</code> group. This is equivalent to giving that user root privileges.</p>
-<pre><code class="language-Shell">cat /etc/group | grep docker # see if docker group exists
+<pre><code class="language-zsh">cat /etc/group | grep docker # see if docker group exists
 sudo usermod -aG docker $USER
 </code></pre>
 <p>Follow <a href="https://docs.docker.com/engine/install/linux-postinstall/">Post-installation steps</a> to configure log rotation.  </p>
@@ -186,7 +186,7 @@ The <code>--platform</code> option sets the platform if server is multi-platform
 When installing apps on the container either install the package for the ARM platform if they provide one, or run an amd64 docker image (Docker will use emulation). </p>
 <p>See Docker host info.<br />
 You need to use the real field names (not display names) so we'll grab the info in json to get the real field names and use <code>jq</code> to display it nicely. Then we'll render them using Go templates.</p>
-<pre><code class="language-Shell">docker info --format '{{json .}}' | jq .
+<pre><code class="language-zsh">docker info --format '{{json .}}' | jq .
 
 docker info --format &quot;{{.Plugins.Volume}}&quot;
 docker info --format &quot;{{.OSType}} - {{.Architecture}} CPUs: {{.NCPU}}&quot;
@@ -194,7 +194,7 @@ docker info --format &quot;{{.OSType}} - {{.Architecture}} CPUs: {{.NCPU}}&quot;
 <p>With the default images, Docker Desktop for Apple silicon warns us the requested image's platform (linux/amd64) is different from the detected host platform (linux/arm64/v8) and no specific platform was requested.<br />
 <code>--platform linux/amd64</code> is the default and the same as  <code>--platform linux/x86_64</code>. It runs (or builds) an Intel image.<br />
 <code>--platform linux/arm64</code> runs (or builds) an aarch64 (arm64) image. Architecture used by Appple M1/M2.  </p>
-<pre><code class="language-Shell">docker run -it --name container1 debian # WARNING. uname -m -&gt; x86_64 (amd64)
+<pre><code class="language-zsh">docker run -it --name container1 debian # WARNING. uname -m -&gt; x86_64 (amd64)
 docker run -it --platform linux/amd64 --name container1 debian # NO warning. uname -m -&gt; x86_64 (amd64). On Mac it emulates Intel.
 docker run -it --platform linux/arm64 --name container1 debian # NO warning. uname -m -&gt; aarch64 (arm64). Mac native.
 
@@ -203,10 +203,10 @@ docker run -it --name mycontainer arm64v8/debian bash # NO warning. uname -m -&g
 </code></pre>
 <h3 id="examples">Examples</h3>
 <p>Dockerfile instruction to keep a container running</p>
-<pre><code class="language-Shell">CMD tail -f /dev/null
+<pre><code class="language-zsh">CMD tail -f /dev/null
 </code></pre>
 <p>Running containers</p>
-<pre><code class="language-Shell"># sanity check
+<pre><code class="language-zsh"># sanity check
 docker version
 docker --help
 
@@ -230,7 +230,7 @@ docker ps -aq -f status=exited
 
 </code></pre>
 <p>Working with images and volumes</p>
-<pre><code class="language-Shell">
+<pre><code class="language-zsh">
 # Show all images (including intermediate images)
 docker image ls -a
 
@@ -271,7 +271,7 @@ alias drm='sudo docker rm -v $(sudo docker ps -aq -f status=exited)'
 docker run -it --privileged --pid=host debian nsenter -t 1 -m -u -n -i sh
 </code></pre>
 <p>If you want to build <a href="https://docs.docker.com/build/building/multi-platform/#getting-started">multi-platform</a> docker images:</p>
-<pre><code class="language-Shell">docker buildx create --name mybuilder --driver docker-container --bootstrap
+<pre><code class="language-zsh">docker buildx create --name mybuilder --driver docker-container --bootstrap
 docker buildx use mybuilder
 
 docker buildx inspect
@@ -279,7 +279,7 @@ docker buildx ls
 </code></pre>
 <p>Docker Compose. Multi-container deployments in a compose.yaml file.<br />
 <a href="https://docs.docker.com/compose/production/">Using Compose in Production</a>  </p>
-<pre><code class="language-Shell">docker compose -p mastodon-bot-project up --detach
+<pre><code class="language-zsh">docker compose -p mastodon-bot-project up --detach
 # or
 docker compose -p mastodon-bot-project create
 docker compose -p mastodon-bot-project start
@@ -292,7 +292,7 @@ docker compose -p mastodon-bot-project down
 docker compose -p mastodon-bot-project stop
 </code></pre>
 <p>Kubernetes</p>
-<pre><code class="language-Shell"># Convert the Docker Compose file to k8s files
+<pre><code class="language-zsh"># Convert the Docker Compose file to k8s files
 kompose --file compose.yaml convert
 
 # Make sure the container image is available in a repository. 

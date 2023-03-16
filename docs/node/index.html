@@ -107,16 +107,16 @@
 <p>macOS<br />
 Download the Node.js installer from https://nodejs.org/en/download/<br />
 or</p>
-<pre><code class="language-Shell">brew install node
+<pre><code class="language-zsh">brew install node
 </code></pre>
 <p>Linux  </p>
-<pre><code class="language-Shell">sudo apt install nodejs
+<pre><code class="language-zsh">sudo apt install nodejs
 sudo apt install npm
 </code></pre>
 <p>[Optional] Install nvm from https://github.com/creationix/nvm to manage multiple versions of node and npm.  </p>
 <p>Windows Subsystem for Linux<br />
 On WSL the recommended approach for installing a current version of Node.js is nvm.</p>
-<pre><code class="language-Shell">touch ~/.bashrc
+<pre><code class="language-zsh">touch ~/.bashrc
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
 # Reload your configuration
 source ~/.bashrc
@@ -126,19 +126,19 @@ npm install npm@latest -g
 </code></pre>
 <p><strong>Update npm</strong>
 If you installed npm as part of node you may need to update npm.</p>
-<pre><code class="language-Shell">sudo npm install -g npm
+<pre><code class="language-zsh">sudo npm install -g npm
 </code></pre>
 <p><strong>Initialize a node project by creating a package.json</strong></p>
-<pre><code class="language-Shell">npm init
+<pre><code class="language-zsh">npm init
 </code></pre>
 <p><strong>Installing dependencies examples</strong></p>
-<pre><code class="language-Shell">sudo npm install --save ask-sdk moment
+<pre><code class="language-zsh">sudo npm install --save ask-sdk moment
 sudo npm install --save-dev mocha chai eslint virtual-alexa
 </code></pre>
 <p><strong>Troubleshooting mocha</strong>
 If you get an error running mocha tests e.g. <code>node_modules/.bin/mocha</code> not having execute permissions or <em>mocha Error: Cannot find module './options'</em> delete your node_modules folder and <code>npm install</code>.</p>
 <p><strong>Set up ESLint with a configuration file</strong></p>
-<pre><code class="language-Shell">eslint --init
+<pre><code class="language-zsh">eslint --init
 # you may need to run it as:
 # sudo ./node_modules/.bin/eslint --init
 </code></pre>

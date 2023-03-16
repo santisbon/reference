@@ -160,34 +160,36 @@ Example with 1 control plane node and 2 worker nodes.</p>
 <h3 id="building-a-kubernetes-cluster">Building a Kubernetes Cluster</h3>
 <p><a href="https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1658326918182-Building%20a%20Kubernetes%20Cluster.pdf">Reference</a><br />
 <a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/">Installing kubeadm</a><br />
-<a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/">Creating a cluster with kubeadm</a><br />
-* kubeadm sometimes doesn't work with the latest and greatest version of docker right away.</p>
+<a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/">Creating a cluster with kubeadm</a>  </p>
+<ul>
+<li>kubeadm sometimes doesn't work with the latest and greatest version of docker right away.</li>
+</ul>
 <p><code>kubeadm</code> simplifies the process of setting up a k8s cluster.<br />
 <code>containerd</code> manages the complete container lifecycle of its host system, from image transfer and storage to container execution and supervision to low-level storage to network attachments.<br />
 <code>kubelet</code> handles running containers on a node.<br />
 <code>kubectl</code> is a tool for managing the cluster.  </p>
 <p>If you wish, you can set an appropriate hostname for each node.<br />
 <strong>On the control plane node</strong>:  </p>
-<pre><code class="language-Shell">sudo hostnamectl set-hostname k8s-control
+<pre><code class="language-zsh">sudo hostnamectl set-hostname k8s-control
 </code></pre>
 <p><strong>On the first worker node</strong>:  </p>
-<pre><code class="language-Shell">sudo hostnamectl set-hostname k8s-worker1
+<pre><code class="language-zsh">sudo hostnamectl set-hostname k8s-worker1
 </code></pre>
 <p><strong>On the second worker node</strong>:  </p>
-<pre><code class="language-Shell">sudo hostnamectl set-hostname k8s-worker2
+<pre><code class="language-zsh">sudo hostnamectl set-hostname k8s-worker2
 </code></pre>
 <p><strong>On all nodes</strong>, set up the hosts file to enable all the nodes to reach each other using these hostnames.</p>
-<pre><code class="language-Shell">sudo nano /etc/hosts
+<pre><code class="language-zsh">sudo nano /etc/hosts
 </code></pre>
 <p><strong>On all nodes</strong>, add the following at the end of the file. You will need to supply the actual private IP address for each node.</p>
-<pre><code class="language-Shell">&lt;control plane node private IP&gt; k8s-control
+<pre><code class="language-zsh">&lt;control plane node private IP&gt; k8s-control
 &lt;worker node 1 private IP&gt; k8s-worker1
 &lt;worker node 2 private IP&gt; k8s-worker2
 </code></pre>
 <p>Log out of all three servers and log back in to see these changes take effect.  </p>
 <p><strong>On all nodes, set up containerd</strong>. You will need to load some kernel modules and modify some system settings as part of this
 process.  </p>
-<pre><code class="language-Shell"># Enable them when the server start up
+<pre><code class="language-zsh"># Enable them when the server start up
 cat &lt;&lt; EOF | sudo tee /etc/modules-load.d/containerd.conf
 overlay
 br_netfilter
@@ -208,7 +210,7 @@ EOF
 sudo sysctl --system
 </code></pre>
 <p>Install and configure containerd.  </p>
-<pre><code class="language-Shell">sudo apt-get update &amp;&amp; sudo apt-get install -y containerd
+<pre><code class="language-zsh">sudo apt-get update &amp;&amp; sudo apt-get install -y containerd
 sudo mkdir -p /etc/containerd
 # Generate the contents of a default config file and save it
 sudo containerd config default | sudo tee /etc/containerd/config.toml
@@ -216,10 +218,10 @@ sudo containerd config default | sudo tee /etc/containerd/config.toml
 sudo systemctl restart containerd
 </code></pre>
 <p><strong>On all nodes, disable swap</strong>.</p>
-<pre><code class="language-Shell">sudo swapoff -a
+<pre><code class="language-zsh">sudo swapoff -a
 </code></pre>
 <p><strong>On all nodes, install kubeadm, kubelet, and kubectl</strong>.</p>
-<pre><code class="language-Shell"># Some required packages
+<pre><code class="language-zsh"># Some required packages
 sudo apt-get update &amp;&amp; sudo apt-get install -y apt-transport-https curl
 # Set up the package repo for k8s packages. Download the key for the repo and add it
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
@@ -234,7 +236,7 @@ sudo apt-get install -y kubelet=1.24.0-00 kubeadm=1.24.0-00 kubectl=1.24.0-00
 sudo apt-mark hold kubelet kubeadm kubectl
 </code></pre>
 <p><strong>On the control plane node only</strong>, initialize the cluster and set up kubectl access.</p>
-<pre><code class="language-Shell">sudo kubeadm init --pod-network-cidr 192.168.0.0/16 --kubernetes-version 1.24.0
+<pre><code class="language-zsh">sudo kubeadm init --pod-network-cidr 192.168.0.0/16 --kubernetes-version 1.24.0
 # Config File to authenticate and interact with the cluster with kubectl commands
 # These are in the output of the previous step
 mkdir -p $HOME/.kube
@@ -242,20 +244,20 @@ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 </code></pre>
 <p>Verify the cluster is working. It will be in Not Ready status because we haven't configured the networking plugin.</p>
-<pre><code class="language-Shell">kubectl get nodes
+<pre><code class="language-zsh">kubectl get nodes
 </code></pre>
 <p>Install the Calico network add-on.</p>
-<pre><code class="language-Shell">kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+<pre><code class="language-zsh">kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
 </code></pre>
 <p>Get the join command (this command is also printed during kubeadm init . Feel free to simply copy it from there).</p>
-<pre><code class="language-Shell">kubeadm token create --print-join-command
+<pre><code class="language-zsh">kubeadm token create --print-join-command
 </code></pre>
 <p>Copy the join command from the control plane node. Run it <strong>on each worker node</strong> as root (i.e. with sudo ).</p>
-<pre><code class="language-Shell">sudo kubeadm join ...
+<pre><code class="language-zsh">sudo kubeadm join ...
 </code></pre>
 <p><strong>On the control plane node</strong>, verify all nodes in your cluster are ready. Note that it may take a few moments for all of the nodes to
 enter the READY state.</p>
-<pre><code class="language-Shell">kubectl get nodes
+<pre><code class="language-zsh">kubectl get nodes
 </code></pre>
 <h3 id="installing-docker">Installing Docker</h3>
 <p><a href="https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631214923454-1082%20-%20S01L03%20Installing%20Docker.pdf">Reference</a><br />
@@ -265,29 +267,29 @@ to avoid storing your Docker Hub password unencrypted in <code>$HOME/.docker/con
 <p><strong>On the system that will build Docker images from source code</strong> e.g. a CI server, install and configure Docker.<br />
 For simplicity we'll use the control plane server just so we don't have to create another server for this exercise.  </p>
 <p>Create a docker group. Users in this group will have permission to use Docker on the system:</p>
-<pre><code class="language-Shell">sudo groupadd docker
+<pre><code class="language-zsh">sudo groupadd docker
 </code></pre>
 <p>Install required packages.<br />
 Note: Some of these packages may already be present on the system, but including them here will not cause any problems:</p>
-<pre><code class="language-Shell">sudo apt-get update &amp;&amp; sudo apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release
+<pre><code class="language-zsh">sudo apt-get update &amp;&amp; sudo apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release
 </code></pre>
 <p>Set up the Docker GPG key and package repository:</p>
-<pre><code class="language-Shell">curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+<pre><code class="language-zsh">curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 echo &quot;deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable&quot; | sudo tee /etc/apt/sources.list.d/docker.list &gt; /dev/null
 </code></pre>
 <p>Install the Docker Engine:</p>
-<pre><code class="language-Shell">sudo apt-get update &amp;&amp; sudo apt-get install -y docker-ce docker-ce-cli
+<pre><code class="language-zsh">sudo apt-get update &amp;&amp; sudo apt-get install -y docker-ce docker-ce-cli
 # Type N (default) or enter to keep your current containerd configuration
 </code></pre>
 <p>Test the Docker setup:</p>
-<pre><code class="language-Shell">sudo docker version
+<pre><code class="language-zsh">sudo docker version
 </code></pre>
 <p>Add cloud_user to the docker group in order to give cloud_user access to use Docker:</p>
-<pre><code class="language-Shell">sudo usermod -aG docker cloud_user
+<pre><code class="language-zsh">sudo usermod -aG docker cloud_user
 </code></pre>
 <p>Log out of the server and log back in.<br />
 Test your setup:</p>
-<pre><code class="language-Shell">docker version
+<pre><code class="language-zsh">docker version
 </code></pre>
 <h3 id="kubernetes-configuration-with-configmaps-and-secrets">Kubernetes configuration with ConfigMaps and Secrets</h3>
 <p>III. Config
@@ -297,14 +299,14 @@ Store config in the environment</p>
 <a href="https://kubernetes.io/docs/concepts/configuration/configmap/">ConfigMaps</a><br />
 <a href="https://kubernetes.io/docs/concepts/configuration/secret/">Secrets</a>  </p>
 <p>Create a production Namespace:</p>
-<pre><code class="language-Shell">kubectl create namespace production
+<pre><code class="language-zsh">kubectl create namespace production
 </code></pre>
 <p>Get base64-encoded strings for a db username and password:</p>
-<pre><code class="language-Shell">echo -n my_user | base64
+<pre><code class="language-zsh">echo -n my_user | base64
 echo -n my_password | base64
 </code></pre>
 <p>Example: Create a ConfigMap and Secret to configure the backing service connection information for the app, including the base64-encoded credentials:</p>
-<pre><code class="language-Shell">cat &gt; my-app-config.yml &lt;&lt;End-of-message 
+<pre><code class="language-zsh">cat &gt; my-app-config.yml &lt;&lt;End-of-message 
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -326,11 +328,11 @@ data:
 
 End-of-message
 </code></pre>
-<pre><code class="language-Shell">kubectl apply -f my-app-config.yml -n production
+<pre><code class="language-zsh">kubectl apply -f my-app-config.yml -n production
 </code></pre>
 <p>Create a temporary Pod to test the configuration setup. Note that you need to supply your Docker Hub username as part of the image name in this file.
 This passes configuration data in env variables but you could also do it in files that will show up on the containers filesystem.</p>
-<pre><code class="language-Shell">cat &gt; test-pod.yml &lt;&lt;End-of-message
+<pre><code class="language-zsh">cat &gt; test-pod.yml &lt;&lt;End-of-message
 
 apiVersion: v1
 kind: Pod
@@ -368,13 +370,13 @@ spec:
 
 End-of-message
 </code></pre>
-<pre><code class="language-Shell">kubectl apply -f test-pod.yml -n production
+<pre><code class="language-zsh">kubectl apply -f test-pod.yml -n production
 </code></pre>
 <p>Check the logs to verify the config data is being passed to the container:</p>
-<pre><code class="language-Shell">kubectl logs test-pod -n production
+<pre><code class="language-zsh">kubectl logs test-pod -n production
 </code></pre>
 <p>Clean up the test pod:</p>
-<pre><code class="language-Shell">kubectl delete pod test-pod -n production --force
+<pre><code class="language-zsh">kubectl delete pod test-pod -n production --force
 </code></pre>
 <h3 id="build-release-run-with-docker-and-deployments">Build, Release, Run with Docker and Deployments</h3>
 <p>V. Build, release, run
@@ -386,7 +388,7 @@ Strictly separate build and run stages</p>
 The <code>selector</code> selects pods that have the specified label name and value.<br />
 <code>template</code> is the pod template.<br />
 This example puts 2 containers in the same pod for simplicity but in the real world you'll want separate deployments to scale them independently.</p>
-<pre><code class="language-Shell">cat &gt; my-app.yml &lt;&lt;End-of-message
+<pre><code class="language-zsh">cat &gt; my-app.yml &lt;&lt;End-of-message
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -495,17 +497,17 @@ spec:
 End-of-message
 </code></pre>
 <p>Deploy the app.</p>
-<pre><code class="language-Shell">kubectl apply -f my-app.yml -n production
+<pre><code class="language-zsh">kubectl apply -f my-app.yml -n production
 </code></pre>
 <p>Create a new container image version to test the rollout process:</p>
-<pre><code class="language-Shell">docker tag &lt;Your Docker Hub username&gt;/my-app-frontend:0.0.1 &lt;Your Docker Hub username&gt;/my-app-frontend:0.0.2
+<pre><code class="language-zsh">docker tag &lt;Your Docker Hub username&gt;/my-app-frontend:0.0.1 &lt;Your Docker Hub username&gt;/my-app-frontend:0.0.2
 docker push &lt;Your Docker Hub username&gt;/my-app-frontend:0.0.2
 </code></pre>
 <p>Edit the app manifest <code>my-app.yml</code> to use the <code>0.0.2</code> image version and then:</p>
-<pre><code class="language-Shell">kubectl apply -f my-app.yml -n production
+<pre><code class="language-zsh">kubectl apply -f my-app.yml -n production
 </code></pre>
 <p>Get the list of Pods to see the new version rollout:</p>
-<pre><code class="language-Shell">kubectl get pods -n production
+<pre><code class="language-zsh">kubectl get pods -n production
 </code></pre>
 <h3 id="processes-with-stateless-containers">Processes with stateless containers</h3>
 <p>VI. Processes
@@ -539,7 +541,7 @@ Execute the app as one or more stateless processes</p>
   ...
 </code></pre>
 <p>Deploy the changes:</p>
-<pre><code class="language-Shell">kubectl apply -f my-app.yml -n production
+<pre><code class="language-zsh">kubectl apply -f my-app.yml -n production
 </code></pre>
 <h3 id="persistent-volumes">Persistent Volumes</h3>
 <p><a href="https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1604349952306-devops-wb002%20-%20S10-L04%20Using%20K8s%20Persistent%20Volumes.pdf">Reference</a><br />
@@ -553,17 +555,21 @@ metadata:
 provisioner: kubernetes.io/no-provisioner
 allowVolumeExpansion: true
 </code></pre>
-<pre><code class="language-Shell">kubectl create -f localdisk-sc.yml
+<pre><code class="language-zsh">kubectl create -f localdisk-sc.yml
 </code></pre>
-<p><code>persistentVolumeReclaimPolicy</code> says how storage can be reused when the volume's associated claims are deleted.<br />
-- Retain: Keeps all data. An admin must manually clean up and prepare the resource for reuse.
-- Recycle: Automatically deletes all data, allowing  the volume to be reused.
-- Delete: Deletes underlying storage resource automatically (applies to cloud only).  </p>
-<p><a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes"><code>accessModes</code></a> can be:
-- ReadWriteOnce: The volume can be mounted as read-write by a single node. Still can allow multiple pods to access the volume when the pods are running on the same node.<br />
-- ReadOnlyMany: Can be mounted as read-only by many nodes.
-- ReadWriteMany: Can be mounted as read-write by many nodes.
-- ReadWriteOncePod: Can be mounted as read-write by a single Pod. Use ReadWriteOncePod access mode if you want to ensure that only one pod across whole cluster can read that PVC or write to it. This is only supported for CSI volumes.</p>
+<p><code>persistentVolumeReclaimPolicy</code> says how storage can be reused when the volume's associated claims are deleted.  </p>
+<ul>
+<li>Retain: Keeps all data. An admin must manually clean up and prepare the resource for reuse.</li>
+<li>Recycle: Automatically deletes all data, allowing  the volume to be reused.</li>
+<li>Delete: Deletes underlying storage resource automatically (applies to cloud only).  </li>
+</ul>
+<p><a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes"><code>accessModes</code></a> can be:</p>
+<ul>
+<li>ReadWriteOnce: The volume can be mounted as read-write by a single node. Still can allow multiple pods to access the volume when the pods are running on the same node.  </li>
+<li>ReadOnlyMany: Can be mounted as read-only by many nodes.</li>
+<li>ReadWriteMany: Can be mounted as read-write by many nodes.</li>
+<li>ReadWriteOncePod: Can be mounted as read-write by a single Pod. Use ReadWriteOncePod access mode if you want to ensure that only one pod across whole cluster can read that PVC or write to it. This is only supported for CSI volumes.</li>
+</ul>
 <p>Create a PersistentVolume in <code>my-pv.yml</code>.</p>
 <pre><code class="language-yaml">kind: PersistentVolume
 apiVersion: v1
@@ -579,10 +585,10 @@ spec:
   hostPath:
     path: /var/output
 </code></pre>
-<pre><code class="language-Shell">kubectl create -f my-pv.yml
+<pre><code class="language-zsh">kubectl create -f my-pv.yml
 </code></pre>
 <p>Check the status of the PersistentVolume.</p>
-<pre><code class="language-Shell">kubectl get pv
+<pre><code class="language-zsh">kubectl get pv
 </code></pre>
 <p>Create a PersistentVolumeClaim that will bind to the PersistentVolume as <code>my-pvc.yml</code></p>
 <pre><code class="language-yaml">apiVersion: v1
@@ -597,10 +603,10 @@ spec:
     requests:
       storage: 100Mi
 </code></pre>
-<pre><code class="language-Shell">kubectl create -f my-pvc.yml
+<pre><code class="language-zsh">kubectl create -f my-pvc.yml
 </code></pre>
 <p>Check the status of the PersistentVolume and PersistentVolumeClaim to verify that they have been bound.</p>
-<pre><code class="language-Shell">kubectl get pv
+<pre><code class="language-zsh">kubectl get pv
 kubectl get pvc
 </code></pre>
 <p>Create a Pod that uses the PersistentVolumeClaim as <code>pv-pod.yml</code>.</p>
@@ -622,10 +628,10 @@ spec:
     persistentVolumeClaim:
       claimName: my-pvc
 </code></pre>
-<pre><code class="language-Shell">kubectl create -f pv-pod.yml
+<pre><code class="language-zsh">kubectl create -f pv-pod.yml
 </code></pre>
 <p>Expand the PersistentVolumeClaim and record the process.</p>
-<pre><code class="language-Shell">kubectl edit pvc my-pvc --record
+<pre><code class="language-zsh">kubectl edit pvc my-pvc --record
 </code></pre>
 <pre><code class="language-yaml">...
 spec:
@@ -635,11 +641,11 @@ spec:
       storage: 200Mi
 </code></pre>
 <p>Delete the Pod and the PersistentVolumeClaim.</p>
-<pre><code class="language-Shell">kubectl delete pod pv-pod
+<pre><code class="language-zsh">kubectl delete pod pv-pod
 kubectl delete pvc my-pvc
 </code></pre>
 <p>Check the status of the PersistentVolume to verify that it has been successfully recycled and is available again.</p>
-<pre><code class="language-Shell">kubectl get pv
+<pre><code class="language-zsh">kubectl get pv
 </code></pre>
 <h3 id="port-binding-with-pods">Port Binding with Pods</h3>
 <p>VII. Port binding
@@ -653,11 +659,11 @@ Tht means ports only need to be unique within each pod.<br />
 2 pods can listen on the same port because they each have their own unique IP address within the cluster network.<br />
 The pods can communicate across nodes simply using the unique IPs.</p>
 <p>Get a list of Pods in the production namespace:</p>
-<pre><code class="language-Shell">kubectl get pods -n production -o wide
+<pre><code class="language-zsh">kubectl get pods -n production -o wide
 </code></pre>
 <p>Copy the name of the IP address of the application Pod.<br />
 Example: Use the IP address to make a request to the port on the Pod that serves the frontend content:</p>
-<pre><code class="language-Shell">curl &lt;Pod Cluster IP address&gt;:5000
+<pre><code class="language-zsh">curl &lt;Pod Cluster IP address&gt;:5000
 </code></pre>
 <h3 id="concurrency-with-containers-and-scaling">Concurrency with Containers and Scaling</h3>
 <p>VIII. Concurrency
@@ -672,10 +678,10 @@ Change the number of replicas to 3:</p>
 replicas: 3
 </code></pre>
 <p>Apply the changes:</p>
-<pre><code class="language-Shell">kubectl apply -f my-app.yml -n production
+<pre><code class="language-zsh">kubectl apply -f my-app.yml -n production
 </code></pre>
 <p>Get a list of Pods:</p>
-<pre><code class="language-Shell">kubectl get pods -n production
+<pre><code class="language-zsh">kubectl get pods -n production
 </code></pre>
 <p>Scale the deployment up again in <code>my-app.yml</code>.<br />
 Change the number of replicas to 5:</p>
@@ -683,10 +689,10 @@ Change the number of replicas to 5:</p>
 replicas: 5
 </code></pre>
 <p>Apply the changes:</p>
-<pre><code class="language-Shell">kubectl apply -f my-app .yml -n production
+<pre><code class="language-zsh">kubectl apply -f my-app .yml -n production
 </code></pre>
 <p>Get a list of Pods:</p>
-<pre><code class="language-Shell">kubectl get pods -n production
+<pre><code class="language-zsh">kubectl get pods -n production
 </code></pre>
 <h3 id="disposability-with-stateless-containers">Disposability with Stateless Containers</h3>
 <p>IX. Disposability
@@ -696,26 +702,26 @@ Maximize robustness with fast startup and graceful shutdown</p>
 <a href="https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/">Pod Lifecycle</a>  </p>
 <p>Deployments can be used to maintain a specified number of running replicas automatically replacing pods that fail or are deleted.</p>
 <p>Get a list of Pods:</p>
-<pre><code class="language-Shell">kubectl get pods -n production
+<pre><code class="language-zsh">kubectl get pods -n production
 </code></pre>
 <p>Locate one of the Pods from the my-app deployment and copy the Pod's name.<br />
 Delete the Pod using the Pod name:</p>
-<pre><code class="language-Shell">kubectl delete pod &lt;Pod name&gt; -n production
+<pre><code class="language-zsh">kubectl delete pod &lt;Pod name&gt; -n production
 </code></pre>
 <p>Get the list of Pods again. You will notice that the deployment is automatically creating a new Pod to replace the one that was deleted:</p>
-<pre><code class="language-Shell">kubectl get pods -n production
+<pre><code class="language-zsh">kubectl get pods -n production
 </code></pre>
 <h3 id="devprod-parity-with-namespaces">Dev/Prod Parity with Namespaces</h3>
 <p>X. Dev/prod parity
 Keep development, staging, and production as similar as possible</p>
-<p><a href="https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631215371092-1082%20-%20S05L01%20X.%20Dev%3AProd%20Parity%20with%20Namespaces.pdf">Reference</a>
+<p><a href="https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631215371092-1082%20-%20S05L01%20X.%20Dev%3AProd%20Parity%20with%20Namespaces.pdf">Reference</a><br />
 <a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/">Namespaces</a>  </p>
 <p>k8s namespaces allow us to have multiple environments in the same cluster. A namespace is like a virtual cluster.</p>
 <p>Create a new namespace:</p>
-<pre><code class="language-Shell">kubectl create namespace dev
+<pre><code class="language-zsh">kubectl create namespace dev
 </code></pre>
 <p>Make a copy of the my-app app YAML:</p>
-<pre><code class="language-Shell">cp my-app.yml my-app-dev.yml
+<pre><code class="language-zsh">cp my-app.yml my-app-dev.yml
 </code></pre>
 <p><code>NodePort</code> <code>services</code> need to be unique within the cluster. We need to choose unique ports so dev doesn't conflict with production.<br />
 Edit the my-app-svc service in the <code>my-app-dev.yml</code> file to select different <code>nodePort</code>s. You will also need to edit the my-app-config ConfigMap to reflect the new port. 
@@ -752,14 +758,14 @@ data:
     REACT_APP_API_PORT=&quot;30083&quot;
 </code></pre>
 <p>Deploy the backing service setup in the new namespace:</p>
-<pre><code class="language-Shell">kubectl apply -f k8s-my-app-mongodb.yml -n dev
+<pre><code class="language-zsh">kubectl apply -f k8s-my-app-mongodb.yml -n dev
 kubectl apply -f my-app-mongodb.yml -n dev
 </code></pre>
 <p>Deploy the app in the new namespace:</p>
-<pre><code class="language-Shell">kubectl apply -f my-app-dev.yml -n dev
+<pre><code class="language-zsh">kubectl apply -f my-app-dev.yml -n dev
 </code></pre>
 <p>Check the status of the Pods:</p>
-<pre><code class="language-Shell">kubectl get pods -n dev
+<pre><code class="language-zsh">kubectl get pods -n dev
 </code></pre>
 <p>Once all the Pods are up and running, you should be able to test the dev environment in a browser at<br />
 <code>&lt;Control Plane Node Public IP&gt;:30082</code>.</p>
@@ -776,23 +782,23 @@ console.log(data);
 }
 </code></pre>
 <p>Build a new server image because we changed the source code:</p>
-<pre><code class="language-Shell">docker build -t &lt;Your Docker Hub username&gt;/my-app-server:0.0.4 --target server .
+<pre><code class="language-zsh">docker build -t &lt;Your Docker Hub username&gt;/my-app-server:0.0.4 --target server .
 </code></pre>
 <p>Push the image:</p>
-<pre><code class="language-Shell">docker push &lt;Your Docker Hub username&gt;/my-app-server:0.0.4
+<pre><code class="language-zsh">docker push &lt;Your Docker Hub username&gt;/my-app-server:0.0.4
 </code></pre>
 <p>Deploy the new code. Edit <code>my-app.yml</code>. Change the image version for the server to the new image:</p>
 <pre><code class="language-yaml">containers:
 - name: my-app-server
   image: &lt;Your Docker Hub username&gt;/my-app-server:0.0.4
 </code></pre>
-<pre><code class="language-Shell">kubectl apply -f my-app.yml -n production
+<pre><code class="language-zsh">kubectl apply -f my-app.yml -n production
 </code></pre>
 <p>Get a list of Pods:</p>
-<pre><code class="language-Shell">kubectl get pods -n production
+<pre><code class="language-zsh">kubectl get pods -n production
 </code></pre>
 <p>Copy the name of one of the my-app deployment Pods and view its logs specifying the pod, namespace, and container.</p>
-<pre><code class="language-Shell">kubectl logs &lt;Pod name&gt; -n production -c my-app-server
+<pre><code class="language-zsh">kubectl logs &lt;Pod name&gt; -n production -c my-app-server
 </code></pre>
 <h3 id="admin-processes-with-jobs">Admin Processes with Jobs</h3>
 <p>XII. Admin processes
@@ -825,7 +831,7 @@ Add the following line after the other COPY directives for the server image:</p>
 COPY --from=build /usr/src/app/src/jobs .
 </code></pre>
 <p>Build and push the server image:</p>
-<pre><code class="language-Shell">docker build -t &lt;Your Docker Hub username&gt;/my-app-server:0.0.5 --target server .
+<pre><code class="language-zsh">docker build -t &lt;Your Docker Hub username&gt;/my-app-server:0.0.5 --target server .
 docker push &lt;Your Docker Hub username&gt;/my-app-server:0.0.5
 </code></pre>
 <p>Create a Kubernetes Job to run the admin job:
@@ -867,16 +873,16 @@ spec:
   backoffLimit: 4
 </code></pre>
 <p>Run the Job:</p>
-<pre><code class="language-Shell">kubectl apply -f de-duplicate-job.yml -n production
+<pre><code class="language-zsh">kubectl apply -f de-duplicate-job.yml -n production
 </code></pre>
 <p>Check the Job status:</p>
-<pre><code class="language-Shell">kubectl get jobs -n production
+<pre><code class="language-zsh">kubectl get jobs -n production
 </code></pre>
 <p>Get the name of the Job Pod:</p>
-<pre><code class="language-Shell">kubectl get pods -n production
+<pre><code class="language-zsh">kubectl get pods -n production
 </code></pre>
 <p>Use the Pod name to view the logs for the Job Pod:</p>
-<pre><code class="language-Shell">kubectl logs &lt;Pod name&gt; -n production
+<pre><code class="language-zsh">kubectl logs &lt;Pod name&gt; -n production
 </code></pre>
 <h2 id="microk8s">MicroK8s</h2>
 <p><a href="https://microk8s.io/docs/install-raspberry-pi">On Raspberry Pi</a><br />
@@ -884,14 +890,14 @@ Note: Your boot parameters might be in <code>/boot/cmdline.txt</code>. Add these
 <pre><code>cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1
 </code></pre>
 <p>For Raspberry Pi OS <a href="https://snapcraft.io/docs/installing-snap-on-raspbian">install</a> <code>snap</code> first.</p>
-<pre><code class="language-Shell">sudo apt update
+<pre><code class="language-zsh">sudo apt update
 sudo apt install snapd
 sudo reboot
 # ...reconnect after reboot
 sudo snap install core
 </code></pre>
 <p>Then install MicroK8s.</p>
-<pre><code class="language-Shell">pi@raspberrypi4:~ $ sudo snap install microk8s --classic
+<pre><code class="language-zsh">pi@raspberrypi4:~ $ sudo snap install microk8s --classic
 pi@raspberrypi4:~ $ microk8s status --wait-ready
 pi@raspberrypi4:~ $ microk8s kubectl get all --all-namespaces
 pi@raspberrypi4:~ $ microk8s enable dns dashboard registry hostpath-storage # or any other addons
@@ -907,32 +913,32 @@ pi@raspberrypi4:~ $ microk8s kubectl version --output=yaml
 </code></pre>
 <p>You can update a snap package with <code>sudo snap refresh</code>.</p>
 <p>Configuration file. These are the arguments you can add regarding log rotation <code>--container-log-max-files</code> and <code>--container-log-max-size</code>. They have default values. <a href="https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/">More info</a>.</p>
-<pre><code class="language-Shell">cat /var/snap/microk8s/current/args/kubelet
+<pre><code class="language-zsh">cat /var/snap/microk8s/current/args/kubelet
 </code></pre>
 <h3 id="registry">Registry</h3>
 <p><a href="https://microk8s.io/docs/registry-built-in">Registry doc</a></p>
-<pre><code class="language-Shell">microk8s enable registry
+<pre><code class="language-zsh">microk8s enable registry
 </code></pre>
 <p>The containerd daemon used by MicroK8s is configured to trust this insecure registry. To upload images we have to tag them with <code>localhost:32000/your-image</code> before pushing them.</p>
 <h3 id="microk8s-dashboard">MicroK8s dashboard</h3>
 <p>If RBAC is not enabled access the dashboard using the token retrieved with:</p>
-<pre><code class="language-Shell">microk8s kubectl describe secret -n kube-system microk8s-dashboard-token
+<pre><code class="language-zsh">microk8s kubectl describe secret -n kube-system microk8s-dashboard-token
 </code></pre>
 <p>Use this token in the https login UI of the <code>kubernetes-dashboard</code> service.
 In an RBAC enabled setup (<code>microk8s enable rbac</code>) you need to create a user with restricted permissions as shown <a href="https://github.com/kubernetes/dashboard/blob/master/docs/user/access-control/creating-sample-user.md">here</a>.</p>
 <p>To access remotely from anywhere with <a href="https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#port-forward"><code>port-forward</code></a>:</p>
-<pre><code class="language-Shell">microk8s kubectl port-forward -n kube-system service/kubernetes-dashboard 10443:443 --address 0.0.0.0
+<pre><code class="language-zsh">microk8s kubectl port-forward -n kube-system service/kubernetes-dashboard 10443:443 --address 0.0.0.0
 </code></pre>
 <p>You can then access the Dashboard with IP or hostname as in https://raspberrypi4.local:10443/</p>
 <h3 id="troubleshooting">Troubleshooting</h3>
-<pre><code class="language-Shell">microk8s inspect
+<pre><code class="language-zsh">microk8s inspect
 </code></pre>
 <p>MicroK8s might not recognize that cgroup memory is enabled but you can check with <code>cat /proc/cgroups</code>.</p>
 <h2 id="kubernetes-dashboard">Kubernetes Dashboard</h2>
 <p><a href="https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/">Documentation</a></p>
-<pre><code class="language-Shell">kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.6.1/aio/deploy/recommended.yaml
+<pre><code class="language-zsh">kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.6.1/aio/deploy/recommended.yaml
 </code></pre>
-<pre><code class="language-Shell">cat &lt;&lt; EOF &gt; dashboard-adminuser.yaml
+<pre><code class="language-zsh">cat &lt;&lt; EOF &gt; dashboard-adminuser.yaml
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -955,7 +961,7 @@ subjects:
   namespace: kubernetes-dashboard
 EOF
 </code></pre>
-<pre><code class="language-Shell">kubectl apply -f dashboard-adminuser.yaml
+<pre><code class="language-zsh">kubectl apply -f dashboard-adminuser.yaml
 
 kubectl proxy
 # Kubectl will make Dashboard available at 
