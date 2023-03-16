@@ -5,19 +5,19 @@ Use your OS package manager or download .dmg installer for macOS. Take note of t
 
 **Configure your PATH**
 Add the mysql location to your PATH. Typically as part of your ~/.bash_profile
-```Shell
+```zsh
 export PATH=/usr/local/mysql/bin:$PATH
 ```
 
 **Start the MySQL service**
 On macOS
-```Shell
+```zsh
 sudo launchctl load -F /Library/LaunchDaemons/com.oracle.oss.mysql.mysqld.plist
 ```
 
 **Verify it's running**
 On macOS
-```Shell
+```zsh
 sudo launchctl list | grep mysql
 ```
 
@@ -26,7 +26,7 @@ Use MySQL Workbench or other client tool.
 
 **To stop MySQL**
 On macOS
-```Shell
+```zsh
 sudo launchctl unload -F /Library/LaunchDaemons/com.oracle.oss.mysql.mysqld.plist
 ```
 
@@ -39,7 +39,7 @@ show variables like 'secure_file_priv';
 ```
 
 Open the configuration file.
-```Shell
+```zsh
 cd /Library/LaunchDaemons
 sudo nano com.oracle.oss.mysql.mysqld.plist
 ```
@@ -60,7 +60,7 @@ FROM `your_db`.`your_table`
 ```
 
 You can find your exported data:
-```Shell
+```zsh
 sudo find /usr/local/mysql/data -name your_file.csv
 ```
 

@@ -31,26 +31,26 @@ Example with 1 control plane node and 2 worker nodes.
 
 If you wish, you can set an appropriate hostname for each node.  
 **On the control plane node**:  
-```Shell
+```zsh
 sudo hostnamectl set-hostname k8s-control
 ```
 
 **On the first worker node**:  
-```Shell
+```zsh
 sudo hostnamectl set-hostname k8s-worker1
 ```
 **On the second worker node**:  
-```Shell
+```zsh
 sudo hostnamectl set-hostname k8s-worker2
 ```
 
 **On all nodes**, set up the hosts file to enable all the nodes to reach each other using these hostnames.
-```Shell
+```zsh
 sudo nano /etc/hosts
 ```
 
 **On all nodes**, add the following at the end of the file. You will need to supply the actual private IP address for each node.
-```Shell
+```zsh
 <control plane node private IP> k8s-control
 <worker node 1 private IP> k8s-worker1
 <worker node 2 private IP> k8s-worker2
@@ -60,7 +60,7 @@ Log out of all three servers and log back in to see these changes take effect.
 
 **On all nodes, set up containerd**. You will need to load some kernel modules and modify some system settings as part of this
 process.  
-```Shell
+```zsh
 # Enable them when the server start up
 cat << EOF | sudo tee /etc/modules-load.d/containerd.conf
 overlay
@@ -83,7 +83,7 @@ sudo sysctl --system
 ```
 
 Install and configure containerd.  
-```Shell
+```zsh
 sudo apt-get update && sudo apt-get install -y containerd
 sudo mkdir -p /etc/containerd
 # Generate the contents of a default config file and save it
@@ -93,11 +93,11 @@ sudo systemctl restart containerd
 ```
 
 **On all nodes, disable swap**.
-```Shell
+```zsh
 sudo swapoff -a
 ```
 **On all nodes, install kubeadm, kubelet, and kubectl**.
-```Shell
+```zsh
 # Some required packages
 sudo apt-get update && sudo apt-get install -y apt-transport-https curl
 # Set up the package repo for k8s packages. Download the key for the repo and add it
@@ -114,7 +114,7 @@ sudo apt-mark hold kubelet kubeadm kubectl
 ```
 
 **On the control plane node only**, initialize the cluster and set up kubectl access.
-```Shell
+```zsh
 sudo kubeadm init --pod-network-cidr 192.168.0.0/16 --kubernetes-version 1.24.0
 # Config File to authenticate and interact with the cluster with kubectl commands
 # These are in the output of the previous step
@@ -124,28 +124,28 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 ```
 
 Verify the cluster is working. It will be in Not Ready status because we haven't configured the networking plugin.
-```Shell
+```zsh
 kubectl get nodes
 ```
 
 Install the Calico network add-on.
-```Shell
+```zsh
 kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
 ```
 
 Get the join command (this command is also printed during kubeadm init . Feel free to simply copy it from there).
-```Shell
+```zsh
 kubeadm token create --print-join-command
 ```
 
 Copy the join command from the control plane node. Run it **on each worker node** as root (i.e. with sudo ).
-```Shell
+```zsh
 sudo kubeadm join ...
 ```
 
 **On the control plane node**, verify all nodes in your cluster are ready. Note that it may take a few moments for all of the nodes to
 enter the READY state.
-```Shell
+```zsh
 kubectl get nodes
 ```
 
@@ -160,40 +160,40 @@ to avoid storing your Docker Hub password unencrypted in `$HOME/.docker/config.j
 For simplicity we'll use the control plane server just so we don't have to create another server for this exercise.  
 
 Create a docker group. Users in this group will have permission to use Docker on the system:
-```Shell
+```zsh
 sudo groupadd docker
 ```
 
 Install required packages.  
 Note: Some of these packages may already be present on the system, but including them here will not cause any problems:
-```Shell
+```zsh
 sudo apt-get update && sudo apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release
 ```
 
 Set up the Docker GPG key and package repository:
-```Shell
+```zsh
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 ```
 
 Install the Docker Engine:
-```Shell
+```zsh
 sudo apt-get update && sudo apt-get install -y docker-ce docker-ce-cli
 # Type N (default) or enter to keep your current containerd configuration
 ```
 
 Test the Docker setup:
-```Shell
+```zsh
 sudo docker version
 ```
 
 Add cloud_user to the docker group in order to give cloud_user access to use Docker:
-```Shell
+```zsh
 sudo usermod -aG docker cloud_user
 ```
 Log out of the server and log back in.  
 Test your setup:
-```Shell
+```zsh
 docker version
 ```
 
@@ -208,18 +208,18 @@ Store config in the environment
 [Secrets](https://kubernetes.io/docs/concepts/configuration/secret/)  
 
 Create a production Namespace:
-```Shell
+```zsh
 kubectl create namespace production
 ```
 
 Get base64-encoded strings for a db username and password:
-```Shell
+```zsh
 echo -n my_user | base64
 echo -n my_password | base64
 ```
 
 Example: Create a ConfigMap and Secret to configure the backing service connection information for the app, including the base64-encoded credentials:
-```Shell
+```zsh
 cat > my-app-config.yml <<End-of-message 
 apiVersion: v1
 kind: ConfigMap
@@ -243,13 +243,13 @@ data:
 End-of-message
 ```
 
-```Shell
+```zsh
 kubectl apply -f my-app-config.yml -n production
 ```
 
 Create a temporary Pod to test the configuration setup. Note that you need to supply your Docker Hub username as part of the image name in this file.
 This passes configuration data in env variables but you could also do it in files that will show up on the containers filesystem.
-```Shell
+```zsh
 cat > test-pod.yml <<End-of-message
 
 apiVersion: v1
@@ -289,17 +289,17 @@ spec:
 End-of-message
 ```
 
-```Shell
+```zsh
 kubectl apply -f test-pod.yml -n production
 ```
 
 Check the logs to verify the config data is being passed to the container:
-```Shell
+```zsh
 kubectl logs test-pod -n production
 ```
 
 Clean up the test pod:
-```Shell
+```zsh
 kubectl delete pod test-pod -n production --force
 ```
 
@@ -316,7 +316,7 @@ The `selector` selects pods that have the specified label name and value.
 `template` is the pod template.  
 This example puts 2 containers in the same pod for simplicity but in the real world you'll want separate deployments to scale them independently.
 
-```Shell
+```zsh
 cat > my-app.yml <<End-of-message
 apiVersion: v1
 kind: ConfigMap
@@ -427,23 +427,23 @@ End-of-message
 ```
 
 Deploy the app.
-```Shell
+```zsh
 kubectl apply -f my-app.yml -n production
 ```
 
 Create a new container image version to test the rollout process:
-```Shell
+```zsh
 docker tag <Your Docker Hub username>/my-app-frontend:0.0.1 <Your Docker Hub username>/my-app-frontend:0.0.2
 docker push <Your Docker Hub username>/my-app-frontend:0.0.2
 ```
 
 Edit the app manifest `my-app.yml` to use the `0.0.2` image version and then:
-```Shell
+```zsh
 kubectl apply -f my-app.yml -n production
 ```
 
 Get the list of Pods to see the new version rollout:
-```Shell
+```zsh
 kubectl get pods -n production
 ```
 
@@ -487,7 +487,7 @@ containers:
 ```
 
 Deploy the changes:
-```Shell
+```zsh
 kubectl apply -f my-app.yml -n production
 ```
 
@@ -505,7 +505,7 @@ metadata:
 provisioner: kubernetes.io/no-provisioner
 allowVolumeExpansion: true
 ```
-```Shell
+```zsh
 kubectl create -f localdisk-sc.yml
 ```
 
@@ -536,12 +536,12 @@ spec:
   hostPath:
     path: /var/output
 ```
-```Shell
+```zsh
 kubectl create -f my-pv.yml
 ```
 
 Check the status of the PersistentVolume.
-```Shell
+```zsh
 kubectl get pv
 ```
 
@@ -559,12 +559,12 @@ spec:
     requests:
       storage: 100Mi
 ```
-```Shell
+```zsh
 kubectl create -f my-pvc.yml
 ```
 
 Check the status of the PersistentVolume and PersistentVolumeClaim to verify that they have been bound.
-```Shell
+```zsh
 kubectl get pv
 kubectl get pvc
 ```
@@ -589,12 +589,12 @@ spec:
     persistentVolumeClaim:
       claimName: my-pvc
 ```
-```Shell
+```zsh
 kubectl create -f pv-pod.yml
 ```
 
 Expand the PersistentVolumeClaim and record the process.
-```Shell
+```zsh
 kubectl edit pvc my-pvc --record
 ```
 ```yaml
@@ -607,13 +607,13 @@ spec:
 ```
 
 Delete the Pod and the PersistentVolumeClaim.
-```Shell
+```zsh
 kubectl delete pod pv-pod
 kubectl delete pvc my-pvc
 ```
 
 Check the status of the PersistentVolume to verify that it has been successfully recycled and is available again.
-```Shell
+```zsh
 kubectl get pv
 ```
 
@@ -632,13 +632,13 @@ Tht means ports only need to be unique within each pod.
 The pods can communicate across nodes simply using the unique IPs.
 
 Get a list of Pods in the production namespace:
-```Shell
+```zsh
 kubectl get pods -n production -o wide
 ```
 
 Copy the name of the IP address of the application Pod.  
 Example: Use the IP address to make a request to the port on the Pod that serves the frontend content:
-```Shell
+```zsh
 curl <Pod Cluster IP address>:5000
 ```
 
@@ -660,12 +660,12 @@ replicas: 3
 ```
 
 Apply the changes:
-```Shell
+```zsh
 kubectl apply -f my-app.yml -n production
 ```
 
 Get a list of Pods:
-```Shell
+```zsh
 kubectl get pods -n production
 ```
 
@@ -677,12 +677,12 @@ replicas: 5
 ```
 
 Apply the changes:
-```Shell
+```zsh
 kubectl apply -f my-app .yml -n production
 ```
 
 Get a list of Pods:
-```Shell
+```zsh
 kubectl get pods -n production
 ```
 
@@ -697,18 +697,18 @@ Maximize robustness with fast startup and graceful shutdown
 Deployments can be used to maintain a specified number of running replicas automatically replacing pods that fail or are deleted.
 
 Get a list of Pods:
-```Shell
+```zsh
 kubectl get pods -n production
 ```
 
 Locate one of the Pods from the my-app deployment and copy the Pod's name.  
 Delete the Pod using the Pod name:
-```Shell
+```zsh
 kubectl delete pod <Pod name> -n production
 ```
 
 Get the list of Pods again. You will notice that the deployment is automatically creating a new Pod to replace the one that was deleted:
-```Shell
+```zsh
 kubectl get pods -n production
 ```
 
@@ -722,12 +722,12 @@ Keep development, staging, and production as similar as possible
 k8s namespaces allow us to have multiple environments in the same cluster. A namespace is like a virtual cluster.
 
 Create a new namespace:
-```Shell
+```zsh
 kubectl create namespace dev
 ```
 
 Make a copy of the my-app app YAML:
-```Shell
+```zsh
 cp my-app.yml my-app-dev.yml
 ```
 
@@ -770,17 +770,17 @@ data:
 ```
 
 Deploy the backing service setup in the new namespace:
-```Shell
+```zsh
 kubectl apply -f k8s-my-app-mongodb.yml -n dev
 kubectl apply -f my-app-mongodb.yml -n dev
 ```
 
 Deploy the app in the new namespace:
-```Shell
+```zsh
 kubectl apply -f my-app-dev.yml -n dev
 ```
 Check the status of the Pods:
-```Shell
+```zsh
 kubectl get pods -n dev
 ```
 
@@ -805,12 +805,12 @@ console.log(data);
 ```
 
 Build a new server image because we changed the source code:
-```Shell
+```zsh
 docker build -t <Your Docker Hub username>/my-app-server:0.0.4 --target server .
 ```
 
 Push the image:
-```Shell
+```zsh
 docker push <Your Docker Hub username>/my-app-server:0.0.4
 ```
 
@@ -821,17 +821,17 @@ containers:
   image: <Your Docker Hub username>/my-app-server:0.0.4
 ```
 
-```Shell
+```zsh
 kubectl apply -f my-app.yml -n production
 ```
 
 Get a list of Pods:
-```Shell
+```zsh
 kubectl get pods -n production
 ```
 
 Copy the name of one of the my-app deployment Pods and view its logs specifying the pod, namespace, and container.
-```Shell
+```zsh
 kubectl logs <Pod name> -n production -c my-app-server
 ```
 
@@ -874,7 +874,7 @@ COPY --from=build /usr/src/app/src/jobs .
 ```
 
 Build and push the server image:
-```Shell
+```zsh
 docker build -t <Your Docker Hub username>/my-app-server:0.0.5 --target server .
 docker push <Your Docker Hub username>/my-app-server:0.0.5
 ```
@@ -920,21 +920,21 @@ spec:
 ```
 
 Run the Job:
-```Shell
+```zsh
 kubectl apply -f de-duplicate-job.yml -n production
 ```
 
 Check the Job status:
-```Shell
+```zsh
 kubectl get jobs -n production
 ```
 Get the name of the Job Pod:
-```Shell
+```zsh
 kubectl get pods -n production
 ```
 
 Use the Pod name to view the logs for the Job Pod:
-```Shell
+```zsh
 kubectl logs <Pod name> -n production
 ```
 
@@ -947,7 +947,7 @@ cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1
 ```
 
 For Raspberry Pi OS [install](https://snapcraft.io/docs/installing-snap-on-raspbian) `snap` first.
-```Shell
+```zsh
 sudo apt update
 sudo apt install snapd
 sudo reboot
@@ -955,7 +955,7 @@ sudo reboot
 sudo snap install core
 ```
 Then install MicroK8s.
-```Shell
+```zsh
 pi@raspberrypi4:~ $ sudo snap install microk8s --classic
 pi@raspberrypi4:~ $ microk8s status --wait-ready
 pi@raspberrypi4:~ $ microk8s kubectl get all --all-namespaces
@@ -974,27 +974,27 @@ pi@raspberrypi4:~ $ microk8s kubectl version --output=yaml
 You can update a snap package with `sudo snap refresh`.
 
 Configuration file. These are the arguments you can add regarding log rotation `--container-log-max-files` and `--container-log-max-size`. They have default values. [More info](https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/).
-```Shell
+```zsh
 cat /var/snap/microk8s/current/args/kubelet
 ```
 
 ### Registry
 [Registry doc](https://microk8s.io/docs/registry-built-in)
-```Shell
+```zsh
 microk8s enable registry
 ```
 The containerd daemon used by MicroK8s is configured to trust this insecure registry. To upload images we have to tag them with `localhost:32000/your-image` before pushing them.
 
 ### MicroK8s dashboard
 If RBAC is not enabled access the dashboard using the token retrieved with:
-```Shell
+```zsh
 microk8s kubectl describe secret -n kube-system microk8s-dashboard-token
 ```
 Use this token in the https login UI of the `kubernetes-dashboard` service.
 In an RBAC enabled setup (`microk8s enable rbac`) you need to create a user with restricted permissions as shown [here](https://github.com/kubernetes/dashboard/blob/master/docs/user/access-control/creating-sample-user.md).
 
 To access remotely from anywhere with [`port-forward`](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#port-forward):
-```Shell
+```zsh
 microk8s kubectl port-forward -n kube-system service/kubernetes-dashboard 10443:443 --address 0.0.0.0
 ```
 
@@ -1002,7 +1002,7 @@ You can then access the Dashboard with IP or hostname as in https://raspberrypi4
 
 
 ### Troubleshooting
-```Shell
+```zsh
 microk8s inspect
 ```
 MicroK8s might not recognize that cgroup memory is enabled but you can check with `cat /proc/cgroups`.
@@ -1011,10 +1011,10 @@ MicroK8s might not recognize that cgroup memory is enabled but you can check wit
 ## Kubernetes Dashboard
 
 [Documentation](https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/)
-```Shell
+```zsh
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.6.1/aio/deploy/recommended.yaml
 ```
-```Shell
+```zsh
 cat << EOF > dashboard-adminuser.yaml
 apiVersion: v1
 kind: ServiceAccount
@@ -1039,7 +1039,7 @@ subjects:
 EOF
 ```
 
-```Shell
+```zsh
 kubectl apply -f dashboard-adminuser.yaml
 
 kubectl proxy

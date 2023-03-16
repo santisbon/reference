@@ -1,7 +1,7 @@
 # Package manager 
 ## macOS
 Get [Homebrew](https://brew.sh/), a package manager for macOS.
-```Shell
+```zsh
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 brew doctor
 ```

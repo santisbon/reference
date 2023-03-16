@@ -1,7 +1,7 @@
 # Install utilities
 These will vary for each person. Some examples on a Mac:  
 
-```Shell
+```zsh
 brew install wget
 brew install gcc
 brew install jq
@@ -34,7 +34,7 @@ brew install logitech-options # driver for Logitech mouse
 ```
 
 On macOS you can also install gcc by installing the xcode developer tools if you're not using Homebrew.
-```Shell
+```zsh
 xcode-select -v # check if tools are installed
 xcode-select --install
 ```

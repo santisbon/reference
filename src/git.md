@@ -2,7 +2,7 @@
 ## Install
 
 macOS  
-```Shell
+```zsh
 brew install git
 git --version
 
@@ -14,13 +14,13 @@ gh config set editor "codium -w" # or code, nano, etc
 GitHub CLI [reference](https://docs.github.com/en/github-cli/github-cli/github-cli-reference).
 
 Linux
-```Shell
+```zsh
 sudo yum install git # or git-all
 git --version
 ```
 
 ## Configure
-```Shell
+```zsh
 git config --global core.editor 'codium --wait'
 
 git config --global diff.tool codium
@@ -36,7 +36,7 @@ codium ~/.gitconfig # and paste from sample dot file. Also: codium, vscode, nano
 Then you can ```git difftool main feature-branch```.  
 
 If using AWS CodeCommit do this after configuring the AWS CLI:
-```Shell
+```zsh
 git config --global credential.helper '!aws codecommit credential-helper $@'
 git config --global credential.UseHttpPath true
 ```
@@ -44,7 +44,7 @@ Troubleshooting CodeCommit
 https://docs.aws.amazon.com/codecommit/latest/userguide/troubleshooting-ch.html#troubleshooting-macoshttps
 
 To create a squash function:
-```Shell
+```zsh
 git config --global alias.squash-all '!f(){ git reset $(git commit-tree "HEAD^{tree}" "$@");};f'
 ```
 :::info
@@ -57,7 +57,7 @@ git config --global alias.squash-all '!f(){ git reset $(git commit-tree "HEAD^{t
 - If you’re using ZSH, the `^` character is used for globbing, so you have to enclose the whole expression in quotes: `"HEAD^{tree}"`
 :::
 Then just run:
-```Shell
+```zsh
 git squash-all -m "a brand new start"
 git push -f
 ```
@@ -76,19 +76,19 @@ mv ~/git-completion.bash ~/.git-completion.bash
 3. [Add](https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/) the public key to your GitHub account.
 
 If the terminal is no longer authenticating you:
-```Shell
+```zsh
 git remote -v # is it https or ssh? Should be ssh
 git remote remove origin
 git remote add origin git@github.com:user/repo.git
 ```
 Still having issues? Start the ssh-agent in the background and add your SSH private key to the ssh-agent.
-```Shell
+```zsh
 ps -ax | grep ssh-agent
 eval "$(ssh-agent -s)"
 ssh-add --apple-use-keychain ~/.ssh/id_ed25519
 ```
 If you need to add your public key to Github again copy and paste it on your Settings page on Github:
-```Shell
+```zsh
 pbcopy < ~/.ssh/id_ed25519.pub
 ```
 

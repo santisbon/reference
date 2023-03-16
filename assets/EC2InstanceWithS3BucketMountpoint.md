@@ -1,4 +1,4 @@
-```Shell
+```zsh
 REPO="https://github.com/santisbon/stable-diffusion.git"
 REPO_BRANCH="cloud-container"
 REPO_PATH="$(echo $REPO | sed 's/\.git//' | sed 's/github/raw\.githubusercontent/')"
@@ -14,7 +14,7 @@ AMI="$(aws ec2 describe-images \
 --output text)"
 ```
 
-```Shell
+```zsh
 mkdir -p ~/.ssh/
 aws ec2 create-key-pair --region $REGION --key-name $MY_KEY --query 'KeyMaterial' | tr -d  '"' > ~/.ssh/$MY_KEY
 chmod 400 ~/.ssh/$MY_KEY
@@ -61,7 +61,7 @@ ssh -i ~/.ssh/$MY_KEY ubuntu@$INSTANCE_PUBLIC_DNS
 ```
 
 **On the cloud instance**
-```Shell
+```zsh
 REPO="https://github.com/santisbon/stable-diffusion.git"
 # TODO: Change to main branch once it's merged
 REPO_BRANCH="cloud-container"
@@ -94,6 +94,6 @@ $DOCKER_IMAGE_TAG
 ```
 
 **On the container**
-```Shell
+```zsh
 python3 scripts/dream.py --full_precision -o /data
 ```

@@ -1,7 +1,7 @@
 # Docker
 ## Install
 ### macOS
-```Shell
+```zsh
 brew install --cask docker
 ```
 * You must use the --cask version. Otherwise only the client is included and can't run the Docker daemon. Then open the Docker app and grant privileged access when asked. Only then will you be able to use docker.
@@ -11,7 +11,7 @@ If you just ran `apt upgrade` on your Raspberry Pi, reboot before installing Doc
 Follow the appropriate [installation method](https://docs.docker.com/engine/install/debian/#install-using-the-convenience-script).  
 
 If you don't want to have to prefix commands with sudo add your user to the `docker` group. This is equivalent to giving that user root privileges.
-```Shell
+```zsh
 cat /etc/group | grep docker # see if docker group exists
 sudo usermod -aG docker $USER
 ```
@@ -44,7 +44,7 @@ When installing apps on the container either install the package for the ARM pla
 See Docker host info.  
 You need to use the real field names (not display names) so we'll grab the info in json to get the real field names and use ```jq``` to display it nicely. Then we'll render them using Go templates.
 
-```Shell
+```zsh
 docker info --format '{{json .}}' | jq .
 
 docker info --format "{{.Plugins.Volume}}"
@@ -55,7 +55,7 @@ With the default images, Docker Desktop for Apple silicon warns us the requested
 ```--platform linux/amd64``` is the default and the same as  ```--platform linux/x86_64```. It runs (or builds) an Intel image.  
 ```--platform linux/arm64``` runs (or builds) an aarch64 (arm64) image. Architecture used by Appple M1/M2.  
 
-```Shell
+```zsh
 docker run -it --name container1 debian # WARNING. uname -m -> x86_64 (amd64)
 docker run -it --platform linux/amd64 --name container1 debian # NO warning. uname -m -> x86_64 (amd64). On Mac it emulates Intel.
 docker run -it --platform linux/arm64 --name container1 debian # NO warning. uname -m -> aarch64 (arm64). Mac native.
@@ -67,12 +67,12 @@ docker run -it --name mycontainer arm64v8/debian bash # NO warning. uname -m -> 
 ### Examples
 
 Dockerfile instruction to keep a container running
-```Shell
+```zsh
 CMD tail -f /dev/null
 ```
 
 Running containers
-```Shell
+```zsh
 # sanity check
 docker version
 docker --help
@@ -98,7 +98,7 @@ docker ps -aq -f status=exited
 ```
 
 Working with images and volumes
-```Shell
+```zsh
 
 # Show all images (including intermediate images)
 docker image ls -a
@@ -141,7 +141,7 @@ docker run -it --privileged --pid=host debian nsenter -t 1 -m -u -n -i sh
 ```
 
 If you want to build [multi-platform](https://docs.docker.com/build/building/multi-platform/#getting-started) docker images:
-```Shell
+```zsh
 docker buildx create --name mybuilder --driver docker-container --bootstrap
 docker buildx use mybuilder
 
@@ -152,7 +152,7 @@ docker buildx ls
 Docker Compose. Multi-container deployments in a compose.yaml file.  
 [Using Compose in Production](https://docs.docker.com/compose/production/)  
 
-```Shell
+```zsh
 docker compose -p mastodon-bot-project up --detach
 # or
 docker compose -p mastodon-bot-project create
@@ -168,7 +168,7 @@ docker compose -p mastodon-bot-project stop
 
 Kubernetes
 
-```Shell
+```zsh
 # Convert the Docker Compose file to k8s files
 kompose --file compose.yaml convert
 

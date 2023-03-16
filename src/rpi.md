@@ -9,19 +9,19 @@
 2. Insert the SD card in your Raspberry Pi and turn it on. 
 
 If you didn't do so during setup, you can still generate and add an ssh key at any time. Example:
-```Shell
+```zsh
 # on your laptop
 ssh-keygen
 ssh-copy-id -i ~/.ssh/id_rsa pi@raspberrypi4.local
 ```
 To remove password authentication:
-```Shell
+```zsh
 # on the Pi
 sudo nano /etc/ssh/sshd_config
 ```
 and replace `#PasswordAuthentication yes` with `PasswordAuthentication no`.
 Test the validity of the config file and restart the service (or reboot).
-```Shell
+```zsh
 sudo sshd -t
 sudo service sshd restart
 sudo service sshd status
@@ -30,18 +30,18 @@ sudo service sshd status
 ## Configuration
 
 Find the IP of your Raspberry Pi using its hostname or find all devices on your network with `arp -a`.
-```Shell
+```zsh
 arp raspberrypi4.local 
 ```
 SSH into it with the ```pi``` user and the IP address or hostname. Examples:
-```Shell
+```zsh
 ssh pi@192.168.xxx.xxx
 ssh pi@raspberrypi4.local
 # You'll be asked for the password if applicable
 ```
 
 Configure it.
-```Shell
+```zsh
 pi@raspberrypi4:~ $ sudo raspi-config
 # Go to Interface Options, VNC (for graphical remote access)
 # Tab to the Finish option and reboot.
@@ -49,23 +49,23 @@ pi@raspberrypi4:~ $ sudo raspi-config
 Update it.  
 ```upgrade``` is used to install available upgrades of all packages currently installed on the system. New packages will be installed if required to satisfy dependencies, but existing packages will never be removed. If an upgrade for a package requires the removal of an installed package the upgrade for this package isn't performed.  
 ```full-upgrade``` performs the function of upgrade but will remove currently installed packages if this is needed to upgrade the system as a whole.
-```Shell
+```zsh
 pi@raspberrypi4:~ $ sudo apt update # updates the package list
 pi@raspberrypi4:~ $ sudo apt full-upgrade
 ```
 ### To give it a static IP
 Find the IP adddress of your router. It's the address that appears after `default via`.
-```Shell
+```zsh
 pi@raspberrypi4:~ $ ip r
 default via [IP]
 ```
 Get the IP of your DNS server (it may or may not be your router)
-```Shell
+```zsh
 pi@raspberrypi4:~ $ grep nameserver /etc/resolv.conf
 ```
 
 Open this file:
-```Shell
+```zsh
 nano /etc/dhcpcd.conf
 ```
 and add/edit these lines at the end filling in the correct info.
@@ -88,57 +88,57 @@ You could also set your router to manually assign the static IP to the Raspberry
 ## Remote GUI access
 
 Now you'll need a VNC viewer on your laptop to connect to the Raspberry Pi using the graphical interface.
-```Shell
+```zsh
 brew install --cask vnc-viewer
 ```
 
 Apparently, on Raspberry Pi pip does not download from the python package index (PyPi), it downloads from PiWheels. PiWheels wheels do not come with pygame's dependencies that are bundled in normal releases.
 
 Install Pygame [dependencies](https://www.piwheels.org/project/pygame/) and Pygame.
-```Shell
+```zsh
 pi@raspberrypi4:~ $ sudo apt install libvorbisenc2 libwayland-server0 libxi6 libfluidsynth2 libgbm1 libxkbcommon0 libopus0 libwayland-cursor0 libsndfile1 libwayland-client0 libportmidi0 libvorbis0a libopusfile0 libmpg123-0 libflac8 libxcursor1 libxinerama1 libasyncns0 libxrandr2 libdrm2 libpulse0 libxfixes3 libvorbisfile3 libmodplug1 libxrender1 libsdl2-2.0-0 libxxf86vm1 libwayland-egl1 libsdl2-ttf-2.0-0 libsdl2-image-2.0-0 libjack0 libsdl2-mixer-2.0-0 libinstpatch-1.0-2 libxss1 libogg0
 pi@raspberrypi4:~ $ sudo pip3 install pygame
 ```
 
 Check that the installation worked by running one of its demos
-```Shell
+```zsh
 pi@raspberrypi4:~ $ python3 -m pygame.examples.aliens
 ```
 
 ## Copy files
 
 Copy files between Pi and local machine. On local machine run:
-```Shell
+```zsh
 scp -r pi@raspberrypi2.local:/home/pi/Documents/ ~/Documents/pidocs
 ```
 
 ## Find info about your Pi
 
 32 or 64-bit kernel?
-```Shell
+```zsh
 getconf LONG_BIT
 # or check machine's hardware name: armv7l is 32-bit and aarch64 is 64-bit
 pi@raspberrypi4:~ $ uname -m
 ```
 
 See OS version
-```Shell
+```zsh
 cat /etc/os-release
 ```
 
 Architecture    
 If the following returns a ```Tag_ABI_VFP_args``` tag of ```VFP registers```, it's an ```armhf``` (```arm```) system.  
 A blank output means ```armel``` (```arm/v6```).
-```Shell
+```zsh
 pi@raspberrypi2:~ $ readelf -A /proc/self/exe | grep Tag_ABI_VFP_args
 ```
 Or check the architecture with:
-```Shell
+```zsh
 hostnamectl
 ```
 
 You can find info about the hardware like ports, pins, RAM, SoC, connectivity, etc. with:
-```Shell
+```zsh
 pi@raspberrypi4:~ $ pinout
 ```
 

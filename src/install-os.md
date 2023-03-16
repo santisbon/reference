@@ -1,7 +1,7 @@
 # Do a clean install of the OS
 
 On macOS download the new version from System Preferences, Software Update (or the Mac App Store) and create the bootable media with:
-```Shell
+```zsh
 sudo /Applications/Install\ macOS\ Ventura.app/Contents/Resources/createinstallmedia --volume /Volumes/MyVolume/
 ```
 using the volume that matches the name of the external drive you are using.  
@@ -17,6 +17,6 @@ If you have an Apple silicon Mac here's how to install macOS from a bootable ins
 3. Press the power button to turn on the Mac - but keep it pressed until you see the startup options window including your bootable volume.  
 
 Open Finder and show hidden files with Command + Shift + . (period) or with
-```Shell
+```zsh
 defaults write com.apple.finder AppleShowAllFiles TRUE; killall Finder
 ```
