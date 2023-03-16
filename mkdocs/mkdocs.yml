@@ -1,0 +1,27 @@
+site_name: Reference
+nav:
+  - Home: 'index.md'
+  - Set up a new machine:
+    - Install the OS: 'install-os.md'
+    - Package Manager: 'package-mgmt.md'
+    - Shell: 'shell.md'
+    - Utilities: 'utilities.md'
+    - Code Editor: 'editor.md'
+    - Git: 'git.md'
+    - Docker: 'docker.md'
+    - Kubernetes: 'k8s.md'
+    - Python: 'python.md'
+    - Raspberry Pi: 'rpi.md'
+    - AWS: 'aws.md'
+    - MySQL: 'mysql.md'
+    - Node: 'node.md'
+    - MkDocs: 'mkdocs.md'
+markdown_extensions:
+    - toc:
+        permalink: "#"
+theme:
+    name: readthedocs
+extra_javascript: 
+    - https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML
+markdown_extensions:
+    - mdx_math
