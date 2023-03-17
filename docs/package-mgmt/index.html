@@ -341,6 +341,26 @@
     Linux
   </a>
   
+    <nav class="md-nav" aria-label="Linux">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#snap" class="md-nav__link">
+    Snap
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flatpak" class="md-nav__link">
+    Flatpak
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -564,6 +584,26 @@
     Linux
   </a>
   
+    <nav class="md-nav" aria-label="Linux">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#snap" class="md-nav__link">
+    Snap
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flatpak" class="md-nav__link">
+    Flatpak
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -593,6 +633,17 @@ brew<span class="w"> </span>doctor
 You can use a more <a href="https://mac.install.guide/homebrew/index.html">detailed guide</a> if needed.</p>
 <h2 id="linux">Linux</h2>
 <p>Depending on your distribution, you may have apt (Ubuntu), yum (Red Hat), or zypper (openSUSE).</p>
+<p>Many apps use a different distribution method like Snap or Flatpak.</p>
+<h3 id="snap"><a href="https://snapcraft.io/docs">Snap</a></h3>
+<p>If you need to install a snap and your distro doens't have snap pre-installed e.g. in a remote system with Raspberry Pi OS:
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>update
+sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>snapd
+sudo<span class="w"> </span>reboot
+<span class="c1"># ...reconnect after reboot</span>
+sudo<span class="w"> </span>snap<span class="w"> </span>install<span class="w"> </span>core
+</code></pre></div></p>
+<h3 id="flatpak"><a href="https://flatpak.org">Flatpak</a></h3>
+<p>Set up <a href="https://flatpak.org/setup/">instructions</a> for your distribution.</p>
 
 
 
