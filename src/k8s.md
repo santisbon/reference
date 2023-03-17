@@ -977,6 +977,47 @@ Use the Pod name to view the logs for the Job Pod:
 kubectl logs <Pod name> -n production
 ```
 
+
+## [Kubernetes Dashboard](https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/)
+```zsh
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.6.1/aio/deploy/recommended.yaml
+```
+```zsh
+cat << EOF > dashboard-adminuser.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: admin-user
+  namespace: kubernetes-dashboard
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: admin-user
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: admin-user
+  namespace: kubernetes-dashboard
+EOF
+```
+
+```zsh
+kubectl apply -f dashboard-adminuser.yaml
+
+kubectl proxy
+# Kubectl will make Dashboard available at 
+# http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
+
+kubectl -n kubernetes-dashboard create token admin-user
+# Now copy the token and paste it into the Enter token field on the login screen. 
+```
+
 ## MicroK8s
 
 [On Raspberry Pi](https://microk8s.io/docs/install-raspberry-pi)  
@@ -1048,45 +1089,3 @@ You can then access the Dashboard with IP or hostname as in `https://raspberrypi
 microk8s inspect
 ```
 MicroK8s might not recognize that cgroup memory is enabled but you can check with `cat /proc/cgroups`.
-
-
-## [Kubernetes Dashboard](https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/)
-```zsh
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.6.1/aio/deploy/recommended.yaml
-```
-```zsh
-cat << EOF > dashboard-adminuser.yaml
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: admin-user
-  namespace: kubernetes-dashboard
-
----
-
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: admin-user
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: cluster-admin
-subjects:
-- kind: ServiceAccount
-  name: admin-user
-  namespace: kubernetes-dashboard
-EOF
-```
-
-```zsh
-kubectl apply -f dashboard-adminuser.yaml
-
-kubectl proxy
-# Kubectl will make Dashboard available at 
-# http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
-
-kubectl -n kubernetes-dashboard create token admin-user
-# Now copy the token and paste it into the Enter token field on the login screen. 
-```
-

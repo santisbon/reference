@@ -669,6 +669,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#kubernetes-dashboard" class="md-nav__link">
+    Kubernetes Dashboard
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#microk8s" class="md-nav__link">
     MicroK8s
   </a>
@@ -699,13 +706,6 @@
         
       </ul>
     </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#kubernetes-dashboard" class="md-nav__link">
-    Kubernetes Dashboard
-  </a>
   
 </li>
       
@@ -1090,6 +1090,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#kubernetes-dashboard" class="md-nav__link">
+    Kubernetes Dashboard
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#microk8s" class="md-nav__link">
     MicroK8s
   </a>
@@ -1120,13 +1127,6 @@
         
       </ul>
     </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#kubernetes-dashboard" class="md-nav__link">
-    Kubernetes Dashboard
-  </a>
   
 </li>
       
@@ -1908,6 +1908,41 @@ Get the name of the Job Pod:
 <p>Use the Pod name to view the logs for the Job Pod:
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>logs<span class="w"> </span>&lt;Pod<span class="w"> </span>name&gt;<span class="w"> </span>-n<span class="w"> </span>production
 </code></pre></div></p>
+<h2 id="kubernetes-dashboard"><a href="https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/">Kubernetes Dashboard</a></h2>
+<p><div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://raw.githubusercontent.com/kubernetes/dashboard/v2.6.1/aio/deploy/recommended.yaml
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>cat<span class="w"> </span><span class="s">&lt;&lt; EOF &gt; dashboard-adminuser.yaml</span>
+<span class="s">apiVersion: v1</span>
+<span class="s">kind: ServiceAccount</span>
+<span class="s">metadata:</span>
+<span class="s">  name: admin-user</span>
+<span class="s">  namespace: kubernetes-dashboard</span>
+
+<span class="s">---</span>
+
+<span class="s">apiVersion: rbac.authorization.k8s.io/v1</span>
+<span class="s">kind: ClusterRoleBinding</span>
+<span class="s">metadata:</span>
+<span class="s">  name: admin-user</span>
+<span class="s">roleRef:</span>
+<span class="s">  apiGroup: rbac.authorization.k8s.io</span>
+<span class="s">  kind: ClusterRole</span>
+<span class="s">  name: cluster-admin</span>
+<span class="s">subjects:</span>
+<span class="s">- kind: ServiceAccount</span>
+<span class="s">  name: admin-user</span>
+<span class="s">  namespace: kubernetes-dashboard</span>
+<span class="s">EOF</span>
+</code></pre></div></p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>dashboard-adminuser.yaml
+
+kubectl<span class="w"> </span>proxy
+<span class="c1"># Kubectl will make Dashboard available at </span>
+<span class="c1"># http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/</span>
+
+kubectl<span class="w"> </span>-n<span class="w"> </span>kubernetes-dashboard<span class="w"> </span>create<span class="w"> </span>token<span class="w"> </span>admin-user
+<span class="c1"># Now copy the token and paste it into the Enter token field on the login screen. </span>
+</code></pre></div>
 <h2 id="microk8s">MicroK8s</h2>
 <p><a href="https://microk8s.io/docs/install-raspberry-pi">On Raspberry Pi</a>  </p>
 <div class="admonition attention">
@@ -1962,41 +1997,6 @@ In an RBAC enabled setup (<code>microk8s enable rbac</code>) you need to create 
 <p><div class="highlight"><pre><span></span><code>microk8s<span class="w"> </span>inspect
 </code></pre></div>
 MicroK8s might not recognize that cgroup memory is enabled but you can check with <code>cat /proc/cgroups</code>.</p>
-<h2 id="kubernetes-dashboard"><a href="https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/">Kubernetes Dashboard</a></h2>
-<p><div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://raw.githubusercontent.com/kubernetes/dashboard/v2.6.1/aio/deploy/recommended.yaml
-</code></pre></div>
-<div class="highlight"><pre><span></span><code>cat<span class="w"> </span><span class="s">&lt;&lt; EOF &gt; dashboard-adminuser.yaml</span>
-<span class="s">apiVersion: v1</span>
-<span class="s">kind: ServiceAccount</span>
-<span class="s">metadata:</span>
-<span class="s">  name: admin-user</span>
-<span class="s">  namespace: kubernetes-dashboard</span>
-
-<span class="s">---</span>
-
-<span class="s">apiVersion: rbac.authorization.k8s.io/v1</span>
-<span class="s">kind: ClusterRoleBinding</span>
-<span class="s">metadata:</span>
-<span class="s">  name: admin-user</span>
-<span class="s">roleRef:</span>
-<span class="s">  apiGroup: rbac.authorization.k8s.io</span>
-<span class="s">  kind: ClusterRole</span>
-<span class="s">  name: cluster-admin</span>
-<span class="s">subjects:</span>
-<span class="s">- kind: ServiceAccount</span>
-<span class="s">  name: admin-user</span>
-<span class="s">  namespace: kubernetes-dashboard</span>
-<span class="s">EOF</span>
-</code></pre></div></p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>dashboard-adminuser.yaml
-
-kubectl<span class="w"> </span>proxy
-<span class="c1"># Kubectl will make Dashboard available at </span>
-<span class="c1"># http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/</span>
-
-kubectl<span class="w"> </span>-n<span class="w"> </span>kubernetes-dashboard<span class="w"> </span>create<span class="w"> </span>token<span class="w"> </span>admin-user
-<span class="c1"># Now copy the token and paste it into the Enter token field on the login screen. </span>
-</code></pre></div>
 
 
 
