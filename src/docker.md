@@ -11,7 +11,7 @@ brew install --cask docker
 If you just ran `apt upgrade` on your Raspberry Pi, reboot before installing Docker.  
 Follow the appropriate [installation method](https://docs.docker.com/engine/install/debian/#install-using-the-convenience-script).  
 
-If you don't want to have to prefix commands with sudo add your user to the `docker` group. This is equivalent to giving that user root privileges.
+If you don't want to have to prefix commands with `sudo` add your user to the `docker` group. This is equivalent to giving that user root privileges.
 ```zsh
 cat /etc/group | grep docker # see if docker group exists
 sudo usermod -aG docker $USER

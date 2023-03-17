@@ -16,9 +16,9 @@ If you have an Apple silicon Mac here's how to install macOS from a bootable ins
 
 1. Plug in your bootable media.
 2. Turn off your Mac.
-3. Press the power button to turn on the Mac - but keep it pressed until you see the startup options window including your bootable volume.  
+3. Press ++power++ to turn on the Mac - but keep it pressed until you see the startup options window including your bootable volume.  
 
-Open Finder and show hidden files with Command + Shift + . (period) or with
+Open Finder and show hidden files with ++command+shift+period++ or with
 ```zsh
 defaults write com.apple.finder AppleShowAllFiles TRUE; killall Finder
 ```

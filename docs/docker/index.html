@@ -676,7 +676,7 @@
 <h3 id="linux-raspberry-pi-os">Linux / Raspberry Pi OS:</h3>
 <p>If you just ran <code>apt upgrade</code> on your Raspberry Pi, reboot before installing Docker.<br />
 Follow the appropriate <a href="https://docs.docker.com/engine/install/debian/#install-using-the-convenience-script">installation method</a>.  </p>
-<p>If you don't want to have to prefix commands with sudo add your user to the <code>docker</code> group. This is equivalent to giving that user root privileges.
+<p>If you don't want to have to prefix commands with <code>sudo</code> add your user to the <code>docker</code> group. This is equivalent to giving that user root privileges.
 <div class="highlight"><pre><span></span><code>cat<span class="w"> </span>/etc/group<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>docker<span class="w"> </span><span class="c1"># see if docker group exists</span>
 sudo<span class="w"> </span>usermod<span class="w"> </span>-aG<span class="w"> </span>docker<span class="w"> </span><span class="nv">$USER</span>
 </code></pre></div></p>
