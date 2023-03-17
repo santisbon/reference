@@ -73,14 +73,14 @@ mv ~/git-completion.bash ~/.git-completion.bash
 2. [Generate](https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/) a new SSH key and add it to ssh-agent. You may need to set permissions to your key file with ```chmod 600```.
 3. [Add](https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/) the public key to your GitHub account.
 
-If the terminal is no longer authenticating you:
-```zsh
-git remote -v # is it https or ssh? Should be ssh
-git remote remove origin
-git remote add origin git@github.com:user/repo.git
-```
-
 !!! tip
+    If the terminal is no longer authenticating you:
+    ```zsh
+    git remote -v # is it https or ssh? Should be ssh
+    git remote remove origin
+    git remote add origin git@github.com:user/repo.git
+    ```
+
     Still having issues? Start the `ssh-agent` in the background and add your SSH private key to it.  
     ```zsh
     ps -ax | grep ssh-agent
