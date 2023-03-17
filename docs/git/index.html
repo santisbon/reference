@@ -657,7 +657,7 @@ git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"
 <li><a href="https://git-scm.com/book/en/v2/Git-Internals-Git-Objects#Tree-Objects"><code>tree</code> objects</a> correspond to UNIX directory entries. </li>
 <li><code>reset</code> resets current HEAD to the specified state e.g a commit.</li>
 <li>The <code>master^{tree}</code> syntax specifies the tree object that is pointed to by the last commit on your <code>master</code> branch. So <code>HEAD^{tree}</code> is the tree object pointed to by the last commit on your current branch.</li>
-<li>If you’re using ZSH, the <code>^</code> character is used for globbing, so you have to enclose the whole expression in quotes: <code>"HEAD^{tree}"</code></li>
+<li>If you’re using ZSH, the <code>^</code> character is used for globbing, so you have to enclose the whole expression in quotes: <code>"HEAD^{tree}"</code>.</li>
 </ul>
 </div>
 <p>Then just run:
@@ -682,7 +682,7 @@ git<span class="w"> </span>remote<span class="w"> </span>add<span class="w"> </s
 </code></pre></div></p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>Still having issues? Start the ssh-agent in the background and add your SSH private key to the ssh-agent.<br />
+<p>Still having issues? Start the <code>ssh-agent</code> in the background and add your SSH private key to it.<br />
 <div class="highlight"><pre><span></span><code>ps<span class="w"> </span>-ax<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>ssh-agent
 <span class="nb">eval</span><span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>ssh-agent<span class="w"> </span>-s<span class="k">)</span><span class="s2">&quot;</span>
 ssh-add<span class="w"> </span>--apple-use-keychain<span class="w"> </span>~/.ssh/id_ed25519

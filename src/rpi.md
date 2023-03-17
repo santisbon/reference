@@ -44,9 +44,12 @@ pi@raspberrypi4:~ $ sudo raspi-config
 # Go to Interface Options, VNC (for graphical remote access)
 # Tab to the Finish option and reboot.
 ```
-Update it.  
-`upgrade` is used to install available upgrades of all packages currently installed on the system. New packages will be installed if required to satisfy dependencies, but existing packages will never be removed. If an upgrade for a package requires the removal of an installed package the upgrade for this package isn't performed.  
-`full-upgrade` performs the function of upgrade but will remove currently installed packages if this is needed to upgrade the system as a whole.
+
+Update it.
+
+* `upgrade` is used to install available upgrades of all packages currently installed on the system. New packages will be installed if required to satisfy dependencies, but existing packages will never be removed. If an upgrade for a package requires the removal of an installed package the upgrade for this package isn't performed.  
+* `full-upgrade` performs the function of upgrade but will remove currently installed packages if this is needed to upgrade the system as a whole.
+
 ```zsh
 pi@raspberrypi4:~ $ sudo apt update # updates the package list
 pi@raspberrypi4:~ $ sudo apt full-upgrade
@@ -90,18 +93,19 @@ Now you'll need a VNC viewer on your laptop to connect to the Raspberry Pi using
 brew install --cask vnc-viewer
 ```
 
-Apparently, on Raspberry Pi pip does not download from the python package index (PyPi), it downloads from PiWheels. PiWheels wheels do not come with pygame's dependencies that are bundled in normal releases.
+!!! attention
+    Apparently, on Raspberry Pi `pip` does not download from the Python Package Index (PyPI), it downloads from PiWheels. PiWheels wheels do not come with `pygame`'s dependencies that are bundled in normal releases.
 
-Install Pygame [dependencies](https://www.piwheels.org/project/pygame/) and Pygame.
-```zsh
-pi@raspberrypi4:~ $ sudo apt install libvorbisenc2 libwayland-server0 libxi6 libfluidsynth2 libgbm1 libxkbcommon0 libopus0 libwayland-cursor0 libsndfile1 libwayland-client0 libportmidi0 libvorbis0a libopusfile0 libmpg123-0 libflac8 libxcursor1 libxinerama1 libasyncns0 libxrandr2 libdrm2 libpulse0 libxfixes3 libvorbisfile3 libmodplug1 libxrender1 libsdl2-2.0-0 libxxf86vm1 libwayland-egl1 libsdl2-ttf-2.0-0 libsdl2-image-2.0-0 libjack0 libsdl2-mixer-2.0-0 libinstpatch-1.0-2 libxss1 libogg0
-pi@raspberrypi4:~ $ sudo pip3 install pygame
-```
+    Install Pygame [dependencies](https://www.piwheels.org/project/pygame/) and Pygame.
+    ```zsh
+    pi@raspberrypi4:~ $ sudo apt install libvorbisenc2 libwayland-server0 libxi6 libfluidsynth2 libgbm1 libxkbcommon0 libopus0 libwayland-cursor0 libsndfile1 libwayland-client0 libportmidi0 libvorbis0a libopusfile0 libmpg123-0 libflac8 libxcursor1 libxinerama1 libasyncns0 libxrandr2 libdrm2 libpulse0 libxfixes3 libvorbisfile3 libmodplug1 libxrender1 libsdl2-2.0-0 libxxf86vm1 libwayland-egl1 libsdl2-ttf-2.0-0 libsdl2-image-2.0-0 libjack0 libsdl2-mixer-2.0-0 libinstpatch-1.0-2 libxss1 libogg0
+    pi@raspberrypi4:~ $ sudo pip3 install pygame
+    ```
 
-Check that the installation worked by running one of its demos
-```zsh
-pi@raspberrypi4:~ $ python3 -m pygame.examples.aliens
-```
+    Check that the installation worked by running one of its demos
+    ```zsh
+    pi@raspberrypi4:~ $ python3 -m pygame.examples.aliens
+    ```
 
 ## Copy files
 

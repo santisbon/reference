@@ -47,13 +47,12 @@ To create a squash function:
 git config --global alias.squash-all '!f(){ git reset $(git commit-tree "HEAD^{tree}" "$@");};f'
 ```
 !!! note
-    - Git allows you to escape to a shell (like bash or zsh) using the ! (bang). [Learn more](https://www.atlassian.com/blog/git/advanced-git-aliases).
-    - [`commit-tree`](https://git-scm.com/docs/git-commit-tree) creates a new commit object based on the provided tree object and emits the new commit object id on stdout.
-    - [`tree` objects](https://git-scm.com/book/en/v2/Git-Internals-Git-Objects#Tree-Objects) correspond to UNIX directory entries. 
-    - `reset` resets current HEAD to the specified state e.g a commit.
-    - The `master^{tree}` syntax specifies the tree object that is pointed to by the last commit on your `master` branch. So `HEAD^{tree}` is the tree object pointed to by the last commit on your current branch.
-    - If you’re using ZSH, the `^` character is used for globbing, so you have to enclose the whole expression in quotes: `"HEAD^{tree}"`
-
+    * Git allows you to escape to a shell (like bash or zsh) using the ! (bang). [Learn more](https://www.atlassian.com/blog/git/advanced-git-aliases).
+    * [`commit-tree`](https://git-scm.com/docs/git-commit-tree) creates a new commit object based on the provided tree object and emits the new commit object id on stdout.
+    * [`tree` objects](https://git-scm.com/book/en/v2/Git-Internals-Git-Objects#Tree-Objects) correspond to UNIX directory entries. 
+    * `reset` resets current HEAD to the specified state e.g a commit.
+    * The `master^{tree}` syntax specifies the tree object that is pointed to by the last commit on your `master` branch. So `HEAD^{tree}` is the tree object pointed to by the last commit on your current branch.
+    * If you’re using ZSH, the `^` character is used for globbing, so you have to enclose the whole expression in quotes: `"HEAD^{tree}"`.
 
 Then just run:
 ```zsh
@@ -82,7 +81,7 @@ git remote add origin git@github.com:user/repo.git
 ```
 
 !!! tip
-    Still having issues? Start the ssh-agent in the background and add your SSH private key to the ssh-agent.  
+    Still having issues? Start the `ssh-agent` in the background and add your SSH private key to it.  
     ```zsh
     ps -ax | grep ssh-agent
     eval "$(ssh-agent -s)"

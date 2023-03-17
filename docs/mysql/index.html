@@ -554,7 +554,7 @@ If you need to export data you may need to disable or set a security setting. On
 <div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>/Library/LaunchDaemons
 sudo<span class="w"> </span>nano<span class="w"> </span>com.oracle.oss.mysql.mysqld.plist
 </code></pre></div>
-and set the --secure-file-priv to an empty string (to disable the restriction) or a dir of your choice.
+and set the <code>--secure-file-priv</code> to an empty string (to disable the restriction) or a dir of your choice.
 <div class="highlight"><pre><span></span><code><span class="nt">&lt;key&gt;</span>ProgramArguments<span class="nt">&lt;/key&gt;</span>
 <span class="w">    </span><span class="nt">&lt;array&gt;</span>
 <span class="w">        </span><span class="nt">&lt;string&gt;</span>--secure-file-priv=<span class="nt">&lt;/string&gt;</span>

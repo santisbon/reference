@@ -19,7 +19,7 @@ Add the unversioned symlinks to your `$PATH` by adding this to your `.zshrc` fil
 ```zsh
 export PATH="$(brew --prefix)/opt/python/libexec/bin:$PATH"
 ```
-See the [Homebrew Python](https://docs.brew.sh/Homebrew-and-Python) documentation for details.  
+See [Homebrew Python](https://docs.brew.sh/Homebrew-and-Python) for details.  
 
 `site-packages` is here. Example for python 3.10 on Homebrew
 ```zsh
@@ -47,11 +47,13 @@ sudo apt install python-pip
 ```zsh
 pip install --upgrade pip setuptools
 ```
-On Ubuntu, upgrading to pip 10 may break pip. If this happens you need to:
-```zsh
-sudo nano /usr/bin/pip
-# change "from pip import main" to "from pip._internal import main"
-```
+
+!!! warning
+    On Ubuntu, upgrading to pip 10 may break pip. If this happens you need to:
+    ```zsh
+    sudo nano /usr/bin/pip
+    # change "from pip import main" to "from pip._internal import main"
+    ```
 
 ## Get the pep8 python style checker
 ```zsh
@@ -75,11 +77,13 @@ To use zsh:
 ```zsh
 conda init zsh
 ```
-If `conda init zsh` messed up the `PATH` in your `~/.zshrc` by adding the `condabin` directory instead of `bin` you can fix it with a symlink:
-```zsh
-ln -sf $(brew --prefix)/anaconda3/bin/jupyter-lab $(brew --prefix)/anaconda3/condabin/jupyter-lab
-ln -sf $(brew --prefix)/anaconda3/bin/jupyter $(brew --prefix)/anaconda3/condabin/jupyter
-```
+
+!!! warning
+    If `conda init zsh` messed up the `PATH` in your `~/.zshrc` by adding the `condabin` directory instead of `bin` you can fix it with a symlink:
+    ```zsh
+    ln -sf $(brew --prefix)/anaconda3/bin/jupyter-lab $(brew --prefix)/anaconda3/condabin/jupyter-lab
+    ln -sf $(brew --prefix)/anaconda3/bin/jupyter $(brew --prefix)/anaconda3/condabin/jupyter
+    ```
 
 If you don't want to activate the `base` environment every time you open your terminal:
 ```zsh
@@ -96,7 +100,7 @@ conda env remove --name ldm
 ```
 
 ### Notebooks
-Fresh installs of Anaconda no longer include notebook extensions in their Jupyter installer. This means that the nb_conda libraries need to be added into your environment separately to access conda environments from your Jupyter notebook. Just run these to add them and you should be able to select your environment as a kernel within a Jupyter notebook.
+Fresh installs of Anaconda no longer include notebook extensions in their Jupyter installer. This means that the `nb_conda` libraries need to be added into your environment separately to access conda environments from your Jupyter notebook. Just run these to add them and you should be able to select your environment as a kernel within a Jupyter notebook.
 ```zsh
 conda activate <myenv>
 conda install ipykernel

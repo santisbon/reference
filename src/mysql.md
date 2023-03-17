@@ -43,7 +43,7 @@ Open the configuration file.
 cd /Library/LaunchDaemons
 sudo nano com.oracle.oss.mysql.mysqld.plist
 ```
-and set the --secure-file-priv to an empty string (to disable the restriction) or a dir of your choice.
+and set the `--secure-file-priv` to an empty string (to disable the restriction) or a dir of your choice.
 ```xml
 <key>ProgramArguments</key>
     <array>

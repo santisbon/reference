@@ -15,7 +15,8 @@ sudo apt install nodejs
 sudo apt install npm
 ```
 
-[Optional] Install nvm from https://github.com/creationix/nvm to manage multiple versions of node and npm.  
+!!! tip
+    Install [nvm](https://github.com/creationix/nvm) to manage multiple versions of node and npm.  
 
 Windows Subsystem for Linux  
 On WSL the recommended approach for installing a current version of Node.js is nvm.
@@ -45,8 +46,8 @@ npm init
 sudo npm install --save ask-sdk moment
 sudo npm install --save-dev mocha chai eslint virtual-alexa
 ```
-**Troubleshooting mocha**
-If you get an error running mocha tests e.g. `node_modules/.bin/mocha` not having execute permissions or *mocha Error: Cannot find module './options'* delete your node_modules folder and `npm install`.
+**Troubleshooting mocha**  
+If you get an error running mocha tests e.g. `node_modules/.bin/mocha` not having execute permissions or *mocha Error: Cannot find module './options'* delete your `node_modules` folder and `npm install`.
 
 **Set up ESLint with a configuration file**
 ```zsh

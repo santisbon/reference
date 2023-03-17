@@ -25,23 +25,32 @@ pip install mkdocs python-markdown-math mkdocs-material
 Included: `mkdocs`, `readthedocs`.  
 Third-party: `material`.
 
-## Extensions
+## [Extensions](https://python-markdown.github.io/extensions/)  
 
-[Documentation](https://python-markdown.github.io/extensions/)  
+### [Admonition](https://python-markdown.github.io/extensions/admonition/)  
 
-### Admonition
-[Documentation](https://python-markdown.github.io/extensions/admonition/)  
-Types: `attention`, `caution`, `danger`, `error`, `hint`, `important`, `note`, `tip`, and `warning`. The text must be indented.
+* Pencil: `attention`, `caution`, `error`, `hint`, `important`,`note`.
+* Fire: `tip`.
+* Exclamation mark: `warning`.
+* Lightning bolt: `danger`.
 
+The text must be indented.
 ```
-!!! hint
+!!! attention
     Text goes here.
 ```
-!!! hint
+!!! attention
+    Text goes here.
+!!! tip
+    Text goes here.
+!!! warning
+    Text goes here.
+!!! danger
     Text goes here.
 
-### Keys
-[Documentation](https://facelessuser.github.io/pymdown-extensions/extensions/keys/#extendingmodifying-key-map-index)
+
+
+### [Keys](https://facelessuser.github.io/pymdown-extensions/extensions/keys/#extendingmodifying-key-map-index)
 ```
 ++command+shift+n++
 ```

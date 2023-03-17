@@ -680,7 +680,7 @@ python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </s
 Add the unversioned symlinks to your <code>$PATH</code> by adding this to your <code>.zshrc</code> file.
 <div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>brew<span class="w"> </span>--prefix<span class="k">)</span><span class="s2">/opt/python/libexec/bin:</span><span class="nv">$PATH</span><span class="s2">&quot;</span>
 </code></pre></div>
-See the <a href="https://docs.brew.sh/Homebrew-and-Python">Homebrew Python</a> documentation for details.  </p>
+See <a href="https://docs.brew.sh/Homebrew-and-Python">Homebrew Python</a> for details.  </p>
 <p><code>site-packages</code> is here. Example for python 3.10 on Homebrew
 <div class="highlight"><pre><span></span><code>ls<span class="w"> </span>-al<span class="w"> </span><span class="k">$(</span>brew<span class="w"> </span>--prefix<span class="k">)</span>/lib/python3.10/site-packages
 </code></pre></div></p>
@@ -696,12 +696,15 @@ sudo<span class="w"> </span>python<span class="w"> </span>get-pip.py
 <p>Linux
 <div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>python-pip
 </code></pre></div></p>
-<p><div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>pip<span class="w"> </span>setuptools
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>pip<span class="w"> </span>setuptools
 </code></pre></div>
-On Ubuntu, upgrading to pip 10 may break pip. If this happens you need to:
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>On Ubuntu, upgrading to pip 10 may break pip. If this happens you need to:
 <div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>nano<span class="w"> </span>/usr/bin/pip
 <span class="c1"># change &quot;from pip import main&quot; to &quot;from pip._internal import main&quot;</span>
 </code></pre></div></p>
+</div>
 <h2 id="get-the-pep8-python-style-checker">Get the pep8 python style checker</h2>
 <div class="highlight"><pre><span></span><code><span class="c1"># On Linux you may need to use sudo.</span>
 pip<span class="w"> </span>install<span class="w"> </span>pep8
@@ -716,11 +719,14 @@ pip<span class="w"> </span>install<span class="w"> </span>pep8
 </code></pre></div>
 To use zsh:
 <div class="highlight"><pre><span></span><code>conda<span class="w"> </span>init<span class="w"> </span>zsh
-</code></pre></div>
-If <code>conda init zsh</code> messed up the <code>PATH</code> in your <code>~/.zshrc</code> by adding the <code>condabin</code> directory instead of <code>bin</code> you can fix it with a symlink:
+</code></pre></div></p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If <code>conda init zsh</code> messed up the <code>PATH</code> in your <code>~/.zshrc</code> by adding the <code>condabin</code> directory instead of <code>bin</code> you can fix it with a symlink:
 <div class="highlight"><pre><span></span><code>ln<span class="w"> </span>-sf<span class="w"> </span><span class="k">$(</span>brew<span class="w"> </span>--prefix<span class="k">)</span>/anaconda3/bin/jupyter-lab<span class="w"> </span><span class="k">$(</span>brew<span class="w"> </span>--prefix<span class="k">)</span>/anaconda3/condabin/jupyter-lab
 ln<span class="w"> </span>-sf<span class="w"> </span><span class="k">$(</span>brew<span class="w"> </span>--prefix<span class="k">)</span>/anaconda3/bin/jupyter<span class="w"> </span><span class="k">$(</span>brew<span class="w"> </span>--prefix<span class="k">)</span>/anaconda3/condabin/jupyter
 </code></pre></div></p>
+</div>
 <p>If you don't want to activate the <code>base</code> environment every time you open your terminal:
 <div class="highlight"><pre><span></span><code>conda<span class="w"> </span>config<span class="w"> </span>--set<span class="w"> </span>auto_activate_base<span class="w"> </span><span class="nb">false</span>
 </code></pre></div></p>
@@ -732,7 +738,7 @@ conda<span class="w"> </span>env<span class="w"> </span>list
 conda<span class="w"> </span>env<span class="w"> </span>remove<span class="w"> </span>--name<span class="w"> </span>ldm
 </code></pre></div></p>
 <h3 id="notebooks">Notebooks</h3>
-<p>Fresh installs of Anaconda no longer include notebook extensions in their Jupyter installer. This means that the nb_conda libraries need to be added into your environment separately to access conda environments from your Jupyter notebook. Just run these to add them and you should be able to select your environment as a kernel within a Jupyter notebook.
+<p>Fresh installs of Anaconda no longer include notebook extensions in their Jupyter installer. This means that the <code>nb_conda</code> libraries need to be added into your environment separately to access conda environments from your Jupyter notebook. Just run these to add them and you should be able to select your environment as a kernel within a Jupyter notebook.
 <div class="highlight"><pre><span></span><code>conda<span class="w"> </span>activate<span class="w"> </span>&lt;myenv&gt;
 conda<span class="w"> </span>install<span class="w"> </span>ipykernel
 conda<span class="w"> </span>install<span class="w"> </span>nb_conda_kernels<span class="w"> </span><span class="c1"># or defaults::nb_conda_kernels</span>

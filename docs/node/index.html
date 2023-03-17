@@ -535,7 +535,10 @@ or
 <div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>nodejs
 sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>npm
 </code></pre></div></p>
-<p>[Optional] Install nvm from https://github.com/creationix/nvm to manage multiple versions of node and npm.  </p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Install <a href="https://github.com/creationix/nvm">nvm</a> to manage multiple versions of node and npm.  </p>
+</div>
 <p>Windows Subsystem for Linux<br />
 On WSL the recommended approach for installing a current version of Node.js is nvm.
 <div class="highlight"><pre><span></span><code>touch<span class="w"> </span>~/.bashrc
@@ -557,8 +560,8 @@ If you installed npm as part of node you may need to update npm.
 <div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>npm<span class="w"> </span>install<span class="w"> </span>--save<span class="w"> </span>ask-sdk<span class="w"> </span>moment
 sudo<span class="w"> </span>npm<span class="w"> </span>install<span class="w"> </span>--save-dev<span class="w"> </span>mocha<span class="w"> </span>chai<span class="w"> </span>eslint<span class="w"> </span>virtual-alexa
 </code></pre></div>
-<strong>Troubleshooting mocha</strong>
-If you get an error running mocha tests e.g. <code>node_modules/.bin/mocha</code> not having execute permissions or <em>mocha Error: Cannot find module './options'</em> delete your node_modules folder and <code>npm install</code>.</p>
+<strong>Troubleshooting mocha</strong><br />
+If you get an error running mocha tests e.g. <code>node_modules/.bin/mocha</code> not having execute permissions or <em>mocha Error: Cannot find module './options'</em> delete your <code>node_modules</code> folder and <code>npm install</code>.</p>
 <p><strong>Set up ESLint with a configuration file</strong>
 <div class="highlight"><pre><span></span><code>eslint<span class="w"> </span>--init
 <span class="c1"># you may need to run it as:</span>

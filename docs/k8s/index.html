@@ -1155,7 +1155,7 @@
 <a href="https://kubernetes.io/docs/concepts/cluster-administration/logging/#log-rotation">Log rotation</a>  </p>
 <p>In order for Kubernetes to pull your container image you need to first push it to an image repository like Docker Hub.<br />
 To avoid storing your Docker Hub password unencrypted in $HOME/.docker/config.json when you <code>docker login</code> to your account, use a <a href="https://docs.docker.com/engine/reference/commandline/login/#credentials-store">credentials store</a>. A helper program lets you interact with such a keychain or external store. </p>
-<p>If you're doing this on your laptop with <strong>Docker Desktop</strong> it <strong>already provides a store</strong>.<br />
+<p>If you're doing this on your laptop with <strong>Docker Desktop</strong>, it <strong>already provides a store</strong>.<br />
 <strong>Otherwise</strong>, <strong>use</strong> one of the stores supported by the <a href="https://docs.docker.com/engine/reference/commandline/login/#credential-helpers"><strong><code>docker-credential-helper</code></strong></a>. Now <code>docker login</code> on your terminal or on the Docker Desktop app.  </p>
 <h2 id="designing-applications-for-kubernetes">Designing Applications for Kubernetes</h2>
 <p>Implements the <a href="https://12factor.net/">12-Factor App Design Methodology</a> and based on a Cloud Guru course. It uses Ubuntu 20.04 Focal Fossa LTS and the Calico network plugin instead of Flannel. Example with 1 control plane node and 2 worker nodes.</p>
@@ -1164,9 +1164,10 @@ To avoid storing your Docker Hub password unencrypted in $HOME/.docker/config.js
 <p><a href="https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1658326918182-Building%20a%20Kubernetes%20Cluster.pdf">Reference</a><br />
 <a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/">Installing kubeadm</a><br />
 <a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/">Creating a cluster with kubeadm</a>  </p>
-<ul>
-<li>kubeadm sometimes doesn't work with the latest and greatest version of docker right away.</li>
-</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><code>kubeadm</code> sometimes doesn't work with the latest and greatest version of Docker right away.</p>
+</div>
 <p><code>kubeadm</code> simplifies the process of setting up a K8s cluster.<br />
 <code>containerd</code> manages the complete container lifecycle of its host system, from image transfer and storage to container execution and supervision to low-level storage to network attachments.<br />
 <code>kubelet</code> handles running containers on a node.<br />
@@ -1672,12 +1673,13 @@ kubectl<span class="w"> </span>delete<span class="w"> </span>pvc<span class="w">
 <a href="https://kubernetes.io/docs/concepts/cluster-administration/networking/">Cluster Networking</a>  </p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Challenge: Only 1 process can listen on a port per host. So how do all apps on the host use a unique port?<br />
-In K8s, each pod has its own network namespace and cluster IP address.<br />
-That IP address is unique within the cluster even if there are multiple worker nodes in the cluster.<br />
-That means ports only need to be unique within each pod.<br />
-Two pods can listen on the same port because they each have their own unique IP address within the cluster network.<br />
-The pods can communicate across nodes simply using the unique IPs.</p>
+<p>Challenge: Only 1 process can listen on a port per host. So how do all apps on the host use a unique port?</p>
+<ul>
+<li>In K8s, each pod has its own network namespace and cluster IP address.  </li>
+<li>That IP address is unique within the cluster even if there are multiple worker nodes in the cluster. That means ports only need to be unique within each pod.  </li>
+<li>Two pods can listen on the same port because they each have their own unique IP address within the cluster network.  </li>
+<li>The pods can communicate across nodes simply using the unique IPs.</li>
+</ul>
 </div>
 <p>Get a list of Pods in the production namespace:
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>production<span class="w"> </span>-o<span class="w"> </span>wide
@@ -1907,9 +1909,13 @@ Get the name of the Job Pod:
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>logs<span class="w"> </span>&lt;Pod<span class="w"> </span>name&gt;<span class="w"> </span>-n<span class="w"> </span>production
 </code></pre></div></p>
 <h2 id="microk8s">MicroK8s</h2>
-<p><a href="https://microk8s.io/docs/install-raspberry-pi">On Raspberry Pi</a><br />
-Note: Your boot parameters might be in <code>/boot/cmdline.txt</code>. Add these options at the end of the file, then <code>sudo reboot</code>.
-<div class="highlight"><pre><span></span><code>cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1
+<p><a href="https://microk8s.io/docs/install-raspberry-pi">On Raspberry Pi</a>  </p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>Your boot parameters might be in <code>/boot/cmdline.txt</code> instead of <code>/boot/firmware/cmdline.txt</code>. </p>
+</div>
+<p>Add these options at the end of the file, then <code>sudo reboot</code>.
+<div class="highlight"><span class="filename">cmdline.txt</span><pre><span></span><code>cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1
 </code></pre></div></p>
 <p>For Raspberry Pi OS <a href="https://snapcraft.io/docs/installing-snap-on-raspbian">install</a> <code>snap</code> first.
 <div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>update
@@ -1951,14 +1957,13 @@ In an RBAC enabled setup (<code>microk8s enable rbac</code>) you need to create 
 <p>To access remotely from anywhere with <a href="https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#port-forward"><code>port-forward</code></a>:
 <div class="highlight"><pre><span></span><code>microk8s<span class="w"> </span>kubectl<span class="w"> </span>port-forward<span class="w"> </span>-n<span class="w"> </span>kube-system<span class="w"> </span>service/kubernetes-dashboard<span class="w"> </span><span class="m">10443</span>:443<span class="w"> </span>--address<span class="w"> </span><span class="m">0</span>.0.0.0
 </code></pre></div></p>
-<p>You can then access the Dashboard with IP or hostname as in https://raspberrypi4.local:10443/</p>
+<p>You can then access the Dashboard with IP or hostname as in <code>https://raspberrypi4.local:10443/</code></p>
 <h3 id="troubleshooting">Troubleshooting</h3>
 <p><div class="highlight"><pre><span></span><code>microk8s<span class="w"> </span>inspect
 </code></pre></div>
 MicroK8s might not recognize that cgroup memory is enabled but you can check with <code>cat /proc/cgroups</code>.</p>
-<h2 id="kubernetes-dashboard">Kubernetes Dashboard</h2>
-<p><a href="https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/">Documentation</a>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://raw.githubusercontent.com/kubernetes/dashboard/v2.6.1/aio/deploy/recommended.yaml
+<h2 id="kubernetes-dashboard"><a href="https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/">Kubernetes Dashboard</a></h2>
+<p><div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://raw.githubusercontent.com/kubernetes/dashboard/v2.6.1/aio/deploy/recommended.yaml
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>cat<span class="w"> </span><span class="s">&lt;&lt; EOF &gt; dashboard-adminuser.yaml</span>
 <span class="s">apiVersion: v1</span>

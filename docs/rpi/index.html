@@ -742,13 +742,15 @@ ssh<span class="w"> </span>pi@raspberrypi4.local
 <div class="highlight"><pre><span></span><code>pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>sudo<span class="w"> </span>raspi-config
 <span class="c1"># Go to Interface Options, VNC (for graphical remote access)</span>
 <span class="c1"># Tab to the Finish option and reboot.</span>
-</code></pre></div>
-Update it.<br />
-<code>upgrade</code> is used to install available upgrades of all packages currently installed on the system. New packages will be installed if required to satisfy dependencies, but existing packages will never be removed. If an upgrade for a package requires the removal of an installed package the upgrade for this package isn't performed.<br />
-<code>full-upgrade</code> performs the function of upgrade but will remove currently installed packages if this is needed to upgrade the system as a whole.
+</code></pre></div></p>
+<p>Update it.</p>
+<ul>
+<li><code>upgrade</code> is used to install available upgrades of all packages currently installed on the system. New packages will be installed if required to satisfy dependencies, but existing packages will never be removed. If an upgrade for a package requires the removal of an installed package the upgrade for this package isn't performed.  </li>
+<li><code>full-upgrade</code> performs the function of upgrade but will remove currently installed packages if this is needed to upgrade the system as a whole.</li>
+</ul>
 <div class="highlight"><pre><span></span><code>pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>update<span class="w"> </span><span class="c1"># updates the package list</span>
 pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>full-upgrade
-</code></pre></div></p>
+</code></pre></div>
 <h3 id="to-give-it-a-static-ip">To give it a static IP</h3>
 <p>Find the IP adddress of your router. It's the address that appears after <code>default via</code>.
 <div class="highlight"><pre><span></span><code>pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>ip<span class="w"> </span>r
@@ -778,7 +780,9 @@ static domain_name_servers=[DNS IP]
 <p>Now you'll need a VNC viewer on your laptop to connect to the Raspberry Pi using the graphical interface.
 <div class="highlight"><pre><span></span><code>brew<span class="w"> </span>install<span class="w"> </span>--cask<span class="w"> </span>vnc-viewer
 </code></pre></div></p>
-<p>Apparently, on Raspberry Pi pip does not download from the python package index (PyPi), it downloads from PiWheels. PiWheels wheels do not come with pygame's dependencies that are bundled in normal releases.</p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>Apparently, on Raspberry Pi <code>pip</code> does not download from the Python Package Index (PyPI), it downloads from PiWheels. PiWheels wheels do not come with <code>pygame</code>'s dependencies that are bundled in normal releases.</p>
 <p>Install Pygame <a href="https://www.piwheels.org/project/pygame/">dependencies</a> and Pygame.
 <div class="highlight"><pre><span></span><code>pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>libvorbisenc2<span class="w"> </span>libwayland-server0<span class="w"> </span>libxi6<span class="w"> </span>libfluidsynth2<span class="w"> </span>libgbm1<span class="w"> </span>libxkbcommon0<span class="w"> </span>libopus0<span class="w"> </span>libwayland-cursor0<span class="w"> </span>libsndfile1<span class="w"> </span>libwayland-client0<span class="w"> </span>libportmidi0<span class="w"> </span>libvorbis0a<span class="w"> </span>libopusfile0<span class="w"> </span>libmpg123-0<span class="w"> </span>libflac8<span class="w"> </span>libxcursor1<span class="w"> </span>libxinerama1<span class="w"> </span>libasyncns0<span class="w"> </span>libxrandr2<span class="w"> </span>libdrm2<span class="w"> </span>libpulse0<span class="w"> </span>libxfixes3<span class="w"> </span>libvorbisfile3<span class="w"> </span>libmodplug1<span class="w"> </span>libxrender1<span class="w"> </span>libsdl2-2.0-0<span class="w"> </span>libxxf86vm1<span class="w"> </span>libwayland-egl1<span class="w"> </span>libsdl2-ttf-2.0-0<span class="w"> </span>libsdl2-image-2.0-0<span class="w"> </span>libjack0<span class="w"> </span>libsdl2-mixer-2.0-0<span class="w"> </span>libinstpatch-1.0-2<span class="w"> </span>libxss1<span class="w"> </span>libogg0
 pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>sudo<span class="w"> </span>pip3<span class="w"> </span>install<span class="w"> </span>pygame
@@ -786,6 +790,7 @@ pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>sudo<span clas
 <p>Check that the installation worked by running one of its demos
 <div class="highlight"><pre><span></span><code>pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>python3<span class="w"> </span>-m<span class="w"> </span>pygame.examples.aliens
 </code></pre></div></p>
+</div>
 <h2 id="copy-files">Copy files</h2>
 <p>Copy files between Pi and local machine. On local machine run:
 <div class="highlight"><pre><span></span><code>scp<span class="w"> </span>-r<span class="w"> </span>pi@raspberrypi2.local:/home/pi/Documents/<span class="w"> </span>~/Documents/pidocs

@@ -8,7 +8,7 @@
 In order for Kubernetes to pull your container image you need to first push it to an image repository like Docker Hub.  
 To avoid storing your Docker Hub password unencrypted in $HOME/.docker/config.json when you `docker login` to your account, use a [credentials store](https://docs.docker.com/engine/reference/commandline/login/#credentials-store). A helper program lets you interact with such a keychain or external store. 
 
-If you're doing this on your laptop with **Docker Desktop** it **already provides a store**.  
+If you're doing this on your laptop with **Docker Desktop**, it **already provides a store**.  
 **Otherwise**, **use** one of the stores supported by the [**`docker-credential-helper`**](https://docs.docker.com/engine/reference/commandline/login/#credential-helpers). Now `docker login` on your terminal or on the Docker Desktop app.  
 
 
@@ -23,7 +23,8 @@ Implements the [12-Factor App Design Methodology](https://12factor.net/) and bas
 [Installing kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/)  
 [Creating a cluster with kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/)  
 
-* kubeadm sometimes doesn't work with the latest and greatest version of docker right away.
+!!! warning
+    `kubeadm` sometimes doesn't work with the latest and greatest version of Docker right away.
 
 `kubeadm` simplifies the process of setting up a K8s cluster.  
 `containerd` manages the complete container lifecycle of its host system, from image transfer and storage to container execution and supervision to low-level storage to network attachments.  
@@ -538,16 +539,16 @@ kubectl create -f localdisk-sc.yml
 
 `persistentVolumeReclaimPolicy` says how storage can be reused when the volume's associated claims are deleted.  
 
-- Retain: Keeps all data. An admin must manually clean up and prepare the resource for reuse.
-- Recycle: Automatically deletes all data, allowing  the volume to be reused.
-- Delete: Deletes underlying storage resource automatically (applies to cloud only).  
+* Retain: Keeps all data. An admin must manually clean up and prepare the resource for reuse.
+* Recycle: Automatically deletes all data, allowing  the volume to be reused.
+* Delete: Deletes underlying storage resource automatically (applies to cloud only).  
 
 [`accessModes`](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes) can be:
 
-- ReadWriteOnce: The volume can be mounted as read-write by a single node. Still can allow multiple pods to access the volume when the pods are running on the same node.  
-- ReadOnlyMany: Can be mounted as read-only by many nodes.
-- ReadWriteMany: Can be mounted as read-write by many nodes.
-- ReadWriteOncePod: Can be mounted as read-write by a single Pod. Use ReadWriteOncePod access mode if you want to ensure that only one pod across whole cluster can read that PVC or write to it. This is only supported for CSI volumes.
+* ReadWriteOnce: The volume can be mounted as read-write by a single node. Still can allow multiple pods to access the volume when the pods are running on the same node.  
+* ReadOnlyMany: Can be mounted as read-only by many nodes.
+* ReadWriteMany: Can be mounted as read-write by many nodes.
+* ReadWriteOncePod: Can be mounted as read-write by a single Pod. Use ReadWriteOncePod access mode if you want to ensure that only one pod across whole cluster can read that PVC or write to it. This is only supported for CSI volumes.
 
 Create a `PersistentVolume` in `my-pv.yml`.
 ```yaml
@@ -655,12 +656,12 @@ kubectl get pv
 [Cluster Networking](https://kubernetes.io/docs/concepts/cluster-administration/networking/)  
 
 !!! note
-    Challenge: Only 1 process can listen on a port per host. So how do all apps on the host use a unique port?  
-    In K8s, each pod has its own network namespace and cluster IP address.  
-    That IP address is unique within the cluster even if there are multiple worker nodes in the cluster.  
-    That means ports only need to be unique within each pod.  
-    Two pods can listen on the same port because they each have their own unique IP address within the cluster network.  
-    The pods can communicate across nodes simply using the unique IPs.
+    Challenge: Only 1 process can listen on a port per host. So how do all apps on the host use a unique port?
+    
+    * In K8s, each pod has its own network namespace and cluster IP address.  
+    * That IP address is unique within the cluster even if there are multiple worker nodes in the cluster. That means ports only need to be unique within each pod.  
+    * Two pods can listen on the same port because they each have their own unique IP address within the cluster network.  
+    * The pods can communicate across nodes simply using the unique IPs.
 
 Get a list of Pods in the production namespace:
 ```zsh
@@ -979,8 +980,11 @@ kubectl logs <Pod name> -n production
 ## MicroK8s
 
 [On Raspberry Pi](https://microk8s.io/docs/install-raspberry-pi)  
-Note: Your boot parameters might be in `/boot/cmdline.txt`. Add these options at the end of the file, then `sudo reboot`.
-```
+!!! attention 
+    Your boot parameters might be in `/boot/cmdline.txt` instead of `/boot/firmware/cmdline.txt`. 
+
+Add these options at the end of the file, then `sudo reboot`.
+``` title="cmdline.txt"
 cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1
 ```
 
@@ -1036,7 +1040,7 @@ To access remotely from anywhere with [`port-forward`](https://kubernetes.io/doc
 microk8s kubectl port-forward -n kube-system service/kubernetes-dashboard 10443:443 --address 0.0.0.0
 ```
 
-You can then access the Dashboard with IP or hostname as in https://raspberrypi4.local:10443/
+You can then access the Dashboard with IP or hostname as in `https://raspberrypi4.local:10443/`
 
 
 ### Troubleshooting
@@ -1046,9 +1050,7 @@ microk8s inspect
 MicroK8s might not recognize that cgroup memory is enabled but you can check with `cat /proc/cgroups`.
 
 
-## Kubernetes Dashboard
-
-[Documentation](https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/)
+## [Kubernetes Dashboard](https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/)
 ```zsh
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.6.1/aio/deploy/recommended.yaml
 ```

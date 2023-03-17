@@ -684,21 +684,36 @@ docs/
 <h2 id="themes">Themes</h2>
 <p>Included: <code>mkdocs</code>, <code>readthedocs</code>.<br />
 Third-party: <code>material</code>.</p>
-<h2 id="extensions">Extensions</h2>
-<p><a href="https://python-markdown.github.io/extensions/">Documentation</a>  </p>
-<h3 id="admonition">Admonition</h3>
-<p><a href="https://python-markdown.github.io/extensions/admonition/">Documentation</a><br />
-Types: <code>attention</code>, <code>caution</code>, <code>danger</code>, <code>error</code>, <code>hint</code>, <code>important</code>, <code>note</code>, <code>tip</code>, and <code>warning</code>. The text must be indented.</p>
-<div class="highlight"><pre><span></span><code>!!! hint
+<h2 id="extensions"><a href="https://python-markdown.github.io/extensions/">Extensions</a></h2>
+<h3 id="admonition"><a href="https://python-markdown.github.io/extensions/admonition/">Admonition</a></h3>
+<ul>
+<li>Pencil: <code>attention</code>, <code>caution</code>, <code>error</code>, <code>hint</code>, <code>important</code>,<code>note</code>.</li>
+<li>Fire: <code>tip</code>.</li>
+<li>Exclamation mark: <code>warning</code>.</li>
+<li>Lightning bolt: <code>danger</code>.</li>
+</ul>
+<p>The text must be indented.
+<div class="highlight"><pre><span></span><code>!!! attention
     Text goes here.
-</code></pre></div>
-<div class="admonition hint">
-<p class="admonition-title">Hint</p>
+</code></pre></div></p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
 <p>Text goes here.</p>
 </div>
-<h3 id="keys">Keys</h3>
-<p><a href="https://facelessuser.github.io/pymdown-extensions/extensions/keys/#extendingmodifying-key-map-index">Documentation</a>
-<div class="highlight"><pre><span></span><code>++command+shift+n++
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Text goes here.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Text goes here.</p>
+</div>
+<div class="admonition danger">
+<p class="admonition-title">Danger</p>
+<p>Text goes here.</p>
+</div>
+<h3 id="keys"><a href="https://facelessuser.github.io/pymdown-extensions/extensions/keys/#extendingmodifying-key-map-index">Keys</a></h3>
+<p><div class="highlight"><pre><span></span><code>++command+shift+n++
 </code></pre></div>
 <span class="keys"><kbd class="key-command">Cmd</kbd><span>+</span><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-n">N</kbd></span></p>
 <h3 id="mathjax">MathJax</h3>
