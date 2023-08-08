@@ -716,6 +716,9 @@
     1.4. Take note of the hostname.  </li>
 <li>Insert the SD card in your Raspberry Pi and turn it on. </li>
 </ol>
+<p>If you're reinstalling Raspberry Pi OS you might need to remove keys belonging to the hostname from your <code>known_hosts</code> file.
+<div class="highlight"><span class="filename">on your laptop</span><pre><span></span><code>ssh-keygen<span class="w">  </span>-f<span class="w"> </span>~/.ssh/known_hosts<span class="w"> </span>-R<span class="w"> </span>raspberrypi4.local
+</code></pre></div></p>
 <p>If you didn't do so during setup, you can still generate and add an ssh key at any time. Example:
 <div class="highlight"><span class="filename">on your laptop</span><pre><span></span><code>ssh-keygen
 ssh-copy-id<span class="w"> </span>-i<span class="w"> </span>~/.ssh/id_rsa<span class="w"> </span>pi@raspberrypi4.local

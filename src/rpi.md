@@ -8,6 +8,11 @@
     1.4. Take note of the hostname.  
 2. Insert the SD card in your Raspberry Pi and turn it on. 
 
+If you're reinstalling Raspberry Pi OS you might need to remove keys belonging to the hostname from your `known_hosts` file.
+```zsh title="on your laptop"
+ssh-keygen  -f ~/.ssh/known_hosts -R raspberrypi4.local
+```
+
 If you didn't do so during setup, you can still generate and add an ssh key at any time. Example:
 ```zsh title="on your laptop"
 ssh-keygen
