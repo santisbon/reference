@@ -126,6 +126,10 @@ What model do you have?
 cat /sys/firmware/devicetree/base/model ;echo
 ```
 
+What's the connection speed of the ethernet port?
+```zsh
+ethtool eth0
+```
 
 32 or 64-bit kernel?
 ```zsh
