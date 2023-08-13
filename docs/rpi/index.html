@@ -799,6 +799,12 @@ pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>sudo<span clas
 <div class="highlight"><pre><span></span><code>scp<span class="w"> </span>-r<span class="w"> </span>pi@raspberrypi2.local:/home/pi/Documents/<span class="w"> </span>~/Documents/pidocs
 </code></pre></div></p>
 <h2 id="find-info-about-your-pi">Find info about your Pi</h2>
+<p>What model do you have?
+<div class="highlight"><pre><span></span><code>cat<span class="w"> </span>/sys/firmware/devicetree/base/model<span class="w"> </span><span class="p">;</span><span class="nb">echo</span>
+</code></pre></div></p>
+<p>What's the connection speed of the ethernet port?
+<div class="highlight"><pre><span></span><code>ethtool<span class="w"> </span>eth0
+</code></pre></div></p>
 <p>32 or 64-bit kernel?
 <div class="highlight"><pre><span></span><code>getconf<span class="w"> </span>LONG_BIT
 <span class="c1"># or check machine&#39;s hardware name: armv7l is 32-bit and aarch64 is 64-bit</span>
