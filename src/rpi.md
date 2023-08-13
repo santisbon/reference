@@ -121,6 +121,12 @@ scp -r pi@raspberrypi2.local:/home/pi/Documents/ ~/Documents/pidocs
 
 ## Find info about your Pi
 
+What model do you have?
+```zsh
+cat /sys/firmware/devicetree/base/model ;echo
+```
+
+
 32 or 64-bit kernel?
 ```zsh
 getconf LONG_BIT
