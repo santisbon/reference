@@ -159,6 +159,17 @@ You can find info about the hardware like ports, pins, RAM, SoC, connectivity, e
 pi@raspberrypi4:~ $ pinout
 ```
 
+## Troubleshooting
+
+If your Pi's ethernet port is capable of 1Gbps, you're using a cat5e cable or better, your router and switch support 1Gbps,  and you're still only getting 100Mbps **first try with another cable**. A faulty cable is the most common cause of problems like this. If that doesn't work you can try disabling EEE (Energy Efficient Ethernet) although it will be reenabled at reboot. You could also try setting the speed manually.
+```zsh
+ethtool --show-eee eth0
+sudo ethtool --set-eee eth0 eee off
+
+# set speed manually and disable autonegotiation
+ethtool -s eth0 speed 1000 duplex full autoneg off
+```
+
 ## Learn about electronics
 
 I've added some sample code from the [MagPi Essentials book](https://magpi.raspberrypi.com/books/essentials-gpio-zero-v1).  

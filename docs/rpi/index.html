@@ -497,6 +497,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    Troubleshooting
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#learn-about-electronics" class="md-nav__link">
     Learn about electronics
   </a>
@@ -669,6 +676,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    Troubleshooting
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#learn-about-electronics" class="md-nav__link">
     Learn about electronics
   </a>
@@ -823,6 +837,14 @@ Or check the architecture with:
 </code></pre></div></p>
 <p>You can find info about the hardware like ports, pins, RAM, SoC, connectivity, etc. with:
 <div class="highlight"><pre><span></span><code>pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>pinout
+</code></pre></div></p>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<p>If your Pi's ethernet port is capable of 1Gbps, you're using a cat5e cable or better, your router and switch support 1Gbps,  and you're still only getting 100Mbps <strong>first try with another cable</strong>. A faulty cable is the most common cause of problems like this. If that doesn't work you can try disabling EEE (Energy Efficient Ethernet) although it will be reenabled at reboot. You could also try setting the speed manually.
+<div class="highlight"><pre><span></span><code>ethtool<span class="w"> </span>--show-eee<span class="w"> </span>eth0
+sudo<span class="w"> </span>ethtool<span class="w"> </span>--set-eee<span class="w"> </span>eth0<span class="w"> </span>eee<span class="w"> </span>off
+
+<span class="c1"># set speed manually and disable autonegotiation</span>
+ethtool<span class="w"> </span>-s<span class="w"> </span>eth0<span class="w"> </span>speed<span class="w"> </span><span class="m">1000</span><span class="w"> </span>duplex<span class="w"> </span>full<span class="w"> </span>autoneg<span class="w"> </span>off
 </code></pre></div></p>
 <h2 id="learn-about-electronics">Learn about electronics</h2>
 <p>I've added some sample code from the <a href="https://magpi.raspberrypi.com/books/essentials-gpio-zero-v1">MagPi Essentials book</a>.<br />
