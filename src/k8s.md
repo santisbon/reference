@@ -1046,7 +1046,7 @@ pi@raspberrypi4:~ $ microk8s enable dns dashboard registry hostpath-storage # or
 pi@raspberrypi4:~ $ alias mkctl="microk8s kubectl"
 pi@raspberrypi4:~ $ alias mkhelm="microk8s helm"
 pi@raspberrypi4:~ $ mkctl create deployment nginx --image nginx
-pi@raspberrypi4:~ $ mkctl expose deployment nginx --port 80 --target-port 80 --selector app=nginx --type ClustetIP --name nginx
+pi@raspberrypi4:~ $ mkctl expose deployment nginx --port 80 --target-port 80 --selector app=nginx --type ClusterIP --name nginx
 pi@raspberrypi4:~ $ watch microk8s kubectl get all
 pi@raspberrypi4:~ $ microk8s reset
 pi@raspberrypi4:~ $ microk8s status
@@ -1076,12 +1076,31 @@ microk8s kubectl describe secret -n kube-system microk8s-dashboard-token
 Use this token in the https login UI of the `kubernetes-dashboard` service.
 In an RBAC enabled setup (`microk8s enable rbac`) you need to create a user with restricted permissions as shown [here](https://github.com/kubernetes/dashboard/blob/master/docs/user/access-control/creating-sample-user.md).
 
-To access remotely from anywhere with [`port-forward`](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#port-forward):
+To access remotely from outside the cluster:
+
+#### Option 1 
+With [`port-forward`](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#port-forward).  
+Note: `kubectl port-forward` [does not return](https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/). To type other commands, you'll need to open another terminal.
 ```zsh
 microk8s kubectl port-forward -n kube-system service/kubernetes-dashboard 10443:443 --address 0.0.0.0
 ```
+You can then access the Dashboard with IP or hostname and the forwarded port as in  
+`https://raspberrypi4.local:10443/`
 
-You can then access the Dashboard with IP or hostname as in `https://raspberrypi4.local:10443/`
+#### Option 2
+Make the dashboard service a `NodePort` service by changing `type: ClusterIP` to `type: NodePort`.
+```zsh
+KUBE_EDITOR=nano microk8s kubectl -n kube-system edit service kubernetes-dashboard
+# If using vim:
+# Enter insert mode with i
+# Enter command mode with esc 
+# :q! to abort changes 
+# :wq to save and exit
+
+microk8s kubectl -n kube-system get service kubernetes-dashboard
+```
+You can then access the Dashboard with IP or hostname and the automatically assigned `NodePort` as in  
+`https://raspberrypi4.local:30772`
 
 
 ### Troubleshooting
