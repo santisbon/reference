@@ -695,6 +695,26 @@
     MicroK8s dashboard
   </a>
   
+    <nav class="md-nav" aria-label="MicroK8s dashboard">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#option-1" class="md-nav__link">
+    Option 1
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#option-2" class="md-nav__link">
+    Option 2
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -1115,6 +1135,26 @@
   <a href="#microk8s-dashboard" class="md-nav__link">
     MicroK8s dashboard
   </a>
+  
+    <nav class="md-nav" aria-label="MicroK8s dashboard">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#option-1" class="md-nav__link">
+    Option 1
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#option-2" class="md-nav__link">
+    Option 2
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -1967,7 +2007,7 @@ pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>microk8s<span 
 pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span><span class="nb">alias</span><span class="w"> </span><span class="nv">mkctl</span><span class="o">=</span><span class="s2">&quot;microk8s kubectl&quot;</span>
 pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span><span class="nb">alias</span><span class="w"> </span><span class="nv">mkhelm</span><span class="o">=</span><span class="s2">&quot;microk8s helm&quot;</span>
 pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>mkctl<span class="w"> </span>create<span class="w"> </span>deployment<span class="w"> </span>nginx<span class="w"> </span>--image<span class="w"> </span>nginx
-pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>mkctl<span class="w"> </span>expose<span class="w"> </span>deployment<span class="w"> </span>nginx<span class="w"> </span>--port<span class="w"> </span><span class="m">80</span><span class="w"> </span>--target-port<span class="w"> </span><span class="m">80</span><span class="w"> </span>--selector<span class="w"> </span><span class="nv">app</span><span class="o">=</span>nginx<span class="w"> </span>--type<span class="w"> </span>ClustetIP<span class="w"> </span>--name<span class="w"> </span>nginx
+pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>mkctl<span class="w"> </span>expose<span class="w"> </span>deployment<span class="w"> </span>nginx<span class="w"> </span>--port<span class="w"> </span><span class="m">80</span><span class="w"> </span>--target-port<span class="w"> </span><span class="m">80</span><span class="w"> </span>--selector<span class="w"> </span><span class="nv">app</span><span class="o">=</span>nginx<span class="w"> </span>--type<span class="w"> </span>ClusterIP<span class="w"> </span>--name<span class="w"> </span>nginx
 pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>watch<span class="w"> </span>microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>all
 pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>microk8s<span class="w"> </span>reset
 pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>microk8s<span class="w"> </span>status
@@ -1989,10 +2029,27 @@ The containerd daemon used by MicroK8s is configured to trust this insecure regi
 </code></pre></div>
 Use this token in the https login UI of the <code>kubernetes-dashboard</code> service.
 In an RBAC enabled setup (<code>microk8s enable rbac</code>) you need to create a user with restricted permissions as shown <a href="https://github.com/kubernetes/dashboard/blob/master/docs/user/access-control/creating-sample-user.md">here</a>.</p>
-<p>To access remotely from anywhere with <a href="https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#port-forward"><code>port-forward</code></a>:
+<p>To access remotely from outside the cluster:</p>
+<h4 id="option-1">Option 1</h4>
+<p>With <a href="https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#port-forward"><code>port-forward</code></a>.<br />
+Note: <code>kubectl port-forward</code> <a href="https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/">does not return</a>. To type other commands, you'll need to open another terminal.
 <div class="highlight"><pre><span></span><code>microk8s<span class="w"> </span>kubectl<span class="w"> </span>port-forward<span class="w"> </span>-n<span class="w"> </span>kube-system<span class="w"> </span>service/kubernetes-dashboard<span class="w"> </span><span class="m">10443</span>:443<span class="w"> </span>--address<span class="w"> </span><span class="m">0</span>.0.0.0
-</code></pre></div></p>
-<p>You can then access the Dashboard with IP or hostname as in <code>https://raspberrypi4.local:10443/</code></p>
+</code></pre></div>
+You can then access the Dashboard with IP or hostname and the forwarded port as in<br />
+<code>https://raspberrypi4.local:10443/</code></p>
+<h4 id="option-2">Option 2</h4>
+<p>Make the dashboard service a <code>NodePort</code> service by changing <code>type: ClusterIP</code> to <code>type: NodePort</code>.
+<div class="highlight"><pre><span></span><code><span class="nv">KUBE_EDITOR</span><span class="o">=</span>nano<span class="w"> </span>microk8s<span class="w"> </span>kubectl<span class="w"> </span>-n<span class="w"> </span>kube-system<span class="w"> </span>edit<span class="w"> </span>service<span class="w"> </span>kubernetes-dashboard
+<span class="c1"># If using vim:</span>
+<span class="c1"># Enter insert mode with i</span>
+<span class="c1"># Enter command mode with esc </span>
+<span class="c1"># :q! to abort changes </span>
+<span class="c1"># :wq to save and exit</span>
+
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>-n<span class="w"> </span>kube-system<span class="w"> </span>get<span class="w"> </span>service<span class="w"> </span>kubernetes-dashboard
+</code></pre></div>
+You can then access the Dashboard with IP or hostname and the automatically assigned <code>NodePort</code> as in<br />
+<code>https://raspberrypi4.local:30772</code></p>
 <h3 id="troubleshooting">Troubleshooting</h3>
 <p><div class="highlight"><pre><span></span><code>microk8s<span class="w"> </span>inspect
 </code></pre></div>
