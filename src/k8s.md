@@ -1042,7 +1042,7 @@ Then install MicroK8s.
 pi@raspberrypi4:~ $ sudo snap install microk8s --classic
 pi@raspberrypi4:~ $ microk8s status --wait-ready
 pi@raspberrypi4:~ $ microk8s kubectl get all --all-namespaces
-pi@raspberrypi4:~ $ microk8s enable dns dashboard registry hostpath-storage # or any other addons
+pi@raspberrypi4:~ $ microk8s enable dns dashboard registry ingress # or any other addons
 pi@raspberrypi4:~ $ alias mkctl="microk8s kubectl"
 pi@raspberrypi4:~ $ alias mkhelm="microk8s helm"
 pi@raspberrypi4:~ $ mkctl create deployment nginx --image nginx
