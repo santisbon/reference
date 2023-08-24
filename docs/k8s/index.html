@@ -729,6 +729,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#helm" class="md-nav__link">
+    Helm
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1167,6 +1174,13 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#helm" class="md-nav__link">
+    Helm
+  </a>
   
 </li>
       
@@ -2054,6 +2068,21 @@ You can then access the Dashboard with IP or hostname and the automatically assi
 <p><div class="highlight"><pre><span></span><code>microk8s<span class="w"> </span>inspect
 </code></pre></div>
 MicroK8s might not recognize that cgroup memory is enabled but you can check with <code>cat /proc/cgroups</code>.</p>
+<h2 id="helm">Helm</h2>
+<p>You can package your charts and publish them on a repository, which can be any HTTP server. Use the name of the folder containing your <code>Chart.yaml</code> file.
+<div class="highlight"><pre><span></span><code>helm<span class="w"> </span>package<span class="w"> </span>./mychart
+</code></pre></div>
+Move the package to your HTTP server e.g. a GitHub Pages site based on a <code>charts</code> repo.
+<div class="highlight"><pre><span></span><code>mv<span class="w"> </span>*.tgz<span class="w"> </span>~/github/USER/charts
+helm<span class="w"> </span>repo<span class="w"> </span>index<span class="w"> </span>~/github/USER/charts
+<span class="c1"># [commit and push to GitHub]</span>
+</code></pre></div></p>
+<p>You can then list your charts repo on the <a href="https://www.cncf.io/projects/artifact-hub/">CNCF</a> <a href="https://artifacthub.io">Artifact Hub</a>. You can search for charts on the website or via the command line:
+<div class="highlight"><pre><span></span><code>helm<span class="w"> </span>search<span class="w"> </span>hub<span class="w"> </span><span class="o">[</span>KEYWORD<span class="o">]</span><span class="w"> </span>--list-repo-url<span class="w"> </span>--max-col-width<span class="w"> </span><span class="o">[</span>uint<span class="o">]</span><span class="w"> </span>-o<span class="w"> </span><span class="o">[</span>table<span class="p">|</span>json<span class="p">|</span>yaml<span class="o">]</span>
+</code></pre></div>
+For example, to search for any <code>speedtest</code> charts in the default <code>hub</code> (Artifact Hub):
+<div class="highlight"><pre><span></span><code>helm<span class="w"> </span>search<span class="w"> </span>hub<span class="w"> </span>speedtest<span class="w"> </span>--list-repo-url<span class="w"> </span>--max-col-width<span class="w"> </span><span class="m">55</span><span class="w"> </span>-o<span class="w"> </span>table
+</code></pre></div></p>
 
 
 

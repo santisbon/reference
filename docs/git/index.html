@@ -664,6 +664,10 @@ git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"
 <div class="highlight"><pre><span></span><code>git<span class="w"> </span>squash-all<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;a brand new start&quot;</span>
 git<span class="w"> </span>push<span class="w"> </span>-f
 </code></pre></div></p>
+<p><a href="https://docs.github.com/en/get-started/getting-started-with-git/managing-remote-repositories#changing-a-remote-repositorys-url">Change</a> a remote repo's URL
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>remote<span class="w"> </span>set-url<span class="w"> </span>origin<span class="w"> </span>git@github.com:OWNER/REPOSITORY.git
+</code></pre></div>
+Or edit <code>.git/config</code> and change the URLs there.</p>
 <h2 id="set-up-git-autocompletion-bash">Set up git autocompletion (bash)</h2>
 <div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>~
 curl<span class="w"> </span>-OL<span class="w"> </span>https://github.com/git/git/raw/master/contrib/completion/git-completion.bash

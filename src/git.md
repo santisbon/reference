@@ -60,6 +60,12 @@ git squash-all -m "a brand new start"
 git push -f
 ```
 
+[Change](https://docs.github.com/en/get-started/getting-started-with-git/managing-remote-repositories#changing-a-remote-repositorys-url) a remote repo's URL
+```zsh
+git remote set-url origin git@github.com:OWNER/REPOSITORY.git
+```
+Or edit `.git/config` and change the URLs there.
+
 ## Set up git autocompletion (bash)
 
 ```bash

@@ -1108,3 +1108,25 @@ You can then access the Dashboard with IP or hostname and the automatically assi
 microk8s inspect
 ```
 MicroK8s might not recognize that cgroup memory is enabled but you can check with `cat /proc/cgroups`.
+
+## Helm
+
+You can package your charts and publish them on a repository, which can be any HTTP server. Use the name of the folder containing your `Chart.yaml` file.
+```zsh
+helm package ./mychart
+```
+Move the package to your HTTP server e.g. a GitHub Pages site based on a `charts` repo.
+```zsh
+mv *.tgz ~/github/USER/charts
+helm repo index ~/github/USER/charts
+# [commit and push to GitHub]
+```
+
+You can then list your charts repo on the [CNCF](https://www.cncf.io/projects/artifact-hub/) [Artifact Hub](https://artifacthub.io). You can search for charts on the website or via the command line:
+```zsh
+helm search hub [KEYWORD] --list-repo-url --max-col-width [uint] -o [table|json|yaml]
+```
+For example, to search for any `speedtest` charts in the default `hub` (Artifact Hub):
+```zsh
+helm search hub speedtest --list-repo-url --max-col-width 55 -o table
+```
