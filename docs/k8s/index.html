@@ -736,6 +736,26 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#referencing-services" class="md-nav__link">
+    Referencing services
+  </a>
+  
+    <nav class="md-nav" aria-label="Referencing services">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#about-bitnami-charts" class="md-nav__link">
+    About Bitnami charts
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1181,6 +1201,26 @@
   <a href="#helm" class="md-nav__link">
     Helm
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referencing-services" class="md-nav__link">
+    Referencing services
+  </a>
+  
+    <nav class="md-nav" aria-label="Referencing services">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#about-bitnami-charts" class="md-nav__link">
+    About Bitnami charts
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -2083,6 +2123,22 @@ helm<span class="w"> </span>repo<span class="w"> </span>index<span class="w"> </
 For example, to search for any <code>speedtest</code> charts in the default <code>hub</code> (Artifact Hub):
 <div class="highlight"><pre><span></span><code>helm<span class="w"> </span>search<span class="w"> </span>hub<span class="w"> </span>speedtest<span class="w"> </span>--list-repo-url<span class="w"> </span>--max-col-width<span class="w"> </span><span class="m">55</span><span class="w"> </span>-o<span class="w"> </span>table
 </code></pre></div></p>
+<h2 id="referencing-services">Referencing services</h2>
+<p>"Normal" (not headless) Services are assigned DNS A and/or AAAA records, depending on the IP family or families of the Service, with a name of the form:<br />
+<code>my-svc.my-namespace.svc.cluster-domain.example</code>.<br />
+This resolves to the cluster IP of the Service.</p>
+<p>Headless Services (without a cluster IP) Services are also assigned DNS A and/or AAAA records, with a name of the form:<br />
+<code>my-svc.my-namespace.svc.cluster-domain.example</code>.<br />
+Unlike normal Services, this resolves to the set of IPs of all of the Pods selected by the Service.<br />
+Clients are expected to consume the set or else use standard round-robin selection from the set.  </p>
+<p>By default, a client Pod's DNS search list includes the Pod's own namespace and the cluster's default domain.<br />
+A pod in another namespace can resolve either:<br />
+<code>&lt;service-name&gt;.&lt;namespace&gt;</code> or<br />
+<code>&lt;service-name&gt;.&lt;namespace&gt;.svc.cluster.local</code></p>
+<h3 id="about-bitnami-charts">About Bitnami charts</h3>
+<p>They create a default fully qualified app name <code>common.names.fullname</code>. The RabbitMQ <code>Service</code> uses it as its name. They truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).<br />
+If the release name contains the chart name it will be used as a full name. By default it's<br />
+<code>&lt;Release Name&gt;-&lt;Chart Name&gt;</code>.</p>
 
 
 
