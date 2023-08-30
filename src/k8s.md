@@ -1130,3 +1130,26 @@ For example, to search for any `speedtest` charts in the default `hub` (Artifact
 ```zsh
 helm search hub speedtest --list-repo-url --max-col-width 55 -o table
 ```
+
+## Referencing services
+
+Bitnami charts create a default fully qualified app name "common.names.fullname".
+The RabbitMQ Service uses it as its name.
+They truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+If release name contains chart name it will be used as a full name.
+By default it's <Release Name>-<Chart Name>
+
+"Normal" (not headless) Services are assigned DNS A and/or AAAA records, depending on the IP family or families of the Service, 
+with a name of the form: 
+my-svc.my-namespace.svc.cluster-domain.example. 
+This resolves to the cluster IP of the Service.
+
+Headless Services (without a cluster IP) Services are also assigned DNS A and/or AAAA records, with a name of the form: 
+my-svc.my-namespace.svc.cluster-domain.example. 
+Unlike normal Services, this resolves to the set of IPs of all of the Pods selected by the Service. 
+Clients are expected to consume the set or else use standard round-robin selection from the set.
+
+By default, a client Pod's DNS search list includes the Pod's own namespace and the cluster's default domain.
+A pod in another namespace can resolve either: 
+<service-name>.<namespace> or 
+<service-name>.<namespace>.svc.cluster.local
