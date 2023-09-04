@@ -1024,9 +1024,9 @@ kubectl -n kubernetes-dashboard create token admin-user
 !!! attention 
     Your boot parameters might be in `/boot/cmdline.txt` instead of `/boot/firmware/cmdline.txt`. 
 
-Add these options at the end of the file, then `sudo reboot`.
+Add these options at the end of the file, then `sudo reboot`. Some users report needing `cgroup_enable=cpuset` as well but try adding only these first:
 ``` title="cmdline.txt"
-cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1
+cgroup_enable=memory cgroup_memory=1
 ```
 
 For Raspberry Pi OS [install](https://snapcraft.io/docs/installing-snap-on-raspbian) `snap` first.
