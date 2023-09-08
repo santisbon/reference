@@ -786,7 +786,7 @@
   
     <li class="md-nav__item">
       <a href="../rpi/" class="md-nav__link">
-        Raspberry Pi
+        Single-board Computers
       </a>
     </li>
   
@@ -1242,8 +1242,8 @@
   
 
 
-<h1 id="kubernetes">Kubernetes</h1>
-<h2 id="kubernetes-essentials">Kubernetes Essentials</h2>
+<h1 id="kubernetes">Kubernetes<a class="headerlink" href="#kubernetes" title="Permanent link">#</a></h1>
+<h2 id="kubernetes-essentials">Kubernetes Essentials<a class="headerlink" href="#kubernetes-essentials" title="Permanent link">#</a></h2>
 <p><a href="https://lucid.app/lucidchart/6d5625be-9ef9-411d-8bea-888de55db5cf/view?page=0_0#">Interactive Diagram</a><br />
 <a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/">Working with K8s objects</a><br />
 <a href="https://kubernetes.io/docs/concepts/cluster-administration/logging/#log-rotation">Log rotation</a>  </p>
@@ -1251,10 +1251,10 @@
 To avoid storing your Docker Hub password unencrypted in $HOME/.docker/config.json when you <code>docker login</code> to your account, use a <a href="https://docs.docker.com/engine/reference/commandline/login/#credentials-store">credentials store</a>. A helper program lets you interact with such a keychain or external store. </p>
 <p>If you're doing this on your laptop with <strong>Docker Desktop</strong>, it <strong>already provides a store</strong>.<br />
 <strong>Otherwise</strong>, <strong>use</strong> one of the stores supported by the <a href="https://docs.docker.com/engine/reference/commandline/login/#credential-helpers"><strong><code>docker-credential-helper</code></strong></a>. Now <code>docker login</code> on your terminal or on the Docker Desktop app.  </p>
-<h2 id="designing-applications-for-kubernetes">Designing Applications for Kubernetes</h2>
+<h2 id="designing-applications-for-kubernetes">Designing Applications for Kubernetes<a class="headerlink" href="#designing-applications-for-kubernetes" title="Permanent link">#</a></h2>
 <p>Implements the <a href="https://12factor.net/">12-Factor App Design Methodology</a> and based on a Cloud Guru course. It uses Ubuntu 20.04 Focal Fossa LTS and the Calico network plugin instead of Flannel. Example with 1 control plane node and 2 worker nodes.</p>
-<h3 id="prerequisites">Prerequisites</h3>
-<h4 id="building-a-kubernetes-cluster">Building a Kubernetes Cluster</h4>
+<h3 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">#</a></h3>
+<h4 id="building-a-kubernetes-cluster">Building a Kubernetes Cluster<a class="headerlink" href="#building-a-kubernetes-cluster" title="Permanent link">#</a></h4>
 <p><a href="https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1658326918182-Building%20a%20Kubernetes%20Cluster.pdf">Reference</a><br />
 <a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/">Installing kubeadm</a><br />
 <a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/">Creating a cluster with kubeadm</a>  </p>
@@ -1357,7 +1357,7 @@ sudo<span class="w"> </span>chown<span class="w"> </span><span class="k">$(</spa
 enter the READY state.
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>nodes
 </code></pre></div></p>
-<h4 id="installing-docker">Installing Docker</h4>
+<h4 id="installing-docker">Installing Docker<a class="headerlink" href="#installing-docker" title="Permanent link">#</a></h4>
 <p><a href="https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631214923454-1082%20-%20S01L03%20Installing%20Docker.pdf">Reference</a><br />
 <a href="https://docs.docker.com/engine/install/ubuntu/">Install Docker Engine on Ubuntu</a><br />
 <a href="https://docs.docker.com/engine/reference/commandline/login/#credentials-store">Docker credentials store</a> 
@@ -1389,20 +1389,20 @@ Log out of the server and log back in.<br />
 Test your setup:
 <div class="highlight"><pre><span></span><code>docker<span class="w"> </span>version
 </code></pre></div></p>
-<h3 id="i-codebase">I. Codebase</h3>
+<h3 id="i-codebase">I. Codebase<a class="headerlink" href="#i-codebase" title="Permanent link">#</a></h3>
 <p><strong>One codebase tracked in revision control, many deploys</strong>  </p>
 <p>Keep your codebase in a version control system like Git. There's a one-to-one relationship between the codebase and the app.<br />
 If there are multiple codebases it's not an app - it's a distributed system where each component is an app.<br />
 Factor shared code into libraries which can be included through the dependency manager.<br />
 A deploy is a running instance of the app.</p>
 <p>Your apps can be implemented as containers/pods, built and deployed independently of other apps.</p>
-<h3 id="ii-dependencies">II. Dependencies</h3>
+<h3 id="ii-dependencies">II. Dependencies<a class="headerlink" href="#ii-dependencies" title="Permanent link">#</a></h3>
 <p><strong>Explicitly declare and isolate dependencies</strong></p>
 <p>Don't rely on implicit existence of system-wide packages. Declare all dependencies, completely and exactly, via a dependency declaration manifest.
 With containers, your app and its dependencies are deployed as a unit, allowing it to run almost anywhere - a desktop, a traditional IT infrastructure, or the cloud.</p>
-<h3 id="iii-config">III. Config</h3>
+<h3 id="iii-config">III. Config<a class="headerlink" href="#iii-config" title="Permanent link">#</a></h3>
 <p><strong>Store config in the environment</strong></p>
-<h4 id="configmaps-and-secrets">ConfigMaps and Secrets</h4>
+<h4 id="configmaps-and-secrets">ConfigMaps and Secrets<a class="headerlink" href="#configmaps-and-secrets" title="Permanent link">#</a></h4>
 <p><a href="https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631214961641-1082%20-%20S02L03%20III.%20Config%20with%20ConfigMaps%20and%20Secrets.pdf">Reference</a>  </p>
 <p><a href="https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/">Encrypting Secret Data at Rest</a><br />
 <a href="https://kubernetes.io/docs/concepts/configuration/configmap/">ConfigMaps</a><br />
@@ -1487,13 +1487,13 @@ This passes configuration data in env variables but you could also do it in file
 <p>Clean up the test pod:
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>test-pod<span class="w"> </span>-n<span class="w"> </span>production<span class="w"> </span>--force
 </code></pre></div></p>
-<h3 id="iv-backing-services">IV. Backing services</h3>
+<h3 id="iv-backing-services">IV. Backing services<a class="headerlink" href="#iv-backing-services" title="Permanent link">#</a></h3>
 <p><strong>Treat backing services as attached resources</strong></p>
 <p>Makes no distinction between local and third party services. To the app, both are attached resources, accessed via a URL or other locator/credentials stored in the config. You should be able to swap out a local MySQL database with one managed by a third party (such as Amazon RDS) without any changes to the app’s code.</p>
 <p>By implementing attached resources as containers/pods you achieve loose coupling between those resources and the deploy they are attached to.</p>
-<h3 id="v-build-release-run">V. Build, release, run</h3>
+<h3 id="v-build-release-run">V. Build, release, run<a class="headerlink" href="#v-build-release-run" title="Permanent link">#</a></h3>
 <p><strong>Strictly separate build and run stages</strong></p>
-<h4 id="build-release-run-with-docker-and-deployments">Build, Release, Run with Docker and Deployments</h4>
+<h4 id="build-release-run-with-docker-and-deployments">Build, Release, Run with Docker and Deployments<a class="headerlink" href="#build-release-run-with-docker-and-deployments" title="Permanent link">#</a></h4>
 <p><a href="https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631215185856-1082%20-%20S03L02%20V.%20Build%2C%20Release%2C%20Run%20with%20Docker%20and%20Deployments.pdf">Reference</a><br />
 <a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/">Labels and Selectors</a><br />
 <a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/">Deployments</a>  </p>
@@ -1622,9 +1622,9 @@ docker<span class="w"> </span>push<span class="w"> </span>&lt;Your<span class="w
 <p>Get the list of Pods to see the new version rollout:
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>production
 </code></pre></div></p>
-<h3 id="vi-processes">VI. Processes</h3>
+<h3 id="vi-processes">VI. Processes<a class="headerlink" href="#vi-processes" title="Permanent link">#</a></h3>
 <p><strong>Execute the app as one or more stateless processes</strong></p>
-<h4 id="processes-with-stateless-containers">Processes with stateless containers</h4>
+<h4 id="processes-with-stateless-containers">Processes with stateless containers<a class="headerlink" href="#processes-with-stateless-containers" title="Permanent link">#</a></h4>
 <p><a href="https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1632153847308-1082%20-%20S03L03%20VI.%20Processes%20with%20Stateless%20Containers.pdf">Reference</a><br />
 <a href="https://kubernetes.io/docs/tasks/configure-pod-container/security-context/">Security Context</a>  </p>
 <p>Edit the app deployment <code>my-app.yml</code>. In the deployment Pod spec, add a new <code>emptyDir</code> volume under <code>volumes</code>:
@@ -1656,7 +1656,7 @@ docker<span class="w"> </span>push<span class="w"> </span>&lt;Your<span class="w
 <p>Deploy the changes:
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>my-app.yml<span class="w"> </span>-n<span class="w"> </span>production
 </code></pre></div></p>
-<h4 id="persistent-volumes">Persistent Volumes</h4>
+<h4 id="persistent-volumes">Persistent Volumes<a class="headerlink" href="#persistent-volumes" title="Permanent link">#</a></h4>
 <p><a href="https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1604349952306-devops-wb002%20-%20S10-L04%20Using%20K8s%20Persistent%20Volumes.pdf">Reference</a><br />
 <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/">Persistent Volumes (PV)</a><br />
 <a href="https://kubernetes.io/docs/concepts/storage/volumes/#local"><code>local</code> PV</a>  </p>
@@ -1760,9 +1760,9 @@ kubectl<span class="w"> </span>delete<span class="w"> </span>pvc<span class="w">
 <p>Check the status of the <code>PersistentVolume</code> to verify that it has been successfully recycled and is available again.
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pv
 </code></pre></div></p>
-<h3 id="vii-port-binding">VII. Port binding</h3>
+<h3 id="vii-port-binding">VII. Port binding<a class="headerlink" href="#vii-port-binding" title="Permanent link">#</a></h3>
 <p><strong>Export services via port binding</strong></p>
-<h4 id="port-binding-with-pods">Port Binding with Pods</h4>
+<h4 id="port-binding-with-pods">Port Binding with Pods<a class="headerlink" href="#port-binding-with-pods" title="Permanent link">#</a></h4>
 <p><a href="https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631215167150-1082%20-%20S03L04%20VII.%20Port%20Binding%20with%20Pods.pdf">Reference</a><br />
 <a href="https://kubernetes.io/docs/concepts/cluster-administration/networking/">Cluster Networking</a>  </p>
 <div class="admonition note">
@@ -1782,9 +1782,9 @@ kubectl<span class="w"> </span>delete<span class="w"> </span>pvc<span class="w">
 Example: Use the IP address to make a request to the port on the Pod that serves the frontend content:
 <div class="highlight"><pre><span></span><code>curl<span class="w"> </span>&lt;Pod<span class="w"> </span>Cluster<span class="w"> </span>IP<span class="w"> </span>address&gt;:5000
 </code></pre></div></p>
-<h3 id="viii-concurrency">VIII. Concurrency</h3>
+<h3 id="viii-concurrency">VIII. Concurrency<a class="headerlink" href="#viii-concurrency" title="Permanent link">#</a></h3>
 <p><strong>Scale out via the process model</strong></p>
-<h4 id="concurrency-with-containers-and-scaling">Concurrency with Containers and Scaling</h4>
+<h4 id="concurrency-with-containers-and-scaling">Concurrency with Containers and Scaling<a class="headerlink" href="#concurrency-with-containers-and-scaling" title="Permanent link">#</a></h4>
 <p><a href="https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631215269199-1082%20-%20S04L01%20VIII.%20Concurrency%20with%20Containers%20and%20Scaling.pdf">Reference</a><br />
 <a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/">Deployments</a>  </p>
 <p>By using <code>services</code> to manage access to the app, the service automaticaly picks up the additional pods created during scaling and route traffic to those pods.
@@ -1811,9 +1811,9 @@ Change the number of replicas to 5:
 <p>Get a list of Pods:
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>production
 </code></pre></div></p>
-<h3 id="ix-disposability">IX. Disposability</h3>
+<h3 id="ix-disposability">IX. Disposability<a class="headerlink" href="#ix-disposability" title="Permanent link">#</a></h3>
 <p><strong>Maximize robustness with fast startup and graceful shutdown</strong></p>
-<h4 id="disposability-with-stateless-containers">Disposability with Stateless Containers</h4>
+<h4 id="disposability-with-stateless-containers">Disposability with Stateless Containers<a class="headerlink" href="#disposability-with-stateless-containers" title="Permanent link">#</a></h4>
 <p><a href="https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631215259805-1082%20-%20S04L02%20IX.%20Disposability%20with%20Stateless%20Containers.pdf">Reference</a><br />
 <a href="https://kubernetes.io/docs/tasks/configure-pod-container/security-context/">Security Context</a><br />
 <a href="https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/">Pod Lifecycle</a>  </p>
@@ -1828,9 +1828,9 @@ Delete the Pod using the Pod name:
 <p>Get the list of Pods again. You will notice that the deployment is automatically creating a new Pod to replace the one that was deleted:
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>production
 </code></pre></div></p>
-<h3 id="x-devprod-parity">X. Dev/prod parity</h3>
+<h3 id="x-devprod-parity">X. Dev/prod parity<a class="headerlink" href="#x-devprod-parity" title="Permanent link">#</a></h3>
 <p><strong>Keep development, staging, and production as similar as possible</strong></p>
-<h4 id="devprod-parity-with-namespaces">Dev/Prod Parity with Namespaces</h4>
+<h4 id="devprod-parity-with-namespaces">Dev/Prod Parity with Namespaces<a class="headerlink" href="#devprod-parity-with-namespaces" title="Permanent link">#</a></h4>
 <p><a href="https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631215371092-1082%20-%20S05L01%20X.%20Dev%3AProd%20Parity%20with%20Namespaces.pdf">Reference</a><br />
 <a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/">Namespaces</a>  </p>
 <p>K8s namespaces allow us to have multiple environments in the same cluster. A namespace is like a virtual cluster.</p>
@@ -1887,9 +1887,9 @@ Check the status of the Pods:
 <p>Once all the Pods are up and running, you should be able to test the dev environment in a browser at<br />
 <div class="highlight"><pre><span></span><code>&lt;Control Plane Node Public IP&gt;:30082
 </code></pre></div></p>
-<h3 id="xi-logs">XI. Logs</h3>
+<h3 id="xi-logs">XI. Logs<a class="headerlink" href="#xi-logs" title="Permanent link">#</a></h3>
 <p><strong>Treat logs as event streams</strong></p>
-<h4 id="logs-with-k8s-container-logging">Logs with K8s Container Logging</h4>
+<h4 id="logs-with-k8s-container-logging">Logs with K8s Container Logging<a class="headerlink" href="#logs-with-k8s-container-logging" title="Permanent link">#</a></h4>
 <p><a href="https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631215382492-1082%20-%20S05L02%20XI.%20Logs%20with%20k8s%20Container%20Logging.pdf">Reference</a><br />
 <a href="https://kubernetes.io/docs/concepts/cluster-administration/logging/">Logging Architecture</a><br />
 <a href="https://kubernetes.io/docs/reference/kubectl/cheatsheet/#interacting-with-running-pods">Kubectl cheatsheet</a>  </p>
@@ -1918,9 +1918,9 @@ Check the status of the Pods:
 <p>Copy the name of one of the my-app deployment Pods and view its logs specifying the pod, namespace, and container.
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>logs<span class="w"> </span>&lt;Pod<span class="w"> </span>name&gt;<span class="w"> </span>-n<span class="w"> </span>production<span class="w"> </span>-c<span class="w"> </span>my-app-server
 </code></pre></div></p>
-<h3 id="xii-admin-processes">XII. Admin processes</h3>
+<h3 id="xii-admin-processes">XII. Admin processes<a class="headerlink" href="#xii-admin-processes" title="Permanent link">#</a></h3>
 <p><strong>Run admin/management tasks as one-off processes</strong></p>
-<h4 id="admin-processes-with-jobs">Admin Processes with Jobs</h4>
+<h4 id="admin-processes-with-jobs">Admin Processes with Jobs<a class="headerlink" href="#admin-processes-with-jobs" title="Permanent link">#</a></h4>
 <p><a href="https://acloudguru-content-attachment-production.s3-accelerate.amazonaws.com/1631215407613-1082%20-%20S05L03%20XII.%20Admin%20Processes%20with%20Jobs.pdf">Reference</a><br />
 <a href="https://kubernetes.io/docs/concepts/workloads/controllers/job/">Jobs</a>  </p>
 <p>A <code>Job</code> e.g. a database migration runs a container until its execution completes. Jobs handle re-trying execution if it fails.<br />
@@ -2002,7 +2002,7 @@ Get the name of the Job Pod:
 <p>Use the Pod name to view the logs for the Job Pod:
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>logs<span class="w"> </span>&lt;Pod<span class="w"> </span>name&gt;<span class="w"> </span>-n<span class="w"> </span>production
 </code></pre></div></p>
-<h2 id="kubernetes-dashboard"><a href="https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/">Kubernetes Dashboard</a></h2>
+<h2 id="kubernetes-dashboard"><a href="https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/">Kubernetes Dashboard</a><a class="headerlink" href="#kubernetes-dashboard" title="Permanent link">#</a></h2>
 <p><div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://raw.githubusercontent.com/kubernetes/dashboard/v2.6.1/aio/deploy/recommended.yaml
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>cat<span class="w"> </span><span class="s">&lt;&lt; EOF &gt; dashboard-adminuser.yaml</span>
@@ -2037,7 +2037,7 @@ kubectl<span class="w"> </span>proxy
 kubectl<span class="w"> </span>-n<span class="w"> </span>kubernetes-dashboard<span class="w"> </span>create<span class="w"> </span>token<span class="w"> </span>admin-user
 <span class="c1"># Now copy the token and paste it into the Enter token field on the login screen. </span>
 </code></pre></div>
-<h2 id="microk8s">MicroK8s</h2>
+<h2 id="microk8s">MicroK8s<a class="headerlink" href="#microk8s" title="Permanent link">#</a></h2>
 <p><a href="https://microk8s.io/docs/install-raspberry-pi">On Raspberry Pi</a>  </p>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
@@ -2076,26 +2076,26 @@ pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>microk8s<span 
 <p>Configuration file. These are the arguments you can add regarding log rotation <code>--container-log-max-files</code> and <code>--container-log-max-size</code>. They have default values. <a href="https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/">More info</a>.
 <div class="highlight"><pre><span></span><code>cat<span class="w"> </span>/var/snap/microk8s/current/args/kubelet
 </code></pre></div></p>
-<h3 id="registry">Registry</h3>
+<h3 id="registry">Registry<a class="headerlink" href="#registry" title="Permanent link">#</a></h3>
 <p><a href="https://microk8s.io/docs/registry-built-in">Registry doc</a>
 <div class="highlight"><pre><span></span><code>microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>registry
 </code></pre></div>
 The containerd daemon used by MicroK8s is configured to trust this insecure registry. To upload images we have to tag them with <code>localhost:32000/your-image</code> before pushing them.</p>
-<h3 id="microk8s-dashboard">MicroK8s dashboard</h3>
+<h3 id="microk8s-dashboard">MicroK8s dashboard<a class="headerlink" href="#microk8s-dashboard" title="Permanent link">#</a></h3>
 <p>If RBAC is not enabled access the dashboard using the token retrieved with:
 <div class="highlight"><pre><span></span><code>microk8s<span class="w"> </span>kubectl<span class="w"> </span>describe<span class="w"> </span>secret<span class="w"> </span>-n<span class="w"> </span>kube-system<span class="w"> </span>microk8s-dashboard-token
 </code></pre></div>
 Use this token in the https login UI of the <code>kubernetes-dashboard</code> service.
 In an RBAC enabled setup (<code>microk8s enable rbac</code>) you need to create a user with restricted permissions as shown <a href="https://github.com/kubernetes/dashboard/blob/master/docs/user/access-control/creating-sample-user.md">here</a>.</p>
 <p>To access remotely from outside the cluster:</p>
-<h4 id="option-1">Option 1</h4>
+<h4 id="option-1">Option 1<a class="headerlink" href="#option-1" title="Permanent link">#</a></h4>
 <p>With <a href="https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#port-forward"><code>port-forward</code></a>.<br />
 Note: <code>kubectl port-forward</code> <a href="https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/">does not return</a>. To type other commands, you'll need to open another terminal.
 <div class="highlight"><pre><span></span><code>microk8s<span class="w"> </span>kubectl<span class="w"> </span>port-forward<span class="w"> </span>-n<span class="w"> </span>kube-system<span class="w"> </span>service/kubernetes-dashboard<span class="w"> </span><span class="m">10443</span>:443<span class="w"> </span>--address<span class="w"> </span><span class="m">0</span>.0.0.0
 </code></pre></div>
 You can then access the Dashboard with IP or hostname and the forwarded port as in<br />
 <code>https://raspberrypi4.local:10443/</code></p>
-<h4 id="option-2">Option 2</h4>
+<h4 id="option-2">Option 2<a class="headerlink" href="#option-2" title="Permanent link">#</a></h4>
 <p>Make the dashboard service a <code>NodePort</code> service by changing <code>type: ClusterIP</code> to <code>type: NodePort</code>.
 <div class="highlight"><pre><span></span><code><span class="nv">KUBE_EDITOR</span><span class="o">=</span>nano<span class="w"> </span>microk8s<span class="w"> </span>kubectl<span class="w"> </span>-n<span class="w"> </span>kube-system<span class="w"> </span>edit<span class="w"> </span>service<span class="w"> </span>kubernetes-dashboard
 <span class="c1"># If using vim:</span>
@@ -2108,11 +2108,11 @@ microk8s<span class="w"> </span>kubectl<span class="w"> </span>-n<span class="w"
 </code></pre></div>
 You can then access the Dashboard with IP or hostname and the automatically assigned <code>NodePort</code> as in<br />
 <code>https://raspberrypi4.local:30772</code></p>
-<h3 id="troubleshooting">Troubleshooting</h3>
+<h3 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">#</a></h3>
 <p><div class="highlight"><pre><span></span><code>microk8s<span class="w"> </span>inspect
 </code></pre></div>
 MicroK8s might not recognize that cgroup memory is enabled but you can check with <code>cat /proc/cgroups</code>.</p>
-<h2 id="helm">Helm</h2>
+<h2 id="helm">Helm<a class="headerlink" href="#helm" title="Permanent link">#</a></h2>
 <p>You can package your charts and publish them on a repository, which can be any HTTP server. Use the name of the folder containing your <code>Chart.yaml</code> file.
 <div class="highlight"><pre><span></span><code>helm<span class="w"> </span>package<span class="w"> </span>./mychart
 </code></pre></div>
@@ -2127,7 +2127,7 @@ helm<span class="w"> </span>repo<span class="w"> </span>index<span class="w"> </
 For example, to search for any <code>speedtest</code> charts in the default <code>hub</code> (Artifact Hub):
 <div class="highlight"><pre><span></span><code>helm<span class="w"> </span>search<span class="w"> </span>hub<span class="w"> </span>speedtest<span class="w"> </span>--list-repo-url<span class="w"> </span>--max-col-width<span class="w"> </span><span class="m">55</span><span class="w"> </span>-o<span class="w"> </span>table
 </code></pre></div></p>
-<h2 id="referencing-services">Referencing services</h2>
+<h2 id="referencing-services">Referencing services<a class="headerlink" href="#referencing-services" title="Permanent link">#</a></h2>
 <p>"Normal" (not headless) Services are assigned DNS A and/or AAAA records, depending on the IP family or families of the Service, with a name of the form:<br />
 <code>my-svc.my-namespace.svc.cluster-domain.example</code>.<br />
 This resolves to the cluster IP of the Service.</p>
@@ -2139,7 +2139,7 @@ Clients are expected to consume the set or else use standard round-robin selecti
 A pod in another namespace can resolve either:<br />
 <code>&lt;service-name&gt;.&lt;namespace&gt;</code> or<br />
 <code>&lt;service-name&gt;.&lt;namespace&gt;.svc.cluster.local</code></p>
-<h3 id="about-bitnami-charts">About Bitnami charts</h3>
+<h3 id="about-bitnami-charts">About Bitnami charts<a class="headerlink" href="#about-bitnami-charts" title="Permanent link">#</a></h3>
 <p>They create a default fully qualified app name <code>common.names.fullname</code>. The RabbitMQ <code>Service</code> uses it as its name. They truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).<br />
 If the release name contains the chart name it will be used as a full name. By default it's<br />
 <code>&lt;Release Name&gt;-&lt;Chart Name&gt;</code>.</p>

@@ -497,7 +497,7 @@
   
     <li class="md-nav__item">
       <a href="../rpi/" class="md-nav__link">
-        Raspberry Pi
+        Single-board Computers
       </a>
     </li>
   
@@ -664,10 +664,10 @@
   
 
 
-<h1 id="python">Python</h1>
+<h1 id="python">Python<a class="headerlink" href="#python" title="Permanent link">#</a></h1>
 <p><a href="https://packaging.python.org/en/latest/tutorials/packaging-projects/">Packaging Python Projects</a>  </p>
-<h2 id="install-python-the-pip-python-package-installer-and-setuptools">Install Python, the pip Python package installer, and Setuptools</h2>
-<h3 id="with-homebrew">With Homebrew</h3>
+<h2 id="install-python-the-pip-python-package-installer-and-setuptools">Install Python, the pip Python package installer, and Setuptools<a class="headerlink" href="#install-python-the-pip-python-package-installer-and-setuptools" title="Permanent link">#</a></h2>
+<h3 id="with-homebrew">With Homebrew<a class="headerlink" href="#with-homebrew" title="Permanent link">#</a></h3>
 <p>Even if you already have Python on your OS it might be an outdated version. This installs python and pip.<br />
 macOS
 <div class="highlight"><pre><span></span><code>brew<span class="w"> </span>install<span class="w"> </span>python
@@ -684,7 +684,7 @@ See <a href="https://docs.brew.sh/Homebrew-and-Python">Homebrew Python</a> for d
 <p><code>site-packages</code> is here. Example for python 3.10 on Homebrew
 <div class="highlight"><pre><span></span><code>ls<span class="w"> </span>-al<span class="w"> </span><span class="k">$(</span>brew<span class="w"> </span>--prefix<span class="k">)</span>/lib/python3.10/site-packages
 </code></pre></div></p>
-<h3 id="without-homebrew">Without Homebrew</h3>
+<h3 id="without-homebrew">Without Homebrew<a class="headerlink" href="#without-homebrew" title="Permanent link">#</a></h3>
 <p>Linux (Ubuntu)
 <div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>python3
 </code></pre></div></p>
@@ -705,11 +705,11 @@ sudo<span class="w"> </span>python<span class="w"> </span>get-pip.py
 <span class="c1"># change &quot;from pip import main&quot; to &quot;from pip._internal import main&quot;</span>
 </code></pre></div></p>
 </div>
-<h2 id="get-the-pep8-python-style-checker">Get the pep8 python style checker</h2>
+<h2 id="get-the-pep8-python-style-checker">Get the pep8 python style checker<a class="headerlink" href="#get-the-pep8-python-style-checker" title="Permanent link">#</a></h2>
 <div class="highlight"><pre><span></span><code><span class="c1"># On Linux you may need to use sudo.</span>
 pip<span class="w"> </span>install<span class="w"> </span>pep8
 </code></pre></div>
-<h2 id="anaconda">Anaconda</h2>
+<h2 id="anaconda">Anaconda<a class="headerlink" href="#anaconda" title="Permanent link">#</a></h2>
 <p>For data science and machine learning. <a href="https://docs.anaconda.com/anaconda/">Anaconda</a> is a distribution of the Python and R programming languages for scientific computing. See <a href="https://conda.io/projects/conda/en/latest/user-guide/getting-started.html">Getting Started</a>.
 <div class="highlight"><pre><span></span><code>brew<span class="w"> </span>install<span class="w"> </span>--cask<span class="w"> </span>anaconda
 </code></pre></div></p>
@@ -737,7 +737,7 @@ conda<span class="w"> </span>activate<span class="w"> </span>myenv
 conda<span class="w"> </span>env<span class="w"> </span>list
 conda<span class="w"> </span>env<span class="w"> </span>remove<span class="w"> </span>--name<span class="w"> </span>ldm
 </code></pre></div></p>
-<h3 id="notebooks">Notebooks</h3>
+<h3 id="notebooks">Notebooks<a class="headerlink" href="#notebooks" title="Permanent link">#</a></h3>
 <p>Fresh installs of Anaconda no longer include notebook extensions in their Jupyter installer. This means that the <code>nb_conda</code> libraries need to be added into your environment separately to access conda environments from your Jupyter notebook. Just run these to add them and you should be able to select your environment as a kernel within a Jupyter notebook.
 <div class="highlight"><pre><span></span><code>conda<span class="w"> </span>activate<span class="w"> </span>&lt;myenv&gt;
 conda<span class="w"> </span>install<span class="w"> </span>ipykernel

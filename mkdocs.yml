@@ -13,14 +13,21 @@ nav:
     - Docker: 'docker.md'
     - Kubernetes: 'k8s.md'
     - Python: 'python.md'
-    - Raspberry Pi: 'rpi.md'
+    - Single-board Computers: 'rpi.md'
     - AWS: 'aws.md'
     - MySQL: 'mysql.md'
     - Node: 'node.md'
     - MkDocs: 'mkdocs.md'
 markdown_extensions:
   - toc:
-    permalink: "#"
+      permalink: "#"
+  - mdx_math
+  - admonition
+  - sane_lists
+  - pymdownx.highlight:
+      auto_title: false
+  - pymdownx.superfences
+  - pymdownx.keys
 theme:
   name: material
   features:
@@ -43,14 +50,6 @@ theme:
         name: Switch to light mode
 extra_javascript: 
   - https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML
-markdown_extensions:
-  - mdx_math
-  - admonition
-  - sane_lists
-  - pymdownx.highlight:
-      auto_title: false
-  - pymdownx.superfences
-  - pymdownx.keys
 docs_dir: src
 edit_uri: edit/main/src/
 site_dir: docs

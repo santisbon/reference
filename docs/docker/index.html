@@ -497,7 +497,7 @@
   
     <li class="md-nav__item">
       <a href="../rpi/" class="md-nav__link">
-        Raspberry Pi
+        Single-board Computers
       </a>
     </li>
   
@@ -664,16 +664,16 @@
   
 
 
-<h1 id="docker">Docker</h1>
-<h2 id="install">Install</h2>
-<h3 id="macos">macOS</h3>
+<h1 id="docker">Docker<a class="headerlink" href="#docker" title="Permanent link">#</a></h1>
+<h2 id="install">Install<a class="headerlink" href="#install" title="Permanent link">#</a></h2>
+<h3 id="macos">macOS<a class="headerlink" href="#macos" title="Permanent link">#</a></h3>
 <div class="highlight"><pre><span></span><code>brew<span class="w"> </span>install<span class="w"> </span>--cask<span class="w"> </span>docker
 </code></pre></div>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
 <p>You must use the --cask version. Otherwise only the client is included and can't run the Docker daemon. Then open the Docker app and grant privileged access when asked. Only then will you be able to use <code>docker</code>.</p>
 </div>
-<h3 id="linux-raspberry-pi-os">Linux / Raspberry Pi OS:</h3>
+<h3 id="linux-raspberry-pi-os">Linux / Raspberry Pi OS:<a class="headerlink" href="#linux-raspberry-pi-os" title="Permanent link">#</a></h3>
 <p>If you just ran <code>apt upgrade</code> on your Raspberry Pi, reboot before installing Docker.<br />
 Follow the appropriate <a href="https://docs.docker.com/engine/install/debian/#install-using-the-convenience-script">installation method</a>.  </p>
 <p>If you don't want to have to prefix commands with <code>sudo</code> add your user to the <code>docker</code> group. This is equivalent to giving that user root privileges.
@@ -681,8 +681,8 @@ Follow the appropriate <a href="https://docs.docker.com/engine/install/debian/#i
 sudo<span class="w"> </span>usermod<span class="w"> </span>-aG<span class="w"> </span>docker<span class="w"> </span><span class="nv">$USER</span>
 </code></pre></div></p>
 <p>Follow <a href="https://docs.docker.com/engine/install/linux-postinstall/">Post-installation steps</a> to configure log rotation.  </p>
-<h2 id="use">Use</h2>
-<h3 id="architecture">Architecture</h3>
+<h2 id="use">Use<a class="headerlink" href="#use" title="Permanent link">#</a></h2>
+<h3 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link">#</a></h3>
 <p><a href="https://github.com/docker-library/official-images#architectures-other-than-amd64">Supported Architectures</a><br />
 <a href="https://github.com/containerd/containerd/blob/v1.4.3/platforms/platforms.go#L63">Platform specifiers</a>  </p>
 <table>
@@ -748,7 +748,7 @@ docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </s
 <span class="c1"># On a Mac M2 you can also use this image</span>
 docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>--name<span class="w"> </span>mycontainer<span class="w"> </span>arm64v8/debian<span class="w"> </span>bash<span class="w"> </span><span class="c1"># NO warning. uname -m -&gt; aarch64 (arm64). Mac native.</span>
 </code></pre></div>
-<h3 id="examples">Examples</h3>
+<h3 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">#</a></h3>
 <p>Dockerfile instruction to keep a container running
 <div class="highlight"><pre><span></span><code>CMD<span class="w"> </span>tail<span class="w"> </span>-f<span class="w"> </span>/dev/null
 </code></pre></div></p>

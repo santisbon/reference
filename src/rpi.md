@@ -1,11 +1,57 @@
-# Raspberry Pi
+# Single-board Computers (SBC)
+
 ## Setup
 
-1. Write and preconfigure Raspberry Pi OS on the SD card using Raspberry Pi Imager (`brew install --cask raspberry-pi-imager`). Make sure you use the correct version of the OS (32-bit or 64-bit).  
+0. If you're not using an imager program that does it for you, download the operating system image from the vendor website and verify its integrity. For example, for an Orange Pi Debian image:
+    ```sh
+    7zz x Orangepi3b_1.0.0_debian_bookworm_server_linux5.10.160.7z
+    shasum -c Orangepi3b_1.0.0_debian_bookworm_server_linux5.10.160.img.sha
+    ```
+1. Write and preconfigure the OS on the SD card.  
+    You can use Raspberry Pi Imager (`brew install --cask raspberry-pi-imager`). Make sure you use the correct version of the OS (32-bit or 64-bit).  
     1.1. Change the default password for the `pi` user.  
-    1.2. Enable SSH (password or ssh keys).  
+    1.2. Enable SSH (password or ssh keys); remove password authentication if using keys.  
     1.3. Configure WiFi if needed.  
     1.4. Take note of the hostname.  
+
+    Alternatively, you can do it manually:
+    ```sh title="on your laptop"
+    # Find the SD card device e.g. /dev/disk3
+    diskutil list
+    # df -h
+
+    # Unmount the card
+    diskutil unmountDisk /dev/MY_CARD_DEVICE 
+
+    # You can use `pv` to monitor data's progress through a pipe
+    pv ~/Downloads/Orangepi3b_1.0.0_debian_bookworm_server_linux5.10.160.img | sudo dd bs=1m of=/dev/MY_CARD_DEVICE
+    # or
+    dd if=Orangepi3b_1.0.0_debian_bookworm_server_linux5.10.160.img of=/dev/MY_CARD_DEVICE bs=1m conv=sync status=progress
+    # when it's done you'll see a `boot` volume mounted on your desktop
+
+    # enable ssh
+    touch /Volumes/boot/ssh
+
+    #enable Wi-Fi
+    COUNTRY=US
+    WIFI_NAME=myssid
+    WIFI_PASSWORD=mypassword
+
+    cat << EOF > /Volumes/boot/wpa_supplicant.conf
+    ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+    update_config=1
+    country=${COUNTRY}
+    network={
+    ssid=${WIFI_NAME}
+    psk=${WIFI_PASSWORD}
+    }
+    EOF
+
+    diskutil unmountDisk /dev/MY_CARD_DEVICE 
+    # remove SD card from laptop and insert into SBC
+    ```
+
+
 2. Insert the SD card in your Raspberry Pi and turn it on. 
 
 If you're reinstalling Raspberry Pi OS you might need to remove keys belonging to the hostname from your `known_hosts` file.
@@ -178,5 +224,4 @@ I've added some sample code from the [MagPi Essentials book](https://magpi.raspb
 ### GPIO Header
 
 ![GPIO](https://i.imgur.com/3Zroadt.jpg)
-
 

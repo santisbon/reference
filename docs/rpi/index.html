@@ -21,7 +21,7 @@
     
     
       
-        <title>Raspberry Pi - Notes</title>
+        <title>Single-board Computers - Notes</title>
       
     
     
@@ -73,7 +73,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#raspberry-pi" class="md-skip">
+        <a href="#single-board-computers-sbc" class="md-skip">
           Skip to content
         </a>
       
@@ -108,7 +108,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Raspberry Pi
+              Single-board Computers
             
           </span>
         </div>
@@ -418,12 +418,12 @@
       
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
-          Raspberry Pi
+          Single-board Computers
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
-        Raspberry Pi
+        Single-board Computers
       </a>
       
         
@@ -720,15 +720,59 @@
   
 
 
-<h1 id="raspberry-pi">Raspberry Pi</h1>
-<h2 id="setup">Setup</h2>
-<ol>
-<li>Write and preconfigure Raspberry Pi OS on the SD card using Raspberry Pi Imager (<code>brew install --cask raspberry-pi-imager</code>). Make sure you use the correct version of the OS (32-bit or 64-bit).<br />
+<h1 id="single-board-computers-sbc">Single-board Computers (SBC)<a class="headerlink" href="#single-board-computers-sbc" title="Permanent link">#</a></h1>
+<h2 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link">#</a></h2>
+<ol start="0">
+<li>If you're not using an imager program that does it for you, download the operating system image from the vendor website and verify its integrity. For example, for an Orange Pi Debian image:
+    <div class="highlight"><pre><span></span><code>7zz<span class="w"> </span>x<span class="w"> </span>Orangepi3b_1.0.0_debian_bookworm_server_linux5.10.160.7z
+shasum<span class="w"> </span>-c<span class="w"> </span>Orangepi3b_1.0.0_debian_bookworm_server_linux5.10.160.img.sha
+</code></pre></div></li>
+<li>
+<p>Write and preconfigure the OS on the SD card.<br />
+    You can use Raspberry Pi Imager (<code>brew install --cask raspberry-pi-imager</code>). Make sure you use the correct version of the OS (32-bit or 64-bit).<br />
     1.1. Change the default password for the <code>pi</code> user.<br />
-    1.2. Enable SSH (password or ssh keys).<br />
+    1.2. Enable SSH (password or ssh keys); remove password authentication if using keys.<br />
     1.3. Configure WiFi if needed.<br />
-    1.4. Take note of the hostname.  </li>
-<li>Insert the SD card in your Raspberry Pi and turn it on. </li>
+    1.4. Take note of the hostname.  </p>
+<p>Alternatively, you can do it manually:
+<div class="highlight"><span class="filename">on your laptop</span><pre><span></span><code><span class="c1"># Find the SD card device e.g. /dev/disk3</span>
+diskutil<span class="w"> </span>list
+<span class="c1"># df -h</span>
+
+<span class="c1"># Unmount the card</span>
+diskutil<span class="w"> </span>unmountDisk<span class="w"> </span>/dev/MY_CARD_DEVICE<span class="w"> </span>
+
+<span class="c1"># You can use `pv` to monitor data&#39;s progress through a pipe</span>
+pv<span class="w"> </span>~/Downloads/Orangepi3b_1.0.0_debian_bookworm_server_linux5.10.160.img<span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>dd<span class="w"> </span><span class="nv">bs</span><span class="o">=</span>1m<span class="w"> </span><span class="nv">of</span><span class="o">=</span>/dev/MY_CARD_DEVICE
+<span class="c1"># or</span>
+dd<span class="w"> </span><span class="k">if</span><span class="o">=</span>Orangepi3b_1.0.0_debian_bookworm_server_linux5.10.160.img<span class="w"> </span><span class="nv">of</span><span class="o">=</span>/dev/MY_CARD_DEVICE<span class="w"> </span><span class="nv">bs</span><span class="o">=</span>1m<span class="w"> </span><span class="nv">conv</span><span class="o">=</span>sync<span class="w"> </span><span class="nv">status</span><span class="o">=</span>progress
+<span class="c1"># when it&#39;s done you&#39;ll see a `boot` volume mounted on your desktop</span>
+
+<span class="c1"># enable ssh</span>
+touch<span class="w"> </span>/Volumes/boot/ssh
+
+<span class="c1">#enable Wi-Fi</span>
+<span class="nv">COUNTRY</span><span class="o">=</span>US
+<span class="nv">WIFI_NAME</span><span class="o">=</span>myssid
+<span class="nv">WIFI_PASSWORD</span><span class="o">=</span>mypassword
+
+cat<span class="w"> </span><span class="s">&lt;&lt; EOF &gt; /Volumes/boot/wpa_supplicant.conf</span>
+<span class="s">ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev</span>
+<span class="s">update_config=1</span>
+<span class="s">country=${COUNTRY}</span>
+<span class="s">network={</span>
+<span class="s">ssid=${WIFI_NAME}</span>
+<span class="s">psk=${WIFI_PASSWORD}</span>
+<span class="s">}</span>
+<span class="s">EOF</span>
+
+diskutil<span class="w"> </span>unmountDisk<span class="w"> </span>/dev/MY_CARD_DEVICE<span class="w"> </span>
+<span class="c1"># remove SD card from laptop and insert into SBC</span>
+</code></pre></div></p>
+</li>
+<li>
+<p>Insert the SD card in your Raspberry Pi and turn it on. </p>
+</li>
 </ol>
 <p>If you're reinstalling Raspberry Pi OS you might need to remove keys belonging to the hostname from your <code>known_hosts</code> file.
 <div class="highlight"><span class="filename">on your laptop</span><pre><span></span><code>ssh-keygen<span class="w">  </span>-f<span class="w"> </span>~/.ssh/known_hosts<span class="w"> </span>-R<span class="w"> </span>raspberrypi4.local
@@ -746,7 +790,7 @@ Test the validity of the config file and restart the service (or reboot).
 sudo<span class="w"> </span>service<span class="w"> </span>sshd<span class="w"> </span>restart
 sudo<span class="w"> </span>service<span class="w"> </span>sshd<span class="w"> </span>status
 </code></pre></div></p>
-<h2 id="configuration">Configuration</h2>
+<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">#</a></h2>
 <p>Find the IP of your Raspberry Pi using its hostname or find all devices on your network with <code>arp -a</code>.
 <div class="highlight"><pre><span></span><code>arp<span class="w"> </span>raspberrypi4.local<span class="w"> </span>
 </code></pre></div>
@@ -768,7 +812,7 @@ ssh<span class="w"> </span>pi@raspberrypi4.local
 <div class="highlight"><pre><span></span><code>pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>update<span class="w"> </span><span class="c1"># updates the package list</span>
 pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>full-upgrade
 </code></pre></div>
-<h3 id="to-give-it-a-static-ip">To give it a static IP</h3>
+<h3 id="to-give-it-a-static-ip">To give it a static IP<a class="headerlink" href="#to-give-it-a-static-ip" title="Permanent link">#</a></h3>
 <p>Find the IP adddress of your router. It's the address that appears after <code>default via</code>.
 <div class="highlight"><pre><span></span><code>pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>ip<span class="w"> </span>r
 default<span class="w"> </span>via<span class="w"> </span><span class="o">[</span>IP<span class="o">]</span>
@@ -788,12 +832,12 @@ static domain_name_servers=[DNS IP]
 <code>inform</code> means that the Raspberry Pi will attempt to get the IP address you requested, but if it's not available, it will choose another. If you use <code>static</code>, it will have no IP v4 address at all if the requested one is in use.  </p>
 <p>Save the file and <code>sudo reboot</code>. From now on, upon each boot, the Pi will attempt to obtain the static ip address you requested.  </p>
 <p>You could also set your router to manually assign the static IP to the Raspberry Pi under its DHCP settings e.g. LAN, DHCP server.</p>
-<h2 id="to-set-it-up-as-a-dns-server">To set it up as a DNS server</h2>
+<h2 id="to-set-it-up-as-a-dns-server">To set it up as a DNS server<a class="headerlink" href="#to-set-it-up-as-a-dns-server" title="Permanent link">#</a></h2>
 <ol>
 <li>Install and configure a DNS Server e.g. DNSmasq or Pi-Hole on the Raspberry Pi.</li>
 <li>Change your router’s DNS settings to point to the Raspberry Pi. Log in to your router's admin interface and look for DNS e.g. in LAN, DHCP Server. Set the primary DNS server to the IP of your Raspberry Pi and make sure it's the only DNS server. The Raspberry Pi will handle upstream DNS services.</li>
 </ol>
-<h2 id="remote-gui-access">Remote GUI access</h2>
+<h2 id="remote-gui-access">Remote GUI access<a class="headerlink" href="#remote-gui-access" title="Permanent link">#</a></h2>
 <p>Now you'll need a VNC viewer on your laptop to connect to the Raspberry Pi using the graphical interface.
 <div class="highlight"><pre><span></span><code>brew<span class="w"> </span>install<span class="w"> </span>--cask<span class="w"> </span>vnc-viewer
 </code></pre></div></p>
@@ -808,11 +852,11 @@ pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>sudo<span clas
 <div class="highlight"><pre><span></span><code>pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>python3<span class="w"> </span>-m<span class="w"> </span>pygame.examples.aliens
 </code></pre></div></p>
 </div>
-<h2 id="copy-files">Copy files</h2>
+<h2 id="copy-files">Copy files<a class="headerlink" href="#copy-files" title="Permanent link">#</a></h2>
 <p>Copy files between Pi and local machine. On local machine run:
 <div class="highlight"><pre><span></span><code>scp<span class="w"> </span>-r<span class="w"> </span>pi@raspberrypi2.local:/home/pi/Documents/<span class="w"> </span>~/Documents/pidocs
 </code></pre></div></p>
-<h2 id="find-info-about-your-pi">Find info about your Pi</h2>
+<h2 id="find-info-about-your-pi">Find info about your Pi<a class="headerlink" href="#find-info-about-your-pi" title="Permanent link">#</a></h2>
 <p>What model do you have?
 <div class="highlight"><pre><span></span><code>cat<span class="w"> </span>/sys/firmware/devicetree/base/model<span class="w"> </span><span class="p">;</span><span class="nb">echo</span>
 </code></pre></div></p>
@@ -838,7 +882,7 @@ Or check the architecture with:
 <p>You can find info about the hardware like ports, pins, RAM, SoC, connectivity, etc. with:
 <div class="highlight"><pre><span></span><code>pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>pinout
 </code></pre></div></p>
-<h2 id="troubleshooting">Troubleshooting</h2>
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">#</a></h2>
 <p>If your Pi's ethernet port is capable of 1Gbps, you're using a cat5e cable or better, your router and switch support 1Gbps,  and you're still only getting 100Mbps <strong>first try with another cable</strong>. A faulty cable is the most common cause of problems like this. If that doesn't work you can try disabling EEE (Energy Efficient Ethernet) although it will be reenabled at reboot. You could also try setting the speed manually.
 <div class="highlight"><pre><span></span><code>ethtool<span class="w"> </span>--show-eee<span class="w"> </span>eth0
 sudo<span class="w"> </span>ethtool<span class="w"> </span>--set-eee<span class="w"> </span>eth0<span class="w"> </span>eee<span class="w"> </span>off
@@ -846,10 +890,10 @@ sudo<span class="w"> </span>ethtool<span class="w"> </span>--set-eee<span class=
 <span class="c1"># set speed manually and disable autonegotiation</span>
 ethtool<span class="w"> </span>-s<span class="w"> </span>eth0<span class="w"> </span>speed<span class="w"> </span><span class="m">1000</span><span class="w"> </span>duplex<span class="w"> </span>full<span class="w"> </span>autoneg<span class="w"> </span>off
 </code></pre></div></p>
-<h2 id="learn-about-electronics">Learn about electronics</h2>
+<h2 id="learn-about-electronics">Learn about electronics<a class="headerlink" href="#learn-about-electronics" title="Permanent link">#</a></h2>
 <p>I've added some sample code from the <a href="https://magpi.raspberrypi.com/books/essentials-gpio-zero-v1">MagPi Essentials book</a>.<br />
 <a href="https://github.com/santisbon/guides/tree/main/assets/raspberrypi">Sample code</a></p>
-<h3 id="gpio-header">GPIO Header</h3>
+<h3 id="gpio-header">GPIO Header<a class="headerlink" href="#gpio-header" title="Permanent link">#</a></h3>
 <p><img alt="GPIO" src="https://i.imgur.com/3Zroadt.jpg" /></p>
 
 
