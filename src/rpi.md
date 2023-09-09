@@ -1,56 +1,84 @@
 # Single-board Computers (SBCs)
-Raspberry Pi, Orange Pi, many others.
+Raspberry Pi, Orange Pi, and many others.
 
 ![SBCs](https://res.cloudinary.com/practicaldev/image/fetch/s--gU1esoW1--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_800/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/k1mer6vmt81awg37l856.png)
 
 ## Setup
 
-0. If you're not using an imager program that does it for you, download the operating system image from the vendor website and verify its integrity. Examples:
+0. If you're not using an imager program that does it for you, download the operating system image from the vendor website and verify its integrity.  
+   Make sure you use the correct image for your Pi (32-bit or 64-bit). Examples:
     ```sh
-    7zz x Orangepi3b_1.0.0_debian_bookworm_server_linux5.10.160.7z
-    shasum -c Orangepi3b_1.0.0_debian_bookworm_server_linux5.10.160.img.sha
+    # Extract and verify
+    7zz x Orangepi3b_1.0.0_ubuntu_jammy_server_linux5.10.160.7z
+    shasum -c Orangepi3b_1.0.0_ubuntu_jammy_server_linux5.10.160.img.sha
 
-    shasum -a 256 2023-05-03-raspios-bullseye-armhf-lite.img.xz # verify it matches the hash on the website
-    xz -d 2023-05-03-raspios-bullseye-armhf-lite.img.xz
+    # Verify it matches the hash on the website and decompress
+    echo "dbab406bfa473ebf95aa2e34e87ebf64467067ffa0478daa85c48e213b925ed6 *ubuntu-22.04.3-preinstalled-server-armhf+raspi.img.xz" | shasum -a 256 --check
+    xz -d ubuntu-22.04.3-preinstalled-server-armhf+raspi.img.xz
     ```
-1. Write and preconfigure the OS on the SD card.  
-    Option 1: Use Raspberry Pi Imager (`brew install --cask raspberry-pi-imager`). Make sure you use the correct version of the OS (32-bit or 64-bit).  
-    * Change the password for the default user.  
-    * Enable SSH (password or ssh keys); remove password authentication if using keys.  
-    * Configure WiFi if needed.  
-    * Take note of the hostname.  
+1. Preconfigure and write the OS on the SD card.  
+    **OPTION A**: Use Raspberry Pi Imager (`brew install --cask raspberry-pi-imager`). 
+    
+    !!! tip
+        This is the easiest option but is limited in how much you can preconfigure the OS. Recommended if you're setting up only one Pi and don't need to install Kubernetes or anything else that requires modified boot parameters.
 
-    Option 2: Do it with `cloud-init` and the command line. Adjust values for your own environment (Wi-Fi network credentials, your OS tools to copy/paste, name of SSH key, etc.)
-    ```sh title="on your laptop"
+    * Change the password for the default user or disable passwords altogether.  
+    * Enable SSH (password or ssh keys); remove password authentication if using keys.  
+    * Configure Wi-Fi if needed.  
+    * Set the hostname.  
+
+    **OPTION B**: Do it with the command line and `cloud-init`. 
+    
+    !!! tip
+        This option lets you automatically upgrade the system, configure users, modify boot parameters, specify software to install, custom commands to run on first boot, among other things. Recommended for homelabs when setting up multiple Pis or installing Kubernetes.
+        
+    Adjust values for your own environment (your OS tools to copy/paste, arguments for your OS's version of `sed`, name of SSH key, volume name, etc.). This example uses the macOS version of `sed` and copy/paste tools.
+
+    ```sh title="on your laptop" 
     # Insert the SD card and find the device
     diskutil list
     # df -h
 
-    DEVICE=mydevice # e.g. /dev/disk3
-
-    # Unmount the card
-    diskutil unmountDisk $DEVICE
-
-    IMAGE=Orangepi3b_1.0.0_debian_bookworm_server_linux5.10.160.img
-    # IMAGE=2023-05-03-raspios-bullseye-armhf-lite.img
-
-    # You can use `dd` with the progress option
-    dd if=$IMAGE of=$DEVICE bs=1m status=progress
-    # or with `pv` to monitor data's progress through a pipe
-    pv $IMAGE | sudo dd bs=1m of=$DEVICE
-    
-    # when it's done you'll see a `boot` volume mounted on your desktop
-
-    # enable ssh
-    touch /Volumes/boot/ssh
-
-    # enable Wi-Fi
+    ###################################################################
+    # REPLACE WITH YOUR VALUES
+    ###################################################################
+    DEVICE=/dev/mydevice # e.g. /dev/disk4
+    IMAGE=Orangepi3b_1.0.0_ubuntu_jammy_server_linux5.10.160.img
+    #IMAGE=ubuntu-22.04.3-preinstalled-server-armhf+raspi.img
+    HOSTNAME=myorangepi3
+    LOCALE=en_US
+    TIMEZONE=US/Central
     
     COUNTRY=US
     WIFI_NAME=myssid
     WIFI_PASSWORD=mypassword
+    
+    pbcopy < ~/.ssh/id_ed25519.pub
+    KEY=$(pbpaste)
+    ###################################################################
 
-    cat << EOF > /Volumes/boot/wpa_supplicant.conf
+    # Unmount the card
+    diskutil unmountDisk $DEVICE
+
+    # You can use `dd` by itself
+    sudo dd if=$IMAGE of=$DEVICE bs=1m status=progress
+    # or to get a progress bar and percentage, use `pv` through a pipe
+    pv $IMAGE | sudo dd bs=1m of=$DEVICE
+    
+    # When it's done you'll see a volume mounted on your desktop 
+    # called `boot`, `bootfs`, `system-boot` or something similar
+
+    ###################################################################
+    # REPLACE WITH YOUR VALUES
+    ###################################################################
+    VOLUME=system-boot
+    ###################################################################
+
+    # if not using `cloud-init` enable ssh with:
+    # touch /Volumes/$VOLUME/ssh
+
+    # enable Wi-Fi if applicable
+    cat << EOF > /Volumes/$VOLUME/wpa_supplicant.conf
     ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
     update_config=1
     country=${COUNTRY}
@@ -61,29 +89,35 @@ Raspberry Pi, Orange Pi, many others.
     EOF
 
     # create `cloud-init` file
-
-    pbcopy < ~/.ssh/id_ed25519.pub
-    KEY=$(pbpaste)
-
-    cat << EOF > /Volumes/boot/user-data
+    cat << EOF > /Volumes/${VOLUME}/user-data
     #cloud-config
 
-    hostname: orangepi3b
+    hostname: ${HOSTNAME}
     manage_etc_hosts: true
-    locale: en_US
-    timezone: US/Central
+    locale: ${LOCALE}
+    timezone: ${TIMEZONE}
 
     package_upgrade: true
-    packages:
-    - snapd
+    #packages:
+    #- 
 
     users:
-      - name: orangepi
+      - name: pi
         lock_passwd: true
         sudo: ALL=(ALL) NOPASSWD:ALL
         ssh_authorized_keys:
           - ${KEY}
+    
+    runcmd:
+      - [snap install microk8s --classic]
     EOF
+
+    # check that it worked
+    # cat /Volumes/${VOLUME}/user-data
+
+    # Add these options at the end of the file as Kubernetes will need them to run on the Pi.
+    sed -i "" "$ s/$/ cgroup_enable=memory cgroup_memory=1/" /Volumes/$VOLUME/cmdline.txt
+    # cat /Volumes/$VOLUME/cmdline.txt
 
     diskutil unmountDisk $DEVICE
     # remove SD card from laptop 
@@ -91,13 +125,16 @@ Raspberry Pi, Orange Pi, many others.
 
 
 2. Insert the SD card in your Pi and turn it on. 
+3. Optional
 
-    If you're reinstalling the OS you might need to remove keys belonging to the hostname from your `known_hosts` file.
+    If you're **reinstalling** the OS you might need to remove old key fingerprints belonging to that hostname from your `known_hosts` file. Example:
     ```zsh title="on your laptop"
     ssh-keygen  -f ~/.ssh/known_hosts -R raspberrypi4.local
     ```
 
-    If you didn't do so during setup, you can still generate and add an ssh key at any time. Example:
+4. Optional
+
+    If you **didn't do so during setup**, you can still generate and add an ssh key at any time. Example:
     ```zsh title="on your laptop"
     ssh-keygen
     ssh-copy-id -i ~/.ssh/id_rsa pi@raspberrypi4.local
@@ -108,7 +145,7 @@ Raspberry Pi, Orange Pi, many others.
     ```
     and replace `#PasswordAuthentication yes` with `PasswordAuthentication no`.
     Test the validity of the config file and restart the service (or reboot).
-    ```zsh
+    ```zsh title="on the Pi"
     sudo sshd -t
     sudo service sshd restart
     sudo service sshd status
@@ -116,18 +153,26 @@ Raspberry Pi, Orange Pi, many others.
 
 ## Configuration
 
+!!! note
+    Some of these steps are not needed if you set up the SD card with `cloud-init` as described above.
+
 Find the IP of your Pi using its hostname or find all devices on your network with `arp -a`.
-```zsh
+```zsh title="on your laptop"
 arp raspberrypi4.local 
 ```
-SSH into it with the `pi` user and the IP address or hostname. Examples:
-```zsh
+SSH into it with the configured user e.g. `pi` and the IP address or hostname. Examples:
+```zsh title="on your laptop"
 ssh pi@192.168.xxx.xxx
 ssh pi@raspberrypi4.local
 # You'll be asked for the password if applicable
+
+# Logs are located here
+ls -al /var/log
+# Example
+sudo cat /var/log/cloud-init.log
 ```
 
-Configure it.
+Once you're on the SBC, configure it if needed.
 ```zsh
 pi@raspberrypi4:~ $ sudo raspi-config
 # Go to Interface Options, VNC (for graphical remote access)
@@ -257,7 +302,7 @@ ethtool -s eth0 speed 1000 duplex full autoneg off
 ## Learn about electronics
 
 I've added some sample code from the [MagPi Essentials book](https://magpi.raspberrypi.com/books/essentials-gpio-zero-v1).  
-[Sample code](https://github.com/santisbon/guides/tree/main/assets/raspberrypi)
+[Sample code](https://github.com/santisbon/guides/tree/main/assets/SBC)
 
 ### GPIO Header
 
