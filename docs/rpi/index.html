@@ -816,16 +816,16 @@ cat<span class="w"> </span><span class="s">&lt;&lt; EOF &gt; /Volumes/${VOLUME}/
 <span class="s">locale: ${LOCALE}</span>
 <span class="s">timezone: ${TIMEZONE}</span>
 
-<span class="s">package_upgrade: true</span>
-<span class="s">#packages:</span>
-<span class="s">#- </span>
-
 <span class="s">users:</span>
 <span class="s">  - name: pi</span>
 <span class="s">    lock_passwd: true</span>
 <span class="s">    sudo: ALL=(ALL) NOPASSWD:ALL</span>
 <span class="s">    ssh_authorized_keys:</span>
 <span class="s">      - ${KEY}</span>
+
+<span class="s">package_upgrade: true</span>
+<span class="s">packages:</span>
+<span class="s">  - avahi-daemon </span>
 
 <span class="s">runcmd:</span>
 <span class="s">  - [snap install microk8s --classic]</span>
@@ -873,6 +873,8 @@ sudo<span class="w"> </span>service<span class="w"> </span>sshd<span class="w"> 
 <p class="admonition-title">Note</p>
 <p>Some of these steps are not needed if you set up the SD card with <code>cloud-init</code> as described above.</p>
 </div>
+<p>cat /etc/resolv.conf
+resolvectl status</p>
 <p>Find the IP of your Pi using its hostname or find all devices on your network with <code>arp -a</code>.
 <div class="highlight"><span class="filename">on your laptop</span><pre><span></span><code>arp<span class="w"> </span>raspberrypi4.local<span class="w"> </span>
 </code></pre></div>

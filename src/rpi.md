@@ -97,10 +97,6 @@ Raspberry Pi, Orange Pi, and many others.
     locale: ${LOCALE}
     timezone: ${TIMEZONE}
 
-    package_upgrade: true
-    #packages:
-    #- 
-
     users:
       - name: pi
         lock_passwd: true
@@ -108,6 +104,10 @@ Raspberry Pi, Orange Pi, and many others.
         ssh_authorized_keys:
           - ${KEY}
     
+    package_upgrade: true
+    packages:
+      - avahi-daemon 
+
     runcmd:
       - [snap install microk8s --classic]
     EOF
@@ -155,6 +155,9 @@ Raspberry Pi, Orange Pi, and many others.
 
 !!! note
     Some of these steps are not needed if you set up the SD card with `cloud-init` as described above.
+
+cat /etc/resolv.conf
+resolvectl status
 
 Find the IP of your Pi using its hostname or find all devices on your network with `arp -a`.
 ```zsh title="on your laptop"
