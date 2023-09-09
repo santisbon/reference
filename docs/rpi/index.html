@@ -722,11 +722,15 @@
 
 <h1 id="single-board-computers-sbcs">Single-board Computers (SBCs)<a class="headerlink" href="#single-board-computers-sbcs" title="Permanent link">#</a></h1>
 <p>Raspberry Pi, Orange Pi, many others.</p>
+<p><img alt="SBCs" src="https://res.cloudinary.com/practicaldev/image/fetch/s--gU1esoW1--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_800/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/k1mer6vmt81awg37l856.png" /></p>
 <h2 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link">#</a></h2>
 <ol start="0">
-<li>If you're not using an imager program that does it for you, download the operating system image from the vendor website and verify its integrity. For example, for an Orange Pi Debian image:
+<li>If you're not using an imager program that does it for you, download the operating system image from the vendor website and verify its integrity. Examples:
     <div class="highlight"><pre><span></span><code>7zz<span class="w"> </span>x<span class="w"> </span>Orangepi3b_1.0.0_debian_bookworm_server_linux5.10.160.7z
 shasum<span class="w"> </span>-c<span class="w"> </span>Orangepi3b_1.0.0_debian_bookworm_server_linux5.10.160.img.sha
+
+shasum<span class="w"> </span>-a<span class="w"> </span><span class="m">256</span><span class="w"> </span><span class="m">2023</span>-05-03-raspios-bullseye-armhf-lite.img.xz<span class="w"> </span><span class="c1"># verify it matches the hash on the website</span>
+xz<span class="w"> </span>-d<span class="w"> </span><span class="m">2023</span>-05-03-raspios-bullseye-armhf-lite.img.xz
 </code></pre></div></li>
 <li>
 <p>Write and preconfigure the OS on the SD card.<br />
@@ -738,17 +742,22 @@ shasum<span class="w"> </span>-c<span class="w"> </span>Orangepi3b_1.0.0_debian_
 <li>Take note of the hostname.  </li>
 </ul>
 <p>Option 2: Do it with <code>cloud-init</code> and the command line. Adjust values for your own environment (Wi-Fi network credentials, your OS tools to copy/paste, name of SSH key, etc.)
-<div class="highlight"><span class="filename">on your laptop</span><pre><span></span><code><span class="c1"># Insert the SD card and find the device e.g. /dev/disk3</span>
+<div class="highlight"><span class="filename">on your laptop</span><pre><span></span><code><span class="c1"># Insert the SD card and find the device</span>
 diskutil<span class="w"> </span>list
 <span class="c1"># df -h</span>
 
+<span class="nv">DEVICE</span><span class="o">=</span>mydevice<span class="w"> </span><span class="c1"># e.g. /dev/disk3</span>
+
 <span class="c1"># Unmount the card</span>
-diskutil<span class="w"> </span>unmountDisk<span class="w"> </span>/dev/MY_CARD_DEVICE<span class="w"> </span>
+diskutil<span class="w"> </span>unmountDisk<span class="w"> </span><span class="nv">$DEVICE</span>
+
+<span class="nv">IMAGE</span><span class="o">=</span>Orangepi3b_1.0.0_debian_bookworm_server_linux5.10.160.img
+<span class="c1"># IMAGE=2023-05-03-raspios-bullseye-armhf-lite.img</span>
 
 <span class="c1"># You can use `dd` with the progress option</span>
-dd<span class="w"> </span><span class="k">if</span><span class="o">=</span>Orangepi3b_1.0.0_debian_bookworm_server_linux5.10.160.img<span class="w"> </span><span class="nv">of</span><span class="o">=</span>/dev/MY_CARD_DEVICE<span class="w"> </span><span class="nv">bs</span><span class="o">=</span>1m<span class="w"> </span><span class="nv">status</span><span class="o">=</span>progress
+dd<span class="w"> </span><span class="k">if</span><span class="o">=</span><span class="nv">$IMAGE</span><span class="w"> </span><span class="nv">of</span><span class="o">=</span><span class="nv">$DEVICE</span><span class="w"> </span><span class="nv">bs</span><span class="o">=</span>1m<span class="w"> </span><span class="nv">status</span><span class="o">=</span>progress
 <span class="c1"># or with `pv` to monitor data&#39;s progress through a pipe</span>
-pv<span class="w"> </span>Orangepi3b_1.0.0_debian_bookworm_server_linux5.10.160.img<span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>dd<span class="w"> </span><span class="nv">bs</span><span class="o">=</span>1m<span class="w"> </span><span class="nv">of</span><span class="o">=</span>/dev/MY_CARD_DEVICE
+pv<span class="w"> </span><span class="nv">$IMAGE</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>dd<span class="w"> </span><span class="nv">bs</span><span class="o">=</span>1m<span class="w"> </span><span class="nv">of</span><span class="o">=</span><span class="nv">$DEVICE</span>
 
 <span class="c1"># when it&#39;s done you&#39;ll see a `boot` volume mounted on your desktop</span>
 
@@ -796,8 +805,8 @@ cat<span class="w"> </span><span class="s">&lt;&lt; EOF &gt; /Volumes/boot/user-
 <span class="s">      - ${KEY}</span>
 <span class="s">EOF</span>
 
-diskutil<span class="w"> </span>unmountDisk<span class="w"> </span>/dev/MY_CARD_DEVICE<span class="w"> </span>
-<span class="c1"># remove SD card from laptop and insert into SBC</span>
+diskutil<span class="w"> </span>unmountDisk<span class="w"> </span><span class="nv">$DEVICE</span>
+<span class="c1"># remove SD card from laptop </span>
 </code></pre></div></p>
 </li>
 <li>

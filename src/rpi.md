@@ -1,12 +1,17 @@
 # Single-board Computers (SBCs)
 Raspberry Pi, Orange Pi, many others.
 
+![SBCs](https://res.cloudinary.com/practicaldev/image/fetch/s--gU1esoW1--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_800/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/k1mer6vmt81awg37l856.png)
+
 ## Setup
 
-0. If you're not using an imager program that does it for you, download the operating system image from the vendor website and verify its integrity. For example, for an Orange Pi Debian image:
+0. If you're not using an imager program that does it for you, download the operating system image from the vendor website and verify its integrity. Examples:
     ```sh
     7zz x Orangepi3b_1.0.0_debian_bookworm_server_linux5.10.160.7z
     shasum -c Orangepi3b_1.0.0_debian_bookworm_server_linux5.10.160.img.sha
+
+    shasum -a 256 2023-05-03-raspios-bullseye-armhf-lite.img.xz # verify it matches the hash on the website
+    xz -d 2023-05-03-raspios-bullseye-armhf-lite.img.xz
     ```
 1. Write and preconfigure the OS on the SD card.  
     Option 1: Use Raspberry Pi Imager (`brew install --cask raspberry-pi-imager`). Make sure you use the correct version of the OS (32-bit or 64-bit).  
@@ -17,17 +22,22 @@ Raspberry Pi, Orange Pi, many others.
 
     Option 2: Do it with `cloud-init` and the command line. Adjust values for your own environment (Wi-Fi network credentials, your OS tools to copy/paste, name of SSH key, etc.)
     ```sh title="on your laptop"
-    # Insert the SD card and find the device e.g. /dev/disk3
+    # Insert the SD card and find the device
     diskutil list
     # df -h
 
+    DEVICE=mydevice # e.g. /dev/disk3
+
     # Unmount the card
-    diskutil unmountDisk /dev/MY_CARD_DEVICE 
+    diskutil unmountDisk $DEVICE
+
+    IMAGE=Orangepi3b_1.0.0_debian_bookworm_server_linux5.10.160.img
+    # IMAGE=2023-05-03-raspios-bullseye-armhf-lite.img
 
     # You can use `dd` with the progress option
-    dd if=Orangepi3b_1.0.0_debian_bookworm_server_linux5.10.160.img of=/dev/MY_CARD_DEVICE bs=1m status=progress
+    dd if=$IMAGE of=$DEVICE bs=1m status=progress
     # or with `pv` to monitor data's progress through a pipe
-    pv Orangepi3b_1.0.0_debian_bookworm_server_linux5.10.160.img | sudo dd bs=1m of=/dev/MY_CARD_DEVICE
+    pv $IMAGE | sudo dd bs=1m of=$DEVICE
     
     # when it's done you'll see a `boot` volume mounted on your desktop
 
@@ -75,8 +85,8 @@ Raspberry Pi, Orange Pi, many others.
           - ${KEY}
     EOF
 
-    diskutil unmountDisk /dev/MY_CARD_DEVICE 
-    # remove SD card from laptop and insert into SBC
+    diskutil unmountDisk $DEVICE
+    # remove SD card from laptop 
     ```
 
 
