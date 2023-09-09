@@ -13,7 +13,7 @@ nav:
     - Docker: 'docker.md'
     - Kubernetes: 'k8s.md'
     - Python: 'python.md'
-    - Single-board Computers: 'rpi.md'
+    - SBCs: 'rpi.md'
     - AWS: 'aws.md'
     - MySQL: 'mysql.md'
     - Node: 'node.md'

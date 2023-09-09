@@ -1,4 +1,5 @@
-# Single-board Computers (SBC)
+# Single-board Computers (SBCs)
+Raspberry Pi, Orange Pi, many others.
 
 ## Setup
 
@@ -16,23 +17,25 @@
 
     Alternatively, you can do it manually:
     ```sh title="on your laptop"
-    # Find the SD card device e.g. /dev/disk3
+    # Insert the SD card and find the device e.g. /dev/disk3
     diskutil list
     # df -h
 
     # Unmount the card
     diskutil unmountDisk /dev/MY_CARD_DEVICE 
 
-    # You can use `pv` to monitor data's progress through a pipe
-    pv ~/Downloads/Orangepi3b_1.0.0_debian_bookworm_server_linux5.10.160.img | sudo dd bs=1m of=/dev/MY_CARD_DEVICE
-    # or
-    dd if=Orangepi3b_1.0.0_debian_bookworm_server_linux5.10.160.img of=/dev/MY_CARD_DEVICE bs=1m conv=sync status=progress
+    # You can use `dd` with the progress option
+    dd if=Orangepi3b_1.0.0_debian_bookworm_server_linux5.10.160.img of=/dev/MY_CARD_DEVICE bs=1m status=progress
+    # or with `pv` to monitor data's progress through a pipe
+    pv Orangepi3b_1.0.0_debian_bookworm_server_linux5.10.160.img | sudo dd bs=1m of=/dev/MY_CARD_DEVICE
+    
     # when it's done you'll see a `boot` volume mounted on your desktop
 
     # enable ssh
     touch /Volumes/boot/ssh
 
-    #enable Wi-Fi
+    # enable Wi-Fi
+    
     COUNTRY=US
     WIFI_NAME=myssid
     WIFI_PASSWORD=mypassword
@@ -52,9 +55,9 @@
     ```
 
 
-2. Insert the SD card in your Raspberry Pi and turn it on. 
+2. Insert the SD card in your Pi and turn it on. 
 
-If you're reinstalling Raspberry Pi OS you might need to remove keys belonging to the hostname from your `known_hosts` file.
+If you're reinstalling the OS you might need to remove keys belonging to the hostname from your `known_hosts` file.
 ```zsh title="on your laptop"
 ssh-keygen  -f ~/.ssh/known_hosts -R raspberrypi4.local
 ```
@@ -78,7 +81,7 @@ sudo service sshd status
 
 ## Configuration
 
-Find the IP of your Raspberry Pi using its hostname or find all devices on your network with `arp -a`.
+Find the IP of your Pi using its hostname or find all devices on your network with `arp -a`.
 ```zsh
 arp raspberrypi4.local 
 ```
@@ -127,19 +130,19 @@ static_routers=[ROUTER IP]
 static domain_name_servers=[DNS IP]
 [static or inform] ip_address=[STATIC IP ADDRESS YOU WANT]/24
 ```
-`inform` means that the Raspberry Pi will attempt to get the IP address you requested, but if it's not available, it will choose another. If you use `static`, it will have no IP v4 address at all if the requested one is in use.  
+`inform` means that the Pi will attempt to get the IP address you requested, but if it's not available, it will choose another. If you use `static`, it will have no IP v4 address at all if the requested one is in use.  
 
 Save the file and `sudo reboot`. From now on, upon each boot, the Pi will attempt to obtain the static ip address you requested.  
 
-You could also set your router to manually assign the static IP to the Raspberry Pi under its DHCP settings e.g. LAN, DHCP server.
+You could also set your router to manually assign the static IP to the Pi under its DHCP settings e.g. LAN, DHCP server.
 
 ## To set it up as a DNS server
-1. Install and configure a DNS Server e.g. DNSmasq or Pi-Hole on the Raspberry Pi.
-2. Change your router’s DNS settings to point to the Raspberry Pi. Log in to your router's admin interface and look for DNS e.g. in LAN, DHCP Server. Set the primary DNS server to the IP of your Raspberry Pi and make sure it's the only DNS server. The Raspberry Pi will handle upstream DNS services.
+1. Install and configure a DNS Server e.g. DNSmasq or Pi-Hole on the Pi.
+2. Change your router’s DNS settings to point to the Pi. Log in to your router's admin interface and look for DNS e.g. in LAN, DHCP Server. Set the primary DNS server to the IP of your Pi and make sure it's the only DNS server. The Pi will handle upstream DNS services.
 
 ## Remote GUI access
 
-Now you'll need a VNC viewer on your laptop to connect to the Raspberry Pi using the graphical interface.
+Now you'll need a VNC viewer on your laptop to connect to the Pi using the graphical interface.
 ```zsh
 brew install --cask vnc-viewer
 ```
