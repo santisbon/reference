@@ -9,13 +9,13 @@ Raspberry Pi, Orange Pi, many others.
     shasum -c Orangepi3b_1.0.0_debian_bookworm_server_linux5.10.160.img.sha
     ```
 1. Write and preconfigure the OS on the SD card.  
-    You can use Raspberry Pi Imager (`brew install --cask raspberry-pi-imager`). Make sure you use the correct version of the OS (32-bit or 64-bit).  
-    1.1. Change the default password for the `pi` user.  
-    1.2. Enable SSH (password or ssh keys); remove password authentication if using keys.  
-    1.3. Configure WiFi if needed.  
-    1.4. Take note of the hostname.  
+    Option 1: Use Raspberry Pi Imager (`brew install --cask raspberry-pi-imager`). Make sure you use the correct version of the OS (32-bit or 64-bit).  
+    * Change the password for the default user.  
+    * Enable SSH (password or ssh keys); remove password authentication if using keys.  
+    * Configure WiFi if needed.  
+    * Take note of the hostname.  
 
-    Alternatively, you can do it manually:
+    Option 2: Do it with `cloud-init` and the command line. Adjust values for your own environment (Wi-Fi network credentials, your OS tools to copy/paste, name of SSH key, etc.)
     ```sh title="on your laptop"
     # Insert the SD card and find the device e.g. /dev/disk3
     diskutil list
@@ -50,6 +50,31 @@ Raspberry Pi, Orange Pi, many others.
     }
     EOF
 
+    # create `cloud-init` file
+
+    pbcopy < ~/.ssh/id_ed25519.pub
+    KEY=$(pbpaste)
+
+    cat << EOF > /Volumes/boot/user-data
+    #cloud-config
+
+    hostname: orangepi3b
+    manage_etc_hosts: true
+    locale: en_US
+    timezone: US/Central
+
+    package_upgrade: true
+    packages:
+    - snapd
+
+    users:
+      - name: orangepi
+        lock_passwd: true
+        sudo: ALL=(ALL) NOPASSWD:ALL
+        ssh_authorized_keys:
+          - ${KEY}
+    EOF
+
     diskutil unmountDisk /dev/MY_CARD_DEVICE 
     # remove SD card from laptop and insert into SBC
     ```
@@ -57,27 +82,27 @@ Raspberry Pi, Orange Pi, many others.
 
 2. Insert the SD card in your Pi and turn it on. 
 
-If you're reinstalling the OS you might need to remove keys belonging to the hostname from your `known_hosts` file.
-```zsh title="on your laptop"
-ssh-keygen  -f ~/.ssh/known_hosts -R raspberrypi4.local
-```
+    If you're reinstalling the OS you might need to remove keys belonging to the hostname from your `known_hosts` file.
+    ```zsh title="on your laptop"
+    ssh-keygen  -f ~/.ssh/known_hosts -R raspberrypi4.local
+    ```
 
-If you didn't do so during setup, you can still generate and add an ssh key at any time. Example:
-```zsh title="on your laptop"
-ssh-keygen
-ssh-copy-id -i ~/.ssh/id_rsa pi@raspberrypi4.local
-```
-To remove password authentication:
-```zsh title="on the Pi"
-sudo nano /etc/ssh/sshd_config
-```
-and replace `#PasswordAuthentication yes` with `PasswordAuthentication no`.
-Test the validity of the config file and restart the service (or reboot).
-```zsh
-sudo sshd -t
-sudo service sshd restart
-sudo service sshd status
-```
+    If you didn't do so during setup, you can still generate and add an ssh key at any time. Example:
+    ```zsh title="on your laptop"
+    ssh-keygen
+    ssh-copy-id -i ~/.ssh/id_rsa pi@raspberrypi4.local
+    ```
+    To remove password authentication:
+    ```zsh title="on the Pi"
+    sudo nano /etc/ssh/sshd_config
+    ```
+    and replace `#PasswordAuthentication yes` with `PasswordAuthentication no`.
+    Test the validity of the config file and restart the service (or reboot).
+    ```zsh
+    sudo sshd -t
+    sudo service sshd restart
+    sudo service sshd status
+    ```
 
 ## Configuration
 
@@ -137,8 +162,8 @@ Save the file and `sudo reboot`. From now on, upon each boot, the Pi will attemp
 You could also set your router to manually assign the static IP to the Pi under its DHCP settings e.g. LAN, DHCP server.
 
 ## To set it up as a DNS server
-1. Install and configure a DNS Server e.g. DNSmasq or Pi-Hole on the Pi.
-2. Change your router’s DNS settings to point to the Pi. Log in to your router's admin interface and look for DNS e.g. in LAN, DHCP Server. Set the primary DNS server to the IP of your Pi and make sure it's the only DNS server. The Pi will handle upstream DNS services.
+0. Install and configure a DNS Server e.g. DNSmasq or Pi-Hole on the Pi.
+1. Change your router’s DNS settings to point to the Pi. Log in to your router's admin interface and look for DNS e.g. in LAN, DHCP Server. Set the primary DNS server to the IP of your Pi and make sure it's the only DNS server. The Pi will handle upstream DNS services.
 
 ## Remote GUI access
 
@@ -227,4 +252,3 @@ I've added some sample code from the [MagPi Essentials book](https://magpi.raspb
 ### GPIO Header
 
 ![GPIO](https://i.imgur.com/3Zroadt.jpg)
-

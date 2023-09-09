@@ -1,0 +1,33 @@
+#cloud-config
+
+hostname: orangepi3b
+manage_etc_hosts: true
+locale: en_US
+timezone: US/Central
+
+package_upgrade: true
+packages:
+  - snapd
+
+# Add users to the system. Users are added after groups are added.
+# Note: Most of these configuration options will not be honored if the user already exists. 
+#       Following options are the exceptions and they are applicable on already-existing users:
+#       'plain_text_passwd'
+#       'hashed_passwd'
+#       'lock_passwd': Defaults to true. Lock the password to disable password login 
+#       'sudo': Defaults to none. Accepts a sudo rule string, a list of sudo rule strings or False to explicitly deny sudo usage
+#       'ssh_authorized_keys': Optional. [list] Add keys to user's authorized keys file. An error will be raised if no_create_home or system is also set.
+#       'ssh_redirect_user': Optional. [bool] Set true to block ssh logins for cloud ssh public keys and emit a message redirecting logins to use <default_username> instead. 
+#                            This option only disables cloud provided public-keys. An error will be raised if ssh_authorized_keys or ssh_import_id is provided for the same user.
+
+# Orange Pi Linux default login account and password
+# Account   Password
+# root      orangepi
+# orangepi  orangepi
+
+users:
+  - name: orangepi
+    lock_passwd: true
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    ssh_authorized_keys:
+      - ssh-rsa MyKeyExample

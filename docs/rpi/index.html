@@ -21,7 +21,7 @@
     
     
       
-        <title>Single-board Computers - Notes</title>
+        <title>SBCs - Notes</title>
       
     
     
@@ -73,7 +73,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#single-board-computers-sbc" class="md-skip">
+        <a href="#single-board-computers-sbcs" class="md-skip">
           Skip to content
         </a>
       
@@ -108,7 +108,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Single-board Computers
+              SBCs
             
           </span>
         </div>
@@ -418,12 +418,12 @@
       
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
-          Single-board Computers
+          SBCs
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
-        Single-board Computers
+        SBCs
       </a>
       
         
@@ -720,7 +720,8 @@
   
 
 
-<h1 id="single-board-computers-sbc">Single-board Computers (SBC)<a class="headerlink" href="#single-board-computers-sbc" title="Permanent link">#</a></h1>
+<h1 id="single-board-computers-sbcs">Single-board Computers (SBCs)<a class="headerlink" href="#single-board-computers-sbcs" title="Permanent link">#</a></h1>
+<p>Raspberry Pi, Orange Pi, many others.</p>
 <h2 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link">#</a></h2>
 <ol start="0">
 <li>If you're not using an imager program that does it for you, download the operating system image from the vendor website and verify its integrity. For example, for an Orange Pi Debian image:
@@ -729,29 +730,33 @@ shasum<span class="w"> </span>-c<span class="w"> </span>Orangepi3b_1.0.0_debian_
 </code></pre></div></li>
 <li>
 <p>Write and preconfigure the OS on the SD card.<br />
-    You can use Raspberry Pi Imager (<code>brew install --cask raspberry-pi-imager</code>). Make sure you use the correct version of the OS (32-bit or 64-bit).<br />
-    1.1. Change the default password for the <code>pi</code> user.<br />
-    1.2. Enable SSH (password or ssh keys); remove password authentication if using keys.<br />
-    1.3. Configure WiFi if needed.<br />
-    1.4. Take note of the hostname.  </p>
-<p>Alternatively, you can do it manually:
-<div class="highlight"><span class="filename">on your laptop</span><pre><span></span><code><span class="c1"># Find the SD card device e.g. /dev/disk3</span>
+    Option 1: Use Raspberry Pi Imager (<code>brew install --cask raspberry-pi-imager</code>). Make sure you use the correct version of the OS (32-bit or 64-bit).  </p>
+<ul>
+<li>Change the password for the default user.  </li>
+<li>Enable SSH (password or ssh keys); remove password authentication if using keys.  </li>
+<li>Configure WiFi if needed.  </li>
+<li>Take note of the hostname.  </li>
+</ul>
+<p>Option 2: Do it with <code>cloud-init</code> and the command line. Adjust values for your own environment (Wi-Fi network credentials, your OS tools to copy/paste, name of SSH key, etc.)
+<div class="highlight"><span class="filename">on your laptop</span><pre><span></span><code><span class="c1"># Insert the SD card and find the device e.g. /dev/disk3</span>
 diskutil<span class="w"> </span>list
 <span class="c1"># df -h</span>
 
 <span class="c1"># Unmount the card</span>
 diskutil<span class="w"> </span>unmountDisk<span class="w"> </span>/dev/MY_CARD_DEVICE<span class="w"> </span>
 
-<span class="c1"># You can use `pv` to monitor data&#39;s progress through a pipe</span>
-pv<span class="w"> </span>~/Downloads/Orangepi3b_1.0.0_debian_bookworm_server_linux5.10.160.img<span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>dd<span class="w"> </span><span class="nv">bs</span><span class="o">=</span>1m<span class="w"> </span><span class="nv">of</span><span class="o">=</span>/dev/MY_CARD_DEVICE
-<span class="c1"># or</span>
-dd<span class="w"> </span><span class="k">if</span><span class="o">=</span>Orangepi3b_1.0.0_debian_bookworm_server_linux5.10.160.img<span class="w"> </span><span class="nv">of</span><span class="o">=</span>/dev/MY_CARD_DEVICE<span class="w"> </span><span class="nv">bs</span><span class="o">=</span>1m<span class="w"> </span><span class="nv">conv</span><span class="o">=</span>sync<span class="w"> </span><span class="nv">status</span><span class="o">=</span>progress
+<span class="c1"># You can use `dd` with the progress option</span>
+dd<span class="w"> </span><span class="k">if</span><span class="o">=</span>Orangepi3b_1.0.0_debian_bookworm_server_linux5.10.160.img<span class="w"> </span><span class="nv">of</span><span class="o">=</span>/dev/MY_CARD_DEVICE<span class="w"> </span><span class="nv">bs</span><span class="o">=</span>1m<span class="w"> </span><span class="nv">status</span><span class="o">=</span>progress
+<span class="c1"># or with `pv` to monitor data&#39;s progress through a pipe</span>
+pv<span class="w"> </span>Orangepi3b_1.0.0_debian_bookworm_server_linux5.10.160.img<span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>dd<span class="w"> </span><span class="nv">bs</span><span class="o">=</span>1m<span class="w"> </span><span class="nv">of</span><span class="o">=</span>/dev/MY_CARD_DEVICE
+
 <span class="c1"># when it&#39;s done you&#39;ll see a `boot` volume mounted on your desktop</span>
 
 <span class="c1"># enable ssh</span>
 touch<span class="w"> </span>/Volumes/boot/ssh
 
-<span class="c1">#enable Wi-Fi</span>
+<span class="c1"># enable Wi-Fi</span>
+
 <span class="nv">COUNTRY</span><span class="o">=</span>US
 <span class="nv">WIFI_NAME</span><span class="o">=</span>myssid
 <span class="nv">WIFI_PASSWORD</span><span class="o">=</span>mypassword
@@ -766,15 +771,38 @@ cat<span class="w"> </span><span class="s">&lt;&lt; EOF &gt; /Volumes/boot/wpa_s
 <span class="s">}</span>
 <span class="s">EOF</span>
 
+<span class="c1"># create `cloud-init` file</span>
+
+pbcopy<span class="w"> </span>&lt;<span class="w"> </span>~/.ssh/id_ed25519.pub
+<span class="nv">KEY</span><span class="o">=</span><span class="k">$(</span>pbpaste<span class="k">)</span>
+
+cat<span class="w"> </span><span class="s">&lt;&lt; EOF &gt; /Volumes/boot/user-data</span>
+<span class="s">#cloud-config</span>
+
+<span class="s">hostname: orangepi3b</span>
+<span class="s">manage_etc_hosts: true</span>
+<span class="s">locale: en_US</span>
+<span class="s">timezone: US/Central</span>
+
+<span class="s">package_upgrade: true</span>
+<span class="s">packages:</span>
+<span class="s">- snapd</span>
+
+<span class="s">users:</span>
+<span class="s">  - name: orangepi</span>
+<span class="s">    lock_passwd: true</span>
+<span class="s">    sudo: ALL=(ALL) NOPASSWD:ALL</span>
+<span class="s">    ssh_authorized_keys:</span>
+<span class="s">      - ${KEY}</span>
+<span class="s">EOF</span>
+
 diskutil<span class="w"> </span>unmountDisk<span class="w"> </span>/dev/MY_CARD_DEVICE<span class="w"> </span>
 <span class="c1"># remove SD card from laptop and insert into SBC</span>
 </code></pre></div></p>
 </li>
 <li>
-<p>Insert the SD card in your Raspberry Pi and turn it on. </p>
-</li>
-</ol>
-<p>If you're reinstalling Raspberry Pi OS you might need to remove keys belonging to the hostname from your <code>known_hosts</code> file.
+<p>Insert the SD card in your Pi and turn it on. </p>
+<p>If you're reinstalling the OS you might need to remove keys belonging to the hostname from your <code>known_hosts</code> file.
 <div class="highlight"><span class="filename">on your laptop</span><pre><span></span><code>ssh-keygen<span class="w">  </span>-f<span class="w"> </span>~/.ssh/known_hosts<span class="w"> </span>-R<span class="w"> </span>raspberrypi4.local
 </code></pre></div></p>
 <p>If you didn't do so during setup, you can still generate and add an ssh key at any time. Example:
@@ -790,8 +818,10 @@ Test the validity of the config file and restart the service (or reboot).
 sudo<span class="w"> </span>service<span class="w"> </span>sshd<span class="w"> </span>restart
 sudo<span class="w"> </span>service<span class="w"> </span>sshd<span class="w"> </span>status
 </code></pre></div></p>
+</li>
+</ol>
 <h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">#</a></h2>
-<p>Find the IP of your Raspberry Pi using its hostname or find all devices on your network with <code>arp -a</code>.
+<p>Find the IP of your Pi using its hostname or find all devices on your network with <code>arp -a</code>.
 <div class="highlight"><pre><span></span><code>arp<span class="w"> </span>raspberrypi4.local<span class="w"> </span>
 </code></pre></div>
 SSH into it with the <code>pi</code> user and the IP address or hostname. Examples:
@@ -829,16 +859,16 @@ static_routers=[ROUTER IP]
 static domain_name_servers=[DNS IP]
 [static or inform] ip_address=[STATIC IP ADDRESS YOU WANT]/24
 </code></pre></div>
-<code>inform</code> means that the Raspberry Pi will attempt to get the IP address you requested, but if it's not available, it will choose another. If you use <code>static</code>, it will have no IP v4 address at all if the requested one is in use.  </p>
+<code>inform</code> means that the Pi will attempt to get the IP address you requested, but if it's not available, it will choose another. If you use <code>static</code>, it will have no IP v4 address at all if the requested one is in use.  </p>
 <p>Save the file and <code>sudo reboot</code>. From now on, upon each boot, the Pi will attempt to obtain the static ip address you requested.  </p>
-<p>You could also set your router to manually assign the static IP to the Raspberry Pi under its DHCP settings e.g. LAN, DHCP server.</p>
+<p>You could also set your router to manually assign the static IP to the Pi under its DHCP settings e.g. LAN, DHCP server.</p>
 <h2 id="to-set-it-up-as-a-dns-server">To set it up as a DNS server<a class="headerlink" href="#to-set-it-up-as-a-dns-server" title="Permanent link">#</a></h2>
-<ol>
-<li>Install and configure a DNS Server e.g. DNSmasq or Pi-Hole on the Raspberry Pi.</li>
-<li>Change your router’s DNS settings to point to the Raspberry Pi. Log in to your router's admin interface and look for DNS e.g. in LAN, DHCP Server. Set the primary DNS server to the IP of your Raspberry Pi and make sure it's the only DNS server. The Raspberry Pi will handle upstream DNS services.</li>
+<ol start="0">
+<li>Install and configure a DNS Server e.g. DNSmasq or Pi-Hole on the Pi.</li>
+<li>Change your router’s DNS settings to point to the Pi. Log in to your router's admin interface and look for DNS e.g. in LAN, DHCP Server. Set the primary DNS server to the IP of your Pi and make sure it's the only DNS server. The Pi will handle upstream DNS services.</li>
 </ol>
 <h2 id="remote-gui-access">Remote GUI access<a class="headerlink" href="#remote-gui-access" title="Permanent link">#</a></h2>
-<p>Now you'll need a VNC viewer on your laptop to connect to the Raspberry Pi using the graphical interface.
+<p>Now you'll need a VNC viewer on your laptop to connect to the Pi using the graphical interface.
 <div class="highlight"><pre><span></span><code>brew<span class="w"> </span>install<span class="w"> </span>--cask<span class="w"> </span>vnc-viewer
 </code></pre></div></p>
 <div class="admonition attention">
