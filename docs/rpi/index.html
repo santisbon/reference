@@ -449,11 +449,11 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#set-up-a-cloud-native-homelab" class="md-nav__link">
-    Set up a cloud native homelab
+  <a href="#option-a-cloud-native" class="md-nav__link">
+    Option A: Cloud native
   </a>
   
-    <nav class="md-nav" aria-label="Set up a cloud native homelab">
+    <nav class="md-nav" aria-label="Option A: Cloud native">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -469,16 +469,16 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#set-up-a-one-off" class="md-nav__link">
-    Set up a one-off
+  <a href="#option-b-one-off" class="md-nav__link">
+    Option B: One-off
   </a>
   
-    <nav class="md-nav" aria-label="Set up a one-off">
+    <nav class="md-nav" aria-label="Option B: One-off">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#flash-the-stock-image" class="md-nav__link">
-    Flash the stock image
+  <a href="#flash-the-image" class="md-nav__link">
+    Flash the image
   </a>
   
 </li>
@@ -716,11 +716,11 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#set-up-a-cloud-native-homelab" class="md-nav__link">
-    Set up a cloud native homelab
+  <a href="#option-a-cloud-native" class="md-nav__link">
+    Option A: Cloud native
   </a>
   
-    <nav class="md-nav" aria-label="Set up a cloud native homelab">
+    <nav class="md-nav" aria-label="Option A: Cloud native">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -736,16 +736,16 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#set-up-a-one-off" class="md-nav__link">
-    Set up a one-off
+  <a href="#option-b-one-off" class="md-nav__link">
+    Option B: One-off
   </a>
   
-    <nav class="md-nav" aria-label="Set up a one-off">
+    <nav class="md-nav" aria-label="Option B: One-off">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#flash-the-stock-image" class="md-nav__link">
-    Flash the stock image
+  <a href="#flash-the-image" class="md-nav__link">
+    Flash the image
   </a>
   
 </li>
@@ -925,8 +925,8 @@ shasum<span class="w"> </span>-c<span class="w"> </span>Orangepi3b_1.0.0_ubuntu_
 <span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;f3842efb3be1be4243c24203bd16e335f155fdbe104b1ed8c5efc548ea478ab0 *ubuntu-22.04.3-preinstalled-server-arm64+raspi.img.xz&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>shasum<span class="w"> </span>-a<span class="w"> </span><span class="m">256</span><span class="w"> </span>--check
 xz<span class="w"> </span>-d<span class="w"> </span>ubuntu-22.04.3-preinstalled-server-arm64+raspi.img.xz
 </code></pre></div></p>
-<h2 id="set-up-a-cloud-native-homelab">Set up a cloud native homelab<a class="headerlink" href="#set-up-a-cloud-native-homelab" title="Permanent link">#</a></h2>
-<p>This is the most flexible option.</p>
+<h2 id="option-a-cloud-native">Option A: Cloud native<a class="headerlink" href="#option-a-cloud-native" title="Permanent link">#</a></h2>
+<p>This is the repeatable, flexible option.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>This lets you automatically upgrade the system, configure users, modify boot parameters, specify software to install, custom commands to run on first boot, among other things. Recommended when setting up multiple Pis or installing Kubernetes.</p>
@@ -1026,13 +1026,13 @@ diskutil<span class="w"> </span>unmountDisk<span class="w"> </span><span class="
 <span class="c1"># remove SD card from laptop, insert it in your Pi and turn it on</span>
 </code></pre></div>
 <p>Since we preconfigured everything it has a lot of work to do before it can be available including upgrading the system and installing packages. Wait at least 20 minutes before trying to connect to it via SSH. </p>
-<h2 id="set-up-a-one-off">Set up a one-off<a class="headerlink" href="#set-up-a-one-off" title="Permanent link">#</a></h2>
-<h3 id="flash-the-stock-image">Flash the stock image<a class="headerlink" href="#flash-the-stock-image" title="Permanent link">#</a></h3>
+<h2 id="option-b-one-off">Option B: One-off<a class="headerlink" href="#option-b-one-off" title="Permanent link">#</a></h2>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>This is the easiest option but is limited in how much you can preconfigure the OS. Recommended if you're setting up only one Pi and don't need to install Kubernetes or anything else that requires modified boot parameters.</p>
+<p>This is the easiest option but is limited in how much you can pre-configure the OS. Recommended if you're setting up only one board.</p>
 </div>
-<p>Use Raspberry Pi Imager (<code>brew install --cask raspberry-pi-imager</code>) to:  </p>
+<h3 id="flash-the-image">Flash the image<a class="headerlink" href="#flash-the-image" title="Permanent link">#</a></h3>
+<p>Use Raspberry Pi Imager or Balena Etcher (<code>brew install --cask [raspberry-pi-imager | balenaetcher]</code>) to flash the image to the SD card. If you use Pi Imager you can:  </p>
 <ul>
 <li>Change the password for the default user or disable passwords altogether.  </li>
 <li>Enable SSH (password or ssh keys); remove password authentication if using keys.  </li>
@@ -1047,10 +1047,11 @@ diskutil<span class="w"> </span>unmountDisk<span class="w"> </span><span class="
 <p>If you're <strong>reinstalling</strong> the OS you might need to remove old key fingerprints belonging to that hostname from your <code>known_hosts</code> file. Example:
 <div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code>ssh-keygen<span class="w">  </span>-f<span class="w"> </span>~/.ssh/known_hosts<span class="w"> </span>-R<span class="w"> </span>raspberrypi4.local
 </code></pre></div></p>
-<p>Find the IP of your Pi using its hostname or find all devices on your network with <code>arp -a</code>.
+<p>If your board is already running <code>avahi-daemon</code> (more on that later) you can reach it using its hostname.
 <div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code>arp<span class="w"> </span>raspberrypi4.local<span class="w"> </span>
 </code></pre></div>
-SSH into it with the configured user e.g. <code>pi</code> and the IP address or hostname. Examples:
+Otherwise, find your board's IP in your router's admin UI or by going over the list of all devices on your network with <code>arp -a</code>.</p>
+<p>SSH into it with the configured user e.g. <code>pi</code> and the IP address or hostname. Examples:
 <div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code>ssh<span class="w"> </span>pi@raspberrypi4.local
 <span class="c1"># or</span>
 ssh<span class="w"> </span>pi@192.168.xxx.xxx

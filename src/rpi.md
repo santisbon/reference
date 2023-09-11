@@ -36,8 +36,8 @@ echo "f3842efb3be1be4243c24203bd16e335f155fdbe104b1ed8c5efc548ea478ab0 *ubuntu-2
 xz -d ubuntu-22.04.3-preinstalled-server-arm64+raspi.img.xz
 ```
 
-## Set up a cloud native homelab 
-This is the most flexible option.
+## Option A: Cloud native 
+This is the repeatable, flexible option.
 
 !!! tip
     This lets you automatically upgrade the system, configure users, modify boot parameters, specify software to install, custom commands to run on first boot, among other things. Recommended when setting up multiple Pis or installing Kubernetes.
@@ -145,14 +145,15 @@ diskutil unmountDisk $DEVICE
 
 Since we preconfigured everything it has a lot of work to do before it can be available including upgrading the system and installing packages. Wait at least 20 minutes before trying to connect to it via SSH. 
 
-## Set up a one-off 
-
-### Flash the stock image
+## Option B: One-off 
 
 !!! tip
-    This is the easiest option but is limited in how much you can preconfigure the OS. Recommended if you're setting up only one Pi and don't need to install Kubernetes or anything else that requires modified boot parameters.
+    This is the easiest option but is limited in how much you can pre-configure the OS. Recommended if you're setting up only one board.
 
-Use Raspberry Pi Imager (`brew install --cask raspberry-pi-imager`) to:  
+
+### Flash the image
+
+Use Raspberry Pi Imager or Balena Etcher (`brew install --cask [raspberry-pi-imager | balenaetcher]`) to flash the image to the SD card. If you use Pi Imager you can:  
 
 * Change the password for the default user or disable passwords altogether.  
 * Enable SSH (password or ssh keys); remove password authentication if using keys.  
@@ -169,10 +170,12 @@ If you're **reinstalling** the OS you might need to remove old key fingerprints 
 ssh-keygen  -f ~/.ssh/known_hosts -R raspberrypi4.local
 ```
 
-Find the IP of your Pi using its hostname or find all devices on your network with `arp -a`.
+If your board is already running `avahi-daemon` (more on that later) you can reach it using its hostname.
 ```zsh title="On your laptop"
 arp raspberrypi4.local 
 ```
+Otherwise, find your board's IP in your router's admin UI or by going over the list of all devices on your network with `arp -a`.
+
 SSH into it with the configured user e.g. `pi` and the IP address or hostname. Examples:
 ```zsh title="On your laptop"
 ssh pi@raspberrypi4.local
