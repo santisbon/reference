@@ -143,7 +143,7 @@ diskutil unmountDisk $DEVICE
 # remove SD card from laptop, insert it in your Pi and turn it on
 ```
 
-Since we preconfigured everything it has a lot of work to do before it can be available including upgrading the system and installing packages. Wait at least 20 minutes before trying to connect to it via SSH. 
+Since we preconfigured everything it has a lot of work to do before it can be available including upgrading the system and installing packages. Wait a few minutes before trying to connect to it via SSH. 
 
 ## Option B: One-off 
 
