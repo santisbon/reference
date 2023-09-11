@@ -63,7 +63,7 @@ diskutil list
 IMAGE=ubuntu-22.04.3-preinstalled-server-arm64+raspi.img
 DEVICE=/dev/mydevice # e.g. /dev/disk4
 
-HOSTNAME=orangepi3
+HOSTNAME=raspberrypi4
 LOCALE=en_US
 TIMEZONE=US/Central
 
@@ -160,7 +160,7 @@ Use Raspberry Pi Imager (`brew install --cask raspberry-pi-imager`) to:
 * Set the hostname.  
 
 !!! attention
-    If you flash a different type of image (like an Orange Pi image) using the Raspberry Pi Imager, the pre-configurations you entered on the tool won't take effect. You'll still have to configure it manually.
+    The Orange Pi images don't seem to have `cloud-init` installed. You'll have to configure them manually.
 
 ### Access your Pi
 
@@ -219,6 +219,12 @@ Test the validity of the config file and restart the service (or reboot).
 sudo sshd -t
 sudo service sshd restart
 sudo service sshd status
+```
+
+Update the password for default users. Examples:
+```zsh
+sudo passwd root
+sudo passwd orangepi
 ```
 
 #### Board-specific tools

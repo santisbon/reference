@@ -1021,18 +1021,25 @@ kubectl -n kubernetes-dashboard create token admin-user
 ## MicroK8s
 
 [On Raspberry Pi](https://microk8s.io/docs/install-raspberry-pi)  
-!!! attention 
-    Your boot parameters might be in `/boot/cmdline.txt` instead of `/boot/firmware/cmdline.txt`. 
 
 !!! attention
-    MicroK8s is not available for 32-bit architectures like `armhf` / `arm/v7`, only on 64-bit architectures like `arm64` and `amd64`.
+    MicroK8s is not available for 32-bit architectures like `armhf`(`arm/v7`), only on 64-bit architectures like `arm64` and `amd64`.
 
-Add these options at the end of the file, then `sudo reboot`. Some users report needing `cgroup_enable=cpuset` as well but try adding only these first:
+!!! attention 
+    On Raspberry Pi your boot parameters file might be in `/boot/cmdline.txt` or in `/boot/firmware/cmdline.txt`. Find it with `sudo find /boot -name cmdline.txt`.  
+
+On Raspberry Pi add these options at the end of the file, then `sudo reboot`. Some users report needing `cgroup_enable=cpuset` as well but try adding only these first:
 ``` title="cmdline.txt"
 cgroup_enable=memory cgroup_memory=1
 ```
 
-For Raspberry Pi OS [install](https://snapcraft.io/docs/installing-snap-on-raspbian) `snap` first.
+!!! attention
+    On Orange Pi boards these parameters are handled in `/boot/boot.cmd` by checking:  
+    `if test "${docker_optimizations}" = "on"`.  
+
+    Don't edit this file, instead `sudo nano /boot/orangepiEnv.txt` to set the parameter to `on`.
+
+If your image doesn't already include it, [install](https://snapcraft.io/docs/installing-snap-on-raspbian) `snap` first.
 ```zsh
 sudo apt update
 sudo apt install snapd
@@ -1040,6 +1047,7 @@ sudo reboot
 # ...reconnect after reboot
 sudo snap install core
 ```
+
 Then install MicroK8s.
 ```zsh
 pi@raspberrypi4:~ $ sudo snap install microk8s --classic

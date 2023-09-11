@@ -2041,23 +2041,29 @@ kubectl<span class="w"> </span>-n<span class="w"> </span>kubernetes-dashboard<sp
 <p><a href="https://microk8s.io/docs/install-raspberry-pi">On Raspberry Pi</a>  </p>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
-<p>Your boot parameters might be in <code>/boot/cmdline.txt</code> instead of <code>/boot/firmware/cmdline.txt</code>. </p>
+<p>MicroK8s is not available for 32-bit architectures like <code>armhf</code>(<code>arm/v7</code>), only on 64-bit architectures like <code>arm64</code> and <code>amd64</code>.</p>
 </div>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
-<p>MicroK8s is not available for 32-bit architectures like <code>armhf</code> / <code>arm/v7</code>, only on 64-bit architectures like <code>arm64</code> and <code>amd64</code>.</p>
+<p>On Raspberry Pi your boot parameters file might be in <code>/boot/cmdline.txt</code> or in <code>/boot/firmware/cmdline.txt</code>. Find it with <code>sudo find /boot -name cmdline.txt</code>.  </p>
 </div>
-<p>Add these options at the end of the file, then <code>sudo reboot</code>. Some users report needing <code>cgroup_enable=cpuset</code> as well but try adding only these first:
+<p>On Raspberry Pi add these options at the end of the file, then <code>sudo reboot</code>. Some users report needing <code>cgroup_enable=cpuset</code> as well but try adding only these first:
 <div class="highlight"><span class="filename">cmdline.txt</span><pre><span></span><code>cgroup_enable=memory cgroup_memory=1
 </code></pre></div></p>
-<p>For Raspberry Pi OS <a href="https://snapcraft.io/docs/installing-snap-on-raspbian">install</a> <code>snap</code> first.
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>On Orange Pi boards these parameters are handled in <code>/boot/boot.cmd</code> by checking:<br />
+<code>if test "${docker_optimizations}" = "on"</code>.  </p>
+<p>Don't edit this file, instead <code>sudo nano /boot/orangepiEnv.txt</code> to set the parameter to <code>on</code>.</p>
+</div>
+<p>If your image doesn't already include it, <a href="https://snapcraft.io/docs/installing-snap-on-raspbian">install</a> <code>snap</code> first.
 <div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>update
 sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>snapd
 sudo<span class="w"> </span>reboot
 <span class="c1"># ...reconnect after reboot</span>
 sudo<span class="w"> </span>snap<span class="w"> </span>install<span class="w"> </span>core
-</code></pre></div>
-Then install MicroK8s.
+</code></pre></div></p>
+<p>Then install MicroK8s.
 <div class="highlight"><pre><span></span><code>pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>sudo<span class="w"> </span>snap<span class="w"> </span>install<span class="w"> </span>microk8s<span class="w"> </span>--classic
 pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>microk8s<span class="w"> </span>status<span class="w"> </span>--wait-ready
 pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>all<span class="w"> </span>--all-namespaces
