@@ -969,7 +969,7 @@ shasum<span class="w"> </span>-c<span class="w"> </span>Orangepi3b_1.0.0_ubuntu_
 <p>This is the repeatable, flexible option.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>This lets you automatically upgrade the system, configure users, modify boot parameters, install software, run commands on first boot, among other things. Recommended when setting up multiple Pis or installing Kubernetes.</p>
+<p>This lets you launch your Pi just like a cloud instance. Automatically upgrade the system, configure users, modify boot parameters, install software, run commands on first boot, among other things. Recommended when setting up multiple Pis or installing Kubernetes.</p>
 </div>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
@@ -984,7 +984,7 @@ shasum<span class="w"> </span>-c<span class="w"> </span>Orangepi3b_1.0.0_ubuntu_
 </div>
 <p>We'll flash a pre-configured SD card with:  </p>
 <ul>
-<li>Hostname</li>
+<li>A hostname</li>
 <li>A user with ssh key authentication (and password authentication disabled)</li>
 <li>Upgraded packages</li>
 <li>Additional packages installed</li>
@@ -1110,7 +1110,7 @@ cat<span class="w"> </span>/Volumes/<span class="nv">$VOLUME</span>/cmdline.txt
 <p>Since we pre-configured everything it has a lot of work to do on the first boot and it takes several minutes. You'll be able to go in as soon as the SSH service is up but it will probably still be in the process of upgrading packages as well as installing and configuring our software.  </p>
 <p>Go make yourself a cup of tea before <a href="#access-your-pi">connecting</a> for the first time.</p>
 <p>Once enough time has passed, you can now check a few things to make sure everything went smoothly.
-<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code><span class="c1"># Check if there were any `cloud-init` errors</span>
+<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code><span class="c1"># Check if there were any cloud-init errors</span>
 sudo<span class="w"> </span>cat<span class="w"> </span>/var/log/cloud-init.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>failures
 sudo<span class="w"> </span>cat<span class="w"> </span>/var/log/cloud-init-output.log
 
@@ -1160,8 +1160,8 @@ ip<span class="w"> </span>addr<span class="w"> </span>show<span class="w"> </spa
 <li><code>upgrade</code> is used to install available upgrades of all packages currently installed on the system. New packages will be installed if required to satisfy dependencies, but existing packages will never be removed. If an upgrade for a package requires the removal of an installed package the upgrade for this package isn't performed.  </li>
 <li><code>full-upgrade</code> performs the function of upgrade but will remove currently installed packages if this is needed to upgrade the system as a whole.</li>
 </ul>
-<div class="highlight"><pre><span></span><code>pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>update<span class="w"> </span><span class="c1"># updates the package list</span>
-pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>full-upgrade
+<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>update<span class="w"> </span><span class="c1"># updates the package list</span>
+sudo<span class="w"> </span>apt<span class="w"> </span>full-upgrade
 </code></pre></div>
 <h3 id="configure">Configure<a class="headerlink" href="#configure" title="Permanent link">#</a></h3>
 <p>Make the board reachable using its hostname, not only its IP. Also install tool to view hardware info.
@@ -1172,22 +1172,23 @@ pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>sudo<span clas
 <div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code><span class="c1"># Specify the type of key to create e.g. `ed25519` or `rsa`.</span>
 ssh-keygen<span class="w"> </span>-t<span class="w"> </span>ed25519
 <span class="c1"># Add it on the remote machine (if the `-i` filename does not end in `.pub` this is added)</span>
+<span class="c1"># Examples:</span>
 ssh-copy-id<span class="w"> </span>-i<span class="w"> </span>~/.ssh/id_rsa<span class="w"> </span>pi@raspberrypi4b.local
 ssh-copy-id<span class="w"> </span>-i<span class="w"> </span>~/.ssh/id_ed25519<span class="w"> </span>orangepi@orangepi3b.local
 </code></pre></div></p>
 <p>To remove password authentication:
-<div class="highlight"><span class="filename">on the Pi</span><pre><span></span><code>sudo<span class="w"> </span>nano<span class="w"> </span>/etc/ssh/sshd_config
+<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>sudo<span class="w"> </span>nano<span class="w"> </span>/etc/ssh/sshd_config
 </code></pre></div>
 and replace <code>#PasswordAuthentication yes</code> with <code>PasswordAuthentication no</code>.
 Test the validity of the config file and restart the service (or reboot).
-<div class="highlight"><span class="filename">on the Pi</span><pre><span></span><code>sudo<span class="w"> </span>sshd<span class="w"> </span>-t
+<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>sudo<span class="w"> </span>sshd<span class="w"> </span>-t
 sudo<span class="w"> </span>service<span class="w"> </span>sshd<span class="w"> </span>restart
 sudo<span class="w"> </span>service<span class="w"> </span>sshd<span class="w"> </span>status
 </code></pre></div></p>
 <h4 id="board-specific-tools">Board-specific tools<a class="headerlink" href="#board-specific-tools" title="Permanent link">#</a></h4>
 <h5 id="raspberry-pi">Raspberry Pi<a class="headerlink" href="#raspberry-pi" title="Permanent link">#</a></h5>
 <p>On Raspberry Pi OS
-<div class="highlight"><pre><span></span><code>pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>sudo<span class="w"> </span>raspi-config
+<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>sudo<span class="w"> </span>raspi-config
 <span class="c1"># Go to Interface Options, VNC (for graphical remote access)</span>
 <span class="c1"># Tab to the Finish option and reboot.</span>
 </code></pre></div></p>
@@ -1254,11 +1255,11 @@ python3<span class="w"> </span>-m<span class="w"> </span>pygame.examples.aliens
 </div>
 <h3 id="to-give-it-a-static-ip">To give it a static IP<a class="headerlink" href="#to-give-it-a-static-ip" title="Permanent link">#</a></h3>
 <p>Find the IP adddress of your router. It's the address that appears after <code>default via</code>.
-<div class="highlight"><pre><span></span><code>pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>ip<span class="w"> </span>r
+<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>ip<span class="w"> </span>r
 default<span class="w"> </span>via<span class="w"> </span><span class="o">[</span>IP<span class="o">]</span>
 </code></pre></div>
 Get the IP of your DNS server (it may or may not be your router)
-<div class="highlight"><pre><span></span><code>pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>grep<span class="w"> </span>nameserver<span class="w"> </span>/etc/resolv.conf
+<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>grep<span class="w"> </span>nameserver<span class="w"> </span>/etc/resolv.conf
 </code></pre></div></p>
 <p>Open this file:
 <div class="highlight"><pre><span></span><code>nano<span class="w"> </span>/etc/dhcpcd.conf
@@ -1289,9 +1290,9 @@ static domain_name_servers=[DNS IP]
 <div class="highlight"><pre><span></span><code>ethtool<span class="w"> </span>eth0
 </code></pre></div></p>
 <p>32 or 64-bit kernel?
-<div class="highlight"><pre><span></span><code>getconf<span class="w"> </span>LONG_BIT
+<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>getconf<span class="w"> </span>LONG_BIT
 <span class="c1"># or check machine&#39;s hardware name: armv7l is 32-bit and aarch64 is 64-bit</span>
-pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>uname<span class="w"> </span>-m
+uname<span class="w"> </span>-m
 </code></pre></div></p>
 <p>See OS version
 <div class="highlight"><pre><span></span><code>cat<span class="w"> </span>/etc/os-release
@@ -1299,13 +1300,13 @@ pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>uname<span cla
 <p>Architecture  <br />
 If the following returns a <code>Tag_ABI_VFP_args</code> tag of <code>VFP registers</code>, it's an <code>armhf</code> (<code>arm</code>) system.<br />
 A blank output means <code>armel</code> (<code>arm/v6</code>).
-<div class="highlight"><pre><span></span><code>pi@raspberrypi2:~<span class="w"> </span>$<span class="w"> </span>readelf<span class="w"> </span>-A<span class="w"> </span>/proc/self/exe<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>Tag_ABI_VFP_args
+<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>readelf<span class="w"> </span>-A<span class="w"> </span>/proc/self/exe<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>Tag_ABI_VFP_args
 </code></pre></div>
 Or check the architecture with:
 <div class="highlight"><pre><span></span><code>hostnamectl
 </code></pre></div></p>
 <p>You can find info about the hardware like ports, pins, RAM, SoC, connectivity, etc. with:
-<div class="highlight"><pre><span></span><code>pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>pinout
+<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>pinout
 </code></pre></div></p>
 <h3 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">#</a></h3>
 <p>If your Pi's ethernet port is capable of 1Gbps, you're using a cat5e cable or better, your router and switch support 1Gbps,  and you're still only getting 100Mbps <strong>first try with another cable</strong>. A faulty cable is the most common cause of problems like this. If that doesn't work you can try disabling EEE (Energy Efficient Ethernet) although it will be reenabled at reboot. You could also try setting the speed manually.

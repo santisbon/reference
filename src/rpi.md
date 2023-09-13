@@ -41,7 +41,7 @@ shasum -c Orangepi3b_1.0.0_ubuntu_jammy_server_linux5.10.160.img.sha
 This is the repeatable, flexible option.
 
 !!! tip
-    This lets you automatically upgrade the system, configure users, modify boot parameters, install software, run commands on first boot, among other things. Recommended when setting up multiple Pis or installing Kubernetes.
+    This lets you launch your Pi just like a cloud instance. Automatically upgrade the system, configure users, modify boot parameters, install software, run commands on first boot, among other things. Recommended when setting up multiple Pis or installing Kubernetes.
 
 !!! important
     This requires the OS image to:
@@ -56,7 +56,7 @@ This is the repeatable, flexible option.
 
 We'll flash a pre-configured SD card with:  
 
-* Hostname
+* A hostname
 * A user with ssh key authentication (and password authentication disabled)
 * Upgraded packages
 * Additional packages installed
@@ -196,8 +196,8 @@ Since we pre-configured everything it has a lot of work to do on the first boot 
 Go make yourself a cup of tea before [connecting](#access-your-pi) for the first time.
 
 Once enough time has passed, you can now check a few things to make sure everything went smoothly.
-```zsh title="On your Pi"
-# Check if there were any `cloud-init` errors
+```sh title="On your Pi"
+# Check if there were any cloud-init errors
 sudo cat /var/log/cloud-init.log | grep failures
 sudo cat /var/log/cloud-init-output.log
 
@@ -250,36 +250,37 @@ Use Raspberry Pi Imager or Balena Etcher (`brew install --cask [raspberry-pi-ima
 * `upgrade` is used to install available upgrades of all packages currently installed on the system. New packages will be installed if required to satisfy dependencies, but existing packages will never be removed. If an upgrade for a package requires the removal of an installed package the upgrade for this package isn't performed.  
 * `full-upgrade` performs the function of upgrade but will remove currently installed packages if this is needed to upgrade the system as a whole.
 
-```zsh
-pi@raspberrypi4:~ $ sudo apt update # updates the package list
-pi@raspberrypi4:~ $ sudo apt full-upgrade
+```sh title="On your Pi"
+sudo apt update # updates the package list
+sudo apt full-upgrade
 ```
 
 ### Configure
 
 Make the board reachable using its hostname, not only its IP. Also install tool to view hardware info.
-```zsh
+```sh
 sudo apt install avahi-daemon lshw
 ```
 
 #### Authentication
 
 If you **didn't do so during setup**, generate and add an ssh key.
-```zsh title="On your laptop"
+```sh title="On your laptop"
 # Specify the type of key to create e.g. `ed25519` or `rsa`.
 ssh-keygen -t ed25519
 # Add it on the remote machine (if the `-i` filename does not end in `.pub` this is added)
+# Examples:
 ssh-copy-id -i ~/.ssh/id_rsa pi@raspberrypi4b.local
 ssh-copy-id -i ~/.ssh/id_ed25519 orangepi@orangepi3b.local
 ```
 
 To remove password authentication:
-```zsh title="on the Pi"
+```sh title="On your Pi"
 sudo nano /etc/ssh/sshd_config
 ```
 and replace `#PasswordAuthentication yes` with `PasswordAuthentication no`.
 Test the validity of the config file and restart the service (or reboot).
-```zsh title="on the Pi"
+```sh title="On your Pi"
 sudo sshd -t
 sudo service sshd restart
 sudo service sshd status
@@ -290,8 +291,8 @@ sudo service sshd status
 ##### Raspberry Pi
 
 On Raspberry Pi OS
-```zsh
-pi@raspberrypi4:~ $ sudo raspi-config
+```sh title="On your Pi"
+sudo raspi-config
 # Go to Interface Options, VNC (for graphical remote access)
 # Tab to the Finish option and reboot.
 ```
@@ -299,16 +300,16 @@ pi@raspberrypi4:~ $ sudo raspi-config
 ##### Orange Pi
 
 In Ubuntu for Orange Pi, to reach other machines by hostname you need to add an entry to the hosts file even if `avahi-daemon` is running on the hosts. Example:
-```zsh title="/etc/hosts"
+```sh title="/etc/hosts"
 192.168.x.x  thathostname.local
 ```
 
 Orange Pi has a config tool as well
-```zsh
+```sh
 orangepi@orangepi3b:~$ sudo orangepi-config
 ```
 If you just need to connect to Wi-Fi on Orange Pi, use:
-```zsh
+```sh
 nmcli dev wifi connect wifi_name password wifi_passwd
 ```
 
@@ -325,7 +326,7 @@ After this, [install MicroK8s](/reference/k8s/#microk8s).
 
     **Before connecting to your Pi**  
     If it's not already running, start the `ssh-agent` in the background and add your private key to it so you're not asked for your passphrase every time.
-    ```zsh title="On your laptop"
+    ```sh title="On your laptop"
     # is it running?
     ps -ax | grep ssh-agent
     # which identities have been added?
@@ -337,25 +338,25 @@ After this, [install MicroK8s](/reference/k8s/#microk8s).
     ```
 
 If you're **reinstalling** the OS you might need to remove old key fingerprints belonging to that hostname from your `known_hosts` file. Example:
-```zsh title="On your laptop"
+```sh title="On your laptop"
 ssh-keygen  -f ~/.ssh/known_hosts -R raspberrypi4b.local
 ```
 
 If your board is already running `avahi-daemon` you can reach it using its hostname.
-```zsh title="On your laptop"
+```sh title="On your laptop"
 arp raspberrypi4b.local 
 ```
 Otherwise, find your board's IP in your router's admin UI or by going over the list of all devices on your network with `arp -a`.
 
 SSH into it with the configured user e.g. `pi` and the IP address or hostname. Examples:
-```zsh title="On your laptop"
+```sh title="On your laptop"
 ssh pi@raspberrypi4b.local
 # or
 ssh pi@192.168.xxx.xxx
 ```
 
 Update the password for default users like `pi`, `orangepi`, `ubuntu`, etc. Examples:
-```zsh
+```sh
 sudo passwd root
 sudo passwd pi
 ```
@@ -364,7 +365,7 @@ sudo passwd pi
 *If you installed a graphical desktop*
 
 You'll need a VNC viewer on your laptop to connect to the Pi using the graphical interface.
-```zsh title="On your laptop"
+```sh title="On your laptop"
 brew install --cask vnc-viewer
 ```
 
@@ -372,7 +373,7 @@ brew install --cask vnc-viewer
     Apparently, on Raspberry Pi OS `pip` does not download from the Python Package Index (PyPI), it downloads from PiWheels. PiWheels wheels do not come with `pygame`'s dependencies that are bundled in normal releases.
 
     Install Pygame [dependencies](https://www.piwheels.org/project/pygame/) and Pygame.
-    ```zsh title="On your Pi"
+    ```sh title="On your Pi"
     sudo apt install libvorbisenc2 libwayland-server0 libxi6 libfluidsynth2 libgbm1 libxkbcommon0 libopus0 libwayland-cursor0 libsndfile1 libwayland-client0 libportmidi0 libvorbis0a libopusfile0 libmpg123-0 libflac8 libxcursor1 libxinerama1 libasyncns0 libxrandr2 libdrm2 libpulse0 libxfixes3 libvorbisfile3 libmodplug1 libxrender1 libsdl2-2.0-0 libxxf86vm1 libwayland-egl1 libsdl2-ttf-2.0-0 libsdl2-image-2.0-0 libjack0 libsdl2-mixer-2.0-0 libinstpatch-1.0-2 libxss1 libogg0
     sudo pip3 install pygame
 
@@ -382,17 +383,17 @@ brew install --cask vnc-viewer
 
 ### To give it a static IP
 Find the IP adddress of your router. It's the address that appears after `default via`.
-```zsh
-pi@raspberrypi4:~ $ ip r
+```sh title="On your Pi"
+ip r
 default via [IP]
 ```
 Get the IP of your DNS server (it may or may not be your router)
-```zsh
-pi@raspberrypi4:~ $ grep nameserver /etc/resolv.conf
+```sh title="On your Pi"
+grep nameserver /etc/resolv.conf
 ```
 
 Open this file:
-```zsh
+```sh
 nano /etc/dhcpcd.conf
 ```
 and add/edit these lines at the end filling in the correct info.
@@ -416,54 +417,54 @@ You could also set your router to manually assign the static IP to the Pi under 
 ### Copying files
 
 To copy files between the Pi and local machine
-```zsh title="On your laptop"
+```sh title="On your laptop"
 scp -r pi@raspberrypi2.local:/home/pi/Documents/ ~/Documents/pidocs
 ```
 
 ### Find info about your Pi
 
 What model do you have?
-```zsh
+```sh
 cat /sys/firmware/devicetree/base/model ;echo
 ```
 
 What's the connection speed of the ethernet port?
-```zsh
+```sh
 ethtool eth0
 ```
 
 32 or 64-bit kernel?
-```zsh
+```sh title="On your Pi"
 getconf LONG_BIT
 # or check machine's hardware name: armv7l is 32-bit and aarch64 is 64-bit
-pi@raspberrypi4:~ $ uname -m
+uname -m
 ```
 
 See OS version
-```zsh
+```sh
 cat /etc/os-release
 ```
 
 Architecture    
 If the following returns a `Tag_ABI_VFP_args` tag of `VFP registers`, it's an `armhf` (`arm`) system.  
 A blank output means `armel` (`arm/v6`).
-```zsh
-pi@raspberrypi2:~ $ readelf -A /proc/self/exe | grep Tag_ABI_VFP_args
+```sh title="On your Pi"
+readelf -A /proc/self/exe | grep Tag_ABI_VFP_args
 ```
 Or check the architecture with:
-```zsh
+```sh
 hostnamectl
 ```
 
 You can find info about the hardware like ports, pins, RAM, SoC, connectivity, etc. with:
-```zsh
-pi@raspberrypi4:~ $ pinout
+```sh title="On your Pi"
+pinout
 ```
 
 ### Troubleshooting
 
 If your Pi's ethernet port is capable of 1Gbps, you're using a cat5e cable or better, your router and switch support 1Gbps,  and you're still only getting 100Mbps **first try with another cable**. A faulty cable is the most common cause of problems like this. If that doesn't work you can try disabling EEE (Energy Efficient Ethernet) although it will be reenabled at reboot. You could also try setting the speed manually.
-```zsh
+```sh
 ethtool --show-eee eth0
 sudo ethtool --set-eee eth0 eee off
 
@@ -472,12 +473,12 @@ ethtool -s eth0 speed 1000 duplex full autoneg off
 ```
 
 If not using `cloud-init` or an imager program, enable ssh with
-```zsh
+```sh
 touch /Volumes/$VOLUME/ssh
 ```
 
 DNS issues
-```zsh
+```sh
 cat /etc/resolv.conf
 resolvectl status
 ```
