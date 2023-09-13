@@ -1028,7 +1028,8 @@ Suitable for [Raspberry Pi](https://microk8s.io/docs/install-raspberry-pi) and o
 !!! attention 
     On Raspberry Pi your boot parameters file might be in `/boot/cmdline.txt` or in `/boot/firmware/cmdline.txt`. Find it with `sudo find /boot -name cmdline.txt`.  
 
-On Raspberry Pi add these options at the end of the file, then `sudo reboot`. Some users report needing `cgroup_enable=cpuset` as well but try adding only these first:
+On Raspberry Pi you need to enable c-groups so the kubelet will work out of the box.  
+Add these options at the end of the file, then `sudo reboot`. Some users report needing `cgroup_enable=cpuset` as well but try adding only these:
 ``` title="cmdline.txt"
 cgroup_enable=memory cgroup_memory=1
 ```

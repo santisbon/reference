@@ -1021,7 +1021,7 @@ diskutil<span class="w"> </span>unmountDisk<span class="w"> </span><span class="
 <span class="c1"># sudo dd if=$IMAGE of=$DEVICE bs=1m status=progress</span>
 pv<span class="w"> </span><span class="nv">$IMAGE</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>dd<span class="w"> </span><span class="nv">bs</span><span class="o">=</span>1m<span class="w"> </span><span class="nv">of</span><span class="o">=</span><span class="nv">$DEVICE</span>
 </code></pre></div></p>
-<p>When it's done you'll see a volume mounted on your desktop called <code>system-boot</code> or something similar. Modify the volume to inject <code>user-data</code> and set boot parameters needed by Kubernetes.
+<p>When it's done you'll see a volume mounted on your desktop called <code>system-boot</code> or something similar. Modify the volume to inject <code>user-data</code> and set boot parameters needed by Kubernetes (enable c-groups so the kubelet will work out of the box).
 <div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code><span class="c1">###################################################################</span>
 <span class="c1"># REPLACE WITH YOUR VALUES</span>
 <span class="c1">###################################################################</span>
@@ -1124,6 +1124,7 @@ systemctl<span class="w"> </span>status<span class="w"> </span><span class="s1">
 
 <span class="c1"># Check if MicroK8s is intalled and running with the addons enabled</span>
 sudo<span class="w"> </span>microk8s<span class="w"> </span>status<span class="w"> </span>--wait-ready
+sudo<span class="w"> </span>microk8s<span class="w"> </span>kubectl<span class="w"> </span>cluster-info
 
 <span class="c1"># Check cloud-init&#39;s network configuration </span>
 cat<span class="w"> </span>/etc/netplan/50-cloud-init.yaml

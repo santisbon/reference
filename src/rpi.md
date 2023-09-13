@@ -97,7 +97,7 @@ cd ~/Downloads
 pv $IMAGE | sudo dd bs=1m of=$DEVICE
 ```
 
-When it's done you'll see a volume mounted on your desktop called `system-boot` or something similar. Modify the volume to inject `user-data` and set boot parameters needed by Kubernetes.
+When it's done you'll see a volume mounted on your desktop called `system-boot` or something similar. Modify the volume to inject `user-data` and set boot parameters needed by Kubernetes (enable c-groups so the kubelet will work out of the box).
 ```sh title="On your laptop" 
 ###################################################################
 # REPLACE WITH YOUR VALUES
@@ -211,6 +211,7 @@ systemctl status 'avahi*'
 
 # Check if MicroK8s is intalled and running with the addons enabled
 sudo microk8s status --wait-ready
+sudo microk8s kubectl cluster-info
 
 # Check cloud-init's network configuration 
 cat /etc/netplan/50-cloud-init.yaml
