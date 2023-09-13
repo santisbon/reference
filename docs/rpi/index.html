@@ -457,8 +457,8 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#flash-pre-configured-image" class="md-nav__link">
-    Flash pre-configured image
+  <a href="#flash-the-image" class="md-nav__link">
+    Flash the image
   </a>
   
 </li>
@@ -477,7 +477,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#flash-the-image" class="md-nav__link">
+  <a href="#flash-the-image_1" class="md-nav__link">
     Flash the image
   </a>
   
@@ -524,13 +524,6 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#remote-gui-access" class="md-nav__link">
-    Remote GUI access
-  </a>
-  
-</li>
-        
       </ul>
     </nav>
   
@@ -547,6 +540,13 @@
           <li class="md-nav__item">
   <a href="#access-your-pi" class="md-nav__link">
     Access your Pi
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remote-gui-access" class="md-nav__link">
+    Remote GUI access
   </a>
   
 </li>
@@ -724,8 +724,8 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#flash-pre-configured-image" class="md-nav__link">
-    Flash pre-configured image
+  <a href="#flash-the-image" class="md-nav__link">
+    Flash the image
   </a>
   
 </li>
@@ -744,7 +744,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#flash-the-image" class="md-nav__link">
+  <a href="#flash-the-image_1" class="md-nav__link">
     Flash the image
   </a>
   
@@ -791,13 +791,6 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#remote-gui-access" class="md-nav__link">
-    Remote GUI access
-  </a>
-  
-</li>
-        
       </ul>
     </nav>
   
@@ -814,6 +807,13 @@
           <li class="md-nav__item">
   <a href="#access-your-pi" class="md-nav__link">
     Access your Pi
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remote-gui-access" class="md-nav__link">
+    Remote GUI access
   </a>
   
 </li>
@@ -915,6 +915,7 @@
 <a href="https://github.com/canonical/ubuntu.com/blob/main/releases.yaml">Checksums</a></p>
 <p>Manufacturer's images for Orange Pi 3B:  <br />
 <a href="http://www.orangepi.org/html/hardWare/computerAndMicrocontrollers/service-and-support/Orange-Pi-3B.html">Download</a>  </p>
+<p>The rest of this guide assumes you downloaded your image to <code>~/Downloads</code>.</p>
 <p>Examples of verifying the integrity of the image file:
 <div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code><span class="c1"># Check the sum from the Ubuntu website and decompress</span>
 <span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;f3842efb3be1be4243c24203bd16e335f155fdbe104b1ed8c5efc548ea478ab0 *ubuntu-22.04.3-preinstalled-server-arm64+raspi.img.xz&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>shasum<span class="w"> </span>-a<span class="w"> </span><span class="m">256</span><span class="w"> </span>--check
@@ -941,7 +942,6 @@ shasum<span class="w"> </span>-c<span class="w"> </span>Orangepi3b_1.0.0_ubuntu_
 ❌ Not supoprted by Orange Pi images.</p>
 <p>If you're setting up an Orange Pi, download the image and see the <a href="#option-b-one-off">one-off</a> instructions.</p>
 </div>
-<h3 id="flash-pre-configured-image">Flash pre-configured image<a class="headerlink" href="#flash-pre-configured-image" title="Permanent link">#</a></h3>
 <p>We'll flash a pre-configured SD card with:  </p>
 <ul>
 <li>Hostname</li>
@@ -962,17 +962,30 @@ shasum<span class="w"> </span>-c<span class="w"> </span>Orangepi3b_1.0.0_ubuntu_
 <p class="admonition-title">Attention</p>
 <p>This example uses macOS. Adjust the commands with your OS's tools to <a href="https://ostechnix.com/how-to-use-pbcopy-and-pbpaste-commands-on-linux/">copy/paste</a>, view disks, <code>dd</code> options, and <a href="https://unix.stackexchange.com/questions/13711/differences-between-sed-on-mac-osx-and-other-standard-sed"><code>sed</code> version</a>. It has been tested with the image provided by Ubuntu for Raspberry Pi.  </p>
 </div>
+<h3 id="flash-the-image">Flash the image<a class="headerlink" href="#flash-the-image" title="Permanent link">#</a></h3>
 <p>Insert the SD card and check the device name e.g. <code>/dev/disk4</code>
 <div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code>diskutil<span class="w"> </span>list
 </code></pre></div></p>
 <p>Use that device name to flash the OS image to the SD card.
-<div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>~/Downloads
-
-<span class="c1">###################################################################</span>
+<div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code><span class="c1">###################################################################</span>
 <span class="c1"># REPLACE WITH YOUR VALUES</span>
 <span class="c1">###################################################################</span>
 <span class="nv">IMAGE</span><span class="o">=</span><span class="s1">&#39;ubuntu-22.04.3-preinstalled-server-arm64+raspi.img&#39;</span><span class="w"> </span>
 <span class="nv">DEVICE</span><span class="o">=</span><span class="s1">&#39;/dev/disk4&#39;</span><span class="w"> </span>
+<span class="c1">###################################################################</span>
+
+<span class="c1"># Unmount the card</span>
+diskutil<span class="w"> </span>unmountDisk<span class="w"> </span><span class="nv">$DEVICE</span>
+
+<span class="nb">cd</span><span class="w"> </span>~/Downloads
+<span class="c1"># sudo dd if=$IMAGE of=$DEVICE bs=1m status=progress</span>
+pv<span class="w"> </span><span class="nv">$IMAGE</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>dd<span class="w"> </span><span class="nv">bs</span><span class="o">=</span>1m<span class="w"> </span><span class="nv">of</span><span class="o">=</span><span class="nv">$DEVICE</span>
+</code></pre></div></p>
+<p>When it's done you'll see a volume mounted on your desktop called <code>system-boot</code> or something similar. Modify the volume to inject <code>user-data</code> and set boot parameters needed by Kubernetes.
+<div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code><span class="c1">###################################################################</span>
+<span class="c1"># REPLACE WITH YOUR VALUES</span>
+<span class="c1">###################################################################</span>
+<span class="nv">VOLUME</span><span class="o">=</span><span class="s1">&#39;system-boot&#39;</span>
 
 <span class="nv">HOSTNAME</span><span class="o">=</span><span class="s1">&#39;raspberrypi4b&#39;</span><span class="w"> </span>
 <span class="nv">LOCALE</span><span class="o">=</span><span class="s1">&#39;en_US&#39;</span><span class="w"> </span>
@@ -983,19 +996,6 @@ shasum<span class="w"> </span>-c<span class="w"> </span>Orangepi3b_1.0.0_ubuntu_
 
 pbcopy<span class="w"> </span>&lt;<span class="w"> </span>~/.ssh/id_ed25519.pub
 <span class="nv">KEY</span><span class="o">=</span><span class="k">$(</span>pbpaste<span class="k">)</span>
-<span class="c1">###################################################################</span>
-
-<span class="c1"># Unmount the card</span>
-diskutil<span class="w"> </span>unmountDisk<span class="w"> </span><span class="nv">$DEVICE</span>
-
-<span class="c1"># sudo dd if=$IMAGE of=$DEVICE bs=1m status=progress</span>
-pv<span class="w"> </span><span class="nv">$IMAGE</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>dd<span class="w"> </span><span class="nv">bs</span><span class="o">=</span>1m<span class="w"> </span><span class="nv">of</span><span class="o">=</span><span class="nv">$DEVICE</span>
-</code></pre></div></p>
-<p>When it's done you'll see a volume mounted on your desktop called <code>system-boot</code> or something similar. Modify the volume to inject <code>user-data</code> and set boot parameters needed by Kubernetes.
-<div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code><span class="c1">###################################################################</span>
-<span class="c1"># REPLACE WITH YOUR VALUES</span>
-<span class="c1">###################################################################</span>
-<span class="nv">VOLUME</span><span class="o">=</span><span class="s1">&#39;system-boot&#39;</span><span class="w"> </span>
 <span class="c1">###################################################################</span>
 
 <span class="c1"># create file for `cloud-init`</span>
@@ -1009,6 +1009,7 @@ cat<span class="w"> </span><span class="s">&lt;&lt; EOF &gt; /Volumes/$VOLUME/us
 
 <span class="s">users:</span>
 <span class="s">  - name: pi</span>
+<span class="s">    shell: /bin/bash</span>
 <span class="s">    lock_passwd: true</span>
 <span class="s">    sudo: ALL=(ALL) NOPASSWD:ALL</span>
 <span class="s">    ssh_authorized_keys:</span>
@@ -1024,9 +1025,9 @@ cat<span class="w"> </span><span class="s">&lt;&lt; EOF &gt; /Volumes/$VOLUME/us
 <span class="s">  - sudo ifconfig wlan0 up</span>
 <span class="s">  - sudo snap refresh</span>
 <span class="s">  - sudo snap install microk8s --classic</span>
-<span class="s">  - sudo microk8s enable dashboard</span>
-<span class="s">  - sudo microk8s enable ingress</span>
 <span class="s">  - sudo microk8s enable metrics-server</span>
+<span class="s">  - sudo microk8s enable ingress</span>
+<span class="s">  - sudo microk8s enable dashboard</span>
 
 <span class="s">write_files:</span>
 <span class="s">- content: |</span>
@@ -1065,47 +1066,42 @@ cat<span class="w"> </span>/Volumes/<span class="nv">$VOLUME</span>/cmdline.txt
 <div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code>diskutil<span class="w"> </span>unmountDisk<span class="w"> </span><span class="nv">$DEVICE</span>
 </code></pre></div></p>
 <p>🎉 <strong>You're done!</strong> 🍾  </p>
-<p>Now remove the SD card from your laptop and insert it into the Pi which should be connected to your router with an ethernet cable.</p>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p><strong>Before connecting to your Pi</strong><br />
-If it's not already running, start the <code>ssh-agent</code> in the background and add your private key to it so you're not asked for your passphrase every time.
-<div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code>ps<span class="w"> </span>-ax<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>ssh-agent
-<span class="nb">eval</span><span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>ssh-agent<span class="w"> </span>-s<span class="k">)</span><span class="s2">&quot;</span>
-ssh-add<span class="w"> </span>--apple-use-keychain<span class="w"> </span>~/.ssh/id_ed25519
-</code></pre></div></p>
-</div>
-<p>Since we pre-configured everything it has a lot of work to do on the first boot and it takes several minutes. Go make yourself a cup of tea before <a href="#access-your-pi">connecting</a> for the first time.</p>
-<p>Once enough time has passed, you can now check a few things to make sure everything went smoothly
-<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code><span class="c1"># Check if packages were installed</span>
-sudo<span class="w"> </span>cat<span class="w"> </span>/var/log/apt/history.log
+<p>Now remove the SD card from your laptop and insert it into the Pi which <strong>should be connected to your router with an ethernet cable</strong>. The Wi-Fi won't be available until everything has finished configuring and you manually do a required system restart.</p>
+<p>Since we pre-configured everything it has a lot of work to do on the first boot and it takes several minutes. You'll be able to go in as soon as the SSH service is up but it will probably still be in the process of upgrading packages as well as installing and configuring our software.  </p>
+<p>Go make yourself a cup of tea before <a href="#access-your-pi">connecting</a> for the first time.</p>
+<p>Once enough time has passed, you can now check a few things to make sure everything went smoothly.
+<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code><span class="c1"># Check if there were any `cloud-init` errors</span>
+sudo<span class="w"> </span>cat<span class="w"> </span>/var/log/cloud-init.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>failures
+sudo<span class="w"> </span>cat<span class="w"> </span>/var/log/cloud-init-output.log
+
+<span class="c1"># Check if packages were installed</span>
 sudo<span class="w"> </span>apt<span class="w"> </span>list<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>avahi-daemon
 sudo<span class="w"> </span>apt<span class="w"> </span>list<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>lshw
+sudo<span class="w"> </span>cat<span class="w"> </span>/var/log/apt/history.log
 
 <span class="c1"># Check if a service is running</span>
 systemctl<span class="w"> </span>status<span class="w"> </span><span class="s1">&#39;avahi*&#39;</span>
 
-<span class="c1"># Check if there were any `cloud-init` errors</span>
-sudo<span class="w"> </span>cat<span class="w"> </span>/var/log/cloud-init.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>failures
-sudo<span class="w"> </span>cat<span class="w"> </span>/var/log/cloud-init-output.log
-
 <span class="c1"># Check if MicroK8s is intalled and running with the addons enabled</span>
 sudo<span class="w"> </span>microk8s<span class="w"> </span>status<span class="w"> </span>--wait-ready
 
-<span class="c1"># Look at the network configuration</span>
-<span class="c1"># You may need to `sudo reboot` for Wi-Fi to be enabled.</span>
-sudo<span class="w"> </span>lshw<span class="w"> </span>-c<span class="w"> </span>network
-ip<span class="w"> </span>addr<span class="w"> </span>show<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>wlan0
-
+<span class="c1"># Check cloud-init&#39;s network configuration </span>
 cat<span class="w"> </span>/etc/netplan/50-cloud-init.yaml
 cat<span class="w"> </span>/etc/cloud/cloud.cfg.d/99-disable-network-config.cfg
+
+<span class="c1"># Look at the network configuration.</span>
+<span class="c1"># You may need to `sudo reboot` for Wi-Fi to be enabled but </span>
+<span class="c1"># make sure you&#39;ve allowed enough time for cloud-init to </span>
+<span class="c1"># finish configuring your instance!</span>
+sudo<span class="w"> </span>lshw<span class="w"> </span>-c<span class="w"> </span>network
+ip<span class="w"> </span>addr<span class="w"> </span>show<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>wlan0
 </code></pre></div></p>
 <h2 id="option-b-one-off">Option B: One-off<a class="headerlink" href="#option-b-one-off" title="Permanent link">#</a></h2>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>This is the easiest option but is limited in how much you can pre-configure the OS. Recommended if you're setting up only one board or if your OS image doesn't have <code>cloud-init</code>.</p>
 </div>
-<h3 id="flash-the-image">Flash the image<a class="headerlink" href="#flash-the-image" title="Permanent link">#</a></h3>
+<h3 id="flash-the-image_1">Flash the image<a class="headerlink" href="#flash-the-image_1" title="Permanent link">#</a></h3>
 <p>Use Raspberry Pi Imager or Balena Etcher (<code>brew install --cask [raspberry-pi-imager | balenaetcher]</code>) to flash the image to the SD card. If you use Pi Imager you can:  </p>
 <ul>
 <li>Change the password for the default user or disable passwords altogether.  </li>
@@ -1156,30 +1152,28 @@ sudo<span class="w"> </span>service<span class="w"> </span>sshd<span class="w"> 
 <p>Orange Pi has a config tool as well
 <div class="highlight"><pre><span></span><code>orangepi@orangepi3b:~$<span class="w"> </span>sudo<span class="w"> </span>orangepi-config
 </code></pre></div>
-If you just need to connect to Wi-Fi, use:
+If you just need to connect to Wi-Fi on Orange Pi, use:
 <div class="highlight"><pre><span></span><code>nmcli<span class="w"> </span>dev<span class="w"> </span>wifi<span class="w"> </span>connect<span class="w"> </span>wifi_name<span class="w"> </span>password<span class="w"> </span>wifi_passwd
 </code></pre></div></p>
-<p>To set a static IP on Orange Pi see the user manual for instructions on using the <code>nmtui</code> command.</p>
+<p>To set a static IP on Orange Pi see the <a href="http://www.orangepi.org/html/hardWare/computerAndMicrocontrollers/service-and-support/Orange-Pi-3B.html">user manual</a> for instructions on using the <code>nmtui</code> command.</p>
 <h4 id="other">Other<a class="headerlink" href="#other" title="Permanent link">#</a></h4>
 <p>After this, <a href="/reference/k8s/#microk8s">install MicroK8s</a>.</p>
-<h3 id="remote-gui-access">Remote GUI access<a class="headerlink" href="#remote-gui-access" title="Permanent link">#</a></h3>
-<p><em>If you installed a graphical desktop</em></p>
-<p>You'll need a VNC viewer on your laptop to connect to the Pi using the graphical interface.
-<div class="highlight"><pre><span></span><code>brew<span class="w"> </span>install<span class="w"> </span>--cask<span class="w"> </span>vnc-viewer
-</code></pre></div></p>
-<div class="admonition attention">
-<p class="admonition-title">Attention</p>
-<p>Apparently, on Raspberry Pi <code>pip</code> does not download from the Python Package Index (PyPI), it downloads from PiWheels. PiWheels wheels do not come with <code>pygame</code>'s dependencies that are bundled in normal releases.</p>
-<p>Install Pygame <a href="https://www.piwheels.org/project/pygame/">dependencies</a> and Pygame.
-<div class="highlight"><pre><span></span><code>pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>libvorbisenc2<span class="w"> </span>libwayland-server0<span class="w"> </span>libxi6<span class="w"> </span>libfluidsynth2<span class="w"> </span>libgbm1<span class="w"> </span>libxkbcommon0<span class="w"> </span>libopus0<span class="w"> </span>libwayland-cursor0<span class="w"> </span>libsndfile1<span class="w"> </span>libwayland-client0<span class="w"> </span>libportmidi0<span class="w"> </span>libvorbis0a<span class="w"> </span>libopusfile0<span class="w"> </span>libmpg123-0<span class="w"> </span>libflac8<span class="w"> </span>libxcursor1<span class="w"> </span>libxinerama1<span class="w"> </span>libasyncns0<span class="w"> </span>libxrandr2<span class="w"> </span>libdrm2<span class="w"> </span>libpulse0<span class="w"> </span>libxfixes3<span class="w"> </span>libvorbisfile3<span class="w"> </span>libmodplug1<span class="w"> </span>libxrender1<span class="w"> </span>libsdl2-2.0-0<span class="w"> </span>libxxf86vm1<span class="w"> </span>libwayland-egl1<span class="w"> </span>libsdl2-ttf-2.0-0<span class="w"> </span>libsdl2-image-2.0-0<span class="w"> </span>libjack0<span class="w"> </span>libsdl2-mixer-2.0-0<span class="w"> </span>libinstpatch-1.0-2<span class="w"> </span>libxss1<span class="w"> </span>libogg0
-pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>sudo<span class="w"> </span>pip3<span class="w"> </span>install<span class="w"> </span>pygame
-</code></pre></div></p>
-<p>Check that the installation worked by running one of its demos
-<div class="highlight"><pre><span></span><code>pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>python3<span class="w"> </span>-m<span class="w"> </span>pygame.examples.aliens
-</code></pre></div></p>
-</div>
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">#</a></h2>
 <h3 id="access-your-pi">Access your Pi<a class="headerlink" href="#access-your-pi" title="Permanent link">#</a></h3>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p><strong>Before connecting to your Pi</strong><br />
+If it's not already running, start the <code>ssh-agent</code> in the background and add your private key to it so you're not asked for your passphrase every time.
+<div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code><span class="c1"># is it running?</span>
+ps<span class="w"> </span>-ax<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>ssh-agent
+<span class="c1"># which identities have been added?</span>
+ssh-add<span class="w"> </span>-l
+
+<span class="c1"># start the agent and add your identity</span>
+<span class="nb">eval</span><span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>ssh-agent<span class="w"> </span>-s<span class="k">)</span><span class="s2">&quot;</span>
+ssh-add<span class="w"> </span>--apple-use-keychain<span class="w"> </span>~/.ssh/id_ed25519
+</code></pre></div></p>
+</div>
 <p>If you're <strong>reinstalling</strong> the OS you might need to remove old key fingerprints belonging to that hostname from your <code>known_hosts</code> file. Example:
 <div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code>ssh-keygen<span class="w">  </span>-f<span class="w"> </span>~/.ssh/known_hosts<span class="w"> </span>-R<span class="w"> </span>raspberrypi4b.local
 </code></pre></div></p>
@@ -1196,6 +1190,22 @@ ssh<span class="w"> </span>pi@192.168.xxx.xxx
 <div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>passwd<span class="w"> </span>root
 sudo<span class="w"> </span>passwd<span class="w"> </span>pi
 </code></pre></div></p>
+<h3 id="remote-gui-access">Remote GUI access<a class="headerlink" href="#remote-gui-access" title="Permanent link">#</a></h3>
+<p><em>If you installed a graphical desktop</em></p>
+<p>You'll need a VNC viewer on your laptop to connect to the Pi using the graphical interface.
+<div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code>brew<span class="w"> </span>install<span class="w"> </span>--cask<span class="w"> </span>vnc-viewer
+</code></pre></div></p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>Apparently, on Raspberry Pi OS <code>pip</code> does not download from the Python Package Index (PyPI), it downloads from PiWheels. PiWheels wheels do not come with <code>pygame</code>'s dependencies that are bundled in normal releases.</p>
+<p>Install Pygame <a href="https://www.piwheels.org/project/pygame/">dependencies</a> and Pygame.
+<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>libvorbisenc2<span class="w"> </span>libwayland-server0<span class="w"> </span>libxi6<span class="w"> </span>libfluidsynth2<span class="w"> </span>libgbm1<span class="w"> </span>libxkbcommon0<span class="w"> </span>libopus0<span class="w"> </span>libwayland-cursor0<span class="w"> </span>libsndfile1<span class="w"> </span>libwayland-client0<span class="w"> </span>libportmidi0<span class="w"> </span>libvorbis0a<span class="w"> </span>libopusfile0<span class="w"> </span>libmpg123-0<span class="w"> </span>libflac8<span class="w"> </span>libxcursor1<span class="w"> </span>libxinerama1<span class="w"> </span>libasyncns0<span class="w"> </span>libxrandr2<span class="w"> </span>libdrm2<span class="w"> </span>libpulse0<span class="w"> </span>libxfixes3<span class="w"> </span>libvorbisfile3<span class="w"> </span>libmodplug1<span class="w"> </span>libxrender1<span class="w"> </span>libsdl2-2.0-0<span class="w"> </span>libxxf86vm1<span class="w"> </span>libwayland-egl1<span class="w"> </span>libsdl2-ttf-2.0-0<span class="w"> </span>libsdl2-image-2.0-0<span class="w"> </span>libjack0<span class="w"> </span>libsdl2-mixer-2.0-0<span class="w"> </span>libinstpatch-1.0-2<span class="w"> </span>libxss1<span class="w"> </span>libogg0
+sudo<span class="w"> </span>pip3<span class="w"> </span>install<span class="w"> </span>pygame
+
+<span class="c1"># Check that the installation worked by running one of its demos</span>
+python3<span class="w"> </span>-m<span class="w"> </span>pygame.examples.aliens
+</code></pre></div></p>
+</div>
 <h3 id="to-give-it-a-static-ip">To give it a static IP<a class="headerlink" href="#to-give-it-a-static-ip" title="Permanent link">#</a></h3>
 <p>Find the IP adddress of your router. It's the address that appears after <code>default via</code>.
 <div class="highlight"><pre><span></span><code>pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>ip<span class="w"> </span>r

@@ -89,7 +89,12 @@ mv ~/git-completion.bash ~/.git-completion.bash
 
     Still having issues? Start the `ssh-agent` in the background and add your SSH private key to it.  
     ```zsh
+    # is it running?
     ps -ax | grep ssh-agent
+    # which identities have been added?
+    ssh-add -l
+
+    # start the agent and add your identity
     eval "$(ssh-agent -s)"
     ssh-add --apple-use-keychain ~/.ssh/id_ed25519
     ```

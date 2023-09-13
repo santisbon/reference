@@ -687,7 +687,12 @@ git<span class="w"> </span>remote<span class="w"> </span>remove<span class="w"> 
 git<span class="w"> </span>remote<span class="w"> </span>add<span class="w"> </span>origin<span class="w"> </span>git@github.com:user/repo.git
 </code></pre></div></p>
 <p>Still having issues? Start the <code>ssh-agent</code> in the background and add your SSH private key to it.<br />
-<div class="highlight"><pre><span></span><code>ps<span class="w"> </span>-ax<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>ssh-agent
+<div class="highlight"><pre><span></span><code><span class="c1"># is it running?</span>
+ps<span class="w"> </span>-ax<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>ssh-agent
+<span class="c1"># which identities have been added?</span>
+ssh-add<span class="w"> </span>-l
+
+<span class="c1"># start the agent and add your identity</span>
 <span class="nb">eval</span><span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>ssh-agent<span class="w"> </span>-s<span class="k">)</span><span class="s2">&quot;</span>
 ssh-add<span class="w"> </span>--apple-use-keychain<span class="w"> </span>~/.ssh/id_ed25519
 </code></pre></div></p>

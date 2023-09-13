@@ -24,6 +24,8 @@ Official Ubuntu images for all Raspberry Pis (recommended):
 Manufacturer's images for Orange Pi 3B:    
 [Download](http://www.orangepi.org/html/hardWare/computerAndMicrocontrollers/service-and-support/Orange-Pi-3B.html)  
 
+The rest of this guide assumes you downloaded your image to `~/Downloads`.
+
 Examples of verifying the integrity of the image file:
 ```sh title="On your laptop" 
 # Check the sum from the Ubuntu website and decompress
@@ -52,8 +54,6 @@ This is the repeatable, flexible option.
 
     If you're setting up an Orange Pi, download the image and see the [one-off](#option-b-one-off) instructions.
 
-### Flash pre-configured image
-
 We'll flash a pre-configured SD card with:  
 
 * Hostname
@@ -73,6 +73,8 @@ If you don't have an ssh key, [generate one](https://www.ssh.com/academy/ssh/key
 !!! attention
     This example uses macOS. Adjust the commands with your OS's tools to [copy/paste](https://ostechnix.com/how-to-use-pbcopy-and-pbpaste-commands-on-linux/), view disks, `dd` options, and [`sed` version](https://unix.stackexchange.com/questions/13711/differences-between-sed-on-mac-osx-and-other-standard-sed). It has been tested with the image provided by Ubuntu for Raspberry Pi.  
 
+### Flash the image
+
 Insert the SD card and check the device name e.g. `/dev/disk4`
 ```sh title="On your laptop" 
 diskutil list
@@ -80,13 +82,27 @@ diskutil list
 
 Use that device name to flash the OS image to the SD card.
 ```sh title="On your laptop" 
-cd ~/Downloads
-
 ###################################################################
 # REPLACE WITH YOUR VALUES
 ###################################################################
 IMAGE='ubuntu-22.04.3-preinstalled-server-arm64+raspi.img' 
 DEVICE='/dev/disk4' 
+###################################################################
+
+# Unmount the card
+diskutil unmountDisk $DEVICE
+
+cd ~/Downloads
+# sudo dd if=$IMAGE of=$DEVICE bs=1m status=progress
+pv $IMAGE | sudo dd bs=1m of=$DEVICE
+```
+
+When it's done you'll see a volume mounted on your desktop called `system-boot` or something similar. Modify the volume to inject `user-data` and set boot parameters needed by Kubernetes.
+```sh title="On your laptop" 
+###################################################################
+# REPLACE WITH YOUR VALUES
+###################################################################
+VOLUME='system-boot'
 
 HOSTNAME='raspberrypi4b' 
 LOCALE='en_US' 
@@ -97,21 +113,6 @@ WIFI_PASSWORD='MyPassword'
 
 pbcopy < ~/.ssh/id_ed25519.pub
 KEY=$(pbpaste)
-###################################################################
-
-# Unmount the card
-diskutil unmountDisk $DEVICE
-
-# sudo dd if=$IMAGE of=$DEVICE bs=1m status=progress
-pv $IMAGE | sudo dd bs=1m of=$DEVICE
-```
-
-When it's done you'll see a volume mounted on your desktop called `system-boot` or something similar. Modify the volume to inject `user-data` and set boot parameters needed by Kubernetes.
-```sh title="On your laptop" 
-###################################################################
-# REPLACE WITH YOUR VALUES
-###################################################################
-VOLUME='system-boot' 
 ###################################################################
 
 # create file for `cloud-init`
@@ -125,6 +126,7 @@ timezone: ${TIMEZONE}
 
 users:
   - name: pi
+    shell: /bin/bash
     lock_passwd: true
     sudo: ALL=(ALL) NOPASSWD:ALL
     ssh_authorized_keys:
@@ -140,9 +142,9 @@ runcmd:
   - sudo ifconfig wlan0 up
   - sudo snap refresh
   - sudo snap install microk8s --classic
-  - sudo microk8s enable dashboard
-  - sudo microk8s enable ingress
   - sudo microk8s enable metrics-server
+  - sudo microk8s enable ingress
+  - sudo microk8s enable dashboard
 
 write_files:
 - content: |
@@ -187,44 +189,39 @@ diskutil unmountDisk $DEVICE
 
 🎉 **You're done!** 🍾  
 
-Now remove the SD card from your laptop and insert it into the Pi which should be connected to your router with an ethernet cable.
+Now remove the SD card from your laptop and insert it into the Pi which **should be connected to your router with an ethernet cable**. The Wi-Fi won't be available until everything has finished configuring and you manually do a required system restart.
 
-!!! tip
+Since we pre-configured everything it has a lot of work to do on the first boot and it takes several minutes. You'll be able to go in as soon as the SSH service is up but it will probably still be in the process of upgrading packages as well as installing and configuring our software.  
 
-    **Before connecting to your Pi**  
-    If it's not already running, start the `ssh-agent` in the background and add your private key to it so you're not asked for your passphrase every time.
-    ```zsh title="On your laptop"
-    ps -ax | grep ssh-agent
-    eval "$(ssh-agent -s)"
-    ssh-add --apple-use-keychain ~/.ssh/id_ed25519
-    ```
+Go make yourself a cup of tea before [connecting](#access-your-pi) for the first time.
 
-Since we pre-configured everything it has a lot of work to do on the first boot and it takes several minutes. Go make yourself a cup of tea before [connecting](#access-your-pi) for the first time.
-
-Once enough time has passed, you can now check a few things to make sure everything went smoothly
+Once enough time has passed, you can now check a few things to make sure everything went smoothly.
 ```zsh title="On your Pi"
-# Check if packages were installed
-sudo cat /var/log/apt/history.log
-sudo apt list | grep avahi-daemon
-sudo apt list | grep lshw
-
-# Check if a service is running
-systemctl status 'avahi*'
-
 # Check if there were any `cloud-init` errors
 sudo cat /var/log/cloud-init.log | grep failures
 sudo cat /var/log/cloud-init-output.log
 
+# Check if packages were installed
+sudo apt list | grep avahi-daemon
+sudo apt list | grep lshw
+sudo cat /var/log/apt/history.log
+
+# Check if a service is running
+systemctl status 'avahi*'
+
 # Check if MicroK8s is intalled and running with the addons enabled
 sudo microk8s status --wait-ready
 
-# Look at the network configuration
-# You may need to `sudo reboot` for Wi-Fi to be enabled.
-sudo lshw -c network
-ip addr show | grep wlan0
-
+# Check cloud-init's network configuration 
 cat /etc/netplan/50-cloud-init.yaml
 cat /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg
+
+# Look at the network configuration.
+# You may need to `sudo reboot` for Wi-Fi to be enabled but 
+# make sure you've allowed enough time for cloud-init to 
+# finish configuring your instance!
+sudo lshw -c network
+ip addr show | grep wlan0
 ```
 
 ## Option B: One-off 
@@ -300,41 +297,34 @@ Orange Pi has a config tool as well
 ```zsh
 orangepi@orangepi3b:~$ sudo orangepi-config
 ```
-If you just need to connect to Wi-Fi, use:
+If you just need to connect to Wi-Fi on Orange Pi, use:
 ```zsh
 nmcli dev wifi connect wifi_name password wifi_passwd
 ```
 
-To set a static IP on Orange Pi see the user manual for instructions on using the `nmtui` command.
+To set a static IP on Orange Pi see the [user manual](http://www.orangepi.org/html/hardWare/computerAndMicrocontrollers/service-and-support/Orange-Pi-3B.html) for instructions on using the `nmtui` command.
 
 #### Other
 After this, [install MicroK8s](/reference/k8s/#microk8s).
 
-### Remote GUI access
-*If you installed a graphical desktop*
-
-You'll need a VNC viewer on your laptop to connect to the Pi using the graphical interface.
-```zsh
-brew install --cask vnc-viewer
-```
-
-!!! attention
-    Apparently, on Raspberry Pi `pip` does not download from the Python Package Index (PyPI), it downloads from PiWheels. PiWheels wheels do not come with `pygame`'s dependencies that are bundled in normal releases.
-
-    Install Pygame [dependencies](https://www.piwheels.org/project/pygame/) and Pygame.
-    ```zsh
-    pi@raspberrypi4:~ $ sudo apt install libvorbisenc2 libwayland-server0 libxi6 libfluidsynth2 libgbm1 libxkbcommon0 libopus0 libwayland-cursor0 libsndfile1 libwayland-client0 libportmidi0 libvorbis0a libopusfile0 libmpg123-0 libflac8 libxcursor1 libxinerama1 libasyncns0 libxrandr2 libdrm2 libpulse0 libxfixes3 libvorbisfile3 libmodplug1 libxrender1 libsdl2-2.0-0 libxxf86vm1 libwayland-egl1 libsdl2-ttf-2.0-0 libsdl2-image-2.0-0 libjack0 libsdl2-mixer-2.0-0 libinstpatch-1.0-2 libxss1 libogg0
-    pi@raspberrypi4:~ $ sudo pip3 install pygame
-    ```
-
-    Check that the installation worked by running one of its demos
-    ```zsh
-    pi@raspberrypi4:~ $ python3 -m pygame.examples.aliens
-    ```
-
 ## Usage
 
 ### Access your Pi
+
+!!! tip
+
+    **Before connecting to your Pi**  
+    If it's not already running, start the `ssh-agent` in the background and add your private key to it so you're not asked for your passphrase every time.
+    ```zsh title="On your laptop"
+    # is it running?
+    ps -ax | grep ssh-agent
+    # which identities have been added?
+    ssh-add -l
+
+    # start the agent and add your identity
+    eval "$(ssh-agent -s)"
+    ssh-add --apple-use-keychain ~/.ssh/id_ed25519
+    ```
 
 If you're **reinstalling** the OS you might need to remove old key fingerprints belonging to that hostname from your `known_hosts` file. Example:
 ```zsh title="On your laptop"
@@ -359,6 +349,26 @@ Update the password for default users like `pi`, `orangepi`, `ubuntu`, etc. Exam
 sudo passwd root
 sudo passwd pi
 ```
+
+### Remote GUI access
+*If you installed a graphical desktop*
+
+You'll need a VNC viewer on your laptop to connect to the Pi using the graphical interface.
+```zsh title="On your laptop"
+brew install --cask vnc-viewer
+```
+
+!!! attention
+    Apparently, on Raspberry Pi OS `pip` does not download from the Python Package Index (PyPI), it downloads from PiWheels. PiWheels wheels do not come with `pygame`'s dependencies that are bundled in normal releases.
+
+    Install Pygame [dependencies](https://www.piwheels.org/project/pygame/) and Pygame.
+    ```zsh title="On your Pi"
+    sudo apt install libvorbisenc2 libwayland-server0 libxi6 libfluidsynth2 libgbm1 libxkbcommon0 libopus0 libwayland-cursor0 libsndfile1 libwayland-client0 libportmidi0 libvorbis0a libopusfile0 libmpg123-0 libflac8 libxcursor1 libxinerama1 libasyncns0 libxrandr2 libdrm2 libpulse0 libxfixes3 libvorbisfile3 libmodplug1 libxrender1 libsdl2-2.0-0 libxxf86vm1 libwayland-egl1 libsdl2-ttf-2.0-0 libsdl2-image-2.0-0 libjack0 libsdl2-mixer-2.0-0 libinstpatch-1.0-2 libxss1 libogg0
+    sudo pip3 install pygame
+
+    # Check that the installation worked by running one of its demos
+    python3 -m pygame.examples.aliens
+    ```
 
 ### To give it a static IP
 Find the IP adddress of your router. It's the address that appears after `default via`.
