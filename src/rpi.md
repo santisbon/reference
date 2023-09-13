@@ -305,6 +305,8 @@ If you just need to connect to Wi-Fi, use:
 nmcli dev wifi connect wifi_name password wifi_passwd
 ```
 
+To set a static IP on Orange Pi see the user manual for instructions on using the `nmtui` command.
+
 #### Other
 After this, [install MicroK8s](/reference/k8s/#microk8s).
 
