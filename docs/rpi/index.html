@@ -21,7 +21,7 @@
     
     
       
-        <title>SBCs - Notes</title>
+        <title>Raspberry Pi - Notes</title>
       
     
     
@@ -108,7 +108,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              SBCs
+              Raspberry Pi
             
           </span>
         </div>
@@ -418,12 +418,12 @@
       
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
-          SBCs
+          Raspberry Pi
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
-        SBCs
+        Raspberry Pi
       </a>
       
         
@@ -479,13 +479,6 @@
           <li class="md-nav__item">
   <a href="#flash-the-image" class="md-nav__link">
     Flash the image
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#access-your-pi" class="md-nav__link">
-    Access your Pi
   </a>
   
 </li>
@@ -550,6 +543,13 @@
   
     <nav class="md-nav" aria-label="Usage">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#access-your-pi" class="md-nav__link">
+    Access your Pi
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#to-give-it-a-static-ip" class="md-nav__link">
@@ -751,13 +751,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#access-your-pi" class="md-nav__link">
-    Access your Pi
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#upgrade" class="md-nav__link">
     Upgrade
   </a>
@@ -817,6 +810,13 @@
   
     <nav class="md-nav" aria-label="Usage">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#access-your-pi" class="md-nav__link">
+    Access your Pi
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#to-give-it-a-static-ip" class="md-nav__link">
@@ -900,59 +900,86 @@
 <p>Raspberry Pi, Orange Pi, and many others.</p>
 <p><img alt="SBCs" src="https://res.cloudinary.com/practicaldev/image/fetch/s--gU1esoW1--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_800/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/k1mer6vmt81awg37l856.png" /></p>
 <h2 id="get-os-image">Get OS image<a class="headerlink" href="#get-os-image" title="Permanent link">#</a></h2>
-<p>You <em>could</em> use an imager program that flashes an operating system on the SD card for you but you'll be very limited in the ways you can preconfigure the OS. It's better to download the OS image and flash it yourself.  </p>
-<p>I recommend using an <strong>Ubuntu</strong> image made specifically for your board instead of a manufaturer's custom OS like Raspberry Pi OS or Orange Pi OS. Those are designed for simplicity and ease of use at the expense of functionality that will be important to us when building our homelab as a private cloud.</p>
+<p>You <em>could</em> use an imager program that flashes an operating system on the SD card for you but you'll be very limited in the ways you can pre-configure the OS. It's better to download the OS image and flash it yourself.  </p>
+<p>I recommend using an <strong>Ubuntu</strong> image made specifically for your board instead of a manufaturer's custom OS like Raspberry Pi OS or Orange Pi OS. Those are designed for simplicity and ease of use at the expense of functionality that is important when building a cloud native homelab.</p>
 <ul>
 <li>❌ Raspberry Pi OS doesn't come with <a href="https://cloud-init.io"><code>cloud-init</code></a>.</li>
 <li>❌ Orange Pi OS doesn't support the GPU, Neural Processing Unit (NPU), and Vision Processing Unit (VPU) that some Orange Pi boards have for Artificial Intelligence and graphics-intensive workloads.</li>
 <li>✅ Ubuntu comes with <code>cloud-init</code> preinstalled which will make your life easier.</li>
-<li>✅ Ubuntu comes with <a href="https://ubuntu.com/core/services/guide/snaps-intro"><code>snapd</code></a> preinstalled which lets us preconfigure <a href="https://microk8s.io">MicroK8s</a>.</li>
+<li>✅ Ubuntu comes with <a href="https://ubuntu.com/core/services/guide/snaps-intro"><code>snapd</code></a> preinstalled which lets us pre-configure <a href="https://microk8s.io">MicroK8s</a>.</li>
 <li>✅ Ubuntu, Debian, and Android support the Orange Pi's GPU, NPU, and VPU.</li>
 </ul>
-<p>Make sure you grab the <em>Server</em> image corresponding to your Pi's architecture (32-bit or 64-bit). We choose the server version because we don't need the graphical environment that comes with the <em>Desktop</em> version.  </p>
+<p>Make sure you grab the image corresponding to your Pi's CPU architecture (32-bit or 64-bit). We'll use the <em>Server</em> version because we don't need the graphical environment that comes with the <em>Desktop</em> version.  </p>
 <p>Official Ubuntu images for all Raspberry Pis (recommended):<br />
 <a href="https://ubuntu.com/download/raspberry-pi">Download</a><br />
 <a href="https://github.com/canonical/ubuntu.com/blob/main/releases.yaml">Checksums</a></p>
-<p>Manufacturer's images for Orange Pi 3B:<br />
-<em>For some reason, an SD card flashed with the Ubuntu image provided by Orange Pi can't be mounted on macOS. We need to mount it to inject or edit files before first boot if we want to automate the setup as much as possible. For this reason, if you're setting up an Orange Pi download the image and see the <a href="#set-up-a-one-off">one-off</a> instructions</em>.<br />
+<p>Manufacturer's images for Orange Pi 3B:  <br />
 <a href="http://www.orangepi.org/html/hardWare/computerAndMicrocontrollers/service-and-support/Orange-Pi-3B.html">Download</a>  </p>
 <p>Examples of verifying the integrity of the image file:
-<div class="highlight"><pre><span></span><code><span class="c1"># Extract and verify</span>
-7zz<span class="w"> </span>x<span class="w"> </span>Orangepi3b_1.0.0_ubuntu_jammy_server_linux5.10.160.7z
-shasum<span class="w"> </span>-c<span class="w"> </span>Orangepi3b_1.0.0_ubuntu_jammy_server_linux5.10.160.img.sha
-
-<span class="c1"># Verify it matches the hash on the website and decompress</span>
+<div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code><span class="c1"># Check the sum from the Ubuntu website and decompress</span>
 <span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;f3842efb3be1be4243c24203bd16e335f155fdbe104b1ed8c5efc548ea478ab0 *ubuntu-22.04.3-preinstalled-server-arm64+raspi.img.xz&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>shasum<span class="w"> </span>-a<span class="w"> </span><span class="m">256</span><span class="w"> </span>--check
 xz<span class="w"> </span>-d<span class="w"> </span>ubuntu-22.04.3-preinstalled-server-arm64+raspi.img.xz
+
+<span class="c1"># Extract Orange Pi image and check the sum</span>
+7zz<span class="w"> </span>x<span class="w"> </span>Orangepi3b_1.0.0_ubuntu_jammy_server_linux5.10.160.7z
+shasum<span class="w"> </span>-c<span class="w"> </span>Orangepi3b_1.0.0_ubuntu_jammy_server_linux5.10.160.img.sha
 </code></pre></div></p>
 <h2 id="option-a-cloud-native">Option A: Cloud native<a class="headerlink" href="#option-a-cloud-native" title="Permanent link">#</a></h2>
 <p>This is the repeatable, flexible option.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>This lets you automatically upgrade the system, configure users, modify boot parameters, specify software to install, custom commands to run on first boot, among other things. Recommended when setting up multiple Pis or installing Kubernetes.</p>
+<p>This lets you automatically upgrade the system, configure users, modify boot parameters, install software, run commands on first boot, among other things. Recommended when setting up multiple Pis or installing Kubernetes.</p>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>This requires the OS image to:</p>
+<ul>
+<li>Have <code>cloud-init</code> preinstalled.</li>
+<li>Be mountable on the OS you're using (e.g. macOS) so you can inject <code>user-data</code> and boot parameters.</li>
+</ul>
+<p>✅ Supported by the Ubuntu images for Raspberry Pi.<br />
+❌ Not supoprted by Orange Pi images.</p>
+<p>If you're setting up an Orange Pi, download the image and see the <a href="#option-b-one-off">one-off</a> instructions.</p>
 </div>
 <h3 id="flash-pre-configured-image">Flash pre-configured image<a class="headerlink" href="#flash-pre-configured-image" title="Permanent link">#</a></h3>
-<p>We'll flash the SD card with our <code>cloud-init</code> file and other configurations. This will set up <code>avahi-daemon</code> to be able to reach the Pi using its hostname rather than having to use its IP. It also installs a tool for viewing hardware info and MicroK8s.  </p>
-<p>Replace values for your own environment (your <a href="https://ostechnix.com/how-to-use-pbcopy-and-pbpaste-commands-on-linux/">OS tools to copy/paste</a>, name of your <a href="https://www.ssh.com/academy/ssh/keygen">SSH key</a>, volume name, etc.).  </p>
-<p>This example uses the macOS version of <code>sed</code> with an empty string for the mandatory extension parameter when editing a file in-place. It also uses <a href="https://formulae.brew.sh/formula/pv#default"><code>pv</code></a> to monitor data progress.  </p>
-<p>These commands have been tested with the image provided by Ubuntu on a Raspberry Pi.  </p>
-<div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code><span class="c1"># Insert the SD card and find the corresponding device</span>
-diskutil<span class="w"> </span>list
-<span class="c1"># df -h</span>
+<p>We'll flash a pre-configured SD card with:  </p>
+<ul>
+<li>Hostname</li>
+<li>A user with ssh key authentication (and password authentication disabled)</li>
+<li>Upgraded packages</li>
+<li>Additional packages installed</li>
+<li>Kubernetes (MicroK8s) installed with some addons enabled</li>
+<li>Wi-Fi configuration</li>
+<li>Boot parameters modified to support Kubernetes</li>
+</ul>
+<p>If you don't have an ssh key, <a href="https://www.ssh.com/academy/ssh/keygen">generate one</a> with <code>ssh-keygen -t ed25519</code>.  </p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Install <code>pv</code> to see a progress bar and percentage of completion as the image is being flashed:<br />
+<code>brew install pv</code></p>
+</div>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>This example uses macOS. Adjust the commands with your OS's tools to <a href="https://ostechnix.com/how-to-use-pbcopy-and-pbpaste-commands-on-linux/">copy/paste</a>, view disks, <code>dd</code> options, and <a href="https://unix.stackexchange.com/questions/13711/differences-between-sed-on-mac-osx-and-other-standard-sed"><code>sed</code> version</a>. It has been tested with the image provided by Ubuntu for Raspberry Pi.  </p>
+</div>
+<p>Insert the SD card and check the device name e.g. <code>/dev/disk4</code>
+<div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code>diskutil<span class="w"> </span>list
+</code></pre></div></p>
+<p>Use that device name to flash the OS image to the SD card.
+<div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>~/Downloads
 
 <span class="c1">###################################################################</span>
 <span class="c1"># REPLACE WITH YOUR VALUES</span>
 <span class="c1">###################################################################</span>
-<span class="nv">IMAGE</span><span class="o">=</span>ubuntu-22.04.3-preinstalled-server-arm64+raspi.img
-<span class="nv">DEVICE</span><span class="o">=</span>/dev/mydevice<span class="w"> </span><span class="c1"># e.g. /dev/disk4</span>
+<span class="nv">IMAGE</span><span class="o">=</span><span class="s1">&#39;ubuntu-22.04.3-preinstalled-server-arm64+raspi.img&#39;</span><span class="w"> </span>
+<span class="nv">DEVICE</span><span class="o">=</span><span class="s1">&#39;/dev/disk4&#39;</span><span class="w"> </span>
 
-<span class="nv">HOSTNAME</span><span class="o">=</span>raspberrypi4
-<span class="nv">LOCALE</span><span class="o">=</span>en_US
-<span class="nv">TIMEZONE</span><span class="o">=</span>US/Central
+<span class="nv">HOSTNAME</span><span class="o">=</span><span class="s1">&#39;raspberrypi4b&#39;</span><span class="w"> </span>
+<span class="nv">LOCALE</span><span class="o">=</span><span class="s1">&#39;en_US&#39;</span><span class="w"> </span>
+<span class="nv">TIMEZONE</span><span class="o">=</span><span class="s1">&#39;US/Central&#39;</span><span class="w"> </span>
 
-<span class="nv">COUNTRY</span><span class="o">=</span>US
-<span class="nv">WIFI_NAME</span><span class="o">=</span>myssid
-<span class="nv">WIFI_PASSWORD</span><span class="o">=</span><span class="s1">&#39;mypassword&#39;</span>
+<span class="nv">WIFI_NAME</span><span class="o">=</span><span class="s1">&#39;MySSID&#39;</span><span class="w"> </span>
+<span class="nv">WIFI_PASSWORD</span><span class="o">=</span><span class="s1">&#39;MyPassword&#39;</span><span class="w"> </span>
 
 pbcopy<span class="w"> </span>&lt;<span class="w"> </span>~/.ssh/id_ed25519.pub
 <span class="nv">KEY</span><span class="o">=</span><span class="k">$(</span>pbpaste<span class="k">)</span>
@@ -961,42 +988,22 @@ pbcopy<span class="w"> </span>&lt;<span class="w"> </span>~/.ssh/id_ed25519.pub
 <span class="c1"># Unmount the card</span>
 diskutil<span class="w"> </span>unmountDisk<span class="w"> </span><span class="nv">$DEVICE</span>
 
-<span class="c1"># You can use `dd` by itself</span>
-sudo<span class="w"> </span>dd<span class="w"> </span><span class="k">if</span><span class="o">=</span><span class="nv">$IMAGE</span><span class="w"> </span><span class="nv">of</span><span class="o">=</span><span class="nv">$DEVICE</span><span class="w"> </span><span class="nv">bs</span><span class="o">=</span>1m<span class="w"> </span><span class="nv">status</span><span class="o">=</span>progress
-<span class="c1"># or to get a progress bar and percentage, use `pv` through a pipe</span>
+<span class="c1"># sudo dd if=$IMAGE of=$DEVICE bs=1m status=progress</span>
 pv<span class="w"> </span><span class="nv">$IMAGE</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>dd<span class="w"> </span><span class="nv">bs</span><span class="o">=</span>1m<span class="w"> </span><span class="nv">of</span><span class="o">=</span><span class="nv">$DEVICE</span>
-
-<span class="c1"># When it&#39;s done you&#39;ll see a volume mounted on your desktop </span>
-<span class="c1"># called `boot`, `bootfs`, `system-boot` or something similar.</span>
-<span class="c1"># You can also mount it manually. Example:</span>
-<span class="c1"># diskutil mountDisk /dev/disk4</span>
-
-<span class="c1">###################################################################</span>
+</code></pre></div></p>
+<p>When it's done you'll see a volume mounted on your desktop called <code>system-boot</code> or something similar. Modify the volume to inject <code>user-data</code> and set boot parameters needed by Kubernetes.
+<div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code><span class="c1">###################################################################</span>
 <span class="c1"># REPLACE WITH YOUR VALUES</span>
 <span class="c1">###################################################################</span>
-<span class="nv">VOLUME</span><span class="o">=</span>system-boot
+<span class="nv">VOLUME</span><span class="o">=</span><span class="s1">&#39;system-boot&#39;</span><span class="w"> </span>
 <span class="c1">###################################################################</span>
 
-<span class="c1"># enable Wi-Fi if applicable</span>
-cat<span class="w"> </span><span class="s">&lt;&lt; EOF &gt; /Volumes/$VOLUME/wpa_supplicant.conf</span>
-<span class="s">ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev</span>
-<span class="s">update_config=1</span>
-<span class="s">country=${COUNTRY}</span>
-<span class="s">network={</span>
-<span class="s">ssid=${WIFI_NAME}</span>
-<span class="s">psk=${WIFI_PASSWORD}</span>
-<span class="s">}</span>
-<span class="s">EOF</span>
-
-<span class="c1"># check that it worked</span>
-<span class="c1"># cat /Volumes/$VOLUME/wpa_supplicant.conf</span>
-
 <span class="c1"># create file for `cloud-init`</span>
-cat<span class="w"> </span><span class="s">&lt;&lt; EOF &gt; /Volumes/${VOLUME}/user-data</span>
+cat<span class="w"> </span><span class="s">&lt;&lt; EOF &gt; /Volumes/$VOLUME/user-data</span>
 <span class="s">#cloud-config</span>
 
 <span class="s">hostname: ${HOSTNAME}</span>
-<span class="s">manage_etc_hosts: true</span>
+<span class="s">manage_etc_hosts: false</span>
 <span class="s">locale: ${LOCALE}</span>
 <span class="s">timezone: ${TIMEZONE}</span>
 
@@ -1011,25 +1018,92 @@ cat<span class="w"> </span><span class="s">&lt;&lt; EOF &gt; /Volumes/${VOLUME}/
 <span class="s">packages:</span>
 <span class="s">  - avahi-daemon </span>
 <span class="s">  - lshw</span>
+<span class="s">  - net-tools</span>
 
 <span class="s">runcmd:</span>
-<span class="s">  - [snap install microk8s --classic]</span>
-<span class="s">EOF</span>
+<span class="s">  - sudo ifconfig wlan0 up</span>
+<span class="s">  - sudo snap refresh</span>
+<span class="s">  - sudo snap install microk8s --classic</span>
+<span class="s">  - sudo microk8s enable dashboard</span>
+<span class="s">  - sudo microk8s enable ingress</span>
+<span class="s">  - sudo microk8s enable metrics-server</span>
 
-<span class="c1"># cat /Volumes/${VOLUME}/user-data</span>
+<span class="s">write_files:</span>
+<span class="s">- content: |</span>
+<span class="s">    # This file is generated from information provided by the datasource.  Changes</span>
+<span class="s">    # to it will not persist across an instance reboot.  To disable cloud-init&#39;s</span>
+<span class="s">    # network configuration capabilities, write a file</span>
+<span class="s">    # /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg with the following:</span>
+<span class="s">    # network: {config: disabled}</span>
+<span class="s">    network:</span>
+<span class="s">        ethernets:</span>
+<span class="s">            eth0:</span>
+<span class="s">                dhcp4: true</span>
+<span class="s">                optional: true</span>
+<span class="s">        version: 2</span>
+<span class="s">        wifis:</span>
+<span class="s">            wlan0:</span>
+<span class="s">                optional: true</span>
+<span class="s">                access-points:</span>
+<span class="s">                    &quot;${WIFI_NAME}&quot;:</span>
+<span class="s">                        password: &quot;${WIFI_PASSWORD}&quot;</span>
+<span class="s">                dhcp4: true</span>
+<span class="s">  path: /etc/netplan/50-cloud-init.yaml</span>
+<span class="s">- content: |</span>
+<span class="s">    network: {config: disabled}</span>
+<span class="s">  path: /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg</span>
+<span class="s">EOF</span>
 
 <span class="c1"># Add these options at the end of the file as Kubernetes will need them to run on the Pi.</span>
 sed<span class="w"> </span>-i<span class="w"> </span><span class="s2">&quot;&quot;</span><span class="w"> </span><span class="s2">&quot;</span>$<span class="s2"> s/</span>$<span class="s2">/ cgroup_enable=memory cgroup_memory=1/&quot;</span><span class="w"> </span>/Volumes/<span class="nv">$VOLUME</span>/cmdline.txt
-<span class="c1"># cat /Volumes/$VOLUME/cmdline.txt</span>
+</code></pre></div></p>
+<p>You can verify that the files were written correctly
+<div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code>cat<span class="w"> </span>/Volumes/<span class="nv">$VOLUME</span>/user-data
+cat<span class="w"> </span>/Volumes/<span class="nv">$VOLUME</span>/cmdline.txt
+</code></pre></div></p>
+<p>Unmount the SD card
+<div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code>diskutil<span class="w"> </span>unmountDisk<span class="w"> </span><span class="nv">$DEVICE</span>
+</code></pre></div></p>
+<p>🎉 <strong>You're done!</strong> 🍾  </p>
+<p>Now remove the SD card from your laptop and insert it into the Pi which should be connected to your router with an ethernet cable.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p><strong>Before connecting to your Pi</strong><br />
+If it's not already running, start the <code>ssh-agent</code> in the background and add your private key to it so you're not asked for your passphrase every time.
+<div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code>ps<span class="w"> </span>-ax<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>ssh-agent
+<span class="nb">eval</span><span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>ssh-agent<span class="w"> </span>-s<span class="k">)</span><span class="s2">&quot;</span>
+ssh-add<span class="w"> </span>--apple-use-keychain<span class="w"> </span>~/.ssh/id_ed25519
+</code></pre></div></p>
+</div>
+<p>Since we pre-configured everything it has a lot of work to do on the first boot and it takes several minutes. Go make yourself a cup of tea before <a href="#access-your-pi">connecting</a> for the first time.</p>
+<p>Once enough time has passed, you can now check a few things to make sure everything went smoothly
+<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code><span class="c1"># Check if packages were installed</span>
+sudo<span class="w"> </span>cat<span class="w"> </span>/var/log/apt/history.log
+sudo<span class="w"> </span>apt<span class="w"> </span>list<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>avahi-daemon
+sudo<span class="w"> </span>apt<span class="w"> </span>list<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>lshw
 
-diskutil<span class="w"> </span>unmountDisk<span class="w"> </span><span class="nv">$DEVICE</span>
-<span class="c1"># remove SD card from laptop, insert it in your Pi and turn it on</span>
-</code></pre></div>
-<p>Since we preconfigured everything it has a lot of work to do before it can be available including upgrading the system and installing packages. Wait a few minutes before trying to connect to it via SSH. </p>
+<span class="c1"># Check if a service is running</span>
+systemctl<span class="w"> </span>status<span class="w"> </span><span class="s1">&#39;avahi*&#39;</span>
+
+<span class="c1"># Check if there were any `cloud-init` errors</span>
+sudo<span class="w"> </span>cat<span class="w"> </span>/var/log/cloud-init.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>failures
+sudo<span class="w"> </span>cat<span class="w"> </span>/var/log/cloud-init-output.log
+
+<span class="c1"># Check if MicroK8s is intalled and running with the addons enabled</span>
+sudo<span class="w"> </span>microk8s<span class="w"> </span>status<span class="w"> </span>--wait-ready
+
+<span class="c1"># Look at the network configuration</span>
+<span class="c1"># You may need to `sudo reboot` for Wi-Fi to be enabled.</span>
+sudo<span class="w"> </span>lshw<span class="w"> </span>-c<span class="w"> </span>network
+ip<span class="w"> </span>addr<span class="w"> </span>show<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>wlan0
+
+cat<span class="w"> </span>/etc/netplan/50-cloud-init.yaml
+cat<span class="w"> </span>/etc/cloud/cloud.cfg.d/99-disable-network-config.cfg
+</code></pre></div></p>
 <h2 id="option-b-one-off">Option B: One-off<a class="headerlink" href="#option-b-one-off" title="Permanent link">#</a></h2>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>This is the easiest option but is limited in how much you can pre-configure the OS. Recommended if you're setting up only one board.</p>
+<p>This is the easiest option but is limited in how much you can pre-configure the OS. Recommended if you're setting up only one board or if your OS image doesn't have <code>cloud-init</code>.</p>
 </div>
 <h3 id="flash-the-image">Flash the image<a class="headerlink" href="#flash-the-image" title="Permanent link">#</a></h3>
 <p>Use Raspberry Pi Imager or Balena Etcher (<code>brew install --cask [raspberry-pi-imager | balenaetcher]</code>) to flash the image to the SD card. If you use Pi Imager you can:  </p>
@@ -1041,26 +1115,9 @@ diskutil<span class="w"> </span>unmountDisk<span class="w"> </span><span class="
 </ul>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
-<p>The Orange Pi images don't seem to have <code>cloud-init</code> installed. You'll have to configure them manually.</p>
+<p>The Orange Pi images have to be configured manually after first boot.</p>
 </div>
-<h3 id="access-your-pi">Access your Pi<a class="headerlink" href="#access-your-pi" title="Permanent link">#</a></h3>
-<p>If you're <strong>reinstalling</strong> the OS you might need to remove old key fingerprints belonging to that hostname from your <code>known_hosts</code> file. Example:
-<div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code>ssh-keygen<span class="w">  </span>-f<span class="w"> </span>~/.ssh/known_hosts<span class="w"> </span>-R<span class="w"> </span>raspberrypi4.local
-</code></pre></div></p>
-<p>If your board is already running <code>avahi-daemon</code> (more on that later) you can reach it using its hostname.
-<div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code>arp<span class="w"> </span>raspberrypi4.local<span class="w"> </span>
-</code></pre></div>
-Otherwise, find your board's IP in your router's admin UI or by going over the list of all devices on your network with <code>arp -a</code>.</p>
-<p>SSH into it with the configured user e.g. <code>pi</code> and the IP address or hostname. Examples:
-<div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code>ssh<span class="w"> </span>pi@raspberrypi4.local
-<span class="c1"># or</span>
-ssh<span class="w"> </span>pi@192.168.xxx.xxx
-
-<span class="c1"># Logs are located here</span>
-ls<span class="w"> </span>-al<span class="w"> </span>/var/log
-<span class="c1"># Example</span>
-sudo<span class="w"> </span>cat<span class="w"> </span>/var/log/cloud-init.log
-</code></pre></div></p>
+<p><a href="#access-your-pi">Access your Pi</a> </p>
 <h3 id="upgrade">Upgrade<a class="headerlink" href="#upgrade" title="Permanent link">#</a></h3>
 <ul>
 <li><code>upgrade</code> is used to install available upgrades of all packages currently installed on the system. New packages will be installed if required to satisfy dependencies, but existing packages will never be removed. If an upgrade for a package requires the removal of an installed package the upgrade for this package isn't performed.  </li>
@@ -1074,11 +1131,14 @@ pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>sudo<span clas
 <div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>avahi-daemon<span class="w"> </span>lshw
 </code></pre></div></p>
 <h4 id="authentication">Authentication<a class="headerlink" href="#authentication" title="Permanent link">#</a></h4>
-<p>If you <strong>didn't do so during setup</strong>, you can still generate and add an ssh key at any time. Example:
-<div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code>ssh-keygen
-ssh-copy-id<span class="w"> </span>-i<span class="w"> </span>~/.ssh/id_rsa<span class="w"> </span>pi@raspberrypi4.local
-</code></pre></div>
-To remove password authentication:
+<p>If you <strong>didn't do so during setup</strong>, generate and add an ssh key.
+<div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code><span class="c1"># Specify the type of key to create e.g. `ed25519` or `rsa`.</span>
+ssh-keygen<span class="w"> </span>-t<span class="w"> </span>ed25519
+<span class="c1"># Add it on the remote machine (if the `-i` filename does not end in `.pub` this is added)</span>
+ssh-copy-id<span class="w"> </span>-i<span class="w"> </span>~/.ssh/id_rsa<span class="w"> </span>pi@raspberrypi4b.local
+ssh-copy-id<span class="w"> </span>-i<span class="w"> </span>~/.ssh/id_ed25519<span class="w"> </span>orangepi@orangepi3b.local
+</code></pre></div></p>
+<p>To remove password authentication:
 <div class="highlight"><span class="filename">on the Pi</span><pre><span></span><code>sudo<span class="w"> </span>nano<span class="w"> </span>/etc/ssh/sshd_config
 </code></pre></div>
 and replace <code>#PasswordAuthentication yes</code> with <code>PasswordAuthentication no</code>.
@@ -1087,18 +1147,17 @@ Test the validity of the config file and restart the service (or reboot).
 sudo<span class="w"> </span>service<span class="w"> </span>sshd<span class="w"> </span>restart
 sudo<span class="w"> </span>service<span class="w"> </span>sshd<span class="w"> </span>status
 </code></pre></div></p>
-<p>Update the password for default users. Examples:
-<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>passwd<span class="w"> </span>root
-sudo<span class="w"> </span>passwd<span class="w"> </span>orangepi
-</code></pre></div></p>
 <h4 id="board-specific-tools">Board-specific tools<a class="headerlink" href="#board-specific-tools" title="Permanent link">#</a></h4>
-<p>Once you're on the SBC, configure it if needed.
+<p>On Raspberry Pi OS
 <div class="highlight"><pre><span></span><code>pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>sudo<span class="w"> </span>raspi-config
 <span class="c1"># Go to Interface Options, VNC (for graphical remote access)</span>
 <span class="c1"># Tab to the Finish option and reboot.</span>
 </code></pre></div></p>
 <p>Orange Pi has a config tool as well
 <div class="highlight"><pre><span></span><code>orangepi@orangepi3b:~$<span class="w"> </span>sudo<span class="w"> </span>orangepi-config
+</code></pre></div>
+If you just need to connect to Wi-Fi, use:
+<div class="highlight"><pre><span></span><code>nmcli<span class="w"> </span>dev<span class="w"> </span>wifi<span class="w"> </span>connect<span class="w"> </span>wifi_name<span class="w"> </span>password<span class="w"> </span>wifi_passwd
 </code></pre></div></p>
 <h4 id="other">Other<a class="headerlink" href="#other" title="Permanent link">#</a></h4>
 <p>After this, <a href="/reference/k8s/#microk8s">install MicroK8s</a>.</p>
@@ -1119,6 +1178,23 @@ pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>sudo<span clas
 </code></pre></div></p>
 </div>
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">#</a></h2>
+<h3 id="access-your-pi">Access your Pi<a class="headerlink" href="#access-your-pi" title="Permanent link">#</a></h3>
+<p>If you're <strong>reinstalling</strong> the OS you might need to remove old key fingerprints belonging to that hostname from your <code>known_hosts</code> file. Example:
+<div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code>ssh-keygen<span class="w">  </span>-f<span class="w"> </span>~/.ssh/known_hosts<span class="w"> </span>-R<span class="w"> </span>raspberrypi4b.local
+</code></pre></div></p>
+<p>If your board is already running <code>avahi-daemon</code> you can reach it using its hostname.
+<div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code>arp<span class="w"> </span>raspberrypi4b.local<span class="w"> </span>
+</code></pre></div>
+Otherwise, find your board's IP in your router's admin UI or by going over the list of all devices on your network with <code>arp -a</code>.</p>
+<p>SSH into it with the configured user e.g. <code>pi</code> and the IP address or hostname. Examples:
+<div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code>ssh<span class="w"> </span>pi@raspberrypi4b.local
+<span class="c1"># or</span>
+ssh<span class="w"> </span>pi@192.168.xxx.xxx
+</code></pre></div></p>
+<p>Update the password for default users like <code>pi</code>, <code>orangepi</code>, <code>ubuntu</code>, etc. Examples:
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>passwd<span class="w"> </span>root
+sudo<span class="w"> </span>passwd<span class="w"> </span>pi
+</code></pre></div></p>
 <h3 id="to-give-it-a-static-ip">To give it a static IP<a class="headerlink" href="#to-give-it-a-static-ip" title="Permanent link">#</a></h3>
 <p>Find the IP adddress of your router. It's the address that appears after <code>default via</code>.
 <div class="highlight"><pre><span></span><code>pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>ip<span class="w"> </span>r

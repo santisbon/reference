@@ -5,71 +5,95 @@ Raspberry Pi, Orange Pi, and many others.
 
 ## Get OS image
 
-You *could* use an imager program that flashes an operating system on the SD card for you but you'll be very limited in the ways you can preconfigure the OS. It's better to download the OS image and flash it yourself.  
+You *could* use an imager program that flashes an operating system on the SD card for you but you'll be very limited in the ways you can pre-configure the OS. It's better to download the OS image and flash it yourself.  
    
-I recommend using an **Ubuntu** image made specifically for your board instead of a manufaturer's custom OS like Raspberry Pi OS or Orange Pi OS. Those are designed for simplicity and ease of use at the expense of functionality that will be important to us when building our homelab as a private cloud.
+I recommend using an **Ubuntu** image made specifically for your board instead of a manufaturer's custom OS like Raspberry Pi OS or Orange Pi OS. Those are designed for simplicity and ease of use at the expense of functionality that is important when building a cloud native homelab.
 
 * ❌ Raspberry Pi OS doesn't come with [`cloud-init`](https://cloud-init.io).
 * ❌ Orange Pi OS doesn't support the GPU, Neural Processing Unit (NPU), and Vision Processing Unit (VPU) that some Orange Pi boards have for Artificial Intelligence and graphics-intensive workloads.
 * ✅ Ubuntu comes with `cloud-init` preinstalled which will make your life easier.
-* ✅ Ubuntu comes with [`snapd`](https://ubuntu.com/core/services/guide/snaps-intro) preinstalled which lets us preconfigure [MicroK8s](https://microk8s.io).
+* ✅ Ubuntu comes with [`snapd`](https://ubuntu.com/core/services/guide/snaps-intro) preinstalled which lets us pre-configure [MicroK8s](https://microk8s.io).
 * ✅ Ubuntu, Debian, and Android support the Orange Pi's GPU, NPU, and VPU.
 
-Make sure you grab the *Server* image corresponding to your Pi's architecture (32-bit or 64-bit). We choose the server version because we don't need the graphical environment that comes with the *Desktop* version.  
+Make sure you grab the image corresponding to your Pi's CPU architecture (32-bit or 64-bit). We'll use the *Server* version because we don't need the graphical environment that comes with the *Desktop* version.  
 
 Official Ubuntu images for all Raspberry Pis (recommended):  
 [Download](https://ubuntu.com/download/raspberry-pi)  
 [Checksums](https://github.com/canonical/ubuntu.com/blob/main/releases.yaml)
 
-Manufacturer's images for Orange Pi 3B:  
-*For some reason, an SD card flashed with the Ubuntu image provided by Orange Pi can't be mounted on macOS. We need to mount it to inject or edit files before first boot if we want to automate the setup as much as possible. For this reason, if you're setting up an Orange Pi download the image and see the [one-off](#set-up-a-one-off) instructions*.  
+Manufacturer's images for Orange Pi 3B:    
 [Download](http://www.orangepi.org/html/hardWare/computerAndMicrocontrollers/service-and-support/Orange-Pi-3B.html)  
 
 Examples of verifying the integrity of the image file:
-```sh
-# Extract and verify
-7zz x Orangepi3b_1.0.0_ubuntu_jammy_server_linux5.10.160.7z
-shasum -c Orangepi3b_1.0.0_ubuntu_jammy_server_linux5.10.160.img.sha
-
-# Verify it matches the hash on the website and decompress
+```sh title="On your laptop" 
+# Check the sum from the Ubuntu website and decompress
 echo "f3842efb3be1be4243c24203bd16e335f155fdbe104b1ed8c5efc548ea478ab0 *ubuntu-22.04.3-preinstalled-server-arm64+raspi.img.xz" | shasum -a 256 --check
 xz -d ubuntu-22.04.3-preinstalled-server-arm64+raspi.img.xz
+
+# Extract Orange Pi image and check the sum
+7zz x Orangepi3b_1.0.0_ubuntu_jammy_server_linux5.10.160.7z
+shasum -c Orangepi3b_1.0.0_ubuntu_jammy_server_linux5.10.160.img.sha
 ```
 
 ## Option A: Cloud native 
 This is the repeatable, flexible option.
 
 !!! tip
-    This lets you automatically upgrade the system, configure users, modify boot parameters, specify software to install, custom commands to run on first boot, among other things. Recommended when setting up multiple Pis or installing Kubernetes.
+    This lets you automatically upgrade the system, configure users, modify boot parameters, install software, run commands on first boot, among other things. Recommended when setting up multiple Pis or installing Kubernetes.
+
+!!! important
+    This requires the OS image to:
+
+    * Have `cloud-init` preinstalled.
+    * Be mountable on the OS you're using (e.g. macOS) so you can inject `user-data` and boot parameters.
+    
+    ✅ Supported by the Ubuntu images for Raspberry Pi.  
+    ❌ Not supoprted by Orange Pi images.
+
+    If you're setting up an Orange Pi, download the image and see the [one-off](#option-b-one-off) instructions.
 
 ### Flash pre-configured image
 
-We'll flash the SD card with our `cloud-init` file and other configurations. This will set up `avahi-daemon` to be able to reach the Pi using its hostname rather than having to use its IP. It also installs a tool for viewing hardware info and MicroK8s.  
+We'll flash a pre-configured SD card with:  
 
-Replace values for your own environment (your [OS tools to copy/paste](https://ostechnix.com/how-to-use-pbcopy-and-pbpaste-commands-on-linux/), name of your [SSH key](https://www.ssh.com/academy/ssh/keygen), volume name, etc.).  
+* Hostname
+* A user with ssh key authentication (and password authentication disabled)
+* Upgraded packages
+* Additional packages installed
+* Kubernetes (MicroK8s) installed with some addons enabled
+* Wi-Fi configuration
+* Boot parameters modified to support Kubernetes
 
-This example uses the macOS version of `sed` with an empty string for the mandatory extension parameter when editing a file in-place. It also uses [`pv`](https://formulae.brew.sh/formula/pv#default) to monitor data progress.  
+If you don't have an ssh key, [generate one](https://www.ssh.com/academy/ssh/keygen) with `ssh-keygen -t ed25519`.  
 
-These commands have been tested with the image provided by Ubuntu on a Raspberry Pi.  
+!!! tip
+    Install `pv` to see a progress bar and percentage of completion as the image is being flashed:  
+    `brew install pv`
 
+!!! attention
+    This example uses macOS. Adjust the commands with your OS's tools to [copy/paste](https://ostechnix.com/how-to-use-pbcopy-and-pbpaste-commands-on-linux/), view disks, `dd` options, and [`sed` version](https://unix.stackexchange.com/questions/13711/differences-between-sed-on-mac-osx-and-other-standard-sed). It has been tested with the image provided by Ubuntu for Raspberry Pi.  
+
+Insert the SD card and check the device name e.g. `/dev/disk4`
 ```sh title="On your laptop" 
-# Insert the SD card and find the corresponding device
 diskutil list
-# df -h
+```
+
+Use that device name to flash the OS image to the SD card.
+```sh title="On your laptop" 
+cd ~/Downloads
 
 ###################################################################
 # REPLACE WITH YOUR VALUES
 ###################################################################
-IMAGE=ubuntu-22.04.3-preinstalled-server-arm64+raspi.img
-DEVICE=/dev/mydevice # e.g. /dev/disk4
+IMAGE='ubuntu-22.04.3-preinstalled-server-arm64+raspi.img' 
+DEVICE='/dev/disk4' 
 
-HOSTNAME=raspberrypi4
-LOCALE=en_US
-TIMEZONE=US/Central
+HOSTNAME='raspberrypi4b' 
+LOCALE='en_US' 
+TIMEZONE='US/Central' 
 
-COUNTRY=US
-WIFI_NAME=myssid
-WIFI_PASSWORD='mypassword'
+WIFI_NAME='MySSID' 
+WIFI_PASSWORD='MyPassword' 
 
 pbcopy < ~/.ssh/id_ed25519.pub
 KEY=$(pbpaste)
@@ -78,42 +102,24 @@ KEY=$(pbpaste)
 # Unmount the card
 diskutil unmountDisk $DEVICE
 
-# You can use `dd` by itself
-sudo dd if=$IMAGE of=$DEVICE bs=1m status=progress
-# or to get a progress bar and percentage, use `pv` through a pipe
+# sudo dd if=$IMAGE of=$DEVICE bs=1m status=progress
 pv $IMAGE | sudo dd bs=1m of=$DEVICE
+```
 
-# When it's done you'll see a volume mounted on your desktop 
-# called `boot`, `bootfs`, `system-boot` or something similar.
-# You can also mount it manually. Example:
-# diskutil mountDisk /dev/disk4
-
+When it's done you'll see a volume mounted on your desktop called `system-boot` or something similar. Modify the volume to inject `user-data` and set boot parameters needed by Kubernetes.
+```sh title="On your laptop" 
 ###################################################################
 # REPLACE WITH YOUR VALUES
 ###################################################################
-VOLUME=system-boot
+VOLUME='system-boot' 
 ###################################################################
 
-# enable Wi-Fi if applicable
-cat << EOF > /Volumes/$VOLUME/wpa_supplicant.conf
-ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
-update_config=1
-country=${COUNTRY}
-network={
-ssid=${WIFI_NAME}
-psk=${WIFI_PASSWORD}
-}
-EOF
-
-# check that it worked
-# cat /Volumes/$VOLUME/wpa_supplicant.conf
-
 # create file for `cloud-init`
-cat << EOF > /Volumes/${VOLUME}/user-data
+cat << EOF > /Volumes/$VOLUME/user-data
 #cloud-config
 
 hostname: ${HOSTNAME}
-manage_etc_hosts: true
+manage_etc_hosts: false
 locale: ${LOCALE}
 timezone: ${TIMEZONE}
 
@@ -128,27 +134,103 @@ package_upgrade: true
 packages:
   - avahi-daemon 
   - lshw
+  - net-tools
 
 runcmd:
-  - [snap install microk8s --classic]
-EOF
+  - sudo ifconfig wlan0 up
+  - sudo snap refresh
+  - sudo snap install microk8s --classic
+  - sudo microk8s enable dashboard
+  - sudo microk8s enable ingress
+  - sudo microk8s enable metrics-server
 
-# cat /Volumes/${VOLUME}/user-data
+write_files:
+- content: |
+    # This file is generated from information provided by the datasource.  Changes
+    # to it will not persist across an instance reboot.  To disable cloud-init's
+    # network configuration capabilities, write a file
+    # /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg with the following:
+    # network: {config: disabled}
+    network:
+        ethernets:
+            eth0:
+                dhcp4: true
+                optional: true
+        version: 2
+        wifis:
+            wlan0:
+                optional: true
+                access-points:
+                    "${WIFI_NAME}":
+                        password: "${WIFI_PASSWORD}"
+                dhcp4: true
+  path: /etc/netplan/50-cloud-init.yaml
+- content: |
+    network: {config: disabled}
+  path: /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg
+EOF
 
 # Add these options at the end of the file as Kubernetes will need them to run on the Pi.
 sed -i "" "$ s/$/ cgroup_enable=memory cgroup_memory=1/" /Volumes/$VOLUME/cmdline.txt
-# cat /Volumes/$VOLUME/cmdline.txt
-
-diskutil unmountDisk $DEVICE
-# remove SD card from laptop, insert it in your Pi and turn it on
 ```
 
-Since we preconfigured everything it has a lot of work to do before it can be available including upgrading the system and installing packages. Wait a few minutes before trying to connect to it via SSH. 
+You can verify that the files were written correctly
+```sh title="On your laptop" 
+cat /Volumes/$VOLUME/user-data
+cat /Volumes/$VOLUME/cmdline.txt
+```
+
+Unmount the SD card
+```sh title="On your laptop"
+diskutil unmountDisk $DEVICE
+```
+
+🎉 **You're done!** 🍾  
+
+Now remove the SD card from your laptop and insert it into the Pi which should be connected to your router with an ethernet cable.
+
+!!! tip
+
+    **Before connecting to your Pi**  
+    If it's not already running, start the `ssh-agent` in the background and add your private key to it so you're not asked for your passphrase every time.
+    ```zsh title="On your laptop"
+    ps -ax | grep ssh-agent
+    eval "$(ssh-agent -s)"
+    ssh-add --apple-use-keychain ~/.ssh/id_ed25519
+    ```
+
+Since we pre-configured everything it has a lot of work to do on the first boot and it takes several minutes. Go make yourself a cup of tea before [connecting](#access-your-pi) for the first time.
+
+Once enough time has passed, you can now check a few things to make sure everything went smoothly
+```zsh title="On your Pi"
+# Check if packages were installed
+sudo cat /var/log/apt/history.log
+sudo apt list | grep avahi-daemon
+sudo apt list | grep lshw
+
+# Check if a service is running
+systemctl status 'avahi*'
+
+# Check if there were any `cloud-init` errors
+sudo cat /var/log/cloud-init.log | grep failures
+sudo cat /var/log/cloud-init-output.log
+
+# Check if MicroK8s is intalled and running with the addons enabled
+sudo microk8s status --wait-ready
+
+# Look at the network configuration
+# You may need to `sudo reboot` for Wi-Fi to be enabled.
+sudo lshw -c network
+ip addr show | grep wlan0
+
+cat /etc/netplan/50-cloud-init.yaml
+cat /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg
+```
 
 ## Option B: One-off 
 
 !!! tip
-    This is the easiest option but is limited in how much you can pre-configure the OS. Recommended if you're setting up only one board.
+    This is the easiest option but is limited in how much you can pre-configure the OS. Recommended if you're setting up only one board or if your OS image doesn't have `cloud-init`.
 
 
 ### Flash the image
@@ -161,32 +243,9 @@ Use Raspberry Pi Imager or Balena Etcher (`brew install --cask [raspberry-pi-ima
 * Set the hostname.  
 
 !!! attention
-    The Orange Pi images don't seem to have `cloud-init` installed. You'll have to configure them manually.
+    The Orange Pi images have to be configured manually after first boot.
 
-### Access your Pi
-
-If you're **reinstalling** the OS you might need to remove old key fingerprints belonging to that hostname from your `known_hosts` file. Example:
-```zsh title="On your laptop"
-ssh-keygen  -f ~/.ssh/known_hosts -R raspberrypi4.local
-```
-
-If your board is already running `avahi-daemon` (more on that later) you can reach it using its hostname.
-```zsh title="On your laptop"
-arp raspberrypi4.local 
-```
-Otherwise, find your board's IP in your router's admin UI or by going over the list of all devices on your network with `arp -a`.
-
-SSH into it with the configured user e.g. `pi` and the IP address or hostname. Examples:
-```zsh title="On your laptop"
-ssh pi@raspberrypi4.local
-# or
-ssh pi@192.168.xxx.xxx
-
-# Logs are located here
-ls -al /var/log
-# Example
-sudo cat /var/log/cloud-init.log
-```
+[Access your Pi](#access-your-pi) 
 
 ### Upgrade
 
@@ -207,11 +266,15 @@ sudo apt install avahi-daemon lshw
 
 #### Authentication
 
-If you **didn't do so during setup**, you can still generate and add an ssh key at any time. Example:
+If you **didn't do so during setup**, generate and add an ssh key.
 ```zsh title="On your laptop"
-ssh-keygen
-ssh-copy-id -i ~/.ssh/id_rsa pi@raspberrypi4.local
+# Specify the type of key to create e.g. `ed25519` or `rsa`.
+ssh-keygen -t ed25519
+# Add it on the remote machine (if the `-i` filename does not end in `.pub` this is added)
+ssh-copy-id -i ~/.ssh/id_rsa pi@raspberrypi4b.local
+ssh-copy-id -i ~/.ssh/id_ed25519 orangepi@orangepi3b.local
 ```
+
 To remove password authentication:
 ```zsh title="on the Pi"
 sudo nano /etc/ssh/sshd_config
@@ -224,15 +287,9 @@ sudo service sshd restart
 sudo service sshd status
 ```
 
-Update the password for default users. Examples:
-```zsh
-sudo passwd root
-sudo passwd orangepi
-```
-
 #### Board-specific tools
 
-Once you're on the SBC, configure it if needed.
+On Raspberry Pi OS
 ```zsh
 pi@raspberrypi4:~ $ sudo raspi-config
 # Go to Interface Options, VNC (for graphical remote access)
@@ -242,6 +299,10 @@ pi@raspberrypi4:~ $ sudo raspi-config
 Orange Pi has a config tool as well
 ```zsh
 orangepi@orangepi3b:~$ sudo orangepi-config
+```
+If you just need to connect to Wi-Fi, use:
+```zsh
+nmcli dev wifi connect wifi_name password wifi_passwd
 ```
 
 #### Other
@@ -270,6 +331,32 @@ brew install --cask vnc-viewer
     ```
 
 ## Usage
+
+### Access your Pi
+
+If you're **reinstalling** the OS you might need to remove old key fingerprints belonging to that hostname from your `known_hosts` file. Example:
+```zsh title="On your laptop"
+ssh-keygen  -f ~/.ssh/known_hosts -R raspberrypi4b.local
+```
+
+If your board is already running `avahi-daemon` you can reach it using its hostname.
+```zsh title="On your laptop"
+arp raspberrypi4b.local 
+```
+Otherwise, find your board's IP in your router's admin UI or by going over the list of all devices on your network with `arp -a`.
+
+SSH into it with the configured user e.g. `pi` and the IP address or hostname. Examples:
+```zsh title="On your laptop"
+ssh pi@raspberrypi4b.local
+# or
+ssh pi@192.168.xxx.xxx
+```
+
+Update the password for default users like `pi`, `orangepi`, `ubuntu`, etc. Examples:
+```zsh
+sudo passwd root
+sudo passwd pi
+```
 
 ### To give it a static IP
 Find the IP adddress of your router. It's the address that appears after `default via`.

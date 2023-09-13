@@ -691,11 +691,11 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#microk8s-dashboard" class="md-nav__link">
-    MicroK8s dashboard
+  <a href="#dashboard" class="md-nav__link">
+    Dashboard
   </a>
   
-    <nav class="md-nav" aria-label="MicroK8s dashboard">
+    <nav class="md-nav" aria-label="Dashboard">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -786,7 +786,7 @@
   
     <li class="md-nav__item">
       <a href="../rpi/" class="md-nav__link">
-        SBCs
+        Raspberry Pi
       </a>
     </li>
   
@@ -1159,11 +1159,11 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#microk8s-dashboard" class="md-nav__link">
-    MicroK8s dashboard
+  <a href="#dashboard" class="md-nav__link">
+    Dashboard
   </a>
   
-    <nav class="md-nav" aria-label="MicroK8s dashboard">
+    <nav class="md-nav" aria-label="Dashboard">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -2038,7 +2038,7 @@ kubectl<span class="w"> </span>-n<span class="w"> </span>kubernetes-dashboard<sp
 <span class="c1"># Now copy the token and paste it into the Enter token field on the login screen. </span>
 </code></pre></div>
 <h2 id="microk8s">MicroK8s<a class="headerlink" href="#microk8s" title="Permanent link">#</a></h2>
-<p><a href="https://microk8s.io/docs/install-raspberry-pi">On Raspberry Pi</a>  </p>
+<p>Suitable for <a href="https://microk8s.io/docs/install-raspberry-pi">Raspberry Pi</a> and other development boards.  </p>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
 <p>MicroK8s is not available for 32-bit architectures like <code>armhf</code>(<code>arm/v7</code>), only on 64-bit architectures like <code>arm64</code> and <code>amd64</code>.</p>
@@ -2054,29 +2054,39 @@ kubectl<span class="w"> </span>-n<span class="w"> </span>kubernetes-dashboard<sp
 <p class="admonition-title">Attention</p>
 <p>On Orange Pi boards these parameters are handled in <code>/boot/boot.cmd</code> by checking:<br />
 <code>if test "${docker_optimizations}" = "on"</code>.  </p>
-<p>Don't edit this file, instead <code>sudo nano /boot/orangepiEnv.txt</code> to set the parameter to <code>on</code>.</p>
+<p>Don't edit this file, instead <code>sudo nano /boot/orangepiEnv.txt</code> and set the parameter to <code>on</code>.</p>
 </div>
-<p>If your image doesn't already include it, <a href="https://snapcraft.io/docs/installing-snap-on-raspbian">install</a> <code>snap</code> first.
-<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>update
+<p>If your image doesn't already include it, <a href="https://snapcraft.io/docs/installing-snap-on-raspbian">install</a> <code>snap</code>.
+<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>update
 sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>snapd
 sudo<span class="w"> </span>reboot
 <span class="c1"># ...reconnect after reboot</span>
 sudo<span class="w"> </span>snap<span class="w"> </span>install<span class="w"> </span>core
 </code></pre></div></p>
 <p>Then install MicroK8s.
-<div class="highlight"><pre><span></span><code>pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>sudo<span class="w"> </span>snap<span class="w"> </span>install<span class="w"> </span>microk8s<span class="w"> </span>--classic
-pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>microk8s<span class="w"> </span>status<span class="w"> </span>--wait-ready
-pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>all<span class="w"> </span>--all-namespaces
-pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>dns<span class="w"> </span>dashboard<span class="w"> </span>registry<span class="w"> </span>ingress<span class="w"> </span><span class="c1"># or any other addons</span>
-pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span><span class="nb">alias</span><span class="w"> </span><span class="nv">mkctl</span><span class="o">=</span><span class="s2">&quot;microk8s kubectl&quot;</span>
-pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span><span class="nb">alias</span><span class="w"> </span><span class="nv">mkhelm</span><span class="o">=</span><span class="s2">&quot;microk8s helm&quot;</span>
-pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>mkctl<span class="w"> </span>create<span class="w"> </span>deployment<span class="w"> </span>nginx<span class="w"> </span>--image<span class="w"> </span>nginx
-pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>mkctl<span class="w"> </span>expose<span class="w"> </span>deployment<span class="w"> </span>nginx<span class="w"> </span>--port<span class="w"> </span><span class="m">80</span><span class="w"> </span>--target-port<span class="w"> </span><span class="m">80</span><span class="w"> </span>--selector<span class="w"> </span><span class="nv">app</span><span class="o">=</span>nginx<span class="w"> </span>--type<span class="w"> </span>ClusterIP<span class="w"> </span>--name<span class="w"> </span>nginx
-pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>watch<span class="w"> </span>microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>all
-pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>microk8s<span class="w"> </span>reset
-pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>microk8s<span class="w"> </span>status
-pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>microk8s<span class="w"> </span>stop<span class="w"> </span><span class="c1"># microk8s start</span>
-pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>microk8s<span class="w"> </span>kubectl<span class="w"> </span>version<span class="w"> </span>--output<span class="o">=</span>yaml
+<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>sudo<span class="w"> </span>snap<span class="w"> </span>install<span class="w"> </span>microk8s<span class="w"> </span>--classic
+</code></pre></div></p>
+<p>To run commands without <code>sudo</code> add the user to the <code>microk8s</code> group. Example:
+<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>sudo<span class="w"> </span>usermod<span class="w"> </span>-a<span class="w"> </span>-G<span class="w"> </span>microk8s<span class="w"> </span>pi
+sudo<span class="w"> </span>chown<span class="w"> </span>-R<span class="w"> </span>pi<span class="w"> </span>~/.kube
+</code></pre></div></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If only <code>/root/</code> has a <code>.kube</code> directory, even though your user installed MicroK8s, you can use <code>sudo</code> to issue <code>microk8s</code> commands.</p>
+</div>
+<p>Usage:
+<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>microk8s<span class="w"> </span>status<span class="w"> </span>--wait-ready
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>all<span class="w"> </span>--all-namespaces
+<span class="c1"># default addons are: dns ha-cluster helm helm3. You can enable more</span>
+<span class="c1"># but preferably enable them one by one</span>
+microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>dashboard<span class="w"> </span>ingress<span class="w"> </span>metrics-server<span class="w"> </span>
+<span class="nb">alias</span><span class="w"> </span><span class="nv">mkctl</span><span class="o">=</span><span class="s2">&quot;microk8s kubectl&quot;</span>
+<span class="nb">alias</span><span class="w"> </span><span class="nv">mkhelm</span><span class="o">=</span><span class="s2">&quot;microk8s helm&quot;</span>
+mkctl<span class="w"> </span>version<span class="w"> </span>--output<span class="o">=</span>yaml
+watch<span class="w"> </span>microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>all
+microk8s<span class="w"> </span>reset
+microk8s<span class="w"> </span>status
+microk8s<span class="w"> </span>stop<span class="w"> </span><span class="c1"># microk8s start</span>
 </code></pre></div></p>
 <p>You can update a snap package with <code>sudo snap refresh</code>.</p>
 <p>Configuration file. These are the arguments you can add regarding log rotation <code>--container-log-max-files</code> and <code>--container-log-max-size</code>. They have default values. <a href="https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/">More info</a>.
@@ -2087,7 +2097,7 @@ pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>microk8s<span 
 <div class="highlight"><pre><span></span><code>microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>registry
 </code></pre></div>
 The containerd daemon used by MicroK8s is configured to trust this insecure registry. To upload images we have to tag them with <code>localhost:32000/your-image</code> before pushing them.</p>
-<h3 id="microk8s-dashboard">MicroK8s dashboard<a class="headerlink" href="#microk8s-dashboard" title="Permanent link">#</a></h3>
+<h3 id="dashboard">Dashboard<a class="headerlink" href="#dashboard" title="Permanent link">#</a></h3>
 <p>If RBAC is not enabled access the dashboard using the token retrieved with:
 <div class="highlight"><pre><span></span><code>microk8s<span class="w"> </span>kubectl<span class="w"> </span>describe<span class="w"> </span>secret<span class="w"> </span>-n<span class="w"> </span>kube-system<span class="w"> </span>microk8s-dashboard-token
 </code></pre></div>

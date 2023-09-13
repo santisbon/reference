@@ -1020,7 +1020,7 @@ kubectl -n kubernetes-dashboard create token admin-user
 
 ## MicroK8s
 
-[On Raspberry Pi](https://microk8s.io/docs/install-raspberry-pi)  
+Suitable for [Raspberry Pi](https://microk8s.io/docs/install-raspberry-pi) and other development boards.  
 
 !!! attention
     MicroK8s is not available for 32-bit architectures like `armhf`(`arm/v7`), only on 64-bit architectures like `arm64` and `amd64`.
@@ -1037,10 +1037,10 @@ cgroup_enable=memory cgroup_memory=1
     On Orange Pi boards these parameters are handled in `/boot/boot.cmd` by checking:  
     `if test "${docker_optimizations}" = "on"`.  
 
-    Don't edit this file, instead `sudo nano /boot/orangepiEnv.txt` to set the parameter to `on`.
+    Don't edit this file, instead `sudo nano /boot/orangepiEnv.txt` and set the parameter to `on`.
 
-If your image doesn't already include it, [install](https://snapcraft.io/docs/installing-snap-on-raspbian) `snap` first.
-```zsh
+If your image doesn't already include it, [install](https://snapcraft.io/docs/installing-snap-on-raspbian) `snap`.
+```zsh title="On your Pi"
 sudo apt update
 sudo apt install snapd
 sudo reboot
@@ -1049,20 +1049,33 @@ sudo snap install core
 ```
 
 Then install MicroK8s.
-```zsh
-pi@raspberrypi4:~ $ sudo snap install microk8s --classic
-pi@raspberrypi4:~ $ microk8s status --wait-ready
-pi@raspberrypi4:~ $ microk8s kubectl get all --all-namespaces
-pi@raspberrypi4:~ $ microk8s enable dns dashboard registry ingress # or any other addons
-pi@raspberrypi4:~ $ alias mkctl="microk8s kubectl"
-pi@raspberrypi4:~ $ alias mkhelm="microk8s helm"
-pi@raspberrypi4:~ $ mkctl create deployment nginx --image nginx
-pi@raspberrypi4:~ $ mkctl expose deployment nginx --port 80 --target-port 80 --selector app=nginx --type ClusterIP --name nginx
-pi@raspberrypi4:~ $ watch microk8s kubectl get all
-pi@raspberrypi4:~ $ microk8s reset
-pi@raspberrypi4:~ $ microk8s status
-pi@raspberrypi4:~ $ microk8s stop # microk8s start
-pi@raspberrypi4:~ $ microk8s kubectl version --output=yaml
+```zsh title="On your Pi"
+sudo snap install microk8s --classic
+```
+
+To run commands without `sudo` add the user to the `microk8s` group. Example:
+```zsh title="On your Pi"
+sudo usermod -a -G microk8s pi
+sudo chown -R pi ~/.kube
+```
+
+!!! note
+    If only `/root/` has a `.kube` directory, even though your user installed MicroK8s, you can use `sudo` to issue `microk8s` commands.
+
+Usage:
+```zsh title="On your Pi"
+microk8s status --wait-ready
+microk8s kubectl get all --all-namespaces
+# default addons are: dns ha-cluster helm helm3. You can enable more
+# but preferably enable them one by one
+microk8s enable dashboard ingress metrics-server 
+alias mkctl="microk8s kubectl"
+alias mkhelm="microk8s helm"
+mkctl version --output=yaml
+watch microk8s kubectl get all
+microk8s reset
+microk8s status
+microk8s stop # microk8s start
 ```
 
 You can update a snap package with `sudo snap refresh`.
@@ -1079,7 +1092,8 @@ microk8s enable registry
 ```
 The containerd daemon used by MicroK8s is configured to trust this insecure registry. To upload images we have to tag them with `localhost:32000/your-image` before pushing them.
 
-### MicroK8s dashboard
+### Dashboard
+
 If RBAC is not enabled access the dashboard using the token retrieved with:
 ```zsh
 microk8s kubectl describe secret -n kube-system microk8s-dashboard-token
