@@ -576,6 +576,26 @@
     To give it a static IP
   </a>
   
+    <nav class="md-nav" aria-label="To give it a static IP">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#option-a-the-router" class="md-nav__link">
+    Option A: The router
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#option-b-dhcpcdconf" class="md-nav__link">
+    Option B: dhcpcd.conf
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -862,6 +882,26 @@
   <a href="#to-give-it-a-static-ip" class="md-nav__link">
     To give it a static IP
   </a>
+  
+    <nav class="md-nav" aria-label="To give it a static IP">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#option-a-the-router" class="md-nav__link">
+    Option A: The router
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#option-b-dhcpcdconf" class="md-nav__link">
+    Option B: dhcpcd.conf
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -1165,7 +1205,7 @@ sudo<span class="w"> </span>apt<span class="w"> </span>full-upgrade
 </code></pre></div>
 <h3 id="configure">Configure<a class="headerlink" href="#configure" title="Permanent link">#</a></h3>
 <p>Make the board reachable using its hostname, not only its IP. Also install tool to view hardware info.
-<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>avahi-daemon<span class="w"> </span>lshw
+<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>avahi-daemon<span class="w"> </span>lshw
 </code></pre></div></p>
 <h4 id="authentication">Authentication<a class="headerlink" href="#authentication" title="Permanent link">#</a></h4>
 <p>If you <strong>didn't do so during setup</strong>, generate and add an ssh key.
@@ -1197,10 +1237,10 @@ sudo<span class="w"> </span>service<span class="w"> </span>sshd<span class="w"> 
 <div class="highlight"><span class="filename">/etc/hosts</span><pre><span></span><code><span class="m">192</span>.168.x.x<span class="w">  </span>thathostname.local
 </code></pre></div></p>
 <p>Orange Pi has a config tool as well
-<div class="highlight"><pre><span></span><code>orangepi@orangepi3b:~$<span class="w"> </span>sudo<span class="w"> </span>orangepi-config
+<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>sudo<span class="w"> </span>orangepi-config
 </code></pre></div>
 If you just need to connect to Wi-Fi on Orange Pi, use:
-<div class="highlight"><pre><span></span><code>nmcli<span class="w"> </span>dev<span class="w"> </span>wifi<span class="w"> </span>connect<span class="w"> </span>wifi_name<span class="w"> </span>password<span class="w"> </span>wifi_passwd
+<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>nmcli<span class="w"> </span>dev<span class="w"> </span>wifi<span class="w"> </span>connect<span class="w"> </span>wifi_name<span class="w"> </span>password<span class="w"> </span>wifi_passwd
 </code></pre></div></p>
 <p>To set a static IP on Orange Pi see the <a href="http://www.orangepi.org/html/hardWare/computerAndMicrocontrollers/service-and-support/Orange-Pi-3B.html">user manual</a> for instructions on using the <code>nmtui</code> command.</p>
 <h4 id="other">Other<a class="headerlink" href="#other" title="Permanent link">#</a></h4>
@@ -1234,7 +1274,7 @@ Otherwise, find your board's IP in your router's admin UI or by going over the l
 ssh<span class="w"> </span>pi@192.168.xxx.xxx
 </code></pre></div></p>
 <p>Update the password for default users like <code>pi</code>, <code>orangepi</code>, <code>ubuntu</code>, etc. Examples:
-<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>passwd<span class="w"> </span>root
+<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>sudo<span class="w"> </span>passwd<span class="w"> </span>root
 sudo<span class="w"> </span>passwd<span class="w"> </span>pi
 </code></pre></div></p>
 <h3 id="remote-gui-access">Remote GUI access<a class="headerlink" href="#remote-gui-access" title="Permanent link">#</a></h3>
@@ -1254,6 +1294,9 @@ python3<span class="w"> </span>-m<span class="w"> </span>pygame.examples.aliens
 </code></pre></div></p>
 </div>
 <h3 id="to-give-it-a-static-ip">To give it a static IP<a class="headerlink" href="#to-give-it-a-static-ip" title="Permanent link">#</a></h3>
+<h4 id="option-a-the-router">Option A: The router<a class="headerlink" href="#option-a-the-router" title="Permanent link">#</a></h4>
+<p>Log in to your router's admin interface and go to <strong>LAN</strong> -&gt; <strong>DHCP Server</strong> (or similar wording). There will be an option to manually assign an IP to an item on the list of client MAC addresses.</p>
+<h4 id="option-b-dhcpcdconf">Option B: <code>dhcpcd.conf</code><a class="headerlink" href="#option-b-dhcpcdconf" title="Permanent link">#</a></h4>
 <p>Find the IP adddress of your router. It's the address that appears after <code>default via</code>.
 <div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>ip<span class="w"> </span>r
 default<span class="w"> </span>via<span class="w"> </span><span class="o">[</span>IP<span class="o">]</span>
@@ -1262,7 +1305,7 @@ Get the IP of your DNS server (it may or may not be your router)
 <div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>grep<span class="w"> </span>nameserver<span class="w"> </span>/etc/resolv.conf
 </code></pre></div></p>
 <p>Open this file:
-<div class="highlight"><pre><span></span><code>nano<span class="w"> </span>/etc/dhcpcd.conf
+<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>nano<span class="w"> </span>/etc/dhcpcd.conf
 </code></pre></div>
 and add/edit these lines at the end filling in the correct info.
 <div class="highlight"><pre><span></span><code>interface [wlan0 for Wi-Fi or eth0 for Ethernet]
@@ -1272,11 +1315,10 @@ static domain_name_servers=[DNS IP]
 </code></pre></div>
 <code>inform</code> means that the Pi will attempt to get the IP address you requested, but if it's not available, it will choose another. If you use <code>static</code>, it will have no IP v4 address at all if the requested one is in use.  </p>
 <p>Save the file and <code>sudo reboot</code>. From now on, upon each boot, the Pi will attempt to obtain the static ip address you requested.  </p>
-<p>You could also set your router to manually assign the static IP to the Pi under its DHCP settings e.g. LAN, DHCP server.</p>
 <h3 id="to-set-it-up-as-a-dns-server">To set it up as a DNS server<a class="headerlink" href="#to-set-it-up-as-a-dns-server" title="Permanent link">#</a></h3>
 <ol start="0">
 <li>Install and configure a DNS Server e.g. DNSmasq or Pi-Hole on the Pi.</li>
-<li>Change your router’s DNS settings to point to the Pi. Log in to your router's admin interface and look for DNS e.g. in LAN, DHCP Server. Set the primary DNS server to the IP of your Pi and make sure it's the only DNS server. The Pi will handle upstream DNS services.</li>
+<li>Change your router’s DNS settings to point to the Pi. Log in to your router's admin interface and look for DNS e.g. in <strong>LAN</strong> -&gt; <strong>DHCP Server</strong>. Set the primary DNS server to the IP of your Pi and make sure it's the only DNS server. The Pi will handle upstream DNS services.</li>
 </ol>
 <h3 id="copying-files">Copying files<a class="headerlink" href="#copying-files" title="Permanent link">#</a></h3>
 <p>To copy files between the Pi and local machine
@@ -1284,10 +1326,10 @@ static domain_name_servers=[DNS IP]
 </code></pre></div></p>
 <h3 id="find-info-about-your-pi">Find info about your Pi<a class="headerlink" href="#find-info-about-your-pi" title="Permanent link">#</a></h3>
 <p>What model do you have?
-<div class="highlight"><pre><span></span><code>cat<span class="w"> </span>/sys/firmware/devicetree/base/model<span class="w"> </span><span class="p">;</span><span class="nb">echo</span>
+<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>cat<span class="w"> </span>/sys/firmware/devicetree/base/model<span class="w"> </span><span class="p">;</span><span class="nb">echo</span>
 </code></pre></div></p>
 <p>What's the connection speed of the ethernet port?
-<div class="highlight"><pre><span></span><code>ethtool<span class="w"> </span>eth0
+<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>ethtool<span class="w"> </span>eth0
 </code></pre></div></p>
 <p>32 or 64-bit kernel?
 <div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>getconf<span class="w"> </span>LONG_BIT
@@ -1295,7 +1337,7 @@ static domain_name_servers=[DNS IP]
 uname<span class="w"> </span>-m
 </code></pre></div></p>
 <p>See OS version
-<div class="highlight"><pre><span></span><code>cat<span class="w"> </span>/etc/os-release
+<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>cat<span class="w"> </span>/etc/os-release
 </code></pre></div></p>
 <p>Architecture  <br />
 If the following returns a <code>Tag_ABI_VFP_args</code> tag of <code>VFP registers</code>, it's an <code>armhf</code> (<code>arm</code>) system.<br />
@@ -1303,24 +1345,24 @@ A blank output means <code>armel</code> (<code>arm/v6</code>).
 <div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>readelf<span class="w"> </span>-A<span class="w"> </span>/proc/self/exe<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>Tag_ABI_VFP_args
 </code></pre></div>
 Or check the architecture with:
-<div class="highlight"><pre><span></span><code>hostnamectl
+<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>hostnamectl
 </code></pre></div></p>
 <p>You can find info about the hardware like ports, pins, RAM, SoC, connectivity, etc. with:
 <div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>pinout
 </code></pre></div></p>
 <h3 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">#</a></h3>
 <p>If your Pi's ethernet port is capable of 1Gbps, you're using a cat5e cable or better, your router and switch support 1Gbps,  and you're still only getting 100Mbps <strong>first try with another cable</strong>. A faulty cable is the most common cause of problems like this. If that doesn't work you can try disabling EEE (Energy Efficient Ethernet) although it will be reenabled at reboot. You could also try setting the speed manually.
-<div class="highlight"><pre><span></span><code>ethtool<span class="w"> </span>--show-eee<span class="w"> </span>eth0
+<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>ethtool<span class="w"> </span>--show-eee<span class="w"> </span>eth0
 sudo<span class="w"> </span>ethtool<span class="w"> </span>--set-eee<span class="w"> </span>eth0<span class="w"> </span>eee<span class="w"> </span>off
 
 <span class="c1"># set speed manually and disable autonegotiation</span>
 ethtool<span class="w"> </span>-s<span class="w"> </span>eth0<span class="w"> </span>speed<span class="w"> </span><span class="m">1000</span><span class="w"> </span>duplex<span class="w"> </span>full<span class="w"> </span>autoneg<span class="w"> </span>off
 </code></pre></div></p>
 <p>If not using <code>cloud-init</code> or an imager program, enable ssh with
-<div class="highlight"><pre><span></span><code>touch<span class="w"> </span>/Volumes/<span class="nv">$VOLUME</span>/ssh
+<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>touch<span class="w"> </span>/Volumes/<span class="nv">$VOLUME</span>/ssh
 </code></pre></div></p>
 <p>DNS issues
-<div class="highlight"><pre><span></span><code>cat<span class="w"> </span>/etc/resolv.conf
+<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>cat<span class="w"> </span>/etc/resolv.conf
 resolvectl<span class="w"> </span>status
 </code></pre></div></p>
 <h3 id="learn-about-electronics">Learn about electronics<a class="headerlink" href="#learn-about-electronics" title="Permanent link">#</a></h3>

@@ -258,7 +258,7 @@ sudo apt full-upgrade
 ### Configure
 
 Make the board reachable using its hostname, not only its IP. Also install tool to view hardware info.
-```sh
+```sh title="On your Pi"
 sudo apt install avahi-daemon lshw
 ```
 
@@ -305,11 +305,11 @@ In Ubuntu for Orange Pi, to reach other machines by hostname you need to add an 
 ```
 
 Orange Pi has a config tool as well
-```sh
-orangepi@orangepi3b:~$ sudo orangepi-config
+```sh title="On your Pi"
+sudo orangepi-config
 ```
 If you just need to connect to Wi-Fi on Orange Pi, use:
-```sh
+```sh title="On your Pi"
 nmcli dev wifi connect wifi_name password wifi_passwd
 ```
 
@@ -356,7 +356,7 @@ ssh pi@192.168.xxx.xxx
 ```
 
 Update the password for default users like `pi`, `orangepi`, `ubuntu`, etc. Examples:
-```sh
+```sh title="On your Pi"
 sudo passwd root
 sudo passwd pi
 ```
@@ -382,6 +382,12 @@ brew install --cask vnc-viewer
     ```
 
 ### To give it a static IP
+
+#### Option A: The router
+
+Log in to your router's admin interface and go to **LAN** -> **DHCP Server** (or similar wording). There will be an option to manually assign an IP to an item on the list of client MAC addresses.
+
+#### Option B: `dhcpcd.conf`
 Find the IP adddress of your router. It's the address that appears after `default via`.
 ```sh title="On your Pi"
 ip r
@@ -393,7 +399,7 @@ grep nameserver /etc/resolv.conf
 ```
 
 Open this file:
-```sh
+```sh title="On your Pi"
 nano /etc/dhcpcd.conf
 ```
 and add/edit these lines at the end filling in the correct info.
@@ -407,11 +413,9 @@ static domain_name_servers=[DNS IP]
 
 Save the file and `sudo reboot`. From now on, upon each boot, the Pi will attempt to obtain the static ip address you requested.  
 
-You could also set your router to manually assign the static IP to the Pi under its DHCP settings e.g. LAN, DHCP server.
-
 ### To set it up as a DNS server
 0. Install and configure a DNS Server e.g. DNSmasq or Pi-Hole on the Pi.
-1. Change your router’s DNS settings to point to the Pi. Log in to your router's admin interface and look for DNS e.g. in LAN, DHCP Server. Set the primary DNS server to the IP of your Pi and make sure it's the only DNS server. The Pi will handle upstream DNS services.
+1. Change your router’s DNS settings to point to the Pi. Log in to your router's admin interface and look for DNS e.g. in **LAN** -> **DHCP Server**. Set the primary DNS server to the IP of your Pi and make sure it's the only DNS server. The Pi will handle upstream DNS services.
 
 
 ### Copying files
@@ -424,12 +428,12 @@ scp -r pi@raspberrypi2.local:/home/pi/Documents/ ~/Documents/pidocs
 ### Find info about your Pi
 
 What model do you have?
-```sh
+```sh title="On your Pi"
 cat /sys/firmware/devicetree/base/model ;echo
 ```
 
 What's the connection speed of the ethernet port?
-```sh
+```sh title="On your Pi"
 ethtool eth0
 ```
 
@@ -441,7 +445,7 @@ uname -m
 ```
 
 See OS version
-```sh
+```sh title="On your Pi"
 cat /etc/os-release
 ```
 
@@ -452,7 +456,7 @@ A blank output means `armel` (`arm/v6`).
 readelf -A /proc/self/exe | grep Tag_ABI_VFP_args
 ```
 Or check the architecture with:
-```sh
+```sh title="On your Pi"
 hostnamectl
 ```
 
@@ -464,7 +468,7 @@ pinout
 ### Troubleshooting
 
 If your Pi's ethernet port is capable of 1Gbps, you're using a cat5e cable or better, your router and switch support 1Gbps,  and you're still only getting 100Mbps **first try with another cable**. A faulty cable is the most common cause of problems like this. If that doesn't work you can try disabling EEE (Energy Efficient Ethernet) although it will be reenabled at reboot. You could also try setting the speed manually.
-```sh
+```sh title="On your Pi"
 ethtool --show-eee eth0
 sudo ethtool --set-eee eth0 eee off
 
@@ -473,12 +477,12 @@ ethtool -s eth0 speed 1000 duplex full autoneg off
 ```
 
 If not using `cloud-init` or an imager program, enable ssh with
-```sh
+```sh title="On your Pi"
 touch /Volumes/$VOLUME/ssh
 ```
 
 DNS issues
-```sh
+```sh title="On your Pi"
 cat /etc/resolv.conf
 resolvectl status
 ```
