@@ -286,11 +286,20 @@ sudo service sshd status
 
 #### Board-specific tools
 
+##### Raspberry Pi
+
 On Raspberry Pi OS
 ```zsh
 pi@raspberrypi4:~ $ sudo raspi-config
 # Go to Interface Options, VNC (for graphical remote access)
 # Tab to the Finish option and reboot.
+```
+
+##### Orange Pi
+
+In Ubuntu for Orange Pi, to reach other machines by hostname you need to add an entry to the hosts file even if `avahi-daemon` is running on the hosts. Example:
+```zsh title="/etc/hosts"
+192.168.x.x  thathostname.local
 ```
 
 Orange Pi has a config tool as well

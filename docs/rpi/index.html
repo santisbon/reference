@@ -510,6 +510,26 @@
     Board-specific tools
   </a>
   
+    <nav class="md-nav" aria-label="Board-specific tools">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#raspberry-pi" class="md-nav__link">
+    Raspberry Pi
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#orange-pi" class="md-nav__link">
+    Orange Pi
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -776,6 +796,26 @@
   <a href="#board-specific-tools" class="md-nav__link">
     Board-specific tools
   </a>
+  
+    <nav class="md-nav" aria-label="Board-specific tools">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#raspberry-pi" class="md-nav__link">
+    Raspberry Pi
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#orange-pi" class="md-nav__link">
+    Orange Pi
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -1144,10 +1184,15 @@ sudo<span class="w"> </span>service<span class="w"> </span>sshd<span class="w"> 
 sudo<span class="w"> </span>service<span class="w"> </span>sshd<span class="w"> </span>status
 </code></pre></div></p>
 <h4 id="board-specific-tools">Board-specific tools<a class="headerlink" href="#board-specific-tools" title="Permanent link">#</a></h4>
+<h5 id="raspberry-pi">Raspberry Pi<a class="headerlink" href="#raspberry-pi" title="Permanent link">#</a></h5>
 <p>On Raspberry Pi OS
 <div class="highlight"><pre><span></span><code>pi@raspberrypi4:~<span class="w"> </span>$<span class="w"> </span>sudo<span class="w"> </span>raspi-config
 <span class="c1"># Go to Interface Options, VNC (for graphical remote access)</span>
 <span class="c1"># Tab to the Finish option and reboot.</span>
+</code></pre></div></p>
+<h5 id="orange-pi">Orange Pi<a class="headerlink" href="#orange-pi" title="Permanent link">#</a></h5>
+<p>In Ubuntu for Orange Pi, to reach other machines by hostname you need to add an entry to the hosts file even if <code>avahi-daemon</code> is running on the hosts. Example:
+<div class="highlight"><span class="filename">/etc/hosts</span><pre><span></span><code><span class="m">192</span>.168.x.x<span class="w">  </span>thathostname.local
 </code></pre></div></p>
 <p>Orange Pi has a config tool as well
 <div class="highlight"><pre><span></span><code>orangepi@orangepi3b:~$<span class="w"> </span>sudo<span class="w"> </span>orangepi-config
