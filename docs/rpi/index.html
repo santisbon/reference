@@ -463,6 +463,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#verify" class="md-nav__link">
+    Verify
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -766,6 +773,13 @@
           <li class="md-nav__item">
   <a href="#flash-the-image" class="md-nav__link">
     Flash the image
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verify" class="md-nav__link">
+    Verify
   </a>
   
 </li>
@@ -1149,7 +1163,8 @@ cat<span class="w"> </span>/Volumes/<span class="nv">$VOLUME</span>/cmdline.txt
 <p>Now remove the SD card from your laptop and insert it into the Pi which <strong>should be connected to your router with an ethernet cable</strong>. The Wi-Fi won't be available until everything has finished configuring and you manually do a required system restart.</p>
 <p>Since we pre-configured everything it has a lot of work to do on the first boot and it takes several minutes. You'll be able to go in as soon as the SSH service is up but it will probably still be in the process of upgrading packages as well as installing and configuring our software.  </p>
 <p>Go make yourself a cup of tea before <a href="#access-your-pi">connecting</a> for the first time.</p>
-<p>Once enough time has passed, you can now check a few things to make sure everything went smoothly.
+<h3 id="verify">Verify<a class="headerlink" href="#verify" title="Permanent link">#</a></h3>
+<p>Once cloud-init is done launching our instance, you can check a few things to make sure everything went smoothly.
 <div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code><span class="c1"># Check if there were any cloud-init errors</span>
 sudo<span class="w"> </span>cat<span class="w"> </span>/var/log/cloud-init.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>failures
 sudo<span class="w"> </span>cat<span class="w"> </span>/var/log/cloud-init-output.log

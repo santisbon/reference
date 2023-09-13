@@ -195,7 +195,9 @@ Since we pre-configured everything it has a lot of work to do on the first boot 
 
 Go make yourself a cup of tea before [connecting](#access-your-pi) for the first time.
 
-Once enough time has passed, you can now check a few things to make sure everything went smoothly.
+### Verify
+
+Once cloud-init is done launching our instance, you can check a few things to make sure everything went smoothly.
 ```sh title="On your Pi"
 # Check if there were any cloud-init errors
 sudo cat /var/log/cloud-init.log | grep failures
