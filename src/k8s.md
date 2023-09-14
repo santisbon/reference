@@ -1019,8 +1019,9 @@ kubectl -n kubernetes-dashboard create token admin-user
 ```
 
 ## MicroK8s
-
 Suitable for [Raspberry Pi](https://microk8s.io/docs/install-raspberry-pi) and other development boards.  
+
+### Setup
 
 !!! attention
     MicroK8s is not available for 32-bit architectures like `armhf`(`arm/v7`), only on 64-bit architectures like `arm64` and `amd64`.
@@ -1038,7 +1039,7 @@ cgroup_enable=memory cgroup_memory=1
     On Orange Pi boards these parameters are handled in `/boot/boot.cmd` by checking:  
     `if test "${docker_optimizations}" = "on"`.  
 
-    Don't edit this file, instead `sudo nano /boot/orangepiEnv.txt` and set the parameter to `on`.
+    Don't edit this file, instead `sudo nano /boot/orangepiEnv.txt` and set `docker_optimizations` to `on`.
 
 If your image doesn't already include it, [install](https://snapcraft.io/docs/installing-snap-on-raspbian) `snap`.
 ```zsh title="On your Pi"
@@ -1132,6 +1133,12 @@ You can then access the Dashboard with IP or hostname and the automatically assi
 microk8s inspect
 ```
 MicroK8s might not recognize that cgroup memory is enabled but you can check with `cat /proc/cgroups`.
+
+### Clustering
+
+1. Assign static IPs to all the nodes. 
+2. Edit `/etc/hosts` on each node with the IP and hostnames of the other nodes so they can resolve during the join process.
+3. Follow the instructions on [https://microk8s.io/docs/clustering](https://microk8s.io/docs/clustering)
 
 ## Helm
 
