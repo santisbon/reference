@@ -1058,10 +1058,8 @@ To run commands without `sudo` add the user to the `microk8s` group. Example:
 ```zsh title="On your Pi"
 sudo usermod -a -G microk8s pi
 sudo chown -R pi ~/.kube
+newgrp microk8s
 ```
-
-!!! note
-    If only `/root/` has a `.kube` directory, even though your user installed MicroK8s, you can use `sudo` to issue `microk8s` commands.
 
 Usage:
 ```zsh title="On your Pi"

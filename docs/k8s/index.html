@@ -2070,11 +2070,8 @@ sudo<span class="w"> </span>snap<span class="w"> </span>install<span class="w"> 
 <p>To run commands without <code>sudo</code> add the user to the <code>microk8s</code> group. Example:
 <div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>sudo<span class="w"> </span>usermod<span class="w"> </span>-a<span class="w"> </span>-G<span class="w"> </span>microk8s<span class="w"> </span>pi
 sudo<span class="w"> </span>chown<span class="w"> </span>-R<span class="w"> </span>pi<span class="w"> </span>~/.kube
+newgrp<span class="w"> </span>microk8s
 </code></pre></div></p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>If only <code>/root/</code> has a <code>.kube</code> directory, even though your user installed MicroK8s, you can use <code>sudo</code> to issue <code>microk8s</code> commands.</p>
-</div>
 <p>Usage:
 <div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>microk8s<span class="w"> </span>status<span class="w"> </span>--wait-ready
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>all<span class="w"> </span>--all-namespaces
