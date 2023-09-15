@@ -11,8 +11,8 @@ I recommend using an **Ubuntu** image made specifically for your board instead o
 
 * ❌ Raspberry Pi OS doesn't come with [`cloud-init`](https://cloud-init.io).
 * ❌ Orange Pi OS doesn't support the GPU, Neural Processing Unit (NPU), and Vision Processing Unit (VPU) that some Orange Pi boards have for Artificial Intelligence and graphics-intensive workloads.
-* ✅ Ubuntu comes with `cloud-init` preinstalled which will make your life easier.
-* ✅ Ubuntu comes with [`snapd`](https://ubuntu.com/core/services/guide/snaps-intro) preinstalled which lets us pre-configure [MicroK8s](https://microk8s.io).
+* ✅ Ubuntu comes with `cloud-init`.
+* ✅ Ubuntu comes with [Snap](https://ubuntu.com/core/services/guide/snaps-intro) support preinstalled.
 * ✅ Ubuntu, Debian, and Android support the Orange Pi's GPU, NPU, and VPU.
 
 Make sure you grab the image corresponding to your Pi's CPU architecture (32-bit or 64-bit). We'll use the *Server* version because we don't need the graphical environment that comes with the *Desktop* version.  
@@ -56,13 +56,13 @@ This is the repeatable, flexible option.
 
 We'll flash a pre-configured SD card with:  
 
-* A hostname
-* A user with ssh key authentication (and password authentication disabled)
-* Upgraded packages
-* Additional packages installed
-* Wi-Fi configuration
-* Boot parameters modified to support Kubernetes
-* Kubernetes (MicroK8s) installed with some addons including one for cluster-ready replicated storage based on OpenEBS
+* A hostname.
+* A user with ssh key authentication (and password authentication disabled).
+* Upgraded packages.
+* Additional packages installed.
+* Wi-Fi configuration.
+* Boot parameters modified to support Kubernetes.
+* Kubernetes ([MicroK8s](https://microk8s.io)) installed with some addons including one for cluster-ready replicated storage based on [OpenEBS](https://microk8s.io/docs/addon-mayastor).
 
 If you don't have an ssh key, [generate one](https://www.ssh.com/academy/ssh/keygen) with `ssh-keygen -t ed25519`.  
 
@@ -225,7 +225,8 @@ systemctl status 'avahi*'
 # Check if MicroK8s is intalled and running with the addons enabled
 microk8s status --wait-ready
 microk8s kubectl cluster-info
-# on first boot, the etcd-operator-mayastor pod may be stuck in CrashLoopBackOff state until you reboot
+# On first boot, the etcd-operator-mayastor pod 
+# may be stuck in CrashLoopBackOff state until you reboot
 microk8s kubectl get pod -n mayastor 
 microk8s kubectl get diskpool -n mayastor
 
@@ -236,7 +237,7 @@ cat /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg
 # Look at the state of the network.
 # You may need to `sudo reboot` for Wi-Fi to be enabled but 
 # make sure you've allowed enough time for cloud-init to 
-# finish configuring your instance and MicroK8s manastor pods to come up!
+# finish configuring your instance and MicroK8s mayastor pods to come up!
 sudo lshw -c network
 ip addr show | grep wlan0
 ```

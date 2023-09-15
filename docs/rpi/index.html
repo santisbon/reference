@@ -999,8 +999,8 @@
 <ul>
 <li>❌ Raspberry Pi OS doesn't come with <a href="https://cloud-init.io"><code>cloud-init</code></a>.</li>
 <li>❌ Orange Pi OS doesn't support the GPU, Neural Processing Unit (NPU), and Vision Processing Unit (VPU) that some Orange Pi boards have for Artificial Intelligence and graphics-intensive workloads.</li>
-<li>✅ Ubuntu comes with <code>cloud-init</code> preinstalled which will make your life easier.</li>
-<li>✅ Ubuntu comes with <a href="https://ubuntu.com/core/services/guide/snaps-intro"><code>snapd</code></a> preinstalled which lets us pre-configure <a href="https://microk8s.io">MicroK8s</a>.</li>
+<li>✅ Ubuntu comes with <code>cloud-init</code>.</li>
+<li>✅ Ubuntu comes with <a href="https://ubuntu.com/core/services/guide/snaps-intro">Snap</a> support preinstalled.</li>
 <li>✅ Ubuntu, Debian, and Android support the Orange Pi's GPU, NPU, and VPU.</li>
 </ul>
 <p>Make sure you grab the image corresponding to your Pi's CPU architecture (32-bit or 64-bit). We'll use the <em>Server</em> version because we don't need the graphical environment that comes with the <em>Desktop</em> version.  </p>
@@ -1038,13 +1038,13 @@ shasum<span class="w"> </span>-c<span class="w"> </span>Orangepi3b_1.0.0_ubuntu_
 </div>
 <p>We'll flash a pre-configured SD card with:  </p>
 <ul>
-<li>A hostname</li>
-<li>A user with ssh key authentication (and password authentication disabled)</li>
-<li>Upgraded packages</li>
-<li>Additional packages installed</li>
-<li>Wi-Fi configuration</li>
-<li>Boot parameters modified to support Kubernetes</li>
-<li>Kubernetes (MicroK8s) installed with some addons including one for cluster-ready replicated storage based on OpenEBS</li>
+<li>A hostname.</li>
+<li>A user with ssh key authentication (and password authentication disabled).</li>
+<li>Upgraded packages.</li>
+<li>Additional packages installed.</li>
+<li>Wi-Fi configuration.</li>
+<li>Boot parameters modified to support Kubernetes.</li>
+<li>Kubernetes (<a href="https://microk8s.io">MicroK8s</a>) installed with some addons including one for cluster-ready replicated storage based on <a href="https://microk8s.io/docs/addon-mayastor">OpenEBS</a>.</li>
 </ul>
 <p>If you don't have an ssh key, <a href="https://www.ssh.com/academy/ssh/keygen">generate one</a> with <code>ssh-keygen -t ed25519</code>.  </p>
 <div class="admonition tip">
@@ -1191,7 +1191,8 @@ systemctl<span class="w"> </span>status<span class="w"> </span><span class="s1">
 <span class="c1"># Check if MicroK8s is intalled and running with the addons enabled</span>
 microk8s<span class="w"> </span>status<span class="w"> </span>--wait-ready
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>cluster-info
-<span class="c1"># on first boot, the etcd-operator-mayastor pod may be stuck in CrashLoopBackOff state until you reboot</span>
+<span class="c1"># On first boot, the etcd-operator-mayastor pod </span>
+<span class="c1"># may be stuck in CrashLoopBackOff state until you reboot</span>
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>-n<span class="w"> </span>mayastor<span class="w"> </span>
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>diskpool<span class="w"> </span>-n<span class="w"> </span>mayastor
 
@@ -1202,7 +1203,7 @@ cat<span class="w"> </span>/etc/cloud/cloud.cfg.d/99-disable-network-config.cfg
 <span class="c1"># Look at the state of the network.</span>
 <span class="c1"># You may need to `sudo reboot` for Wi-Fi to be enabled but </span>
 <span class="c1"># make sure you&#39;ve allowed enough time for cloud-init to </span>
-<span class="c1"># finish configuring your instance and MicroK8s manastor pods to come up!</span>
+<span class="c1"># finish configuring your instance and MicroK8s mayastor pods to come up!</span>
 sudo<span class="w"> </span>lshw<span class="w"> </span>-c<span class="w"> </span>network
 ip<span class="w"> </span>addr<span class="w"> </span>show<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>wlan0
 </code></pre></div></p>
