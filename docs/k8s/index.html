@@ -706,15 +706,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#option-1" class="md-nav__link">
-    Option 1
+  <a href="#option-a-port-forward" class="md-nav__link">
+    Option A: port-forward
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#option-2" class="md-nav__link">
-    Option 2
+  <a href="#option-b-nodeport" class="md-nav__link">
+    Option B: NodePort
   </a>
   
 </li>
@@ -734,6 +734,13 @@
           <li class="md-nav__item">
   <a href="#clustering" class="md-nav__link">
     Clustering
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#openebs" class="md-nav__link">
+    OpenEBS
   </a>
   
 </li>
@@ -1188,15 +1195,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#option-1" class="md-nav__link">
-    Option 1
+  <a href="#option-a-port-forward" class="md-nav__link">
+    Option A: port-forward
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#option-2" class="md-nav__link">
-    Option 2
+  <a href="#option-b-nodeport" class="md-nav__link">
+    Option B: NodePort
   </a>
   
 </li>
@@ -1216,6 +1223,13 @@
           <li class="md-nav__item">
   <a href="#clustering" class="md-nav__link">
     Clustering
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#openebs" class="md-nav__link">
+    OpenEBS
   </a>
   
 </li>
@@ -2131,14 +2145,13 @@ The containerd daemon used by MicroK8s is configured to trust this insecure regi
 Use this token in the https login UI of the <code>kubernetes-dashboard</code> service.
 In an RBAC enabled setup (<code>microk8s enable rbac</code>) you need to create a user with restricted permissions as shown <a href="https://github.com/kubernetes/dashboard/blob/master/docs/user/access-control/creating-sample-user.md">here</a>.</p>
 <p>To access remotely from outside the cluster:</p>
-<h4 id="option-1">Option 1<a class="headerlink" href="#option-1" title="Permanent link">#</a></h4>
-<p>With <a href="https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#port-forward"><code>port-forward</code></a>.<br />
-Note: <code>kubectl port-forward</code> <a href="https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/">does not return</a>. To type other commands, you'll need to open another terminal.
+<h4 id="option-a-port-forward">Option A: <a href="https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#port-forward"><code>port-forward</code></a><a class="headerlink" href="#option-a-port-forward" title="Permanent link">#</a></h4>
+<p>Note: <code>kubectl port-forward</code> <a href="https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/">does not return</a>. To type other commands, you'll need to open another terminal.
 <div class="highlight"><pre><span></span><code>microk8s<span class="w"> </span>kubectl<span class="w"> </span>port-forward<span class="w"> </span>-n<span class="w"> </span>kube-system<span class="w"> </span>service/kubernetes-dashboard<span class="w"> </span><span class="m">10443</span>:443<span class="w"> </span>--address<span class="w"> </span><span class="m">0</span>.0.0.0
 </code></pre></div>
 You can then access the Dashboard with IP or hostname and the forwarded port as in<br />
 <code>https://raspberrypi4.local:10443/</code></p>
-<h4 id="option-2">Option 2<a class="headerlink" href="#option-2" title="Permanent link">#</a></h4>
+<h4 id="option-b-nodeport">Option B: <code>NodePort</code><a class="headerlink" href="#option-b-nodeport" title="Permanent link">#</a></h4>
 <p>Make the dashboard service a <code>NodePort</code> service by changing <code>type: ClusterIP</code> to <code>type: NodePort</code>.
 <div class="highlight"><pre><span></span><code><span class="nv">KUBE_EDITOR</span><span class="o">=</span>nano<span class="w"> </span>microk8s<span class="w"> </span>kubectl<span class="w"> </span>-n<span class="w"> </span>kube-system<span class="w"> </span>edit<span class="w"> </span>service<span class="w"> </span>kubernetes-dashboard
 <span class="c1"># If using vim:</span>
@@ -2161,6 +2174,12 @@ MicroK8s might not recognize that cgroup memory is enabled but you can check wit
 <li>Edit <code>/etc/hosts</code> on each node with the IP and hostnames of the other nodes so they can resolve during the join process.</li>
 <li>Follow the instructions on <a href="https://microk8s.io/docs/clustering">https://microk8s.io/docs/clustering</a></li>
 </ol>
+<h3 id="openebs">OpenEBS<a class="headerlink" href="#openebs" title="Permanent link">#</a></h3>
+<p>Prerequisite knowledge:
+<a href="https://help.ubuntu.com/community/KVM%20-%20Using%20Hugepages">Huge Pages</a>
+<a href="https://www.techtarget.com/searchstorage/definition/NVMe-over-Fabrics-Nonvolatile-Memory-Express-over-Fabrics">NVMe over Fabrics (NVMe-oF)</a></p>
+<p>Enable:
+<a href="https://microk8s.io/docs/addon-mayastor">Mayastor</a></p>
 <h2 id="helm">Helm<a class="headerlink" href="#helm" title="Permanent link">#</a></h2>
 <p>You can package your charts and publish them on a repository, which can be any HTTP server. Use the name of the folder containing your <code>Chart.yaml</code> file.
 <div class="highlight"><pre><span></span><code>helm<span class="w"> </span>package<span class="w"> </span>./mychart

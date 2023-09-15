@@ -60,9 +60,9 @@ We'll flash a pre-configured SD card with:
 * A user with ssh key authentication (and password authentication disabled)
 * Upgraded packages
 * Additional packages installed
-* Kubernetes (MicroK8s) installed with some addons enabled
 * Wi-Fi configuration
 * Boot parameters modified to support Kubernetes
+* Kubernetes (MicroK8s) installed with some addons including one for cluster-ready replicated storage based on OpenEBS
 
 If you don't have an ssh key, [generate one](https://www.ssh.com/academy/ssh/keygen) with `ssh-keygen -t ed25519`.  
 
@@ -142,9 +142,20 @@ runcmd:
   - sudo ifconfig wlan0 up
   - sudo snap refresh
   - sudo snap install microk8s --classic
-  - sudo microk8s enable metrics-server
-  - sudo microk8s enable ingress
-  - sudo microk8s enable dashboard
+  - sudo usermod -a -G microk8s pi
+  - sudo chown -f -R pi ~/.kube
+  - newgrp microk8s
+  - microk8s enable metrics-server
+  - microk8s enable ingress
+  - microk8s enable dashboard
+  - sudo sysctl vm.nr_hugepages=1024
+  - echo 'vm.nr_hugepages=1024' | sudo tee -a /etc/sysctl.conf
+  - sudo apt install -y linux-modules-extra-$(uname -r)
+  - sudo modprobe nvme_tcp
+  - echo 'nvme-tcp' | sudo tee -a /etc/modules-load.d/microk8s-mayastor.conf
+  - microk8s stop
+  - microk8s start
+  - microk8s enable core/mayastor --default-pool-size 20G
 
 write_files:
 - content: |
@@ -212,17 +223,20 @@ sudo cat /var/log/apt/history.log
 systemctl status 'avahi*'
 
 # Check if MicroK8s is intalled and running with the addons enabled
-sudo microk8s status --wait-ready
-sudo microk8s kubectl cluster-info
+microk8s status --wait-ready
+microk8s kubectl cluster-info
+# on first boot, the etcd-operator-mayastor pod may be stuck in CrashLoopBackOff state until you reboot
+microk8s kubectl get pod -n mayastor 
+microk8s kubectl get diskpool -n mayastor
 
 # Check cloud-init's network configuration 
 cat /etc/netplan/50-cloud-init.yaml
 cat /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg
 
-# Look at the network configuration.
+# Look at the state of the network.
 # You may need to `sudo reboot` for Wi-Fi to be enabled but 
 # make sure you've allowed enough time for cloud-init to 
-# finish configuring your instance!
+# finish configuring your instance and MicroK8s manastor pods to come up!
 sudo lshw -c network
 ip addr show | grep wlan0
 ```
@@ -317,8 +331,8 @@ nmcli dev wifi connect wifi_name password wifi_passwd
 
 To set a static IP on Orange Pi see the [user manual](http://www.orangepi.org/html/hardWare/computerAndMicrocontrollers/service-and-support/Orange-Pi-3B.html) for instructions on using the `nmtui` command.
 
-#### Other
-After this, [install MicroK8s](/reference/k8s/#microk8s).
+## Kubernetes
+If you went the one-off route, [install MicroK8s](/reference/k8s/#microk8s).
 
 ## Usage
 

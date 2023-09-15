@@ -1103,8 +1103,8 @@ In an RBAC enabled setup (`microk8s enable rbac`) you need to create a user with
 
 To access remotely from outside the cluster:
 
-#### Option 1 
-With [`port-forward`](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#port-forward).  
+#### Option A: [`port-forward`](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#port-forward)
+  
 Note: `kubectl port-forward` [does not return](https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/). To type other commands, you'll need to open another terminal.
 ```zsh
 microk8s kubectl port-forward -n kube-system service/kubernetes-dashboard 10443:443 --address 0.0.0.0
@@ -1112,7 +1112,7 @@ microk8s kubectl port-forward -n kube-system service/kubernetes-dashboard 10443:
 You can then access the Dashboard with IP or hostname and the forwarded port as in  
 `https://raspberrypi4.local:10443/`
 
-#### Option 2
+#### Option B: `NodePort`
 Make the dashboard service a `NodePort` service by changing `type: ClusterIP` to `type: NodePort`.
 ```zsh
 KUBE_EDITOR=nano microk8s kubectl -n kube-system edit service kubernetes-dashboard
@@ -1139,6 +1139,15 @@ MicroK8s might not recognize that cgroup memory is enabled but you can check wit
 1. Assign static IPs to all the nodes. 
 2. Edit `/etc/hosts` on each node with the IP and hostnames of the other nodes so they can resolve during the join process.
 3. Follow the instructions on [https://microk8s.io/docs/clustering](https://microk8s.io/docs/clustering)
+
+### OpenEBS
+
+Prerequisite knowledge:
+[Huge Pages](https://help.ubuntu.com/community/KVM%20-%20Using%20Hugepages)
+[NVMe over Fabrics (NVMe-oF)](https://www.techtarget.com/searchstorage/definition/NVMe-over-Fabrics-Nonvolatile-Memory-Express-over-Fabrics)
+
+Enable:
+[Mayastor](https://microk8s.io/docs/addon-mayastor)
 
 ## Helm
 

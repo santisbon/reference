@@ -539,20 +539,20 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#other" class="md-nav__link">
-    Other
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kubernetes" class="md-nav__link">
+    Kubernetes
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -853,20 +853,20 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#other" class="md-nav__link">
-    Other
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kubernetes" class="md-nav__link">
+    Kubernetes
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1042,9 +1042,9 @@ shasum<span class="w"> </span>-c<span class="w"> </span>Orangepi3b_1.0.0_ubuntu_
 <li>A user with ssh key authentication (and password authentication disabled)</li>
 <li>Upgraded packages</li>
 <li>Additional packages installed</li>
-<li>Kubernetes (MicroK8s) installed with some addons enabled</li>
 <li>Wi-Fi configuration</li>
 <li>Boot parameters modified to support Kubernetes</li>
+<li>Kubernetes (MicroK8s) installed with some addons including one for cluster-ready replicated storage based on OpenEBS</li>
 </ul>
 <p>If you don't have an ssh key, <a href="https://www.ssh.com/academy/ssh/keygen">generate one</a> with <code>ssh-keygen -t ed25519</code>.  </p>
 <div class="admonition tip">
@@ -1119,9 +1119,20 @@ cat<span class="w"> </span><span class="s">&lt;&lt; EOF &gt; /Volumes/$VOLUME/us
 <span class="s">  - sudo ifconfig wlan0 up</span>
 <span class="s">  - sudo snap refresh</span>
 <span class="s">  - sudo snap install microk8s --classic</span>
-<span class="s">  - sudo microk8s enable metrics-server</span>
-<span class="s">  - sudo microk8s enable ingress</span>
-<span class="s">  - sudo microk8s enable dashboard</span>
+<span class="s">  - sudo usermod -a -G microk8s pi</span>
+<span class="s">  - sudo chown -f -R pi ~/.kube</span>
+<span class="s">  - newgrp microk8s</span>
+<span class="s">  - microk8s enable metrics-server</span>
+<span class="s">  - microk8s enable ingress</span>
+<span class="s">  - microk8s enable dashboard</span>
+<span class="s">  - sudo sysctl vm.nr_hugepages=1024</span>
+<span class="s">  - echo &#39;vm.nr_hugepages=1024&#39; | sudo tee -a /etc/sysctl.conf</span>
+<span class="s">  - sudo apt install -y linux-modules-extra-$(uname -r)</span>
+<span class="s">  - sudo modprobe nvme_tcp</span>
+<span class="s">  - echo &#39;nvme-tcp&#39; | sudo tee -a /etc/modules-load.d/microk8s-mayastor.conf</span>
+<span class="s">  - microk8s stop</span>
+<span class="s">  - microk8s start</span>
+<span class="s">  - microk8s enable core/mayastor --default-pool-size 20G</span>
 
 <span class="s">write_files:</span>
 <span class="s">- content: |</span>
@@ -1178,17 +1189,20 @@ sudo<span class="w"> </span>cat<span class="w"> </span>/var/log/apt/history.log
 systemctl<span class="w"> </span>status<span class="w"> </span><span class="s1">&#39;avahi*&#39;</span>
 
 <span class="c1"># Check if MicroK8s is intalled and running with the addons enabled</span>
-sudo<span class="w"> </span>microk8s<span class="w"> </span>status<span class="w"> </span>--wait-ready
-sudo<span class="w"> </span>microk8s<span class="w"> </span>kubectl<span class="w"> </span>cluster-info
+microk8s<span class="w"> </span>status<span class="w"> </span>--wait-ready
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>cluster-info
+<span class="c1"># on first boot, the etcd-operator-mayastor pod may be stuck in CrashLoopBackOff state until you reboot</span>
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>-n<span class="w"> </span>mayastor<span class="w"> </span>
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>diskpool<span class="w"> </span>-n<span class="w"> </span>mayastor
 
 <span class="c1"># Check cloud-init&#39;s network configuration </span>
 cat<span class="w"> </span>/etc/netplan/50-cloud-init.yaml
 cat<span class="w"> </span>/etc/cloud/cloud.cfg.d/99-disable-network-config.cfg
 
-<span class="c1"># Look at the network configuration.</span>
+<span class="c1"># Look at the state of the network.</span>
 <span class="c1"># You may need to `sudo reboot` for Wi-Fi to be enabled but </span>
 <span class="c1"># make sure you&#39;ve allowed enough time for cloud-init to </span>
-<span class="c1"># finish configuring your instance!</span>
+<span class="c1"># finish configuring your instance and MicroK8s manastor pods to come up!</span>
 sudo<span class="w"> </span>lshw<span class="w"> </span>-c<span class="w"> </span>network
 ip<span class="w"> </span>addr<span class="w"> </span>show<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>wlan0
 </code></pre></div></p>
@@ -1258,8 +1272,8 @@ If you just need to connect to Wi-Fi on Orange Pi, use:
 <div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>nmcli<span class="w"> </span>dev<span class="w"> </span>wifi<span class="w"> </span>connect<span class="w"> </span>wifi_name<span class="w"> </span>password<span class="w"> </span>wifi_passwd
 </code></pre></div></p>
 <p>To set a static IP on Orange Pi see the <a href="http://www.orangepi.org/html/hardWare/computerAndMicrocontrollers/service-and-support/Orange-Pi-3B.html">user manual</a> for instructions on using the <code>nmtui</code> command.</p>
-<h4 id="other">Other<a class="headerlink" href="#other" title="Permanent link">#</a></h4>
-<p>After this, <a href="/reference/k8s/#microk8s">install MicroK8s</a>.</p>
+<h2 id="kubernetes">Kubernetes<a class="headerlink" href="#kubernetes" title="Permanent link">#</a></h2>
+<p>If you went the one-off route, <a href="/reference/k8s/#microk8s">install MicroK8s</a>.</p>
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">#</a></h2>
 <h3 id="access-your-pi">Access your Pi<a class="headerlink" href="#access-your-pi" title="Permanent link">#</a></h3>
 <div class="admonition tip">
