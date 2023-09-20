@@ -1355,6 +1355,19 @@ static domain_name_servers=[DNS IP]
 <div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code>scp<span class="w"> </span>-r<span class="w"> </span>pi@raspberrypi2.local:/home/pi/Documents/<span class="w"> </span>~/Documents/pidocs
 </code></pre></div></p>
 <h3 id="find-info-about-your-pi">Find info about your Pi<a class="headerlink" href="#find-info-about-your-pi" title="Permanent link">#</a></h3>
+<p>View number of processing units and <a href="https://www.digitalocean.com/community/tutorials/load-average-in-linux#">system load</a>
+<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>nproc
+uptime
+</code></pre></div></p>
+<p><a href="https://www.kernel.org/doc/Documentation/thermal/sysfs-api.txt">CPU temperature</a> in millidegree Celsius (one thousandth of a degree)
+<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>cat<span class="w"> </span>/sys/class/thermal/thermal_zone*/temp
+</code></pre></div>
+On the Orange Pi
+<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code><span class="c1"># For CPU and GPU</span>
+sensors
+<span class="c1"># For NVMe SSD</span>
+sudo<span class="w"> </span>smartctl<span class="w"> </span>-a<span class="w"> </span>/dev/nvme0<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;Temperature:&quot;</span>
+</code></pre></div></p>
 <p>What model do you have?
 <div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>cat<span class="w"> </span>/sys/firmware/devicetree/base/model<span class="w"> </span><span class="p">;</span><span class="nb">echo</span>
 </code></pre></div></p>

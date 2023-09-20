@@ -444,6 +444,24 @@ scp -r pi@raspberrypi2.local:/home/pi/Documents/ ~/Documents/pidocs
 
 ### Find info about your Pi
 
+View number of processing units and [system load](https://www.digitalocean.com/community/tutorials/load-average-in-linux#)
+```sh title="On your Pi"
+nproc
+uptime
+```
+
+[CPU temperature](https://www.kernel.org/doc/Documentation/thermal/sysfs-api.txt) in millidegree Celsius (one thousandth of a degree)
+```sh title="On your Pi"
+cat /sys/class/thermal/thermal_zone*/temp
+```
+On the Orange Pi
+```sh title="On your Pi"
+# For CPU and GPU
+sensors
+# For NVMe SSD
+sudo smartctl -a /dev/nvme0 | grep "Temperature:"
+```
+
 What model do you have?
 ```sh title="On your Pi"
 cat /sys/firmware/devicetree/base/model ;echo
