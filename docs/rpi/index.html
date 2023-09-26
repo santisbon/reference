@@ -658,6 +658,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#storage" class="md-nav__link">
+    Storage
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -969,6 +976,13 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#storage" class="md-nav__link">
+    Storage
+  </a>
   
 </li>
       
@@ -1413,6 +1427,58 @@ resolvectl<span class="w"> </span>status
 <a href="https://github.com/santisbon/guides/tree/main/assets/SBC">Sample code</a></p>
 <h4 id="gpio-header">GPIO Header<a class="headerlink" href="#gpio-header" title="Permanent link">#</a></h4>
 <p><img alt="GPIO" src="https://i.imgur.com/3Zroadt.jpg" /></p>
+<h2 id="storage">Storage<a class="headerlink" href="#storage" title="Permanent link">#</a></h2>
+<p>If you have an SSD you'll need to:</p>
+<ul>
+<li>Choose a partition manipulation program<ul>
+<li><a href="https://www.gnu.org/software/parted/manual/parted.html">GNU Parted</a> (<code>parted</code>) is probably already installed and ready to use from the command line. </li>
+<li>If you have a desktop environment you can use the graphical frontend <a href="https://thepihut.com/blogs/raspberry-pi-tutorials/how-to-set-up-an-ssd-with-the-raspberry-pi">GParted</a>. Install with <code>sudo apt install gparted</code>.</li>
+</ul>
+</li>
+<li>Create a partition table (aka disklabel). The default partition table type is <code>msdos</code> for disks smaller than 2 Tebibytes in size (assuming a 512 byte sector size) and <code>gpt</code> for disks 2 Tebibytes and larger.</li>
+<li>Create partition(s) and file system(s).</li>
+<li>Find the file system's UUID.</li>
+<li>Create a directory for mounting the SSD.</li>
+<li>Set up automatic SSD mounting, mount the SSD, reboot to test.</li>
+</ul>
+<p>Example:
+<div class="highlight"><pre><span></span><code>cat<span class="w"> </span>/sys/block/sda/queue/optimal_io_size
+<span class="c1"># 33553920</span>
+cat<span class="w"> </span>/sys/block/sda/queue/minimum_io_size
+<span class="c1"># 512</span>
+cat<span class="w"> </span>/sys/block/sda/alignment_offset
+<span class="c1"># 0</span>
+cat<span class="w"> </span>/sys/block/sda/queue/physical_block_size
+<span class="c1"># 512</span>
+
+sudo<span class="w"> </span>parted
+
+<span class="o">(</span>parted<span class="o">)</span><span class="w"> </span>print<span class="w"> </span>devices<span class="w"> </span><span class="c1"># you should see your SSD e.g. /dev/sda (240GB)</span>
+<span class="o">(</span>parted<span class="o">)</span><span class="w"> </span><span class="k">select</span><span class="w"> </span>/dev/sda<span class="w"> </span><span class="c1"># whatever name your SSD device has</span>
+<span class="o">(</span>parted<span class="o">)</span><span class="w"> </span>mklabel<span class="w"> </span>msdos<span class="w"> </span>
+
+<span class="c1"># Add optimal_io_size to alignment_offset and divide the result by physical_block_size.</span>
+<span class="c1"># This number is the sector at which the partition should start. Here it ends in the last sector.</span>
+<span class="c1"># Example:</span>
+<span class="o">(</span>parted<span class="o">)</span><span class="w"> </span>mkpart<span class="w"> </span>primary<span class="w"> </span>ext4<span class="w"> </span>65535s<span class="w"> </span>-1s
+
+<span class="o">(</span>parted<span class="o">)</span><span class="w"> </span>print<span class="w"> </span>list
+<span class="o">(</span>parted<span class="o">)</span><span class="w"> </span>align-check<span class="w"> </span>optimal<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="c1"># or whatever number your partition has</span>
+<span class="c1"># 1 aligned </span>
+<span class="o">(</span>parted<span class="o">)</span><span class="w"> </span>quit
+
+<span class="c1"># Make the filesystem with a volume label on partition 1 (or whatever number yours has)</span>
+sudo<span class="w"> </span>mkfs.ext4<span class="w"> </span>-L<span class="w"> </span>WDSSD<span class="w"> </span>-c<span class="w"> </span>/dev/sda1
+<span class="c1"># Filesystem UUID is displayed but you can also find it with:</span>
+sudo<span class="w"> </span>lsblk<span class="w"> </span>-o<span class="w"> </span>UUID,NAME,FSTYPE,SIZE,MOUNTPOINT,LABEL,MODEL
+
+mkdir<span class="w"> </span>wdssd
+sudo<span class="w"> </span>chown<span class="w"> </span>pi:pi<span class="w"> </span>-R<span class="w"> </span>/home/pi/wdssd/
+sudo<span class="w"> </span>chmod<span class="w"> </span>a+rwx<span class="w"> </span>/home/pi/wdssd/
+sudo<span class="w"> </span>nano<span class="w"> </span>/etc/fstab
+<span class="c1"># At the end of the file that opens, add a new line containing the UUID and mounting directory</span>
+<span class="c1"># UUID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx /home/pi/wdssd/ ext4 defaults,auto,users,rw,nofail 0 0</span>
+</code></pre></div></p>
 
 
 

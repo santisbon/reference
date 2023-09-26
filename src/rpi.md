@@ -530,3 +530,56 @@ I've added some sample code from the [MagPi Essentials book](https://magpi.raspb
 #### GPIO Header
 
 ![GPIO](https://i.imgur.com/3Zroadt.jpg)
+
+## Storage
+
+If you have an SSD you'll need to:
+
+* Choose a partition manipulation program
+    * [GNU Parted](https://www.gnu.org/software/parted/manual/parted.html) (`parted`) is probably already installed and ready to use from the command line. 
+    * If you have a desktop environment you can use the graphical frontend [GParted](https://thepihut.com/blogs/raspberry-pi-tutorials/how-to-set-up-an-ssd-with-the-raspberry-pi). Install with `sudo apt install gparted`.
+* Create a partition table (aka disklabel). The default partition table type is `msdos` for disks smaller than 2 Tebibytes in size (assuming a 512 byte sector size) and `gpt` for disks 2 Tebibytes and larger.
+* Create partition(s) and file system(s).
+* Find the file system's UUID.
+* Create a directory for mounting the SSD.
+* Set up automatic SSD mounting, mount the SSD, reboot to test.
+
+Example:
+```sh
+cat /sys/block/sda/queue/optimal_io_size
+# 33553920
+cat /sys/block/sda/queue/minimum_io_size
+# 512
+cat /sys/block/sda/alignment_offset
+# 0
+cat /sys/block/sda/queue/physical_block_size
+# 512
+
+sudo parted
+
+(parted) print devices # you should see your SSD e.g. /dev/sda (240GB)
+(parted) select /dev/sda # whatever name your SSD device has
+(parted) mklabel msdos 
+
+# Add optimal_io_size to alignment_offset and divide the result by physical_block_size.
+# This number is the sector at which the partition should start. Here it ends in the last sector.
+# Example:
+(parted) mkpart primary ext4 65535s -1s
+
+(parted) print list
+(parted) align-check optimal 1 # or whatever number your partition has
+# 1 aligned 
+(parted) quit
+
+# Make the filesystem with a volume label on partition 1 (or whatever number yours has)
+sudo mkfs.ext4 -L WDSSD -c /dev/sda1
+# Filesystem UUID is displayed but you can also find it with:
+sudo lsblk -o UUID,NAME,FSTYPE,SIZE,MOUNTPOINT,LABEL,MODEL
+
+mkdir wdssd
+sudo chown pi:pi -R /home/pi/wdssd/
+sudo chmod a+rwx /home/pi/wdssd/
+sudo nano /etc/fstab
+# At the end of the file that opens, add a new line containing the UUID and mounting directory
+# UUID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx /home/pi/wdssd/ ext4 defaults,auto,users,rw,nofail 0 0
+```
