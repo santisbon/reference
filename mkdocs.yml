@@ -5,6 +5,7 @@ nav:
   - Home: 'index.md'
   - Set up a new machine:
     - Install the OS: 'install-os.md'
+    - Automated setup: 'automated.md'
     - Package Manager: 'package-mgmt.md'
     - Shell: 'shell.md'
     - Utilities: 'utilities.md'

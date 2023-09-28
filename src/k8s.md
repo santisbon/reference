@@ -1149,6 +1149,27 @@ Prerequisite knowledge:
 Enable:
 [Mayastor](https://microk8s.io/docs/addon-mayastor)
 
+### MinIO
+
+Concepts:
+https://min.io/docs/minio/linux/operations/concepts.html
+
+Enable:
+[MinIO](https://microk8s.io/docs/addon-minio)
+
+Filesystem type to use:
+https://min.io/docs/minio/linux/operations/install-deploy-manage/deploy-minio-single-node-multi-drive.html
+
+Check status for tenant named *microk8s*
+```sh
+sudo microk8s kubectl-minio tenant status microk8s
+```
+
+Check all endpoints
+```sh
+microk8s kubectl get endpoints -A
+```
+
 ## Helm
 
 You can package your charts and publish them on a repository, which can be any HTTP server. Use the name of the folder containing your `Chart.yaml` file.

@@ -137,6 +137,10 @@ packages:
   - avahi-daemon 
   - lshw
   - net-tools
+  # For OpenEBS
+  # - linux-modules-extra-$(uname -r)
+  # For Rook Ceph
+  - lvm2
 
 runcmd:
   - sudo ifconfig wlan0 up
@@ -148,14 +152,17 @@ runcmd:
   - microk8s enable metrics-server
   - microk8s enable ingress
   - microk8s enable dashboard
-  - sudo sysctl vm.nr_hugepages=1024
-  - echo 'vm.nr_hugepages=1024' | sudo tee -a /etc/sysctl.conf
-  - sudo apt install -y linux-modules-extra-$(uname -r)
-  - sudo modprobe nvme_tcp
-  - echo 'nvme-tcp' | sudo tee -a /etc/modules-load.d/microk8s-mayastor.conf
-  - microk8s stop
-  - microk8s start
-  - microk8s enable core/mayastor --default-pool-size 20G
+  # For OpenEBS
+  # - sudo sysctl vm.nr_hugepages=1024
+  # - echo 'vm.nr_hugepages=1024' | sudo tee -a /etc/sysctl.conf
+  # - sudo modprobe nvme_tcp
+  # - echo 'nvme-tcp' | sudo tee -a /etc/modules-load.d/microk8s-mayastor.conf
+  # - microk8s stop
+  # - microk8s start
+  # - microk8s enable core/mayastor --default-pool-size 20G
+  # For Rook Ceph
+  - microk8s kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.11.1/cert-manager.yaml
+
 
 write_files:
 - content: |
@@ -210,6 +217,10 @@ Go make yourself a cup of tea before [connecting](#access-your-pi) for the first
 
 Once cloud-init is done launching our instance, you can check a few things to make sure everything went smoothly.
 ```sh title="On your Pi"
+# If using Ceph storage, verify your kernel is built with the RBD module.
+# If 'not found', rebuild the kernel to include the rbd module, install a newer kernel, or choose a different Linux distribution.
+modprobe rbd
+
 # Check if there were any cloud-init errors
 sudo cat /var/log/cloud-init.log | grep failures
 sudo cat /var/log/cloud-init-output.log
@@ -531,9 +542,23 @@ I've added some sample code from the [MagPi Essentials book](https://magpi.raspb
 
 ![GPIO](https://i.imgur.com/3Zroadt.jpg)
 
-## Storage
+## Boot from SSD
 
-If you have an SSD you'll need to:
+These instructions are for Raspberry Pi 4. Other boards may need [additional steps](https://www.makeuseof.com/how-to-boot-raspberry-pi-ssd-permanent-storage/).
+
+1. Use Raspberry Pi Imager to flash the **USB Boot** bootloader utility image onto a microSD card.
+2. Insert the card into the Pi, turn it on so the Pi flashes the bootloader from the card. When it's done the green LED will start blinking.
+3. Turn off the Pi and remove the card.
+4. Connect a raw device (no partitions or formatted filesystems) SSD to your laptop.
+5. Flash your desired OS image to the SSD with `dd` or preferred tool e.g. as explained [here](#flash-the-image) but using the SSD instead of a microSD card.
+6. Unmount and remove the SSD drive from your laptop and connect it to a USB 3.0 port on your Pi.
+7. Turn on your Pi.
+8. Connect to your Pi over ssh and check available storage space with `df -h`.
+9. Use `parted` to set up/resize the SSD partitions and file systems as desired. For example, leave a raw partition (no formatted filesystem) for use by a Ceph storage cluster. See examples of using `parted` [here](https://rook.io/docs/rook/v1.12/Getting-Started/Prerequisites/prerequisites/) or in the section [SSD as Additional Storage](#ssd-as-additional-storage).
+
+## SSD as Additional Storage
+
+If you have an additional SSD you'll need to:
 
 * Choose a partition manipulation program
     * [GNU Parted](https://www.gnu.org/software/parted/manual/parted.html) (`parted`) is probably already installed and ready to use from the command line. 

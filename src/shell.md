@@ -1,4 +1,10 @@
 # Shell
+
+Open Finder and show hidden files with ++command+shift+period++ or with
+```zsh
+defaults write com.apple.finder AppleShowAllFiles TRUE; killall Finder
+```
+
 ## Bash
 If you want to use bash
 ```zsh
