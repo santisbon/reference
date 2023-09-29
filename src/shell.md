@@ -96,5 +96,5 @@ If you want to use bash
 ```zsh
 brew install bash # get the latest version of bash
 chsh -s $(which bash)
-nano ~/.bash_profile # and paste from sample dot file
+nano ~/.bash_profile 
 ```

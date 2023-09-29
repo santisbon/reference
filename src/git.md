@@ -30,7 +30,7 @@ git config --global merge.tool codium
 git config --global mergetool.codium.cmd 'codium --wait $MERGED'
 
 # or
-codium ~/.gitconfig # and paste from sample dot file. Also: codium, vscode, nano
+codium ~/.gitconfig # Also: codium, vscode, nano
 ```
 
 Then you can ```git difftool main feature-branch```.  
