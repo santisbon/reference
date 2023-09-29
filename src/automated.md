@@ -6,7 +6,7 @@ brew doctor
 ```
 You can use a more [detailed guide](https://mac.install.guide/homebrew/index.html) if needed.
 
-Install [chezmoi](https://www.chezmoi.io/install/) to manage your dotfiles.   
+Install [chezmoi](https://www.chezmoi.io/install/) to manage your dotfiles. You'll need this on your current and new machines.
 ```sh
 brew install chezmoi
 ```
@@ -31,19 +31,17 @@ git push -u origin main
 On your [new machine](https://www.chezmoi.io/quick-start/#using-chezmoi-across-multiple-machines)
 ```sh
 chezmoi init --apply $GITHUB_USERNAME
+cd ~/.local/share/chezmoi
 git remote -v # is it https? Change to ssh
 git remote remove origin
 git remote add origin git@github.com:$GITHUB_USERNAME/dotfiles.git
-# To base your work on an upstream branch that already exists at the remote, you may need to retrieve it.
-git fetch
+git fetch # retrieve upstream branches that already exist at the remote
 git branch -u origin/main # branch 'main' set up to track 'origin/main'.
 
-brew bundle --no-lock  --file="~/.local/share/chezmoi/Brewfile" 
-
-# At any time
+# Install all tools, extensions, and apps from Homebrew and the App Store
+brew bundle --no-lock --file="~/.local/share/chezmoi/Brewfile" 
+# At any time you can also update your dotfiles
 chezmoi update -v
-mas list
-mas upgrade
 ```
 
-Follow the [Shell instructions](/reference/shell/) that are not covered by this `chezmoi`/`brew bundle` automation. 
+Follow the [shell instructions](/reference/shell/) that are not covered by this `chezmoi`/`brew bundle` automation. 
