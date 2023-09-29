@@ -6,7 +6,7 @@ sudo /Applications/Install\ macOS\ Sonoma.app/Contents/Resources/createinstallme
 ```
 using the volume that matches the name of the external drive you are using.  
 
-If you have an Apple silicon Mac here's how to install macOS from a bootable installer:
+To install macOS from a bootable installer:
 
 1. Plug in your bootable media.
 2. Turn off your Mac.
