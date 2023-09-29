@@ -38,7 +38,7 @@ git remote add origin git@github.com:$GITHUB_USERNAME/dotfiles.git
 git fetch
 git branch -u origin/main # branch 'main' set up to track 'origin/main'.
 
-brew bundle --file="~/.local/share/chezmoi/Brewfile" 
+brew bundle --no-lock  --file="~/.local/share/chezmoi/Brewfile" 
 
 # At any time
 chezmoi update -v
