@@ -5,14 +5,6 @@ Open Finder and show hidden files with ++command+shift+period++ or with
 defaults write com.apple.finder AppleShowAllFiles TRUE; killall Finder
 ```
 
-## Bash
-If you want to use bash
-```zsh
-brew install bash # get the latest version of bash
-chsh -s $(which bash)
-nano ~/.bash_profile # and paste from sample dot file
-```
-
 ## Zsh
 
 ```zsh
@@ -44,30 +36,28 @@ git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/z
 source ~/.zshrc
 ```
 
-This plugin [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting) highlights valid commands green and invalid ones red so you don't have to test the command to see if it will work.
-```zsh
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-```
-Or just use Homebrew:
+The [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting) plugin highlights valid commands green and invalid ones red so you don't have to test the command to see if it will work.
 ```zsh
 brew install zsh-syntax-highlighting
 # To activate the syntax highlighting, add the following at the end of your ~/.zshrc:
 source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 ```
 
-Some Oh My Zsh themes like [Spaceship](https://spaceship-prompt.sh/) have requirements like the Powerline Fonts. Get them with:
+Some Oh My Zsh themes like [Spaceship](https://spaceship-prompt.sh/) have font requirements.  
+You can install fonts with Homebrew by adding the fonts repository. [Fira Code](https://github.com/tonsky/FiraCode/wiki/VS-Code-Instructions) is a good one for programming and computer science.
+```zsh
+brew tap homebrew/cask-fonts
+brew install --cask font-fira-code
+```
+
+Or get a ton of fonts with:
 ```zsh
 git clone https://github.com/powerline/fonts.git --depth=1
 ./fonts/install.sh
 rm -rf fonts
 ```
 
-You can also install fonts with Homebrew by adding the fonts repository. [Fira Code](https://github.com/tonsky/FiraCode/wiki/VS-Code-Instructions) is a good one for programming and computer science.
-```zsh
-brew tap homebrew/cask-fonts
-brew install --cask font-fira-code
-```
-Install your Oh My Zsh theme e.g. Spaceship
+Install your Oh My Zsh theme e.g. Spaceship (requires at least the Fire Code font)
 ```zsh
 brew install spaceship
 # If the theme is not copied to your themes folder, sim link from the Homebrew dir to your custom themes folder e.g.
@@ -101,4 +91,10 @@ tools/import-scheme.sh schemes/*
 Restart iTerm 2 (need to quit iTerm 2 to reload the configuration file).  
 iTerm2 > Preferences > Profile > Colors > Color Presets 
 
-
+## Bash
+If you want to use bash
+```zsh
+brew install bash # get the latest version of bash
+chsh -s $(which bash)
+nano ~/.bash_profile # and paste from sample dot file
+```
