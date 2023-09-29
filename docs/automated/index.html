@@ -705,9 +705,11 @@
   <h1>Automated setup</h1>
 
 <h2 id="macos">macOS<a class="headerlink" href="#macos" title="Permanent link">#</a></h2>
-<p>Get the <a href="https://brew.sh/">Homebrew</a> package manager.
+<p>You can automatically set up your dotfiles, tools, and apps on a new machine.</p>
+<p>Get the <a href="https://brew.sh/">Homebrew</a> package manager and GitHub cli.
 <div class="highlight"><pre><span></span><code>/bin/bash<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh<span class="k">)</span><span class="s2">&quot;</span>
 brew<span class="w"> </span>doctor
+brew<span class="w"> </span>install<span class="w"> </span>gh
 </code></pre></div>
 You can use a more <a href="https://mac.install.guide/homebrew/index.html">detailed guide</a> if needed.</p>
 <p>Install <a href="https://www.chezmoi.io/install/">chezmoi</a> to manage your dotfiles. You'll need this on your current and new machines.
@@ -742,7 +744,7 @@ brew<span class="w"> </span>bundle<span class="w"> </span>--no-lock<span class="
 <span class="c1"># At any time you can also update your dotfiles</span>
 chezmoi<span class="w"> </span>update<span class="w"> </span>-v
 </code></pre></div></p>
-<p>Follow the <a href="/reference/shell/">shell instructions</a> that are not covered by this <code>chezmoi</code>/<code>brew bundle</code> automation. </p>
+<p>Follow the <a href="/reference/shell/">shell instructions</a> that are not covered by this <code>chezmoi</code>/<code>brew bundle</code> automation. Do the same for any other sections of this documentation for things that aren't covered by the automation.</p>
 
 
 

@@ -1,8 +1,12 @@
 ## macOS
-Get the [Homebrew](https://brew.sh/) package manager.
+
+You can automatically set up your dotfiles, tools, and apps on a new machine.
+
+Get the [Homebrew](https://brew.sh/) package manager and GitHub cli.
 ```zsh
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 brew doctor
+brew install gh
 ```
 You can use a more [detailed guide](https://mac.install.guide/homebrew/index.html) if needed.
 
@@ -44,4 +48,4 @@ brew bundle --no-lock --file="~/.local/share/chezmoi/Brewfile"
 chezmoi update -v
 ```
 
-Follow the [shell instructions](/reference/shell/) that are not covered by this `chezmoi`/`brew bundle` automation. 
+Follow the [shell instructions](/reference/shell/) that are not covered by this `chezmoi`/`brew bundle` automation. Do the same for any other sections of this documentation for things that aren't covered by the automation.
