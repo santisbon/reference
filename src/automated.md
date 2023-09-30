@@ -35,13 +35,11 @@ See my [dotfiles](https://github.com/santisbon/dotfiles) repo for an example tha
 * iTerm profile.
 * macOS preferences.
 
-Then on your [new machine](https://www.chezmoi.io/quick-start/#using-chezmoi-across-multiple-machines) or clean installation of macOS:
-
-After installing Homebrew and chezmoi, install Oh My Zsh 
+Then on your [new machine](https://www.chezmoi.io/quick-start/#using-chezmoi-across-multiple-machines), after installing Homebrew and chezmoi, install [Oh My Zsh](https://ohmyz.sh): 
 ```sh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 ```
-Configure your new machine:
+and let chezmoi and Homebrew configure your new machine:
 ```sh
 chezmoi init --apply $GITHUB_USERNAME
 
@@ -65,10 +63,6 @@ If you have an iTerm profile `.json` file:
 
 1. *iTerm2 > Settings > Profiles > Other Actions... > Import JSON Profiles*  
 2. Restart iTerm to reload the configuration file.
-
-Follow any [shell instructions](/reference/shell/) that are not covered by your `chezmoi`/`brew bundle`/`defaults` files. Same thing for any other sections of this documentation not covered by the automation.
-
-* Installing the zsh-autosuggestions plugin in `$ZSH_CUSTOM/plugins`.
 
 !!! tip
     In Finder you can also show/hide your hidden files with ++command+shift+period++

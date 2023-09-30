@@ -734,11 +734,10 @@ See my <a href="https://github.com/santisbon/dotfiles">dotfiles</a> repo for an 
 <li>iTerm profile.</li>
 <li>macOS preferences.</li>
 </ul>
-<p>Then on your <a href="https://www.chezmoi.io/quick-start/#using-chezmoi-across-multiple-machines">new machine</a> or clean installation of macOS:</p>
-<p>After installing Homebrew and chezmoi, install Oh My Zsh 
+<p>Then on your <a href="https://www.chezmoi.io/quick-start/#using-chezmoi-across-multiple-machines">new machine</a>, after installing Homebrew and chezmoi, install <a href="https://ohmyz.sh">Oh My Zsh</a>: 
 <div class="highlight"><pre><span></span><code>sh<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh<span class="k">)</span><span class="s2">&quot;</span>
 </code></pre></div>
-Configure your new machine:
+and let chezmoi and Homebrew configure your new machine:
 <div class="highlight"><pre><span></span><code>chezmoi<span class="w"> </span>init<span class="w"> </span>--apply<span class="w"> </span><span class="nv">$GITHUB_USERNAME</span>
 
 <span class="c1"># Install all tools, extensions, and apps from Homebrew and the App Store:</span>
@@ -760,10 +759,6 @@ git<span class="w"> </span>branch<span class="w"> </span>-u<span class="w"> </sp
 <li><em>iTerm2 &gt; Settings &gt; Profiles &gt; Other Actions... &gt; Import JSON Profiles</em>  </li>
 <li>Restart iTerm to reload the configuration file.</li>
 </ol>
-<p>Follow any <a href="/reference/shell/">shell instructions</a> that are not covered by your <code>chezmoi</code>/<code>brew bundle</code>/<code>defaults</code> files. Same thing for any other sections of this documentation not covered by the automation.</p>
-<ul>
-<li>Installing the zsh-autosuggestions plugin in <code>$ZSH_CUSTOM/plugins</code>.</li>
-</ul>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>In Finder you can also show/hide your hidden files with <span class="keys"><kbd class="key-command">Cmd</kbd><span>+</span><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-period">.</kbd></span></p>
