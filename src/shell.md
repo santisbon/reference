@@ -26,27 +26,32 @@ chsh -s $(which zsh)
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 ```
 
-[Oh My Zsh](https://ohmyz.sh/)  
+### [Oh My Zsh](https://ohmyz.sh/)  
+
+#### Plugins
+
 Add any built-in [plugins](https://github.com/ohmyzsh/ohmyzsh/wiki/Plugins) you need to your `~/.zshrc`
 ```zsh
 plugins=(git macos python)
 ```
 
-You can also add custom plugins by cloning the repo into the plugins directory or with Homebrew. 
+You can also add custom plugins by cloning the repo into the `$ZSH_CUSTOM/plugins/` directory and adding it to the plugins list in `~/.zshrc` or with Homebrew. 
 
-This plugin auto suggests previous commands. 
+The [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions) plugin auto suggests previous commands. 
 ```zsh
-git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
-# add zsh-autosuggestions to plugins list in ~/.zshrc and:
-source ~/.zshrc
+brew install zsh-autosuggestions
+# To activate, add this to your ~/.zshrc:
+source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 ```
 
 The [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting) plugin highlights valid commands green and invalid ones red so you don't have to test the command to see if it will work.
 ```zsh
 brew install zsh-syntax-highlighting
-# To activate the syntax highlighting, add the following at the end of your ~/.zshrc:
+# To activate, add this to your ~/.zshrc:
 source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 ```
+
+#### Themes
 
 Some Oh My Zsh themes like [Spaceship](https://spaceship-prompt.sh/) have font requirements.  
 You can install fonts with Homebrew by adding the fonts repository. [Fira Code](https://github.com/tonsky/FiraCode/wiki/VS-Code-Instructions) is a good one for programming and computer science.
