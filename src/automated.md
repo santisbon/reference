@@ -1,6 +1,6 @@
 ## macOS
 
-You can automatically set up your dotfiles, tools, and apps on a new machine.
+You can automatically set up your dotfiles, tools, apps from Homebrew and App Store, and macOS preferences on a new machine.
 
 Get the [Homebrew](https://brew.sh/) package manager and GitHub cli.
 ```zsh
@@ -15,8 +15,9 @@ Install [chezmoi](https://www.chezmoi.io/install/) to manage your dotfiles. You'
 brew install chezmoi
 ```
 
-On your current machine, backup your configuration, edit as needed, and push to a GitHub repo.  
-Add [mas](https://github.com/mas-cli/mas) to your Brewfile to automate App Store installs.
+On your current machine, backup your configuration, edit the generated Brewfile as needed, and push to a GitHub repo. 
+Add [mas](https://github.com/mas-cli/mas) to your Brewfile to automate App Store installs.  
+See my [`dotfiles`](https://github.com/santisbon/dotfiles) repo for examples.
 ```sh
 chezmoi init
 chezmoi add ~/.gitconfig
@@ -48,4 +49,7 @@ brew bundle --no-lock --file="~/.local/share/chezmoi/Brewfile"
 chezmoi update -v
 ```
 
-Follow the [shell instructions](/reference/shell/) that are not covered by this `chezmoi`/`brew bundle` automation. Do the same for any other sections of this documentation for things that aren't covered by the automation.
+If you have a [macOS defaults script](https://github.com/santisbon/dotfiles/blob/main/macos-defaults.sh) run it.
+
+Follow any [shell instructions](/reference/shell/) that are not covered your `chezmoi`/`brew bundle`/`defaults` files. Same for any other sections of this documentation not covered by the automation.
+
