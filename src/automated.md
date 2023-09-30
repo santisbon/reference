@@ -51,5 +51,5 @@ chezmoi update -v
 
 If you have a [macOS defaults script](https://github.com/santisbon/dotfiles/blob/main/macos-defaults.sh) run it.
 
-Follow any [shell instructions](/reference/shell/) that are not covered your `chezmoi`/`brew bundle`/`defaults` files. Same for any other sections of this documentation not covered by the automation.
+Follow any [shell instructions](/reference/shell/) that are not covered by your `chezmoi`/`brew bundle`/`defaults` files. Same thing for any other sections of this documentation not covered by the automation.
 
