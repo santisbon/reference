@@ -1,8 +1,13 @@
 # Shell
 
-Open Finder and show hidden files with ++command+shift+period++ or with
-```zsh
-defaults write com.apple.finder AppleShowAllFiles TRUE; killall Finder
+## Touch ID for `sudo`
+
+```sh
+sudo nano /etc/pam.d/sudo
+```
+Add this as the second line of the file under the comment:
+```sh
+auth       sufficient     pam_tid.so
 ```
 
 ## Zsh
@@ -71,14 +76,21 @@ Any time you edit your zsh configuration file you can reload it to apply changes
 source ~/.zshrc
 ```
 
-## Terminal replacement
-You can use [iTerm2](https://iterm2.com/index.html)
+Verify that you're using the shell you want. In the output of the `env | grep zsh` command look for something like `/opt/homebrew/bin/zsh`.
+
+## Bash
+If you want to use bash
+```zsh
+brew install bash # get the latest version of bash
+chsh -s $(which bash)
+nano ~/.bash_profile 
+```
+
+## Terminal app replacement
+You can use [iTerm](https://iterm2.com/index.html)
 ```zsh
 brew install --cask iterm2
 ```
-
-After you have installed the font(s) required by your Oh My Zsh theme set your iTerm preferences like default shell and font.  
-Verify that you're using the shell you want. In the output of the `env` command look for something like `zsh=/opt/homebrew/bin/zsh`.
 
 Install iTerm 2 color schemes
 ```zsh
@@ -88,13 +100,6 @@ cd iTerm2-Color-Schemes
 # Import all color schemes
 tools/import-scheme.sh schemes/*
 ```
-Restart iTerm 2 (need to quit iTerm 2 to reload the configuration file).  
-iTerm2 > Preferences > Profile > Colors > Color Presets 
 
-## Bash
-If you want to use bash
-```zsh
-brew install bash # get the latest version of bash
-chsh -s $(which bash)
-nano ~/.bash_profile 
-```
+Set your iTerm preferences like default shell, font e.g. Fira Code, and colors:  
+iTerm2 > Settings > Profiles > Colors > Color Presets  

@@ -705,9 +705,8 @@
   <h1>Automated setup</h1>
 
 <h2 id="macos">macOS<a class="headerlink" href="#macos" title="Permanent link">#</a></h2>
-<p>Do you want your new machine (or a brand new, <a href="/reference/install-os/">clean install</a> of macOS on the same machine) to be automatically set up just the way you like it?<br />
-You can automatically set up your git and shell configurations, tools, apps (including the ones from the App Store), and macOS preferences.</p>
-<p>Get the <a href="https://brew.sh/">Homebrew</a> package manager and GitHub cli. You can use a more <a href="https://mac.install.guide/homebrew/index.html">detailed guide</a> if needed.
+<p>Do you want your new machine (or a brand new, <a href="/reference/install-os/">clean install</a> of macOS on the same machine) to be automatically set up just the way you like it? You can set up your git and shell configurations, tools, apps (including the ones from the App Store), and macOS preferences automatically.</p>
+<p>Get the <a href="https://brew.sh/">Homebrew</a> package manager and GitHub CLI. You can use a more <a href="https://mac.install.guide/homebrew/index.html">detailed guide</a> if needed.
 <div class="highlight"><pre><span></span><code>/bin/bash<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh<span class="k">)</span><span class="s2">&quot;</span>
 brew<span class="w"> </span>install<span class="w"> </span>gh
 </code></pre></div></p>
@@ -728,7 +727,13 @@ git<span class="w"> </span>remote<span class="w"> </span>add<span class="w"> </s
 git<span class="w"> </span>branch<span class="w"> </span>-M<span class="w"> </span>main
 git<span class="w"> </span>push<span class="w"> </span>-u<span class="w"> </span>origin<span class="w"> </span>main
 </code></pre></div>
-See my <a href="https://github.com/santisbon/dotfiles"><code>dotfiles</code></a> repo for an example that also includes macOS preferences and a Brewfile with <a href="https://github.com/mas-cli/mas">mas</a> to automate App Store installs.</p>
+See my <a href="https://github.com/santisbon/dotfiles">dotfiles</a> repo for an example that includes: </p>
+<ul>
+<li>Brewfile with tools and apps from both Homebrew and the App Store (with <a href="https://github.com/mas-cli/mas">mas</a>).</li>
+<li>Dotfiles for git and shell configurations.</li>
+<li>iTerm profile.</li>
+<li>macOS preferences.</li>
+</ul>
 <p>Then on your <a href="https://www.chezmoi.io/quick-start/#using-chezmoi-across-multiple-machines">new machine</a> or clean installation of macOS:
 <div class="highlight"><pre><span></span><code><span class="c1"># Install Homebrew and chezmoi, then:</span>
 chezmoi<span class="w"> </span>init<span class="w"> </span>--apply<span class="w"> </span><span class="nv">$GITHUB_USERNAME</span>
@@ -747,7 +752,16 @@ git<span class="w"> </span>fetch<span class="w"> </span><span class="c1"># retri
 git<span class="w"> </span>branch<span class="w"> </span>-u<span class="w"> </span>origin/main<span class="w"> </span><span class="c1"># branch &#39;main&#39; set up to track &#39;origin/main&#39;.</span>
 </code></pre></div></p>
 <p>If you have a <a href="https://github.com/santisbon/dotfiles/blob/main/macos-defaults.sh">macOS defaults script</a>, run it.</p>
+<p>If you have an iTerm profile <code>.json</code> file:</p>
+<ol>
+<li><em>iTerm2 &gt; Settings &gt; Profiles &gt; Other Actions... &gt; Import JSON Profiles</em>  </li>
+<li>Restart iTerm to reload the configuration file.</li>
+</ol>
 <p>Follow any <a href="/reference/shell/">shell instructions</a> that are not covered by your <code>chezmoi</code>/<code>brew bundle</code>/<code>defaults</code> files. Same thing for any other sections of this documentation not covered by the automation.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>In Finder you can also show/hide your hidden files with <span class="keys"><kbd class="key-command">Cmd</kbd><span>+</span><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-period">.</kbd></span></p>
+</div>
 
 
 

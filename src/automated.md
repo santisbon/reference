@@ -1,9 +1,8 @@
 ## macOS
 
-Do you want your new machine (or a brand new, [clean install](/reference/install-os/) of macOS on the same machine) to be automatically set up just the way you like it?  
-You can automatically set up your git and shell configurations, tools, apps (including the ones from the App Store), and macOS preferences.
+Do you want your new machine (or a brand new, [clean install](/reference/install-os/) of macOS on the same machine) to be automatically set up just the way you like it? You can set up your git and shell configurations, tools, apps (including the ones from the App Store), and macOS preferences automatically.
 
-Get the [Homebrew](https://brew.sh/) package manager and GitHub cli. You can use a more [detailed guide](https://mac.install.guide/homebrew/index.html) if needed.
+Get the [Homebrew](https://brew.sh/) package manager and GitHub CLI. You can use a more [detailed guide](https://mac.install.guide/homebrew/index.html) if needed.
 ```zsh
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 brew install gh
@@ -29,9 +28,12 @@ git remote add origin git@github.com:$GITHUB_USERNAME/dotfiles.git
 git branch -M main
 git push -u origin main
 ```
-See my [`dotfiles`](https://github.com/santisbon/dotfiles) repo for an example that also includes macOS preferences and a Brewfile with [mas](https://github.com/mas-cli/mas) to automate App Store installs.
+See my [dotfiles](https://github.com/santisbon/dotfiles) repo for an example that includes: 
 
-
+* Brewfile with tools and apps from both Homebrew and the App Store (with [mas](https://github.com/mas-cli/mas)).
+* Dotfiles for git and shell configurations.
+* iTerm profile.
+* macOS preferences.
 
 Then on your [new machine](https://www.chezmoi.io/quick-start/#using-chezmoi-across-multiple-machines) or clean installation of macOS:
 ```sh
@@ -54,5 +56,12 @@ git branch -u origin/main # branch 'main' set up to track 'origin/main'.
 
 If you have a [macOS defaults script](https://github.com/santisbon/dotfiles/blob/main/macos-defaults.sh), run it.
 
+If you have an iTerm profile `.json` file:
+
+1. *iTerm2 > Settings > Profiles > Other Actions... > Import JSON Profiles*  
+2. Restart iTerm to reload the configuration file.
+
 Follow any [shell instructions](/reference/shell/) that are not covered by your `chezmoi`/`brew bundle`/`defaults` files. Same thing for any other sections of this documentation not covered by the automation.
 
+!!! tip
+    In Finder you can also show/hide your hidden files with ++command+shift+period++

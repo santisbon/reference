@@ -415,6 +415,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#touch-id-for-sudo" class="md-nav__link">
+    Touch ID for sudo
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#zsh" class="md-nav__link">
     Zsh
   </a>
@@ -422,15 +429,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#terminal-replacement" class="md-nav__link">
-    Terminal replacement
+  <a href="#bash" class="md-nav__link">
+    Bash
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#bash" class="md-nav__link">
-    Bash
+  <a href="#terminal-app-replacement" class="md-nav__link">
+    Terminal app replacement
   </a>
   
 </li>
@@ -698,6 +705,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#touch-id-for-sudo" class="md-nav__link">
+    Touch ID for sudo
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#zsh" class="md-nav__link">
     Zsh
   </a>
@@ -705,15 +719,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#terminal-replacement" class="md-nav__link">
-    Terminal replacement
+  <a href="#bash" class="md-nav__link">
+    Bash
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#bash" class="md-nav__link">
-    Bash
+  <a href="#terminal-app-replacement" class="md-nav__link">
+    Terminal app replacement
   </a>
   
 </li>
@@ -737,8 +751,11 @@
 
 
 <h1 id="shell">Shell<a class="headerlink" href="#shell" title="Permanent link">#</a></h1>
-<p>Open Finder and show hidden files with <span class="keys"><kbd class="key-command">Cmd</kbd><span>+</span><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-period">.</kbd></span> or with
-<div class="highlight"><pre><span></span><code>defaults<span class="w"> </span>write<span class="w"> </span>com.apple.finder<span class="w"> </span>AppleShowAllFiles<span class="w"> </span>TRUE<span class="p">;</span><span class="w"> </span>killall<span class="w"> </span>Finder
+<h2 id="touch-id-for-sudo">Touch ID for <code>sudo</code><a class="headerlink" href="#touch-id-for-sudo" title="Permanent link">#</a></h2>
+<p><div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>nano<span class="w"> </span>/etc/pam.d/sudo
+</code></pre></div>
+Add this as the second line of the file under the comment:
+<div class="highlight"><pre><span></span><code>auth<span class="w">       </span>sufficient<span class="w">     </span>pam_tid.so
 </code></pre></div></p>
 <h2 id="zsh">Zsh<a class="headerlink" href="#zsh" title="Permanent link">#</a></h2>
 <div class="highlight"><pre><span></span><code>brew<span class="w"> </span>install<span class="w"> </span>zsh<span class="w"> </span><span class="c1"># get the latest version</span>
@@ -788,27 +805,26 @@ touch<span class="w"> </span>~/.spaceshiprc.zsh
 <p>Any time you edit your zsh configuration file you can reload it to apply changes.
 <div class="highlight"><pre><span></span><code><span class="nb">source</span><span class="w"> </span>~/.zshrc
 </code></pre></div></p>
-<h2 id="terminal-replacement">Terminal replacement<a class="headerlink" href="#terminal-replacement" title="Permanent link">#</a></h2>
-<p>You can use <a href="https://iterm2.com/index.html">iTerm2</a>
-<div class="highlight"><pre><span></span><code>brew<span class="w"> </span>install<span class="w"> </span>--cask<span class="w"> </span>iterm2
-</code></pre></div></p>
-<p>After you have installed the font(s) required by your Oh My Zsh theme set your iTerm preferences like default shell and font.<br />
-Verify that you're using the shell you want. In the output of the <code>env</code> command look for something like <code>zsh=/opt/homebrew/bin/zsh</code>.</p>
-<p>Install iTerm 2 color schemes
-<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/mbadolato/iTerm2-Color-Schemes.git
-<span class="nb">cd</span><span class="w"> </span>iTerm2-Color-Schemes
-
-<span class="c1"># Import all color schemes</span>
-tools/import-scheme.sh<span class="w"> </span>schemes/*
-</code></pre></div>
-Restart iTerm 2 (need to quit iTerm 2 to reload the configuration file).<br />
-iTerm2 &gt; Preferences &gt; Profile &gt; Colors &gt; Color Presets </p>
+<p>Verify that you're using the shell you want. In the output of the <code>env | grep zsh</code> command look for something like <code>/opt/homebrew/bin/zsh</code>.</p>
 <h2 id="bash">Bash<a class="headerlink" href="#bash" title="Permanent link">#</a></h2>
 <p>If you want to use bash
 <div class="highlight"><pre><span></span><code>brew<span class="w"> </span>install<span class="w"> </span>bash<span class="w"> </span><span class="c1"># get the latest version of bash</span>
 chsh<span class="w"> </span>-s<span class="w"> </span><span class="k">$(</span>which<span class="w"> </span>bash<span class="k">)</span>
 nano<span class="w"> </span>~/.bash_profile<span class="w"> </span>
 </code></pre></div></p>
+<h2 id="terminal-app-replacement">Terminal app replacement<a class="headerlink" href="#terminal-app-replacement" title="Permanent link">#</a></h2>
+<p>You can use <a href="https://iterm2.com/index.html">iTerm</a>
+<div class="highlight"><pre><span></span><code>brew<span class="w"> </span>install<span class="w"> </span>--cask<span class="w"> </span>iterm2
+</code></pre></div></p>
+<p>Install iTerm 2 color schemes
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/mbadolato/iTerm2-Color-Schemes.git
+<span class="nb">cd</span><span class="w"> </span>iTerm2-Color-Schemes
+
+<span class="c1"># Import all color schemes</span>
+tools/import-scheme.sh<span class="w"> </span>schemes/*
+</code></pre></div></p>
+<p>Set your iTerm preferences like default shell, font e.g. Fira Code, and colors:<br />
+iTerm2 &gt; Settings &gt; Profiles &gt; Colors &gt; Color Presets  </p>
 
 
 
