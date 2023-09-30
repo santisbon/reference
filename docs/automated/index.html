@@ -705,23 +705,20 @@
   <h1>Automated setup</h1>
 
 <h2 id="macos">macOS<a class="headerlink" href="#macos" title="Permanent link">#</a></h2>
-<p>You can automatically set up your dotfiles, tools, apps from Homebrew and App Store, and macOS preferences on a new machine.</p>
-<p>Get the <a href="https://brew.sh/">Homebrew</a> package manager and GitHub cli.
+<p>Do you want your new machine (or a brand new, <a href="/reference/install-os/">clean install</a> of macOS on the same machine) to be automatically set up just the way you like it?<br />
+You can automatically set up your git and shell configurations, tools, apps (including the ones from the App Store), and macOS preferences.</p>
+<p>Get the <a href="https://brew.sh/">Homebrew</a> package manager and GitHub cli. You can use a more <a href="https://mac.install.guide/homebrew/index.html">detailed guide</a> if needed.
 <div class="highlight"><pre><span></span><code>/bin/bash<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh<span class="k">)</span><span class="s2">&quot;</span>
-brew<span class="w"> </span>doctor
 brew<span class="w"> </span>install<span class="w"> </span>gh
-</code></pre></div>
-You can use a more <a href="https://mac.install.guide/homebrew/index.html">detailed guide</a> if needed.</p>
+</code></pre></div></p>
 <p>Install <a href="https://www.chezmoi.io/install/">chezmoi</a> to manage your dotfiles. You'll need this on your current and new machines.
 <div class="highlight"><pre><span></span><code>brew<span class="w"> </span>install<span class="w"> </span>chezmoi
 </code></pre></div></p>
-<p>On your current machine, backup your configuration, edit the generated Brewfile as needed, and push to a GitHub repo. 
-Add <a href="https://github.com/mas-cli/mas">mas</a> to your Brewfile to automate App Store installs.<br />
-See my <a href="https://github.com/santisbon/dotfiles"><code>dotfiles</code></a> repo for examples.
+<p>On your current machine:
 <div class="highlight"><pre><span></span><code>chezmoi<span class="w"> </span>init
+<span class="c1"># Add your dotfiles e.g.</span>
 chezmoi<span class="w"> </span>add<span class="w"> </span>~/.gitconfig
 chezmoi<span class="w"> </span>add<span class="w"> </span>~/.zshrc
-chezmoi<span class="w"> </span>add<span class="w"> </span>~/.spaceshiprc.zsh
 
 <span class="nb">cd</span><span class="w"> </span>~/.local/share/chezmoi
 brew<span class="w"> </span>bundle<span class="w"> </span>dump<span class="w"> </span><span class="c1"># generates your Brewfile</span>
@@ -730,22 +727,26 @@ gh<span class="w"> </span>repo<span class="w"> </span>create<span class="w"> </s
 git<span class="w"> </span>remote<span class="w"> </span>add<span class="w"> </span>origin<span class="w"> </span>git@github.com:<span class="nv">$GITHUB_USERNAME</span>/dotfiles.git
 git<span class="w"> </span>branch<span class="w"> </span>-M<span class="w"> </span>main
 git<span class="w"> </span>push<span class="w"> </span>-u<span class="w"> </span>origin<span class="w"> </span>main
-</code></pre></div></p>
-<p>On your <a href="https://www.chezmoi.io/quick-start/#using-chezmoi-across-multiple-machines">new machine</a>
-<div class="highlight"><pre><span></span><code>chezmoi<span class="w"> </span>init<span class="w"> </span>--apply<span class="w"> </span><span class="nv">$GITHUB_USERNAME</span>
+</code></pre></div>
+See my <a href="https://github.com/santisbon/dotfiles"><code>dotfiles</code></a> repo for an example that also includes macOS preferences and a Brewfile with <a href="https://github.com/mas-cli/mas">mas</a> to automate App Store installs.</p>
+<p>Then on your <a href="https://www.chezmoi.io/quick-start/#using-chezmoi-across-multiple-machines">new machine</a> or clean installation of macOS:
+<div class="highlight"><pre><span></span><code><span class="c1"># Install Homebrew and chezmoi, then:</span>
+chezmoi<span class="w"> </span>init<span class="w"> </span>--apply<span class="w"> </span><span class="nv">$GITHUB_USERNAME</span>
+
+<span class="c1"># Install all tools, extensions, and apps from Homebrew and the App Store:</span>
+brew<span class="w"> </span>bundle<span class="w"> </span>--no-lock<span class="w"> </span>--file<span class="o">=</span><span class="s2">&quot;~/.local/share/chezmoi/Brewfile&quot;</span><span class="w"> </span>
+<span class="c1"># At any time you can also update your dotfiles:</span>
+chezmoi<span class="w"> </span>update<span class="w"> </span>-v
+
+<span class="c1"># If you use GitHub with an SSH key</span>
 <span class="nb">cd</span><span class="w"> </span>~/.local/share/chezmoi
-git<span class="w"> </span>remote<span class="w"> </span>-v<span class="w"> </span><span class="c1"># is it https? Change to ssh</span>
+git<span class="w"> </span>remote<span class="w"> </span>-v<span class="w"> </span><span class="c1"># is it https? Change it to use your SSH key:</span>
 git<span class="w"> </span>remote<span class="w"> </span>remove<span class="w"> </span>origin
 git<span class="w"> </span>remote<span class="w"> </span>add<span class="w"> </span>origin<span class="w"> </span>git@github.com:<span class="nv">$GITHUB_USERNAME</span>/dotfiles.git
-git<span class="w"> </span>fetch<span class="w"> </span><span class="c1"># retrieve upstream branches that already exist at the remote</span>
+git<span class="w"> </span>fetch<span class="w"> </span><span class="c1"># retrieve upstream branches from the remote</span>
 git<span class="w"> </span>branch<span class="w"> </span>-u<span class="w"> </span>origin/main<span class="w"> </span><span class="c1"># branch &#39;main&#39; set up to track &#39;origin/main&#39;.</span>
-
-<span class="c1"># Install all tools, extensions, and apps from Homebrew and the App Store</span>
-brew<span class="w"> </span>bundle<span class="w"> </span>--no-lock<span class="w"> </span>--file<span class="o">=</span><span class="s2">&quot;~/.local/share/chezmoi/Brewfile&quot;</span><span class="w"> </span>
-<span class="c1"># At any time you can also update your dotfiles</span>
-chezmoi<span class="w"> </span>update<span class="w"> </span>-v
 </code></pre></div></p>
-<p>If you have a <a href="https://github.com/santisbon/dotfiles/blob/main/macos-defaults.sh">macOS defaults script</a> run it.</p>
+<p>If you have a <a href="https://github.com/santisbon/dotfiles/blob/main/macos-defaults.sh">macOS defaults script</a>, run it.</p>
 <p>Follow any <a href="/reference/shell/">shell instructions</a> that are not covered by your <code>chezmoi</code>/<code>brew bundle</code>/<code>defaults</code> files. Same thing for any other sections of this documentation not covered by the automation.</p>
 
 
