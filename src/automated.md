@@ -5,7 +5,7 @@ Do you want your new machine (or a brand new, [clean install](/reference/install
 !!! tip
     In Finder you can also show/hide your hidden files with ++command+shift+period++
 
-Get the [Homebrew](https://brew.sh/) package manager. You can use a more [detailed guide](https://mac.install.guide/homebrew/index.html) if needed. Also install the GitHub CLI and [chezmoi](https://www.chezmoi.io/install/) to manage your dotfiles.
+Get the [Homebrew](https://brew.sh/) package manager, the GitHub CLI and [chezmoi](https://www.chezmoi.io/install/) to manage your dotfiles.
 ```zsh
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 brew install gh
