@@ -1,15 +1,14 @@
 ## macOS
 
-Do you want your new machine (or a brand new, [clean install](/reference/install-os/) of macOS on the same machine) to be automatically set up just the way you like it? You can set up your git and shell configurations, tools, apps (including the ones from the App Store), and macOS preferences automatically.
+Do you want your new machine (or a brand new, [clean install](/reference/install-os/) of macOS on the same machine) to be automatically set up just the way you like it? You can set up your [dotfiles](https://missing.csail.mit.edu/2019/dotfiles/), tools, apps (including the ones from the App Store), and macOS preferences automatically.
 
-Get the [Homebrew](https://brew.sh/) package manager and GitHub CLI. You can use a more [detailed guide](https://mac.install.guide/homebrew/index.html) if needed.
+!!! tip
+    In Finder you can also show/hide your hidden files with ++command+shift+period++
+
+Get the [Homebrew](https://brew.sh/) package manager. You can use a more [detailed guide](https://mac.install.guide/homebrew/index.html) if needed. Also install the GitHub CLI and [chezmoi](https://www.chezmoi.io/install/) to manage your dotfiles.
 ```zsh
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 brew install gh
-```
-
-Install [chezmoi](https://www.chezmoi.io/install/) to manage your dotfiles. You'll need this on your current and new machines.
-```sh
 brew install chezmoi
 ```
 
@@ -35,11 +34,13 @@ See my [dotfiles](https://github.com/santisbon/dotfiles) repo for an example tha
 * iTerm profile.
 * macOS preferences.
 
-Then on your [new machine](https://www.chezmoi.io/quick-start/#using-chezmoi-across-multiple-machines), after installing Homebrew and chezmoi, install [Oh My Zsh](https://ohmyz.sh): 
+Then on your [new machine](https://www.chezmoi.io/quick-start/#using-chezmoi-across-multiple-machines) after installing Homebrew and chezmoi:
+
+If you use [Oh My Zsh](https://ohmyz.sh), install it
 ```sh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 ```
-and let chezmoi and Homebrew configure your new machine:
+Let chezmoi and Homebrew configure your new machine:
 ```sh
 chezmoi init --apply $GITHUB_USERNAME
 
@@ -59,10 +60,7 @@ git branch -u origin/main # branch 'main' set up to track 'origin/main'.
 
 If you have a [macOS defaults script](https://github.com/santisbon/dotfiles/blob/main/macos-defaults.sh), run it.
 
-If you have an iTerm profile `.json` file:
+If you have an [iTerm profile `.json` file](https://github.com/santisbon/dotfiles/blob/main/iTerm2Profile.json):
 
 1. *iTerm2 > Settings > Profiles > Other Actions... > Import JSON Profiles*  
 2. Restart iTerm to reload the configuration file.
-
-!!! tip
-    In Finder you can also show/hide your hidden files with ++command+shift+period++

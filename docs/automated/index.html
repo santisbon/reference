@@ -705,13 +705,15 @@
   <h1>Automated setup</h1>
 
 <h2 id="macos">macOS<a class="headerlink" href="#macos" title="Permanent link">#</a></h2>
-<p>Do you want your new machine (or a brand new, <a href="/reference/install-os/">clean install</a> of macOS on the same machine) to be automatically set up just the way you like it? You can set up your git and shell configurations, tools, apps (including the ones from the App Store), and macOS preferences automatically.</p>
-<p>Get the <a href="https://brew.sh/">Homebrew</a> package manager and GitHub CLI. You can use a more <a href="https://mac.install.guide/homebrew/index.html">detailed guide</a> if needed.
+<p>Do you want your new machine (or a brand new, <a href="/reference/install-os/">clean install</a> of macOS on the same machine) to be automatically set up just the way you like it? You can set up your <a href="https://missing.csail.mit.edu/2019/dotfiles/">dotfiles</a>, tools, apps (including the ones from the App Store), and macOS preferences automatically.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>In Finder you can also show/hide your hidden files with <span class="keys"><kbd class="key-command">Cmd</kbd><span>+</span><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-period">.</kbd></span></p>
+</div>
+<p>Get the <a href="https://brew.sh/">Homebrew</a> package manager. You can use a more <a href="https://mac.install.guide/homebrew/index.html">detailed guide</a> if needed. Also install the GitHub CLI and <a href="https://www.chezmoi.io/install/">chezmoi</a> to manage your dotfiles.
 <div class="highlight"><pre><span></span><code>/bin/bash<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh<span class="k">)</span><span class="s2">&quot;</span>
 brew<span class="w"> </span>install<span class="w"> </span>gh
-</code></pre></div></p>
-<p>Install <a href="https://www.chezmoi.io/install/">chezmoi</a> to manage your dotfiles. You'll need this on your current and new machines.
-<div class="highlight"><pre><span></span><code>brew<span class="w"> </span>install<span class="w"> </span>chezmoi
+brew<span class="w"> </span>install<span class="w"> </span>chezmoi
 </code></pre></div></p>
 <p>On your current machine:
 <div class="highlight"><pre><span></span><code>chezmoi<span class="w"> </span>init
@@ -734,10 +736,11 @@ See my <a href="https://github.com/santisbon/dotfiles">dotfiles</a> repo for an 
 <li>iTerm profile.</li>
 <li>macOS preferences.</li>
 </ul>
-<p>Then on your <a href="https://www.chezmoi.io/quick-start/#using-chezmoi-across-multiple-machines">new machine</a>, after installing Homebrew and chezmoi, install <a href="https://ohmyz.sh">Oh My Zsh</a>: 
+<p>Then on your <a href="https://www.chezmoi.io/quick-start/#using-chezmoi-across-multiple-machines">new machine</a> after installing Homebrew and chezmoi:</p>
+<p>If you use <a href="https://ohmyz.sh">Oh My Zsh</a>, install it
 <div class="highlight"><pre><span></span><code>sh<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh<span class="k">)</span><span class="s2">&quot;</span>
 </code></pre></div>
-and let chezmoi and Homebrew configure your new machine:
+Let chezmoi and Homebrew configure your new machine:
 <div class="highlight"><pre><span></span><code>chezmoi<span class="w"> </span>init<span class="w"> </span>--apply<span class="w"> </span><span class="nv">$GITHUB_USERNAME</span>
 
 <span class="c1"># Install all tools, extensions, and apps from Homebrew and the App Store:</span>
@@ -754,15 +757,11 @@ git<span class="w"> </span>fetch<span class="w"> </span><span class="c1"># retri
 git<span class="w"> </span>branch<span class="w"> </span>-u<span class="w"> </span>origin/main<span class="w"> </span><span class="c1"># branch &#39;main&#39; set up to track &#39;origin/main&#39;.</span>
 </code></pre></div></p>
 <p>If you have a <a href="https://github.com/santisbon/dotfiles/blob/main/macos-defaults.sh">macOS defaults script</a>, run it.</p>
-<p>If you have an iTerm profile <code>.json</code> file:</p>
+<p>If you have an <a href="https://github.com/santisbon/dotfiles/blob/main/iTerm2Profile.json">iTerm profile <code>.json</code> file</a>:</p>
 <ol>
 <li><em>iTerm2 &gt; Settings &gt; Profiles &gt; Other Actions... &gt; Import JSON Profiles</em>  </li>
 <li>Restart iTerm to reload the configuration file.</li>
 </ol>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>In Finder you can also show/hide your hidden files with <span class="keys"><kbd class="key-command">Cmd</kbd><span>+</span><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-period">.</kbd></span></p>
-</div>
 
 
 
