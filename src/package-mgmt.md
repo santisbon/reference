@@ -8,7 +8,7 @@ brew doctor
 You can use a more [detailed guide](https://mac.install.guide/homebrew/index.html) if needed.
 
 ## Linux
-Depending on your distribution, you may have apt (Ubuntu), yum (Red Hat), or zypper (openSUSE).
+Depending on your distribution, you may have apt (Debian), yum (Red Hat), or zypper (openSUSE).
 
 Many apps use a different distribution method like Snap or Flatpak.
 
