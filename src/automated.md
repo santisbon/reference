@@ -3,19 +3,18 @@
 Do you want your new machine (or a brand new, [clean install](/reference/install-os/) of macOS on the same machine) to be automatically set up just the way you like it? You can set up your [dotfiles](https://missing.csail.mit.edu/2019/dotfiles/), tools, apps (including the ones from the App Store), and macOS preferences automatically.
 
 !!! tip
-    In Finder you can also show/hide your hidden files with ++command+shift+period++
-
-Get the [Homebrew](https://brew.sh/) package manager, the GitHub CLI and [chezmoi](https://www.chezmoi.io/install/) to manage your dotfiles.
-```zsh
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-brew install gh
-brew install chezmoi
-```
+    In Finder you can show/hide your hidden files e.g. dotfiles with ++command+shift+period++
 
 ### Current
 On your current machine  
 
-1. Back up you current configuration.
+1. Get the [Homebrew](https://brew.sh/) package manager, the GitHub CLI and [chezmoi](https://www.chezmoi.io/install/) to manage your dotfiles.
+    ```zsh
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    brew install gh
+    brew install chezmoi
+    ```
+2. Back up you current configuration.
     ```sh
     chezmoi init
     # Add your dotfiles e.g.
@@ -44,7 +43,7 @@ On your new machine
 1. Install Homebrew and chezmoi. [Learn more](https://www.chezmoi.io/quick-start/#using-chezmoi-across-multiple-machines).
 
     !!! tip
-        Install antivirus software like Avast Security. The only reason I don't include it in my Brewfile is because at the time of this writing its Homebrew formula seems to be broken so I download it directly from their site.
+        Install antivirus software like Avast Security. The only reason I don't include it in my `Brewfile` is because at the time of this writing its Homebrew formula seems to be broken so I download it directly from their site.
 
 2. If you use [Oh My Zsh](https://ohmyz.sh), install it:
     ```sh
@@ -52,12 +51,14 @@ On your new machine
     ```
 3. Let chezmoi and Homebrew configure your new machine:
     ```sh
+    # Bring your dotfiles
     chezmoi init --apply $GITHUB_USERNAME
-
-    # Install all tools, extensions, and apps from Homebrew and the App Store:
+    # Install all tools, extensions, and apps from Homebrew and the App Store
     brew bundle --no-lock --file="~/.local/share/chezmoi/Brewfile" 
-    # At any time you can also update your dotfiles:
-    chezmoi update -v    
+    
+    # You can update your dotfiles at any time with
+    chezmoi update -v
+    # You can run `brew bundle` again to apply changes to your Brewfile
     ```
 4. If you have a [macOS configuration script](https://github.com/santisbon/dotfiles/blob/main/macos-defaults.sh), make sure your terminal has Full Disk Access and run it with `sudo`.
 5. If you have an [iTerm profile `.json` file](https://github.com/santisbon/dotfiles/blob/main/iTerm2Profile.json), add it as default and delete the old one. This will set your shell, font, colors, etc.
