@@ -12,55 +12,63 @@ brew install gh
 brew install chezmoi
 ```
 
-On your current machine:
-```sh
-chezmoi init
-# Add your dotfiles e.g.
-chezmoi add ~/.gitconfig
-chezmoi add ~/.zshrc
+### Current
+On your current machine  
 
-cd ~/.local/share/chezmoi
-brew bundle dump # generates your Brewfile
-# add and commit everything, then
-gh repo create dotfiles --public -d "My dotfiles" -y
-git remote add origin git@github.com:$GITHUB_USERNAME/dotfiles.git
-git branch -M main
-git push -u origin main
-```
-See my [dotfiles](https://github.com/santisbon/dotfiles) repo for an example that includes: 
+1. Run
+    ```sh
+    chezmoi init
+    # Add your dotfiles e.g.
+    chezmoi add ~/.gitconfig
+    chezmoi add ~/.zshrc
 
-* Brewfile with tools and apps from both Homebrew and the App Store (with [mas](https://github.com/mas-cli/mas)).
-* Dotfiles for git and shell configurations.
-* iTerm profile.
-* macOS preferences.
+    cd ~/.local/share/chezmoi
+    brew bundle dump # generates your Brewfile
+    # add and commit everything, then
+    gh repo create dotfiles --public -d "My dotfiles" -y
+    git remote add origin git@github.com:$GITHUB_USERNAME/dotfiles.git
+    git branch -M main
+    git push -u origin main
+    ```
 
-Then on your [new machine](https://www.chezmoi.io/quick-start/#using-chezmoi-across-multiple-machines) after installing Homebrew and chezmoi:
+    See my [dotfiles](https://github.com/santisbon/dotfiles) repo for an example that includes: 
 
-If you use [Oh My Zsh](https://ohmyz.sh), install it
-```sh
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-```
-Let chezmoi and Homebrew configure your new machine:
-```sh
-chezmoi init --apply $GITHUB_USERNAME
+    * Brewfile with tools and apps from both Homebrew and the App Store (with [mas](https://github.com/mas-cli/mas)).
+    * Dotfiles for git and shell configurations.
+    * iTerm profile.
+    * macOS preferences.
 
-# Install all tools, extensions, and apps from Homebrew and the App Store:
-brew bundle --no-lock --file="~/.local/share/chezmoi/Brewfile" 
-# At any time you can also update your dotfiles:
-chezmoi update -v
+### New
+On your new machine 
 
-# If you use GitHub with an SSH key
-cd ~/.local/share/chezmoi
-git remote -v # is it https? Change it to use your SSH key:
-git remote remove origin
-git remote add origin git@github.com:$GITHUB_USERNAME/dotfiles.git
-git fetch # retrieve upstream branches from the remote
-git branch -u origin/main # branch 'main' set up to track 'origin/main'.
-```
+1. Install Homebrew and chezmoi. [Learn more](https://www.chezmoi.io/quick-start/#using-chezmoi-across-multiple-machines).
 
-If you have a [macOS defaults script](https://github.com/santisbon/dotfiles/blob/main/macos-defaults.sh), run it.
+    !!! tip
+        Install antivirus software like Avast Security. The only reason I don't include it in my Brewfile is because at the time of this writing its Homebrew formula seems to be broken so I download it directly from their site.
 
-If you have an [iTerm profile `.json` file](https://github.com/santisbon/dotfiles/blob/main/iTerm2Profile.json):
+2. If you use [Oh My Zsh](https://ohmyz.sh), install it:
+    ```sh
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    ```
+3. Let chezmoi and Homebrew configure your new machine:
+    ```sh
+    chezmoi init --apply $GITHUB_USERNAME
 
-1. *iTerm2 > Settings > Profiles > Other Actions... > Import JSON Profiles*  
-2. Restart iTerm to reload the configuration file.
+    # Install all tools, extensions, and apps from Homebrew and the App Store:
+    brew bundle --no-lock --file="~/.local/share/chezmoi/Brewfile" 
+    # At any time you can also update your dotfiles:
+    chezmoi update -v
+
+    # If you use GitHub with an SSH key
+    cd ~/.local/share/chezmoi
+    git remote -v # is it https? Change it to use your SSH key:
+    git remote remove origin
+    git remote add origin git@github.com:$GITHUB_USERNAME/dotfiles.git
+    git fetch # retrieve upstream branches from the remote
+    git branch -u origin/main # branch 'main' set up to track 'origin/main'.
+    ```
+4. If you have a [macOS configuration script](https://github.com/santisbon/dotfiles/blob/main/macos-defaults.sh), make sure your terminal has Full Disk Access and run it with `sudo`.
+5. If you have an [iTerm profile `.json` file](https://github.com/santisbon/dotfiles/blob/main/iTerm2Profile.json), add it as default and delete the old one. This will set your shell, font, colors, etc.
+
+    1. *iTerm2 > Settings > Profiles > Other Actions... > Import JSON Profiles*.
+    2. Restart iTerm to reload the configuration file.

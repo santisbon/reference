@@ -375,6 +375,26 @@
     macOS
   </a>
   
+    <nav class="md-nav" aria-label="macOS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#current" class="md-nav__link">
+    Current
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#new" class="md-nav__link">
+    New
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -682,6 +702,26 @@
     macOS
   </a>
   
+    <nav class="md-nav" aria-label="macOS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#current" class="md-nav__link">
+    Current
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#new" class="md-nav__link">
+    New
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -715,8 +755,12 @@
 brew<span class="w"> </span>install<span class="w"> </span>gh
 brew<span class="w"> </span>install<span class="w"> </span>chezmoi
 </code></pre></div></p>
-<p>On your current machine:
-<div class="highlight"><pre><span></span><code>chezmoi<span class="w"> </span>init
+<h3 id="current">Current<a class="headerlink" href="#current" title="Permanent link">#</a></h3>
+<p>On your current machine  </p>
+<ol>
+<li>
+<p>Run
+    <div class="highlight"><pre><span></span><code>chezmoi<span class="w"> </span>init
 <span class="c1"># Add your dotfiles e.g.</span>
 chezmoi<span class="w"> </span>add<span class="w"> </span>~/.gitconfig
 chezmoi<span class="w"> </span>add<span class="w"> </span>~/.zshrc
@@ -728,20 +772,33 @@ gh<span class="w"> </span>repo<span class="w"> </span>create<span class="w"> </s
 git<span class="w"> </span>remote<span class="w"> </span>add<span class="w"> </span>origin<span class="w"> </span>git@github.com:<span class="nv">$GITHUB_USERNAME</span>/dotfiles.git
 git<span class="w"> </span>branch<span class="w"> </span>-M<span class="w"> </span>main
 git<span class="w"> </span>push<span class="w"> </span>-u<span class="w"> </span>origin<span class="w"> </span>main
-</code></pre></div>
-See my <a href="https://github.com/santisbon/dotfiles">dotfiles</a> repo for an example that includes: </p>
+</code></pre></div></p>
+<p>See my <a href="https://github.com/santisbon/dotfiles">dotfiles</a> repo for an example that includes: </p>
 <ul>
 <li>Brewfile with tools and apps from both Homebrew and the App Store (with <a href="https://github.com/mas-cli/mas">mas</a>).</li>
 <li>Dotfiles for git and shell configurations.</li>
 <li>iTerm profile.</li>
 <li>macOS preferences.</li>
 </ul>
-<p>Then on your <a href="https://www.chezmoi.io/quick-start/#using-chezmoi-across-multiple-machines">new machine</a> after installing Homebrew and chezmoi:</p>
-<p>If you use <a href="https://ohmyz.sh">Oh My Zsh</a>, install it
-<div class="highlight"><pre><span></span><code>sh<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh<span class="k">)</span><span class="s2">&quot;</span>
-</code></pre></div>
-Let chezmoi and Homebrew configure your new machine:
-<div class="highlight"><pre><span></span><code>chezmoi<span class="w"> </span>init<span class="w"> </span>--apply<span class="w"> </span><span class="nv">$GITHUB_USERNAME</span>
+</li>
+</ol>
+<h3 id="new">New<a class="headerlink" href="#new" title="Permanent link">#</a></h3>
+<p>On your new machine </p>
+<ol>
+<li>
+<p>Install Homebrew and chezmoi. <a href="https://www.chezmoi.io/quick-start/#using-chezmoi-across-multiple-machines">Learn more</a>.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Install antivirus software like Avast Security. The only reason I don't include it in my Brewfile is because at the time of this writing its Homebrew formula seems to be broken so I download it directly from their site.</p>
+</div>
+</li>
+<li>
+<p>If you use <a href="https://ohmyz.sh">Oh My Zsh</a>, install it:
+    <div class="highlight"><pre><span></span><code>sh<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh<span class="k">)</span><span class="s2">&quot;</span>
+</code></pre></div></p>
+</li>
+<li>Let chezmoi and Homebrew configure your new machine:
+    <div class="highlight"><pre><span></span><code>chezmoi<span class="w"> </span>init<span class="w"> </span>--apply<span class="w"> </span><span class="nv">$GITHUB_USERNAME</span>
 
 <span class="c1"># Install all tools, extensions, and apps from Homebrew and the App Store:</span>
 brew<span class="w"> </span>bundle<span class="w"> </span>--no-lock<span class="w"> </span>--file<span class="o">=</span><span class="s2">&quot;~/.local/share/chezmoi/Brewfile&quot;</span><span class="w"> </span>
@@ -755,12 +812,15 @@ git<span class="w"> </span>remote<span class="w"> </span>remove<span class="w"> 
 git<span class="w"> </span>remote<span class="w"> </span>add<span class="w"> </span>origin<span class="w"> </span>git@github.com:<span class="nv">$GITHUB_USERNAME</span>/dotfiles.git
 git<span class="w"> </span>fetch<span class="w"> </span><span class="c1"># retrieve upstream branches from the remote</span>
 git<span class="w"> </span>branch<span class="w"> </span>-u<span class="w"> </span>origin/main<span class="w"> </span><span class="c1"># branch &#39;main&#39; set up to track &#39;origin/main&#39;.</span>
-</code></pre></div></p>
-<p>If you have a <a href="https://github.com/santisbon/dotfiles/blob/main/macos-defaults.sh">macOS defaults script</a>, run it.</p>
-<p>If you have an <a href="https://github.com/santisbon/dotfiles/blob/main/iTerm2Profile.json">iTerm profile <code>.json</code> file</a>:</p>
+</code></pre></div></li>
+<li>If you have a <a href="https://github.com/santisbon/dotfiles/blob/main/macos-defaults.sh">macOS configuration script</a>, make sure your terminal has Full Disk Access and run it with <code>sudo</code>.</li>
+<li>
+<p>If you have an <a href="https://github.com/santisbon/dotfiles/blob/main/iTerm2Profile.json">iTerm profile <code>.json</code> file</a>, add it as default and delete the old one. This will set your shell, font, colors, etc.</p>
 <ol>
-<li><em>iTerm2 &gt; Settings &gt; Profiles &gt; Other Actions... &gt; Import JSON Profiles</em>  </li>
+<li><em>iTerm2 &gt; Settings &gt; Profiles &gt; Other Actions... &gt; Import JSON Profiles</em>.</li>
 <li>Restart iTerm to reload the configuration file.</li>
+</ol>
+</li>
 </ol>
 
 
