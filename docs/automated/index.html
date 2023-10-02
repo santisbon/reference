@@ -759,7 +759,7 @@ brew<span class="w"> </span>install<span class="w"> </span>chezmoi
 <p>On your current machine  </p>
 <ol>
 <li>
-<p>Run
+<p>Back up you current configuration.
     <div class="highlight"><pre><span></span><code>chezmoi<span class="w"> </span>init
 <span class="c1"># Add your dotfiles e.g.</span>
 chezmoi<span class="w"> </span>add<span class="w"> </span>~/.gitconfig
@@ -803,15 +803,7 @@ git<span class="w"> </span>push<span class="w"> </span>-u<span class="w"> </span
 <span class="c1"># Install all tools, extensions, and apps from Homebrew and the App Store:</span>
 brew<span class="w"> </span>bundle<span class="w"> </span>--no-lock<span class="w"> </span>--file<span class="o">=</span><span class="s2">&quot;~/.local/share/chezmoi/Brewfile&quot;</span><span class="w"> </span>
 <span class="c1"># At any time you can also update your dotfiles:</span>
-chezmoi<span class="w"> </span>update<span class="w"> </span>-v
-
-<span class="c1"># If you use GitHub with an SSH key</span>
-<span class="nb">cd</span><span class="w"> </span>~/.local/share/chezmoi
-git<span class="w"> </span>remote<span class="w"> </span>-v<span class="w"> </span><span class="c1"># is it https? Change it to use your SSH key:</span>
-git<span class="w"> </span>remote<span class="w"> </span>remove<span class="w"> </span>origin
-git<span class="w"> </span>remote<span class="w"> </span>add<span class="w"> </span>origin<span class="w"> </span>git@github.com:<span class="nv">$GITHUB_USERNAME</span>/dotfiles.git
-git<span class="w"> </span>fetch<span class="w"> </span><span class="c1"># retrieve upstream branches from the remote</span>
-git<span class="w"> </span>branch<span class="w"> </span>-u<span class="w"> </span>origin/main<span class="w"> </span><span class="c1"># branch &#39;main&#39; set up to track &#39;origin/main&#39;.</span>
+chezmoi<span class="w"> </span>update<span class="w"> </span>-v<span class="w">    </span>
 </code></pre></div></li>
 <li>If you have a <a href="https://github.com/santisbon/dotfiles/blob/main/macos-defaults.sh">macOS configuration script</a>, make sure your terminal has Full Disk Access and run it with <code>sudo</code>.</li>
 <li>
@@ -820,6 +812,16 @@ git<span class="w"> </span>branch<span class="w"> </span>-u<span class="w"> </sp
 <li><em>iTerm2 &gt; Settings &gt; Profiles &gt; Other Actions... &gt; Import JSON Profiles</em>.</li>
 <li>Restart iTerm to reload the configuration file.</li>
 </ol>
+</li>
+<li>
+<p>If you use GitHub with an SSH key:
+    <div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>~/.local/share/chezmoi
+git<span class="w"> </span>remote<span class="w"> </span>-v<span class="w"> </span><span class="c1"># is it https? Change it to SSH with:</span>
+git<span class="w"> </span>remote<span class="w"> </span>remove<span class="w"> </span>origin
+git<span class="w"> </span>remote<span class="w"> </span>add<span class="w"> </span>origin<span class="w"> </span>git@github.com:<span class="nv">$GITHUB_USERNAME</span>/dotfiles.git
+git<span class="w"> </span>fetch<span class="w"> </span><span class="c1"># retrieve upstream branches from the remote</span>
+git<span class="w"> </span>branch<span class="w"> </span>-u<span class="w"> </span>origin/main<span class="w"> </span><span class="c1"># set &#39;main&#39; to track &#39;origin/main&#39;.</span>
+</code></pre></div></p>
 </li>
 </ol>
 
