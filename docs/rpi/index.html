@@ -555,6 +555,20 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#boot-from-ssd" class="md-nav__link">
+    Boot from SSD
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ssd-as-additional-storage" class="md-nav__link">
+    SSD as Additional Storage
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#get-os-image" class="md-nav__link">
     Get OS image
   </a>
@@ -768,20 +782,6 @@
         
       </ul>
     </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#boot-from-ssd" class="md-nav__link">
-    Boot from SSD
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ssd-as-additional-storage" class="md-nav__link">
-    SSD as Additional Storage
-  </a>
   
 </li>
       
@@ -908,6 +908,20 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#boot-from-ssd" class="md-nav__link">
+    Boot from SSD
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ssd-as-additional-storage" class="md-nav__link">
+    SSD as Additional Storage
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#get-os-image" class="md-nav__link">
     Get OS image
   </a>
@@ -1124,20 +1138,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#boot-from-ssd" class="md-nav__link">
-    Boot from SSD
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ssd-as-additional-storage" class="md-nav__link">
-    SSD as Additional Storage
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -1159,6 +1159,74 @@
 <h1 id="single-board-computers-sbcs">Single-board Computers (SBCs)<a class="headerlink" href="#single-board-computers-sbcs" title="Permanent link">#</a></h1>
 <p>Raspberry Pi, Orange Pi, and many others.</p>
 <p><img alt="SBCs" src="https://res.cloudinary.com/practicaldev/image/fetch/s--gU1esoW1--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_800/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/k1mer6vmt81awg37l856.png" /></p>
+<h2 id="boot-from-ssd">Boot from SSD<a class="headerlink" href="#boot-from-ssd" title="Permanent link">#</a></h2>
+<p>These instructions are for Raspberry Pi 4. Other boards may need <a href="https://www.makeuseof.com/how-to-boot-raspberry-pi-ssd-permanent-storage/">additional steps</a>.</p>
+<ol>
+<li>Use Raspberry Pi Imager to flash the <strong>USB Boot</strong> bootloader utility image onto a microSD card.</li>
+<li>Insert the card into the Pi, turn it on so the Pi flashes the bootloader from the card. When it's done the green LED will start blinking.</li>
+<li>Turn off the Pi and remove the card.</li>
+<li>Connect a raw device (no partitions or formatted filesystems) SSD to your laptop. If the device already has partitions wipe out everything e.g. on a Mac:
+    <div class="highlight"><pre><span></span><code>diskutil<span class="w"> </span>list
+diskutil<span class="w"> </span>zeroDisk<span class="w"> </span>/dev/disk4<span class="w"> </span><span class="c1"># or whatever name your device has</span>
+</code></pre></div>
+    On Linux you can use <code>parted</code> as explained <a href="#ssd-as-additional-storage">here</a>.</li>
+<li>Flash your desired OS image to the SSD with <code>dd</code> or preferred tool e.g. as explained <a href="#flash-the-image">here</a> but using the SSD instead of a microSD card.</li>
+<li>Unmount and remove the SSD drive from your laptop and connect it to a USB 3.0 port on your Pi.</li>
+<li>Turn on your Pi.</li>
+<li>Connect to your Pi over ssh and check available storage space with <code>df -h</code>.</li>
+</ol>
+<h2 id="ssd-as-additional-storage">SSD as Additional Storage<a class="headerlink" href="#ssd-as-additional-storage" title="Permanent link">#</a></h2>
+<p>If you have an additional SSD you'll need to:</p>
+<ul>
+<li>Choose a partition manipulation program<ul>
+<li><a href="https://www.gnu.org/software/parted/manual/parted.html">GNU Parted</a> (<code>parted</code>) is probably already installed and ready to use from the command line. </li>
+<li><a href="https://thepihut.com/blogs/raspberry-pi-tutorials/how-to-set-up-an-ssd-with-the-raspberry-pi">GParted</a> - If you have a desktop environment you can use this graphical frontend. Install with <code>sudo apt install gparted</code>.</li>
+</ul>
+</li>
+<li>Create a partition table (aka disklabel). The default partition table type is <code>msdos</code> for disks smaller than 2 Tebibytes in size (assuming a 512 byte sector size) and <code>gpt</code> for disks 2 Tebibytes and larger.</li>
+<li>Create partition(s) and file system(s).</li>
+<li>Find the file system's UUID.</li>
+<li>Create a directory for mounting the SSD.</li>
+<li>Set up automatic SSD mounting, mount the SSD, reboot to test.</li>
+</ul>
+<p>Example with <code>parted</code>:
+<div class="highlight"><pre><span></span><code>cat<span class="w"> </span>/sys/block/sda/queue/optimal_io_size
+<span class="c1"># 33553920</span>
+cat<span class="w"> </span>/sys/block/sda/queue/minimum_io_size
+<span class="c1"># 512</span>
+cat<span class="w"> </span>/sys/block/sda/alignment_offset
+<span class="c1"># 0</span>
+cat<span class="w"> </span>/sys/block/sda/queue/physical_block_size
+<span class="c1"># 512</span>
+
+sudo<span class="w"> </span>parted
+
+<span class="o">(</span>parted<span class="o">)</span><span class="w"> </span>print<span class="w"> </span>devices<span class="w"> </span><span class="c1"># you should see your SSD e.g. /dev/sda (240GB)</span>
+<span class="o">(</span>parted<span class="o">)</span><span class="w"> </span><span class="k">select</span><span class="w"> </span>/dev/sda<span class="w"> </span><span class="c1"># whatever name your SSD device has</span>
+<span class="o">(</span>parted<span class="o">)</span><span class="w"> </span>mklabel<span class="w"> </span>msdos<span class="w"> </span>
+
+<span class="c1"># Add optimal_io_size to alignment_offset and divide the result by physical_block_size.</span>
+<span class="c1"># This number is the sector at which the partition should start. Here it ends in the last sector.</span>
+<span class="c1"># Example:</span>
+<span class="o">(</span>parted<span class="o">)</span><span class="w"> </span>mkpart<span class="w"> </span>primary<span class="w"> </span>ext4<span class="w"> </span>65535s<span class="w"> </span>-1s
+
+<span class="o">(</span>parted<span class="o">)</span><span class="w"> </span>print<span class="w"> </span>list
+<span class="o">(</span>parted<span class="o">)</span><span class="w"> </span>align-check<span class="w"> </span>optimal<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="c1"># or whatever number your partition has</span>
+<span class="c1"># 1 aligned </span>
+<span class="o">(</span>parted<span class="o">)</span><span class="w"> </span>quit
+
+<span class="c1"># Make the filesystem with a volume label on partition 1 (or whatever number yours has)</span>
+sudo<span class="w"> </span>mkfs.ext4<span class="w"> </span>-L<span class="w"> </span>WDSSD<span class="w"> </span>-c<span class="w"> </span>/dev/sda1
+<span class="c1"># Filesystem UUID is displayed but you can also find it with:</span>
+sudo<span class="w"> </span>lsblk<span class="w"> </span>-o<span class="w"> </span>UUID,NAME,FSTYPE,SIZE,MOUNTPOINT,LABEL,MODEL
+
+mkdir<span class="w"> </span>wdssd
+sudo<span class="w"> </span>chown<span class="w"> </span>pi:pi<span class="w"> </span>-R<span class="w"> </span>/home/pi/wdssd/
+sudo<span class="w"> </span>chmod<span class="w"> </span>a+rwx<span class="w"> </span>/home/pi/wdssd/
+sudo<span class="w"> </span>nano<span class="w"> </span>/etc/fstab
+<span class="c1"># At the end of the file that opens, add a new line containing the UUID and mounting directory</span>
+<span class="c1"># UUID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx /home/pi/wdssd/ ext4 defaults,auto,users,rw,nofail 0 0</span>
+</code></pre></div></p>
 <h2 id="get-os-image">Get OS image<a class="headerlink" href="#get-os-image" title="Permanent link">#</a></h2>
 <p>You <em>could</em> use an imager program that flashes an operating system on the SD card for you but you'll be very limited in the ways you can pre-configure the OS. It's better to download the OS image and flash it yourself.  </p>
 <p>I recommend using an <strong>Ubuntu</strong> image made specifically for your board instead of a manufaturer's custom OS like Raspberry Pi OS or Orange Pi OS. Those are designed for simplicity and ease of use at the expense of functionality that is important when building a cloud native homelab.</p>
@@ -1280,8 +1348,8 @@ cat<span class="w"> </span><span class="s">&lt;&lt; EOF &gt; /Volumes/$VOLUME/us
 <span class="s">  - avahi-daemon </span>
 <span class="s">  - lshw</span>
 <span class="s">  - net-tools</span>
-<span class="s">  # For OpenEBS</span>
-<span class="s">  # - linux-modules-extra-$(uname -r)</span>
+<span class="s">  # For OpenEBS or Ceph</span>
+<span class="s">  - linux-modules-extra-$(uname -r)</span>
 <span class="s">  # For Rook Ceph</span>
 <span class="s">  - lvm2</span>
 
@@ -1351,7 +1419,7 @@ cat<span class="w"> </span>/Volumes/<span class="nv">$VOLUME</span>/cmdline.txt
 <p>Once cloud-init is done launching our instance, you can check a few things to make sure everything went smoothly.
 <div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code><span class="c1"># If using Ceph storage, verify your kernel is built with the RBD module.</span>
 <span class="c1"># If &#39;not found&#39;, rebuild the kernel to include the rbd module, install a newer kernel, or choose a different Linux distribution.</span>
-modprobe<span class="w"> </span>rbd
+modprobe<span class="w"> </span>rbd<span class="w"> </span><span class="c1"># or lsmod | grep rbd</span>
 
 <span class="c1"># Check if there were any cloud-init errors</span>
 sudo<span class="w"> </span>cat<span class="w"> </span>/var/log/cloud-init.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>failures
@@ -1532,6 +1600,11 @@ static domain_name_servers=[DNS IP]
 <div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code>scp<span class="w"> </span>-r<span class="w"> </span>pi@raspberrypi2.local:/home/pi/Documents/<span class="w"> </span>~/Documents/pidocs
 </code></pre></div></p>
 <h3 id="find-info-about-your-pi">Find info about your Pi<a class="headerlink" href="#find-info-about-your-pi" title="Permanent link">#</a></h3>
+<p>You can find info about the hardware like ports, pins, RAM, SoC, connectivity, etc. with:
+<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>free<span class="w"> </span>-h<span class="w"> </span><span class="c1"># RAM</span>
+df<span class="w"> </span>-h<span class="w"> </span><span class="c1"># storage space</span>
+pinout<span class="w"> </span><span class="c1"># requires `apt install python3-gpiozero`</span>
+</code></pre></div></p>
 <p>View number of processing units and <a href="https://www.digitalocean.com/community/tutorials/load-average-in-linux#">system load</a>
 <div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>nproc
 uptime
@@ -1567,9 +1640,6 @@ A blank output means <code>armel</code> (<code>arm/v6</code>).
 Or check the architecture with:
 <div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>hostnamectl
 </code></pre></div></p>
-<p>You can find info about the hardware like ports, pins, RAM, SoC, connectivity, etc. with:
-<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>pinout
-</code></pre></div></p>
 <h3 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">#</a></h3>
 <p>If your Pi's ethernet port is capable of 1Gbps, you're using a cat5e cable or better, your router and switch support 1Gbps,  and you're still only getting 100Mbps <strong>first try with another cable</strong>. A faulty cable is the most common cause of problems like this. If that doesn't work you can try disabling EEE (Energy Efficient Ethernet) although it will be reenabled at reboot. You could also try setting the speed manually.
 <div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>ethtool<span class="w"> </span>--show-eee<span class="w"> </span>eth0
@@ -1590,71 +1660,6 @@ resolvectl<span class="w"> </span>status
 <a href="https://github.com/santisbon/guides/tree/main/assets/SBC">Sample code</a></p>
 <h4 id="gpio-header">GPIO Header<a class="headerlink" href="#gpio-header" title="Permanent link">#</a></h4>
 <p><img alt="GPIO" src="https://i.imgur.com/3Zroadt.jpg" /></p>
-<h2 id="boot-from-ssd">Boot from SSD<a class="headerlink" href="#boot-from-ssd" title="Permanent link">#</a></h2>
-<p>These instructions are for Raspberry Pi 4. Other boards may need <a href="https://www.makeuseof.com/how-to-boot-raspberry-pi-ssd-permanent-storage/">additional steps</a>.</p>
-<ol>
-<li>Use Raspberry Pi Imager to flash the <strong>USB Boot</strong> bootloader utility image onto a microSD card.</li>
-<li>Insert the card into the Pi, turn it on so the Pi flashes the bootloader from the card. When it's done the green LED will start blinking.</li>
-<li>Turn off the Pi and remove the card.</li>
-<li>Connect a raw device (no partitions or formatted filesystems) SSD to your laptop.</li>
-<li>Flash your desired OS image to the SSD with <code>dd</code> or preferred tool e.g. as explained <a href="#flash-the-image">here</a> but using the SSD instead of a microSD card.</li>
-<li>Unmount and remove the SSD drive from your laptop and connect it to a USB 3.0 port on your Pi.</li>
-<li>Turn on your Pi.</li>
-<li>Connect to your Pi over ssh and check available storage space with <code>df -h</code>.</li>
-<li>Use <code>parted</code> to set up/resize the SSD partitions and file systems as desired. For example, leave a raw partition (no formatted filesystem) for use by a Ceph storage cluster. See examples of using <code>parted</code> <a href="https://rook.io/docs/rook/v1.12/Getting-Started/Prerequisites/prerequisites/">here</a> or in the section <a href="#ssd-as-additional-storage">SSD as Additional Storage</a>.</li>
-</ol>
-<h2 id="ssd-as-additional-storage">SSD as Additional Storage<a class="headerlink" href="#ssd-as-additional-storage" title="Permanent link">#</a></h2>
-<p>If you have an additional SSD you'll need to:</p>
-<ul>
-<li>Choose a partition manipulation program<ul>
-<li><a href="https://www.gnu.org/software/parted/manual/parted.html">GNU Parted</a> (<code>parted</code>) is probably already installed and ready to use from the command line. </li>
-<li>If you have a desktop environment you can use the graphical frontend <a href="https://thepihut.com/blogs/raspberry-pi-tutorials/how-to-set-up-an-ssd-with-the-raspberry-pi">GParted</a>. Install with <code>sudo apt install gparted</code>.</li>
-</ul>
-</li>
-<li>Create a partition table (aka disklabel). The default partition table type is <code>msdos</code> for disks smaller than 2 Tebibytes in size (assuming a 512 byte sector size) and <code>gpt</code> for disks 2 Tebibytes and larger.</li>
-<li>Create partition(s) and file system(s).</li>
-<li>Find the file system's UUID.</li>
-<li>Create a directory for mounting the SSD.</li>
-<li>Set up automatic SSD mounting, mount the SSD, reboot to test.</li>
-</ul>
-<p>Example:
-<div class="highlight"><pre><span></span><code>cat<span class="w"> </span>/sys/block/sda/queue/optimal_io_size
-<span class="c1"># 33553920</span>
-cat<span class="w"> </span>/sys/block/sda/queue/minimum_io_size
-<span class="c1"># 512</span>
-cat<span class="w"> </span>/sys/block/sda/alignment_offset
-<span class="c1"># 0</span>
-cat<span class="w"> </span>/sys/block/sda/queue/physical_block_size
-<span class="c1"># 512</span>
-
-sudo<span class="w"> </span>parted
-
-<span class="o">(</span>parted<span class="o">)</span><span class="w"> </span>print<span class="w"> </span>devices<span class="w"> </span><span class="c1"># you should see your SSD e.g. /dev/sda (240GB)</span>
-<span class="o">(</span>parted<span class="o">)</span><span class="w"> </span><span class="k">select</span><span class="w"> </span>/dev/sda<span class="w"> </span><span class="c1"># whatever name your SSD device has</span>
-<span class="o">(</span>parted<span class="o">)</span><span class="w"> </span>mklabel<span class="w"> </span>msdos<span class="w"> </span>
-
-<span class="c1"># Add optimal_io_size to alignment_offset and divide the result by physical_block_size.</span>
-<span class="c1"># This number is the sector at which the partition should start. Here it ends in the last sector.</span>
-<span class="c1"># Example:</span>
-<span class="o">(</span>parted<span class="o">)</span><span class="w"> </span>mkpart<span class="w"> </span>primary<span class="w"> </span>ext4<span class="w"> </span>65535s<span class="w"> </span>-1s
-
-<span class="o">(</span>parted<span class="o">)</span><span class="w"> </span>print<span class="w"> </span>list
-<span class="o">(</span>parted<span class="o">)</span><span class="w"> </span>align-check<span class="w"> </span>optimal<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="c1"># or whatever number your partition has</span>
-<span class="c1"># 1 aligned </span>
-<span class="o">(</span>parted<span class="o">)</span><span class="w"> </span>quit
-
-<span class="c1"># Make the filesystem with a volume label on partition 1 (or whatever number yours has)</span>
-sudo<span class="w"> </span>mkfs.ext4<span class="w"> </span>-L<span class="w"> </span>WDSSD<span class="w"> </span>-c<span class="w"> </span>/dev/sda1
-<span class="c1"># Filesystem UUID is displayed but you can also find it with:</span>
-sudo<span class="w"> </span>lsblk<span class="w"> </span>-o<span class="w"> </span>UUID,NAME,FSTYPE,SIZE,MOUNTPOINT,LABEL,MODEL
-
-mkdir<span class="w"> </span>wdssd
-sudo<span class="w"> </span>chown<span class="w"> </span>pi:pi<span class="w"> </span>-R<span class="w"> </span>/home/pi/wdssd/
-sudo<span class="w"> </span>chmod<span class="w"> </span>a+rwx<span class="w"> </span>/home/pi/wdssd/
-sudo<span class="w"> </span>nano<span class="w"> </span>/etc/fstab
-<span class="c1"># At the end of the file that opens, add a new line containing the UUID and mounting directory</span>
-<span class="c1"># UUID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx /home/pi/wdssd/ ext4 defaults,auto,users,rw,nofail 0 0</span>
-</code></pre></div></p>
 
 
 

@@ -3,6 +3,77 @@ Raspberry Pi, Orange Pi, and many others.
 
 ![SBCs](https://res.cloudinary.com/practicaldev/image/fetch/s--gU1esoW1--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_800/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/k1mer6vmt81awg37l856.png)
 
+## Boot from SSD
+
+These instructions are for Raspberry Pi 4. Other boards may need [additional steps](https://www.makeuseof.com/how-to-boot-raspberry-pi-ssd-permanent-storage/).
+
+1. Use Raspberry Pi Imager to flash the **USB Boot** bootloader utility image onto a microSD card.
+2. Insert the card into the Pi, turn it on so the Pi flashes the bootloader from the card. When it's done the green LED will start blinking.
+3. Turn off the Pi and remove the card.
+4. Connect a raw device (no partitions or formatted filesystems) SSD to your laptop. If the device already has partitions wipe out everything e.g. on a Mac:
+    ```sh
+    diskutil list
+    diskutil zeroDisk /dev/disk4 # or whatever name your device has
+    ```
+    On Linux you can use `parted` as explained [here](#ssd-as-additional-storage).
+5. Flash your desired OS image to the SSD with `dd` or preferred tool e.g. as explained [here](#flash-the-image) but using the SSD instead of a microSD card.
+6. Unmount and remove the SSD drive from your laptop and connect it to a USB 3.0 port on your Pi.
+7. Turn on your Pi.
+8. Connect to your Pi over ssh and check available storage space with `df -h`.
+
+## SSD as Additional Storage
+
+If you have an additional SSD you'll need to:
+
+* Choose a partition manipulation program
+    * [GNU Parted](https://www.gnu.org/software/parted/manual/parted.html) (`parted`) is probably already installed and ready to use from the command line. 
+    * [GParted](https://thepihut.com/blogs/raspberry-pi-tutorials/how-to-set-up-an-ssd-with-the-raspberry-pi) - If you have a desktop environment you can use this graphical frontend. Install with `sudo apt install gparted`.
+* Create a partition table (aka disklabel). The default partition table type is `msdos` for disks smaller than 2 Tebibytes in size (assuming a 512 byte sector size) and `gpt` for disks 2 Tebibytes and larger.
+* Create partition(s) and file system(s).
+* Find the file system's UUID.
+* Create a directory for mounting the SSD.
+* Set up automatic SSD mounting, mount the SSD, reboot to test.
+
+Example with `parted`:
+```sh
+cat /sys/block/sda/queue/optimal_io_size
+# 33553920
+cat /sys/block/sda/queue/minimum_io_size
+# 512
+cat /sys/block/sda/alignment_offset
+# 0
+cat /sys/block/sda/queue/physical_block_size
+# 512
+
+sudo parted
+
+(parted) print devices # you should see your SSD e.g. /dev/sda (240GB)
+(parted) select /dev/sda # whatever name your SSD device has
+(parted) mklabel msdos 
+
+# Add optimal_io_size to alignment_offset and divide the result by physical_block_size.
+# This number is the sector at which the partition should start. Here it ends in the last sector.
+# Example:
+(parted) mkpart primary ext4 65535s -1s
+
+(parted) print list
+(parted) align-check optimal 1 # or whatever number your partition has
+# 1 aligned 
+(parted) quit
+
+# Make the filesystem with a volume label on partition 1 (or whatever number yours has)
+sudo mkfs.ext4 -L WDSSD -c /dev/sda1
+# Filesystem UUID is displayed but you can also find it with:
+sudo lsblk -o UUID,NAME,FSTYPE,SIZE,MOUNTPOINT,LABEL,MODEL
+
+mkdir wdssd
+sudo chown pi:pi -R /home/pi/wdssd/
+sudo chmod a+rwx /home/pi/wdssd/
+sudo nano /etc/fstab
+# At the end of the file that opens, add a new line containing the UUID and mounting directory
+# UUID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx /home/pi/wdssd/ ext4 defaults,auto,users,rw,nofail 0 0
+```
+
 ## Get OS image
 
 You *could* use an imager program that flashes an operating system on the SD card for you but you'll be very limited in the ways you can pre-configure the OS. It's better to download the OS image and flash it yourself.  
@@ -137,8 +208,8 @@ packages:
   - avahi-daemon 
   - lshw
   - net-tools
-  # For OpenEBS
-  # - linux-modules-extra-$(uname -r)
+  # For OpenEBS or Ceph
+  - linux-modules-extra-$(uname -r)
   # For Rook Ceph
   - lvm2
 
@@ -219,7 +290,7 @@ Once cloud-init is done launching our instance, you can check a few things to ma
 ```sh title="On your Pi"
 # If using Ceph storage, verify your kernel is built with the RBD module.
 # If 'not found', rebuild the kernel to include the rbd module, install a newer kernel, or choose a different Linux distribution.
-modprobe rbd
+modprobe rbd # or lsmod | grep rbd
 
 # Check if there were any cloud-init errors
 sudo cat /var/log/cloud-init.log | grep failures
@@ -455,6 +526,13 @@ scp -r pi@raspberrypi2.local:/home/pi/Documents/ ~/Documents/pidocs
 
 ### Find info about your Pi
 
+You can find info about the hardware like ports, pins, RAM, SoC, connectivity, etc. with:
+```sh title="On your Pi"
+free -h # RAM
+df -h # storage space
+pinout # requires `apt install python3-gpiozero`
+```
+
 View number of processing units and [system load](https://www.digitalocean.com/community/tutorials/load-average-in-linux#)
 ```sh title="On your Pi"
 nproc
@@ -506,11 +584,6 @@ Or check the architecture with:
 hostnamectl
 ```
 
-You can find info about the hardware like ports, pins, RAM, SoC, connectivity, etc. with:
-```sh title="On your Pi"
-pinout
-```
-
 ### Troubleshooting
 
 If your Pi's ethernet port is capable of 1Gbps, you're using a cat5e cable or better, your router and switch support 1Gbps,  and you're still only getting 100Mbps **first try with another cable**. A faulty cable is the most common cause of problems like this. If that doesn't work you can try disabling EEE (Energy Efficient Ethernet) although it will be reenabled at reboot. You could also try setting the speed manually.
@@ -541,70 +614,3 @@ I've added some sample code from the [MagPi Essentials book](https://magpi.raspb
 #### GPIO Header
 
 ![GPIO](https://i.imgur.com/3Zroadt.jpg)
-
-## Boot from SSD
-
-These instructions are for Raspberry Pi 4. Other boards may need [additional steps](https://www.makeuseof.com/how-to-boot-raspberry-pi-ssd-permanent-storage/).
-
-1. Use Raspberry Pi Imager to flash the **USB Boot** bootloader utility image onto a microSD card.
-2. Insert the card into the Pi, turn it on so the Pi flashes the bootloader from the card. When it's done the green LED will start blinking.
-3. Turn off the Pi and remove the card.
-4. Connect a raw device (no partitions or formatted filesystems) SSD to your laptop.
-5. Flash your desired OS image to the SSD with `dd` or preferred tool e.g. as explained [here](#flash-the-image) but using the SSD instead of a microSD card.
-6. Unmount and remove the SSD drive from your laptop and connect it to a USB 3.0 port on your Pi.
-7. Turn on your Pi.
-8. Connect to your Pi over ssh and check available storage space with `df -h`.
-9. Use `parted` to set up/resize the SSD partitions and file systems as desired. For example, leave a raw partition (no formatted filesystem) for use by a Ceph storage cluster. See examples of using `parted` [here](https://rook.io/docs/rook/v1.12/Getting-Started/Prerequisites/prerequisites/) or in the section [SSD as Additional Storage](#ssd-as-additional-storage).
-
-## SSD as Additional Storage
-
-If you have an additional SSD you'll need to:
-
-* Choose a partition manipulation program
-    * [GNU Parted](https://www.gnu.org/software/parted/manual/parted.html) (`parted`) is probably already installed and ready to use from the command line. 
-    * If you have a desktop environment you can use the graphical frontend [GParted](https://thepihut.com/blogs/raspberry-pi-tutorials/how-to-set-up-an-ssd-with-the-raspberry-pi). Install with `sudo apt install gparted`.
-* Create a partition table (aka disklabel). The default partition table type is `msdos` for disks smaller than 2 Tebibytes in size (assuming a 512 byte sector size) and `gpt` for disks 2 Tebibytes and larger.
-* Create partition(s) and file system(s).
-* Find the file system's UUID.
-* Create a directory for mounting the SSD.
-* Set up automatic SSD mounting, mount the SSD, reboot to test.
-
-Example:
-```sh
-cat /sys/block/sda/queue/optimal_io_size
-# 33553920
-cat /sys/block/sda/queue/minimum_io_size
-# 512
-cat /sys/block/sda/alignment_offset
-# 0
-cat /sys/block/sda/queue/physical_block_size
-# 512
-
-sudo parted
-
-(parted) print devices # you should see your SSD e.g. /dev/sda (240GB)
-(parted) select /dev/sda # whatever name your SSD device has
-(parted) mklabel msdos 
-
-# Add optimal_io_size to alignment_offset and divide the result by physical_block_size.
-# This number is the sector at which the partition should start. Here it ends in the last sector.
-# Example:
-(parted) mkpart primary ext4 65535s -1s
-
-(parted) print list
-(parted) align-check optimal 1 # or whatever number your partition has
-# 1 aligned 
-(parted) quit
-
-# Make the filesystem with a volume label on partition 1 (or whatever number yours has)
-sudo mkfs.ext4 -L WDSSD -c /dev/sda1
-# Filesystem UUID is displayed but you can also find it with:
-sudo lsblk -o UUID,NAME,FSTYPE,SIZE,MOUNTPOINT,LABEL,MODEL
-
-mkdir wdssd
-sudo chown pi:pi -R /home/pi/wdssd/
-sudo chmod a+rwx /home/pi/wdssd/
-sudo nano /etc/fstab
-# At the end of the file that opens, add a new line containing the UUID and mounting directory
-# UUID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx /home/pi/wdssd/ ext4 defaults,auto,users,rw,nofail 0 0
-```
