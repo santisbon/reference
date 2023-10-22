@@ -1151,14 +1151,14 @@ Enable:
 
 ### MinIO
 
-Concepts:
-https://min.io/docs/minio/linux/operations/concepts.html
+Concepts:  
+[https://min.io/docs/minio/linux/operations/concepts.html](https://min.io/docs/minio/linux/operations/concepts.html)
 
 Enable:
 [MinIO](https://microk8s.io/docs/addon-minio)
 
-Filesystem type to use:
-https://min.io/docs/minio/linux/operations/install-deploy-manage/deploy-minio-single-node-multi-drive.html
+Filesystem type to use:  
+[https://min.io/docs/minio/linux/operations/install-deploy-manage/deploy-minio-single-node-multi-drive.html](https://min.io/docs/minio/linux/operations/install-deploy-manage/deploy-minio-single-node-multi-drive.html)
 
 Check status for tenant named *microk8s*
 ```sh

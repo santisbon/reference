@@ -584,6 +584,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    Overview
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#flash-the-image" class="md-nav__link">
     Flash the image
   </a>
@@ -937,6 +944,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    Overview
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#flash-the-image" class="md-nav__link">
     Flash the image
   </a>
@@ -1160,6 +1174,10 @@
 <p>Raspberry Pi, Orange Pi, and many others.</p>
 <p><img alt="SBCs" src="https://res.cloudinary.com/practicaldev/image/fetch/s--gU1esoW1--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_800/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/k1mer6vmt81awg37l856.png" /></p>
 <h2 id="boot-from-ssd">Boot from SSD<a class="headerlink" href="#boot-from-ssd" title="Permanent link">#</a></h2>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>If using a SATA SSD make sure the cable/adapter has an <strong>ASMedia</strong> chipset so it will work properly with Raspberry Pi.</p>
+</div>
 <p>These instructions are for Raspberry Pi 4. Other boards may need <a href="https://www.makeuseof.com/how-to-boot-raspberry-pi-ssd-permanent-storage/">additional steps</a>.</p>
 <ol>
 <li>Use Raspberry Pi Imager to flash the <strong>USB Boot</strong> bootloader utility image onto a microSD card.</li>
@@ -1167,15 +1185,19 @@
 <li>Turn off the Pi and remove the card.</li>
 <li>Connect a raw device (no partitions or formatted filesystems) SSD to your laptop. If the device already has partitions wipe out everything e.g. on a Mac:
     <div class="highlight"><pre><span></span><code>diskutil<span class="w"> </span>list
-diskutil<span class="w"> </span>zeroDisk<span class="w"> </span>/dev/disk4<span class="w"> </span><span class="c1"># or whatever name your device has</span>
+diskutil<span class="w"> </span>zeroDisk<span class="w"> </span>short<span class="w"> </span>/dev/disk4<span class="w"> </span><span class="c1"># or whatever name your device has</span>
 </code></pre></div>
     On Linux you can use <code>parted</code> as explained <a href="#ssd-as-additional-storage">here</a>.</li>
-<li>Flash your desired OS image to the SSD with <code>dd</code> or preferred tool e.g. as explained <a href="#flash-the-image">here</a> but using the SSD instead of a microSD card.</li>
+<li>Flash your desired OS image to the SSD with <code>dd</code> or preferred tool e.g. as explained <a href="#flash-the-image">here</a>.</li>
 <li>Unmount and remove the SSD drive from your laptop and connect it to a USB 3.0 port on your Pi.</li>
 <li>Turn on your Pi.</li>
 <li>Connect to your Pi over ssh and check available storage space with <code>df -h</code>.</li>
 </ol>
 <h2 id="ssd-as-additional-storage">SSD as Additional Storage<a class="headerlink" href="#ssd-as-additional-storage" title="Permanent link">#</a></h2>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>If using a SATA SSD make sure the cable/adapter has an <strong>ASMedia</strong> chipset so it will work properly with Raspberry Pi.</p>
+</div>
 <p>If you have an additional SSD you'll need to:</p>
 <ul>
 <li>Choose a partition manipulation program<ul>
@@ -1228,7 +1250,7 @@ sudo<span class="w"> </span>nano<span class="w"> </span>/etc/fstab
 <span class="c1"># UUID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx /home/pi/wdssd/ ext4 defaults,auto,users,rw,nofail 0 0</span>
 </code></pre></div></p>
 <h2 id="get-os-image">Get OS image<a class="headerlink" href="#get-os-image" title="Permanent link">#</a></h2>
-<p>You <em>could</em> use an imager program that flashes an operating system on the SD card for you but you'll be very limited in the ways you can pre-configure the OS. It's better to download the OS image and flash it yourself.  </p>
+<p>You <em>could</em> use an imager program that flashes an operating system for you but you'll be very limited in the ways you can pre-configure the OS. It's better to download the OS image and flash it yourself.  </p>
 <p>I recommend using an <strong>Ubuntu</strong> image made specifically for your board instead of a manufaturer's custom OS like Raspberry Pi OS or Orange Pi OS. Those are designed for simplicity and ease of use at the expense of functionality that is important when building a cloud native homelab.</p>
 <ul>
 <li>❌ Raspberry Pi OS doesn't come with <a href="https://cloud-init.io"><code>cloud-init</code></a>.</li>
@@ -1254,6 +1276,7 @@ xz<span class="w"> </span>-d<span class="w"> </span>ubuntu-22.04.3-preinstalled-
 shasum<span class="w"> </span>-c<span class="w"> </span>Orangepi3b_1.0.0_ubuntu_jammy_server_linux5.10.160.img.sha
 </code></pre></div></p>
 <h2 id="option-a-cloud-native">Option A: Cloud native<a class="headerlink" href="#option-a-cloud-native" title="Permanent link">#</a></h2>
+<h3 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">#</a></h3>
 <p>This is the repeatable, flexible option.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
@@ -1270,7 +1293,7 @@ shasum<span class="w"> </span>-c<span class="w"> </span>Orangepi3b_1.0.0_ubuntu_
 ❌ Not supoprted by Orange Pi images.</p>
 <p>If you're setting up an Orange Pi, download the image and see the <a href="#option-b-one-off">one-off</a> instructions.</p>
 </div>
-<p>We'll flash a pre-configured SD card with:  </p>
+<p>We'll flash a pre-configured microSD card or SSD with:  </p>
 <ul>
 <li>A hostname.</li>
 <li>A user with ssh key authentication (and password authentication disabled).</li>
@@ -1291,10 +1314,10 @@ shasum<span class="w"> </span>-c<span class="w"> </span>Orangepi3b_1.0.0_ubuntu_
 <p>This example uses macOS. Adjust the commands with your OS's tools to <a href="https://ostechnix.com/how-to-use-pbcopy-and-pbpaste-commands-on-linux/">copy/paste</a>, view disks, <code>dd</code> options, and <a href="https://unix.stackexchange.com/questions/13711/differences-between-sed-on-mac-osx-and-other-standard-sed"><code>sed</code> version</a>. It has been tested with the image provided by Ubuntu for Raspberry Pi.  </p>
 </div>
 <h3 id="flash-the-image">Flash the image<a class="headerlink" href="#flash-the-image" title="Permanent link">#</a></h3>
-<p>Insert the SD card and check the device name e.g. <code>/dev/disk4</code>
+<p>Insert the microSD card (or connect the SSD) and check the device name e.g. <code>/dev/disk4</code>
 <div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code>diskutil<span class="w"> </span>list
 </code></pre></div></p>
-<p>Use that device name to flash the OS image to the SD card.
+<p>Use that device name to flash the OS image to the card/SSD.
 <div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code><span class="c1">###################################################################</span>
 <span class="c1"># REPLACE WITH YOUR VALUES</span>
 <span class="c1">###################################################################</span>
@@ -1348,10 +1371,10 @@ cat<span class="w"> </span><span class="s">&lt;&lt; EOF &gt; /Volumes/$VOLUME/us
 <span class="s">  - avahi-daemon </span>
 <span class="s">  - lshw</span>
 <span class="s">  - net-tools</span>
-<span class="s">  # For OpenEBS or Ceph</span>
-<span class="s">  - linux-modules-extra-$(uname -r)</span>
+<span class="s">  # For OpenEBS or Rook Ceph</span>
+<span class="s">  # - linux-modules-extra-$(uname -r)</span>
 <span class="s">  # For Rook Ceph</span>
-<span class="s">  - lvm2</span>
+<span class="s">  # - lvm2</span>
 
 <span class="s">runcmd:</span>
 <span class="s">  - sudo ifconfig wlan0 up</span>
@@ -1368,11 +1391,9 @@ cat<span class="w"> </span><span class="s">&lt;&lt; EOF &gt; /Volumes/$VOLUME/us
 <span class="s">  # - echo &#39;vm.nr_hugepages=1024&#39; | sudo tee -a /etc/sysctl.conf</span>
 <span class="s">  # - sudo modprobe nvme_tcp</span>
 <span class="s">  # - echo &#39;nvme-tcp&#39; | sudo tee -a /etc/modules-load.d/microk8s-mayastor.conf</span>
-<span class="s">  # - microk8s stop</span>
-<span class="s">  # - microk8s start</span>
-<span class="s">  # - microk8s enable core/mayastor --default-pool-size 20G</span>
 <span class="s">  # For Rook Ceph</span>
-<span class="s">  - microk8s kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.11.1/cert-manager.yaml</span>
+<span class="s">  # - sudo modprobe rbd</span>
+<span class="s">  # - microk8s kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.11.1/cert-manager.yaml</span>
 
 
 <span class="s">write_files:</span>
@@ -1408,18 +1429,20 @@ sed<span class="w"> </span>-i<span class="w"> </span><span class="s2">&quot;&quo
 <div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code>cat<span class="w"> </span>/Volumes/<span class="nv">$VOLUME</span>/user-data
 cat<span class="w"> </span>/Volumes/<span class="nv">$VOLUME</span>/cmdline.txt
 </code></pre></div></p>
-<p>Unmount the SD card
+<p>Unmount the card/SSD
 <div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code>diskutil<span class="w"> </span>unmountDisk<span class="w"> </span><span class="nv">$DEVICE</span>
 </code></pre></div></p>
 <p>🎉 <strong>You're done!</strong> 🍾  </p>
-<p>Now remove the SD card from your laptop and insert it into the Pi which <strong>should be connected to your router with an ethernet cable</strong>. The Wi-Fi won't be available until everything has finished configuring and you manually do a required system restart.</p>
+<p>Now remove the card/SSD from your laptop and insert it into the Pi which <strong>should be connected to your router with an ethernet cable</strong>. The Wi-Fi won't be available until everything has finished configuring and you manually do a required system restart.</p>
 <p>Since we pre-configured everything it has a lot of work to do on the first boot and it takes several minutes. You'll be able to go in as soon as the SSH service is up but it will probably still be in the process of upgrading packages as well as installing and configuring our software.  </p>
 <p>Go make yourself a cup of tea before <a href="#access-your-pi">connecting</a> for the first time.</p>
 <h3 id="verify">Verify<a class="headerlink" href="#verify" title="Permanent link">#</a></h3>
 <p>Once cloud-init is done launching our instance, you can check a few things to make sure everything went smoothly.
-<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code><span class="c1"># If using Ceph storage, verify your kernel is built with the RBD module.</span>
-<span class="c1"># If &#39;not found&#39;, rebuild the kernel to include the rbd module, install a newer kernel, or choose a different Linux distribution.</span>
-modprobe<span class="w"> </span>rbd<span class="w"> </span><span class="c1"># or lsmod | grep rbd</span>
+<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code><span class="c1"># Verify your kernel is built with the modules you need. If modprobe shows &#39;not found&#39; install the extra kernel modules package for your kernel release, rebuild the kernel to include the modules you need, install a newer kernel, or choose a different Linux distribution.</span>
+lsmod<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="o">[</span>rbd<span class="w"> </span><span class="p">|</span><span class="w"> </span>nvme_tcp<span class="o">]</span>
+<span class="c1"># modprobe rbd # For Ceph</span>
+<span class="c1"># modprobe nvme_tcp # For OpenEBS</span>
+
 
 <span class="c1"># Check if there were any cloud-init errors</span>
 sudo<span class="w"> </span>cat<span class="w"> </span>/var/log/cloud-init.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>failures
@@ -1433,14 +1456,6 @@ sudo<span class="w"> </span>cat<span class="w"> </span>/var/log/apt/history.log
 <span class="c1"># Check if a service is running</span>
 systemctl<span class="w"> </span>status<span class="w"> </span><span class="s1">&#39;avahi*&#39;</span>
 
-<span class="c1"># Check if MicroK8s is intalled and running with the addons enabled</span>
-microk8s<span class="w"> </span>status<span class="w"> </span>--wait-ready
-microk8s<span class="w"> </span>kubectl<span class="w"> </span>cluster-info
-<span class="c1"># On first boot, the etcd-operator-mayastor pod </span>
-<span class="c1"># may be stuck in CrashLoopBackOff state until you reboot</span>
-microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>-n<span class="w"> </span>mayastor<span class="w"> </span>
-microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>diskpool<span class="w"> </span>-n<span class="w"> </span>mayastor
-
 <span class="c1"># Check cloud-init&#39;s network configuration </span>
 cat<span class="w"> </span>/etc/netplan/50-cloud-init.yaml
 cat<span class="w"> </span>/etc/cloud/cloud.cfg.d/99-disable-network-config.cfg
@@ -1452,13 +1467,28 @@ cat<span class="w"> </span>/etc/cloud/cloud.cfg.d/99-disable-network-config.cfg
 sudo<span class="w"> </span>lshw<span class="w"> </span>-c<span class="w"> </span>network
 ip<span class="w"> </span>addr<span class="w"> </span>show<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>wlan0
 </code></pre></div></p>
+<p>If setting up a MicroK8s cluster, <a href="/reference/k8s/#clustering">add the nodes to the cluster</a> and enable any addons you need.
+<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code><span class="c1"># Check if MicroK8s is intalled and running with the addons enabled</span>
+microk8s<span class="w"> </span>status<span class="w"> </span>--wait-ready
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>cluster-info
+
+microk8s<span class="w"> </span>stop
+microk8s<span class="w"> </span>start
+microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>core/mayastor<span class="w"> </span>--default-pool-size<span class="w"> </span>20G
+microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>minio<span class="w"> </span>-c<span class="w"> </span>100Gi
+
+<span class="c1"># On first boot, the etcd-operator-mayastor pod </span>
+<span class="c1"># may be stuck in CrashLoopBackOff state until you reboot</span>
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>-n<span class="w"> </span>mayastor<span class="w"> </span>
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>diskpool<span class="w"> </span>-n<span class="w"> </span>mayastor
+</code></pre></div></p>
 <h2 id="option-b-one-off">Option B: One-off<a class="headerlink" href="#option-b-one-off" title="Permanent link">#</a></h2>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>This is the easiest option but is limited in how much you can pre-configure the OS. Recommended if you're setting up only one board or if your OS image doesn't have <code>cloud-init</code>.</p>
 </div>
 <h3 id="flash-the-image_1">Flash the image<a class="headerlink" href="#flash-the-image_1" title="Permanent link">#</a></h3>
-<p>Use Raspberry Pi Imager or Balena Etcher (<code>brew install --cask [raspberry-pi-imager | balenaetcher]</code>) to flash the image to the SD card. If you use Pi Imager you can:  </p>
+<p>Use Raspberry Pi Imager or Balena Etcher (<code>brew install --cask [raspberry-pi-imager | balenaetcher]</code>) to flash the image to the microSD card or SSD. If you use Pi Imager you can:  </p>
 <ul>
 <li>Change the password for the default user or disable passwords altogether.  </li>
 <li>Enable SSH (password or ssh keys); remove password authentication if using keys.  </li>

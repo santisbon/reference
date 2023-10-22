@@ -5,6 +5,9 @@ Raspberry Pi, Orange Pi, and many others.
 
 ## Boot from SSD
 
+!!! important
+    If using a SATA SSD make sure the cable/adapter has an **ASMedia** chipset so it will work properly with Raspberry Pi.
+
 These instructions are for Raspberry Pi 4. Other boards may need [additional steps](https://www.makeuseof.com/how-to-boot-raspberry-pi-ssd-permanent-storage/).
 
 1. Use Raspberry Pi Imager to flash the **USB Boot** bootloader utility image onto a microSD card.
@@ -13,15 +16,18 @@ These instructions are for Raspberry Pi 4. Other boards may need [additional ste
 4. Connect a raw device (no partitions or formatted filesystems) SSD to your laptop. If the device already has partitions wipe out everything e.g. on a Mac:
     ```sh
     diskutil list
-    diskutil zeroDisk /dev/disk4 # or whatever name your device has
+    diskutil zeroDisk short /dev/disk4 # or whatever name your device has
     ```
     On Linux you can use `parted` as explained [here](#ssd-as-additional-storage).
-5. Flash your desired OS image to the SSD with `dd` or preferred tool e.g. as explained [here](#flash-the-image) but using the SSD instead of a microSD card.
+5. Flash your desired OS image to the SSD with `dd` or preferred tool e.g. as explained [here](#flash-the-image).
 6. Unmount and remove the SSD drive from your laptop and connect it to a USB 3.0 port on your Pi.
 7. Turn on your Pi.
 8. Connect to your Pi over ssh and check available storage space with `df -h`.
 
 ## SSD as Additional Storage
+
+!!! important
+    If using a SATA SSD make sure the cable/adapter has an **ASMedia** chipset so it will work properly with Raspberry Pi.
 
 If you have an additional SSD you'll need to:
 
@@ -76,7 +82,7 @@ sudo nano /etc/fstab
 
 ## Get OS image
 
-You *could* use an imager program that flashes an operating system on the SD card for you but you'll be very limited in the ways you can pre-configure the OS. It's better to download the OS image and flash it yourself.  
+You *could* use an imager program that flashes an operating system for you but you'll be very limited in the ways you can pre-configure the OS. It's better to download the OS image and flash it yourself.  
    
 I recommend using an **Ubuntu** image made specifically for your board instead of a manufaturer's custom OS like Raspberry Pi OS or Orange Pi OS. Those are designed for simplicity and ease of use at the expense of functionality that is important when building a cloud native homelab.
 
@@ -109,6 +115,9 @@ shasum -c Orangepi3b_1.0.0_ubuntu_jammy_server_linux5.10.160.img.sha
 ```
 
 ## Option A: Cloud native 
+
+### Overview
+
 This is the repeatable, flexible option.
 
 !!! tip
@@ -125,7 +134,7 @@ This is the repeatable, flexible option.
 
     If you're setting up an Orange Pi, download the image and see the [one-off](#option-b-one-off) instructions.
 
-We'll flash a pre-configured SD card with:  
+We'll flash a pre-configured microSD card or SSD with:  
 
 * A hostname.
 * A user with ssh key authentication (and password authentication disabled).
@@ -146,12 +155,12 @@ If you don't have an ssh key, [generate one](https://www.ssh.com/academy/ssh/key
 
 ### Flash the image
 
-Insert the SD card and check the device name e.g. `/dev/disk4`
+Insert the microSD card (or connect the SSD) and check the device name e.g. `/dev/disk4`
 ```sh title="On your laptop" 
 diskutil list
 ```
 
-Use that device name to flash the OS image to the SD card.
+Use that device name to flash the OS image to the card/SSD.
 ```sh title="On your laptop" 
 ###################################################################
 # REPLACE WITH YOUR VALUES
@@ -208,10 +217,10 @@ packages:
   - avahi-daemon 
   - lshw
   - net-tools
-  # For OpenEBS or Ceph
-  - linux-modules-extra-$(uname -r)
+  # For OpenEBS or Rook Ceph
+  # - linux-modules-extra-$(uname -r)
   # For Rook Ceph
-  - lvm2
+  # - lvm2
 
 runcmd:
   - sudo ifconfig wlan0 up
@@ -228,11 +237,9 @@ runcmd:
   # - echo 'vm.nr_hugepages=1024' | sudo tee -a /etc/sysctl.conf
   # - sudo modprobe nvme_tcp
   # - echo 'nvme-tcp' | sudo tee -a /etc/modules-load.d/microk8s-mayastor.conf
-  # - microk8s stop
-  # - microk8s start
-  # - microk8s enable core/mayastor --default-pool-size 20G
   # For Rook Ceph
-  - microk8s kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.11.1/cert-manager.yaml
+  # - sudo modprobe rbd
+  # - microk8s kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.11.1/cert-manager.yaml
 
 
 write_files:
@@ -271,14 +278,14 @@ cat /Volumes/$VOLUME/user-data
 cat /Volumes/$VOLUME/cmdline.txt
 ```
 
-Unmount the SD card
+Unmount the card/SSD
 ```sh title="On your laptop"
 diskutil unmountDisk $DEVICE
 ```
 
 🎉 **You're done!** 🍾  
 
-Now remove the SD card from your laptop and insert it into the Pi which **should be connected to your router with an ethernet cable**. The Wi-Fi won't be available until everything has finished configuring and you manually do a required system restart.
+Now remove the card/SSD from your laptop and insert it into the Pi which **should be connected to your router with an ethernet cable**. The Wi-Fi won't be available until everything has finished configuring and you manually do a required system restart.
 
 Since we pre-configured everything it has a lot of work to do on the first boot and it takes several minutes. You'll be able to go in as soon as the SSH service is up but it will probably still be in the process of upgrading packages as well as installing and configuring our software.  
 
@@ -288,9 +295,11 @@ Go make yourself a cup of tea before [connecting](#access-your-pi) for the first
 
 Once cloud-init is done launching our instance, you can check a few things to make sure everything went smoothly.
 ```sh title="On your Pi"
-# If using Ceph storage, verify your kernel is built with the RBD module.
-# If 'not found', rebuild the kernel to include the rbd module, install a newer kernel, or choose a different Linux distribution.
-modprobe rbd # or lsmod | grep rbd
+# Verify your kernel is built with the modules you need. If modprobe shows 'not found' install the extra kernel modules package for your kernel release, rebuild the kernel to include the modules you need, install a newer kernel, or choose a different Linux distribution.
+lsmod | grep [rbd | nvme_tcp]
+# modprobe rbd # For Ceph
+# modprobe nvme_tcp # For OpenEBS
+
 
 # Check if there were any cloud-init errors
 sudo cat /var/log/cloud-init.log | grep failures
@@ -304,14 +313,6 @@ sudo cat /var/log/apt/history.log
 # Check if a service is running
 systemctl status 'avahi*'
 
-# Check if MicroK8s is intalled and running with the addons enabled
-microk8s status --wait-ready
-microk8s kubectl cluster-info
-# On first boot, the etcd-operator-mayastor pod 
-# may be stuck in CrashLoopBackOff state until you reboot
-microk8s kubectl get pod -n mayastor 
-microk8s kubectl get diskpool -n mayastor
-
 # Check cloud-init's network configuration 
 cat /etc/netplan/50-cloud-init.yaml
 cat /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg
@@ -324,6 +325,23 @@ sudo lshw -c network
 ip addr show | grep wlan0
 ```
 
+If setting up a MicroK8s cluster, [add the nodes to the cluster](/reference/k8s/#clustering) and enable any addons you need.
+```sh title="On your Pi"
+# Check if MicroK8s is intalled and running with the addons enabled
+microk8s status --wait-ready
+microk8s kubectl cluster-info
+
+microk8s stop
+microk8s start
+microk8s enable core/mayastor --default-pool-size 20G
+microk8s enable minio -c 100Gi
+
+# On first boot, the etcd-operator-mayastor pod 
+# may be stuck in CrashLoopBackOff state until you reboot
+microk8s kubectl get pod -n mayastor 
+microk8s kubectl get diskpool -n mayastor
+```
+
 ## Option B: One-off 
 
 !!! tip
@@ -332,7 +350,7 @@ ip addr show | grep wlan0
 
 ### Flash the image
 
-Use Raspberry Pi Imager or Balena Etcher (`brew install --cask [raspberry-pi-imager | balenaetcher]`) to flash the image to the SD card. If you use Pi Imager you can:  
+Use Raspberry Pi Imager or Balena Etcher (`brew install --cask [raspberry-pi-imager | balenaetcher]`) to flash the image to the microSD card or SSD. If you use Pi Imager you can:  
 
 * Change the password for the default user or disable passwords altogether.  
 * Enable SSH (password or ssh keys); remove password authentication if using keys.  
