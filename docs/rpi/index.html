@@ -1379,13 +1379,11 @@ cat<span class="w"> </span><span class="s">&lt;&lt; EOF &gt; /Volumes/$VOLUME/us
 <span class="s">runcmd:</span>
 <span class="s">  - sudo ifconfig wlan0 up</span>
 <span class="s">  - sudo snap refresh</span>
+<span class="s">  # For MicroK8s</span>
 <span class="s">  - sudo snap install microk8s --classic</span>
 <span class="s">  - sudo usermod -a -G microk8s pi</span>
 <span class="s">  - sudo chown -f -R pi ~/.kube</span>
 <span class="s">  - newgrp microk8s</span>
-<span class="s">  - microk8s enable metrics-server</span>
-<span class="s">  - microk8s enable ingress</span>
-<span class="s">  - microk8s enable dashboard</span>
 <span class="s">  # For OpenEBS</span>
 <span class="s">  # - sudo sysctl vm.nr_hugepages=1024</span>
 <span class="s">  # - echo &#39;vm.nr_hugepages=1024&#39; | sudo tee -a /etc/sysctl.conf</span>
@@ -1422,7 +1420,7 @@ cat<span class="w"> </span><span class="s">&lt;&lt; EOF &gt; /Volumes/$VOLUME/us
 <span class="s">  path: /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg</span>
 <span class="s">EOF</span>
 
-<span class="c1"># Add these options at the end of the file as Kubernetes will need them to run on the Pi.</span>
+<span class="c1"># For Kubernetes to run on the Pi, add these options at the end of the file.</span>
 sed<span class="w"> </span>-i<span class="w"> </span><span class="s2">&quot;&quot;</span><span class="w"> </span><span class="s2">&quot;</span>$<span class="s2"> s/</span>$<span class="s2">/ cgroup_enable=memory cgroup_memory=1/&quot;</span><span class="w"> </span>/Volumes/<span class="nv">$VOLUME</span>/cmdline.txt
 </code></pre></div></p>
 <p>You can verify that the files were written correctly
@@ -1474,6 +1472,9 @@ microk8s<span class="w"> </span>kubectl<span class="w"> </span>cluster-info
 
 microk8s<span class="w"> </span>stop
 microk8s<span class="w"> </span>start
+microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>metrics-server
+microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>ingress
+microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>dashboard
 microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>core/mayastor<span class="w"> </span>--default-pool-size<span class="w"> </span>20G
 microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>minio<span class="w"> </span>-c<span class="w"> </span>100Gi
 

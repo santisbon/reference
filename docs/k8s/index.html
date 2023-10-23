@@ -2331,12 +2331,32 @@ MicroK8s might not recognize that cgroup memory is enabled but you can check wit
 <a href="https://help.ubuntu.com/community/KVM%20-%20Using%20Hugepages">Huge Pages</a>
 <a href="https://www.techtarget.com/searchstorage/definition/NVMe-over-Fabrics-Nonvolatile-Memory-Express-over-Fabrics">NVMe over Fabrics (NVMe-oF)</a></p>
 <p>Enable:
-<a href="https://microk8s.io/docs/addon-mayastor">Mayastor</a></p>
+<a href="https://microk8s.io/docs/addon-mayastor">Mayastor</a><br />
+Mayastor will run for all nodes in your MicroK8s cluster by default.</p>
 <h3 id="minio">MinIO<a class="headerlink" href="#minio" title="Permanent link">#</a></h3>
 <p>Concepts:<br />
 <a href="https://min.io/docs/minio/linux/operations/concepts.html">https://min.io/docs/minio/linux/operations/concepts.html</a></p>
 <p>Enable:
-<a href="https://microk8s.io/docs/addon-minio">MinIO</a></p>
+<a href="https://microk8s.io/docs/addon-minio">MinIO</a>  </p>
+<p>Usage: <code>microk8s enable minio [OPTIONS]</code>
+<div class="highlight"><pre><span></span><code><span class="w">   </span>-h<span class="w">               </span>Print<span class="w"> </span>this<span class="w"> </span><span class="nb">help</span><span class="w"> </span>message<span class="w">  </span>
+<span class="w">   </span>-k<span class="w">               </span>Do<span class="w"> </span>not<span class="w"> </span>create<span class="w"> </span>default<span class="w"> </span>tenant<span class="w">  </span>
+<span class="w">   </span>-s<span class="w"> </span>STORAGECLASS<span class="w">  </span>Storage<span class="w"> </span>class<span class="w"> </span>to<span class="w"> </span>use<span class="w"> </span><span class="k">for</span><span class="w"> </span>the<span class="w"> </span>default<span class="w"> </span>tenant<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span>microk8s-hostpath<span class="o">)</span><span class="w">  </span>
+<span class="w">   </span>-c<span class="w"> </span>CAPACITY<span class="w">      </span>Capacity<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>default<span class="w"> </span>tenant<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span>20Gi<span class="o">)</span><span class="w">  </span>
+<span class="w">   </span>-n<span class="w"> </span>SERVERS<span class="w">       </span>Servers<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>default<span class="w"> </span>tenant<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span><span class="m">1</span><span class="o">)</span><span class="w">  </span>
+<span class="w">   </span>-v<span class="w"> </span>VOLUMES<span class="w">       </span>Volumes<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>default<span class="w"> </span>tenant<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span><span class="m">1</span><span class="o">)</span><span class="w">  </span>
+<span class="w">   </span>-t<span class="w"> </span>TENANTNAME<span class="w">    </span>Name<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>default<span class="w"> </span>tenant<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span>microk8s<span class="o">)</span><span class="w">  </span>
+<span class="w">   </span>-T<span class="w">               </span>Enable<span class="w"> </span>TLS<span class="w"> </span><span class="k">for</span><span class="w"> </span>the<span class="w"> </span>default<span class="w"> </span>tenant<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span>disabled<span class="o">)</span><span class="w">  </span>
+<span class="w">   </span>-p<span class="w">               </span>Enable<span class="w"> </span>Prometheus<span class="w"> </span><span class="k">for</span><span class="w"> </span>the<span class="w"> </span>default<span class="w"> </span>tenant<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span>disabled<span class="o">)</span><span class="w">  </span>
+<span class="w">   </span>-r<span class="w"> </span>REPOSITORY<span class="w">    </span>Minio<span class="w"> </span>Operator<span class="w"> </span>GitHub<span class="w"> </span>repository<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span>https://github.com/minio/operator<span class="o">)</span><span class="w">  </span>
+<span class="w">   </span>-V<span class="w"> </span>VERSION<span class="w">       </span>Minio<span class="w"> </span>Operator<span class="w"> </span>version<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span><span class="m">4</span>.5.1<span class="o">)</span><span class="w">  </span>
+</code></pre></div>
+Example with 1 server and 1 volume per server (volumes should be a multiple of servers):
+<div class="highlight"><pre><span></span><code>microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>minio<span class="w"> </span>-c<span class="w"> </span>100Gi
+
+<span class="c1"># Create a port-forward for the MinIO console with:</span>
+microk8s<span class="w"> </span>kubectl-minio<span class="w"> </span>proxy
+</code></pre></div></p>
 <p>Filesystem type to use:<br />
 <a href="https://min.io/docs/minio/linux/operations/install-deploy-manage/deploy-minio-single-node-multi-drive.html">https://min.io/docs/minio/linux/operations/install-deploy-manage/deploy-minio-single-node-multi-drive.html</a></p>
 <p>Check status for tenant named <em>microk8s</em>

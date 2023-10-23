@@ -225,13 +225,11 @@ packages:
 runcmd:
   - sudo ifconfig wlan0 up
   - sudo snap refresh
+  # For MicroK8s
   - sudo snap install microk8s --classic
   - sudo usermod -a -G microk8s pi
   - sudo chown -f -R pi ~/.kube
   - newgrp microk8s
-  - microk8s enable metrics-server
-  - microk8s enable ingress
-  - microk8s enable dashboard
   # For OpenEBS
   # - sudo sysctl vm.nr_hugepages=1024
   # - echo 'vm.nr_hugepages=1024' | sudo tee -a /etc/sysctl.conf
@@ -268,7 +266,7 @@ write_files:
   path: /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg
 EOF
 
-# Add these options at the end of the file as Kubernetes will need them to run on the Pi.
+# For Kubernetes to run on the Pi, add these options at the end of the file.
 sed -i "" "$ s/$/ cgroup_enable=memory cgroup_memory=1/" /Volumes/$VOLUME/cmdline.txt
 ```
 
@@ -333,6 +331,9 @@ microk8s kubectl cluster-info
 
 microk8s stop
 microk8s start
+microk8s enable metrics-server
+microk8s enable ingress
+microk8s enable dashboard
 microk8s enable core/mayastor --default-pool-size 20G
 microk8s enable minio -c 100Gi
 

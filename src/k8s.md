@@ -1147,7 +1147,8 @@ Prerequisite knowledge:
 [NVMe over Fabrics (NVMe-oF)](https://www.techtarget.com/searchstorage/definition/NVMe-over-Fabrics-Nonvolatile-Memory-Express-over-Fabrics)
 
 Enable:
-[Mayastor](https://microk8s.io/docs/addon-mayastor)
+[Mayastor](https://microk8s.io/docs/addon-mayastor)  
+Mayastor will run for all nodes in your MicroK8s cluster by default.
 
 ### MinIO
 
@@ -1155,7 +1156,29 @@ Concepts:
 [https://min.io/docs/minio/linux/operations/concepts.html](https://min.io/docs/minio/linux/operations/concepts.html)
 
 Enable:
-[MinIO](https://microk8s.io/docs/addon-minio)
+[MinIO](https://microk8s.io/docs/addon-minio)  
+
+Usage: `microk8s enable minio [OPTIONS]`
+```sh
+   -h               Print this help message  
+   -k               Do not create default tenant  
+   -s STORAGECLASS  Storage class to use for the default tenant (default: microk8s-hostpath)  
+   -c CAPACITY      Capacity of the default tenant (default: 20Gi)  
+   -n SERVERS       Servers of the default tenant (default: 1)  
+   -v VOLUMES       Volumes of the default tenant (default: 1)  
+   -t TENANTNAME    Name of the default tenant (default: microk8s)  
+   -T               Enable TLS for the default tenant (default: disabled)  
+   -p               Enable Prometheus for the default tenant (default: disabled)  
+   -r REPOSITORY    Minio Operator GitHub repository (default: https://github.com/minio/operator)  
+   -V VERSION       Minio Operator version (default: 4.5.1)  
+```
+Example with 1 server and 1 volume per server (volumes should be a multiple of servers):
+```sh
+microk8s enable minio -c 100Gi
+
+# Create a port-forward for the MinIO console with:
+microk8s kubectl-minio proxy
+```
 
 Filesystem type to use:  
 [https://min.io/docs/minio/linux/operations/install-deploy-manage/deploy-minio-single-node-multi-drive.html](https://min.io/docs/minio/linux/operations/install-deploy-manage/deploy-minio-single-node-multi-drive.html)
