@@ -11,16 +11,16 @@ nav:
     - Utilities: 'utilities.md'
     - Code Editor: 'editor.md'
     - Git: 'git.md'
-    - Docker: 'docker.md'
-    - Kubernetes: 'k8s.md'
     - Python: 'python.md'
-    - Raspberry Pi: 'rpi.md'
-    - MicroK8s: 'microk8s.md'
-    #- Ceph: 'ceph.md'
     - AWS: 'aws.md'
     - MySQL: 'mysql.md'
     - Node: 'node.md'
-    - MkDocs: 'mkdocs.md'
+  - Docker: 'docker.md'
+  - Kubernetes: 'k8s.md'
+  - Raspberry Pi: 'rpi.md'
+  - MicroK8s: 'microk8s.md'
+  #- Ceph: 'ceph.md'
+  - MkDocs: 'mkdocs.md'
 markdown_extensions:
   - toc:
       permalink: "#"

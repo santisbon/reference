@@ -11,7 +11,7 @@
         <link rel="canonical" href="https://santisbon.github.io/reference/rpi/">
       
       
-        <link rel="prev" href="../python/">
+        <link rel="prev" href="../k8s/">
       
       
         <link rel="next" href="../microk8s/">
@@ -269,20 +269,20 @@
       
   
   
-    
-  
   
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
         
           
           <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
@@ -296,7 +296,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             Set up a new machine
@@ -449,46 +449,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../docker/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Docker
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../k8s/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Kubernetes
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../python/" class="md-nav__link">
         
   
@@ -505,6 +465,111 @@
             
               
                 
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../aws/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AWS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mysql/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MySQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../node/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Node
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docker/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../k8s/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kubernetes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
   
   
     
@@ -792,10 +857,9 @@
     </li>
   
 
-              
-            
-              
-                
+    
+      
+      
   
   
   
@@ -812,70 +876,9 @@
     </li>
   
 
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../aws/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    AWS
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../mysql/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    MySQL
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../node/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Node
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
+    
+      
+      
   
   
   
@@ -889,14 +892,6 @@
   
 
       </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
     </li>
   
 
@@ -1189,15 +1184,21 @@
 <li>Use Raspberry Pi Imager to flash the <strong>USB Boot</strong> bootloader utility image onto a microSD card.</li>
 <li>Insert the card into the Pi, turn it on so the Pi flashes the bootloader from the card. When it's done the green LED will start blinking.</li>
 <li>Turn off the Pi and remove the card.</li>
-<li>Connect a raw device (no partitions or formatted filesystems) SSD to your laptop. If the device already has partitions wipe out everything e.g. on a Mac:
-    <div class="highlight"><pre><span></span><code>diskutil<span class="w"> </span>list
+<li>
+<p>Connect a raw device (no partitions or formatted filesystems) SSD to your laptop. If the device already has partitions wipe out everything e.g. on a Mac:</p>
+<div class="admonition danger">
+<p class="admonition-title">Danger</p>
+<p>Make sure you got the right device name. All data on the device will be lost.</p>
+</div>
+<p><div class="highlight"><pre><span></span><code>diskutil<span class="w"> </span>list
 diskutil<span class="w"> </span>zeroDisk<span class="w"> </span>short<span class="w"> </span>/dev/disk4<span class="w"> </span><span class="c1"># or whatever name your device has</span>
 </code></pre></div>
-    On Linux you can use <code>parted</code> as explained <a href="#ssd-as-additional-storage">here</a>.</li>
-<li>Flash your desired OS image to the SSD with <code>dd</code> or preferred tool e.g. as explained <a href="#flash-the-image">here</a>.</li>
-<li>Unmount and remove the SSD drive from your laptop and connect it to a USB 3.0 port on your Pi.</li>
-<li>Turn on your Pi.</li>
-<li>Connect to your Pi over ssh and check available storage space with <code>df -h</code>.</li>
+On Linux you can use <code>parted</code> as explained <a href="#ssd-as-additional-storage">here</a>.
+5. Flash your desired OS image to the SSD with <code>dd</code> or preferred tool e.g. as explained <a href="#flash-the-image">here</a>.
+6. Unmount and remove the SSD drive from your laptop and connect it to a USB 3.0 port on your Pi.
+7. Turn on your Pi.
+8. Connect to your Pi over ssh and check available storage space with <code>df -h</code>.</p>
+</li>
 </ol>
 <h2 id="ssd-as-additional-storage">SSD as Additional Storage<a class="headerlink" href="#ssd-as-additional-storage" title="Permanent link">#</a></h2>
 <div class="admonition important">
@@ -1321,10 +1322,14 @@ shasum<span class="w"> </span>-c<span class="w"> </span>Orangepi3b_1.0.0_ubuntu_
 </div>
 <h3 id="flash-the-image">Flash the image<a class="headerlink" href="#flash-the-image" title="Permanent link">#</a></h3>
 <p>Insert the microSD card (or connect the SSD) and check the device name e.g. <code>/dev/disk4</code>.<br />
-Wipe out any existing data/partitions.
+Wipe out any existing data/partitions.</p>
+<div class="admonition danger">
+<p class="admonition-title">Danger</p>
+<p>Make sure you got the right device name. All data on the device will be lost.</p>
+</div>
 <div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code>diskutil<span class="w"> </span>list
 diskutil<span class="w"> </span>zeroDisk<span class="w"> </span>short<span class="w"> </span>/dev/disk4
-</code></pre></div></p>
+</code></pre></div>
 <p>Use that device name to flash the OS image to the card/SSD.
 <div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code><span class="c1">###################################################################</span>
 <span class="c1"># REPLACE WITH YOUR VALUES</span>

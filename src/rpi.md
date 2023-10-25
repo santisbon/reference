@@ -14,6 +14,10 @@ These instructions are for Raspberry Pi 4. Other boards may need [additional ste
 2. Insert the card into the Pi, turn it on so the Pi flashes the bootloader from the card. When it's done the green LED will start blinking.
 3. Turn off the Pi and remove the card.
 4. Connect a raw device (no partitions or formatted filesystems) SSD to your laptop. If the device already has partitions wipe out everything e.g. on a Mac:
+    
+    !!! danger
+        Make sure you got the right device name. All data on the device will be lost.
+
     ```sh
     diskutil list
     diskutil zeroDisk short /dev/disk4 # or whatever name your device has
@@ -157,6 +161,10 @@ If you don't have an ssh key, [generate one](https://www.ssh.com/academy/ssh/key
 
 Insert the microSD card (or connect the SSD) and check the device name e.g. `/dev/disk4`.  
 Wipe out any existing data/partitions.
+
+!!! danger
+    Make sure you got the right device name. All data on the device will be lost.
+
 ```sh title="On your laptop" 
 diskutil list
 diskutil zeroDisk short /dev/disk4
