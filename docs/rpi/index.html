@@ -14,7 +14,7 @@
         <link rel="prev" href="../python/">
       
       
-        <link rel="next" href="../aws/">
+        <link rel="next" href="../microk8s/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -684,13 +684,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#kubernetes" class="md-nav__link">
-    Kubernetes
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#usage" class="md-nav__link">
     Usage
   </a>
@@ -796,6 +789,26 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../microk8s/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MicroK8s
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -1040,13 +1053,6 @@
         
       </ul>
     </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#kubernetes" class="md-nav__link">
-    Kubernetes
-  </a>
   
 </li>
       
@@ -1301,7 +1307,7 @@ shasum<span class="w"> </span>-c<span class="w"> </span>Orangepi3b_1.0.0_ubuntu_
 <li>Additional packages installed.</li>
 <li>Wi-Fi configuration.</li>
 <li>Boot parameters modified to support Kubernetes.</li>
-<li>Kubernetes (<a href="https://microk8s.io">MicroK8s</a>) installed with some addons including one for cluster-ready replicated storage based on <a href="https://microk8s.io/docs/addon-mayastor">OpenEBS</a>.</li>
+<li>Kubernetes (<a href="https://microk8s.io">MicroK8s</a>).</li>
 </ul>
 <p>If you don't have an ssh key, <a href="https://www.ssh.com/academy/ssh/keygen">generate one</a> with <code>ssh-keygen -t ed25519</code>.  </p>
 <div class="admonition tip">
@@ -1314,8 +1320,10 @@ shasum<span class="w"> </span>-c<span class="w"> </span>Orangepi3b_1.0.0_ubuntu_
 <p>This example uses macOS. Adjust the commands with your OS's tools to <a href="https://ostechnix.com/how-to-use-pbcopy-and-pbpaste-commands-on-linux/">copy/paste</a>, view disks, <code>dd</code> options, and <a href="https://unix.stackexchange.com/questions/13711/differences-between-sed-on-mac-osx-and-other-standard-sed"><code>sed</code> version</a>. It has been tested with the image provided by Ubuntu for Raspberry Pi.  </p>
 </div>
 <h3 id="flash-the-image">Flash the image<a class="headerlink" href="#flash-the-image" title="Permanent link">#</a></h3>
-<p>Insert the microSD card (or connect the SSD) and check the device name e.g. <code>/dev/disk4</code>
+<p>Insert the microSD card (or connect the SSD) and check the device name e.g. <code>/dev/disk4</code>.<br />
+Wipe out any existing data/partitions.
 <div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code>diskutil<span class="w"> </span>list
+diskutil<span class="w"> </span>zeroDisk<span class="w"> </span>short<span class="w"> </span>/dev/disk4
 </code></pre></div></p>
 <p>Use that device name to flash the OS image to the card/SSD.
 <div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code><span class="c1">###################################################################</span>
@@ -1332,7 +1340,7 @@ diskutil<span class="w"> </span>unmountDisk<span class="w"> </span><span class="
 <span class="c1"># sudo dd if=$IMAGE of=$DEVICE bs=1m status=progress</span>
 pv<span class="w"> </span><span class="nv">$IMAGE</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>dd<span class="w"> </span><span class="nv">bs</span><span class="o">=</span>1m<span class="w"> </span><span class="nv">of</span><span class="o">=</span><span class="nv">$DEVICE</span>
 </code></pre></div></p>
-<p>When it's done you'll see a volume mounted on your desktop called <code>system-boot</code> or something similar. Modify the volume to inject <code>user-data</code> and set boot parameters needed by Kubernetes (enable c-groups so the kubelet will work out of the box).
+<p>When it's done you'll see a volume mounted on your desktop called <code>system-boot</code> or something similar. Modify the volume to inject <code>user-data</code> and set boot parameters to enable c-groups so the kubelet will work out of the box.
 <div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code><span class="c1">###################################################################</span>
 <span class="c1"># REPLACE WITH YOUR VALUES</span>
 <span class="c1">###################################################################</span>
@@ -1372,27 +1380,9 @@ cat<span class="w"> </span><span class="s">&lt;&lt; EOF &gt; /Volumes/$VOLUME/us
 <span class="s">  - lshw</span>
 <span class="s">  - net-tools</span>
 <span class="s">  # For OpenEBS or Rook Ceph</span>
-<span class="s">  # - linux-modules-extra-$(uname -r)</span>
+<span class="s">  - linux-modules-extra-$(uname -r)</span>
 <span class="s">  # For Rook Ceph</span>
-<span class="s">  # - lvm2</span>
-
-<span class="s">runcmd:</span>
-<span class="s">  - sudo ifconfig wlan0 up</span>
-<span class="s">  - sudo snap refresh</span>
-<span class="s">  # For MicroK8s</span>
-<span class="s">  - sudo snap install microk8s --classic</span>
-<span class="s">  - sudo usermod -a -G microk8s pi</span>
-<span class="s">  - sudo chown -f -R pi ~/.kube</span>
-<span class="s">  - newgrp microk8s</span>
-<span class="s">  # For OpenEBS</span>
-<span class="s">  # - sudo sysctl vm.nr_hugepages=1024</span>
-<span class="s">  # - echo &#39;vm.nr_hugepages=1024&#39; | sudo tee -a /etc/sysctl.conf</span>
-<span class="s">  # - sudo modprobe nvme_tcp</span>
-<span class="s">  # - echo &#39;nvme-tcp&#39; | sudo tee -a /etc/modules-load.d/microk8s-mayastor.conf</span>
-<span class="s">  # For Rook Ceph</span>
-<span class="s">  # - sudo modprobe rbd</span>
-<span class="s">  # - microk8s kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.11.1/cert-manager.yaml</span>
-
+<span class="s">  - lvm2</span>
 
 <span class="s">write_files:</span>
 <span class="s">- content: |</span>
@@ -1418,6 +1408,23 @@ cat<span class="w"> </span><span class="s">&lt;&lt; EOF &gt; /Volumes/$VOLUME/us
 <span class="s">- content: |</span>
 <span class="s">    network: {config: disabled}</span>
 <span class="s">  path: /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg</span>
+
+<span class="s">runcmd:</span>
+<span class="s">  - sudo ifconfig wlan0 up</span>
+<span class="s">  - sudo snap refresh</span>
+<span class="s">  # For MicroK8s</span>
+<span class="s">  - sudo snap install microk8s --channel=1.28/stable --classic</span>
+<span class="s">  - sudo usermod -a -G microk8s pi</span>
+<span class="s">  - sudo chown -f -R pi ~/.kube</span>
+<span class="s">  - newgrp microk8s</span>
+<span class="s">  # For OpenEBS</span>
+<span class="s">  # - sudo sysctl vm.nr_hugepages=1024</span>
+<span class="s">  # - echo &#39;vm.nr_hugepages=1024&#39; | sudo tee -a /etc/sysctl.conf</span>
+<span class="s">  # - sudo modprobe nvme_tcp</span>
+<span class="s">  # - echo &#39;nvme-tcp&#39; | sudo tee -a /etc/modules-load.d/microk8s-mayastor.conf</span>
+<span class="s">  # For Rook Ceph</span>
+<span class="s">  - sudo modprobe rbd</span>
+<span class="s">  - echo &#39;rbd&#39; | sudo tee -a /etc/modules-load.d/modules.conf</span>
 <span class="s">EOF</span>
 
 <span class="c1"># For Kubernetes to run on the Pi, add these options at the end of the file.</span>
@@ -1435,23 +1442,29 @@ cat<span class="w"> </span>/Volumes/<span class="nv">$VOLUME</span>/cmdline.txt
 <p>Since we pre-configured everything it has a lot of work to do on the first boot and it takes several minutes. You'll be able to go in as soon as the SSH service is up but it will probably still be in the process of upgrading packages as well as installing and configuring our software.  </p>
 <p>Go make yourself a cup of tea before <a href="#access-your-pi">connecting</a> for the first time.</p>
 <h3 id="verify">Verify<a class="headerlink" href="#verify" title="Permanent link">#</a></h3>
-<p>Once cloud-init is done launching our instance, you can check a few things to make sure everything went smoothly.
-<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code><span class="c1"># Verify your kernel is built with the modules you need. If modprobe shows &#39;not found&#39; install the extra kernel modules package for your kernel release, rebuild the kernel to include the modules you need, install a newer kernel, or choose a different Linux distribution.</span>
-lsmod<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="o">[</span>rbd<span class="w"> </span><span class="p">|</span><span class="w"> </span>nvme_tcp<span class="o">]</span>
-<span class="c1"># modprobe rbd # For Ceph</span>
-<span class="c1"># modprobe nvme_tcp # For OpenEBS</span>
-
-
-<span class="c1"># Check if there were any cloud-init errors</span>
+<p>Once cloud-init is done launching our instance, check a few things to make sure everything went smoothly.
+<div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code>ssh<span class="w"> </span>pi@<span class="nv">$IP_ADDRESS_OF_YOUR_PI</span>
+</code></pre></div>
+If you see a welcome message with <code>System restart required</code>, <code>sudo reboot</code> and ssh again.</p>
+<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code><span class="c1"># Check if there were any cloud-init errors</span>
 sudo<span class="w"> </span>cat<span class="w"> </span>/var/log/cloud-init.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>failures
 sudo<span class="w"> </span>cat<span class="w"> </span>/var/log/cloud-init-output.log
+</code></pre></div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>If anything failed to install or commands ran into errors, run it again manually.</p>
+</div>
+<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code><span class="c1"># Verify your kernel is built with the modules you need. If modprobe shows &#39;not found&#39; install the extra kernel modules package for your kernel release, rebuild the kernel to include the modules you need, install a newer kernel, or choose a different Linux distribution.</span>
+lsmod<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>rbd
+<span class="c1"># if it&#39;s not enabled:</span>
+sudo<span class="w"> </span>modprobe<span class="w"> </span>rbd
 
 <span class="c1"># Check if packages were installed</span>
-sudo<span class="w"> </span>apt<span class="w"> </span>list<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>avahi-daemon
-sudo<span class="w"> </span>apt<span class="w"> </span>list<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>lshw
+apt<span class="w"> </span>list<span class="w"> </span>--installed<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>linux-modules-extra-<span class="k">$(</span>uname<span class="w"> </span>-r<span class="k">)</span>
 sudo<span class="w"> </span>cat<span class="w"> </span>/var/log/apt/history.log
 
 <span class="c1"># Check if a service is running</span>
+systemctl<span class="w"> </span>status<span class="w"> </span>unattended-upgrades.service
 systemctl<span class="w"> </span>status<span class="w"> </span><span class="s1">&#39;avahi*&#39;</span>
 
 <span class="c1"># Check cloud-init&#39;s network configuration </span>
@@ -1461,28 +1474,10 @@ cat<span class="w"> </span>/etc/cloud/cloud.cfg.d/99-disable-network-config.cfg
 <span class="c1"># Look at the state of the network.</span>
 <span class="c1"># You may need to `sudo reboot` for Wi-Fi to be enabled but </span>
 <span class="c1"># make sure you&#39;ve allowed enough time for cloud-init to </span>
-<span class="c1"># finish configuring your instance and MicroK8s mayastor pods to come up!</span>
+<span class="c1"># finish configuring your instance.</span>
 sudo<span class="w"> </span>lshw<span class="w"> </span>-c<span class="w"> </span>network
 ip<span class="w"> </span>addr<span class="w"> </span>show<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>wlan0
-</code></pre></div></p>
-<p>If setting up a MicroK8s cluster, <a href="/reference/k8s/#clustering">add the nodes to the cluster</a> and enable any addons you need.
-<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code><span class="c1"># Check if MicroK8s is intalled and running with the addons enabled</span>
-microk8s<span class="w"> </span>status<span class="w"> </span>--wait-ready
-microk8s<span class="w"> </span>kubectl<span class="w"> </span>cluster-info
-
-microk8s<span class="w"> </span>stop
-microk8s<span class="w"> </span>start
-microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>metrics-server
-microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>ingress
-microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>dashboard
-microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>core/mayastor<span class="w"> </span>--default-pool-size<span class="w"> </span>20G
-microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>minio<span class="w"> </span>-c<span class="w"> </span>100Gi
-
-<span class="c1"># On first boot, the etcd-operator-mayastor pod </span>
-<span class="c1"># may be stuck in CrashLoopBackOff state until you reboot</span>
-microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>-n<span class="w"> </span>mayastor<span class="w"> </span>
-microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>diskpool<span class="w"> </span>-n<span class="w"> </span>mayastor
-</code></pre></div></p>
+</code></pre></div>
 <h2 id="option-b-one-off">Option B: One-off<a class="headerlink" href="#option-b-one-off" title="Permanent link">#</a></h2>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
@@ -1549,8 +1544,6 @@ If you just need to connect to Wi-Fi on Orange Pi, use:
 <div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>nmcli<span class="w"> </span>dev<span class="w"> </span>wifi<span class="w"> </span>connect<span class="w"> </span>wifi_name<span class="w"> </span>password<span class="w"> </span>wifi_passwd
 </code></pre></div></p>
 <p>To set a static IP on Orange Pi see the <a href="http://www.orangepi.org/html/hardWare/computerAndMicrocontrollers/service-and-support/Orange-Pi-3B.html">user manual</a> for instructions on using the <code>nmtui</code> command.</p>
-<h2 id="kubernetes">Kubernetes<a class="headerlink" href="#kubernetes" title="Permanent link">#</a></h2>
-<p>If you went the one-off route, <a href="/reference/k8s/#microk8s">install MicroK8s</a>.</p>
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">#</a></h2>
 <h3 id="access-your-pi">Access your Pi<a class="headerlink" href="#access-your-pi" title="Permanent link">#</a></h3>
 <div class="admonition tip">

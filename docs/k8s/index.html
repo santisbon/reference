@@ -777,88 +777,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#microk8s" class="md-nav__link">
-    MicroK8s
-  </a>
-  
-    <nav class="md-nav" aria-label="MicroK8s">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#setup" class="md-nav__link">
-    Setup
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#registry" class="md-nav__link">
-    Registry
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#dashboard" class="md-nav__link">
-    Dashboard
-  </a>
-  
-    <nav class="md-nav" aria-label="Dashboard">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#option-a-port-forward" class="md-nav__link">
-    Option A: port-forward
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#option-b-nodeport" class="md-nav__link">
-    Option B: NodePort
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#troubleshooting" class="md-nav__link">
-    Troubleshooting
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#clustering" class="md-nav__link">
-    Clustering
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#openebs" class="md-nav__link">
-    OpenEBS
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#minio" class="md-nav__link">
-    MinIO
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#helm" class="md-nav__link">
     Helm
   </a>
@@ -925,6 +843,26 @@
   
   <span class="md-ellipsis">
     Raspberry Pi
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../microk8s/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MicroK8s
   </span>
   
 
@@ -1306,88 +1244,6 @@
   <a href="#kubernetes-dashboard" class="md-nav__link">
     Kubernetes Dashboard
   </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#microk8s" class="md-nav__link">
-    MicroK8s
-  </a>
-  
-    <nav class="md-nav" aria-label="MicroK8s">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#setup" class="md-nav__link">
-    Setup
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#registry" class="md-nav__link">
-    Registry
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#dashboard" class="md-nav__link">
-    Dashboard
-  </a>
-  
-    <nav class="md-nav" aria-label="Dashboard">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#option-a-port-forward" class="md-nav__link">
-    Option A: port-forward
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#option-b-nodeport" class="md-nav__link">
-    Option B: NodePort
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#troubleshooting" class="md-nav__link">
-    Troubleshooting
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#clustering" class="md-nav__link">
-    Clustering
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#openebs" class="md-nav__link">
-    OpenEBS
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#minio" class="md-nav__link">
-    MinIO
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -2231,140 +2087,6 @@ kubectl<span class="w"> </span>proxy
 kubectl<span class="w"> </span>-n<span class="w"> </span>kubernetes-dashboard<span class="w"> </span>create<span class="w"> </span>token<span class="w"> </span>admin-user
 <span class="c1"># Now copy the token and paste it into the Enter token field on the login screen. </span>
 </code></pre></div>
-<h2 id="microk8s">MicroK8s<a class="headerlink" href="#microk8s" title="Permanent link">#</a></h2>
-<p>Suitable for <a href="https://microk8s.io/docs/install-raspberry-pi">Raspberry Pi</a> and other development boards.  </p>
-<h3 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link">#</a></h3>
-<div class="admonition attention">
-<p class="admonition-title">Attention</p>
-<p>MicroK8s is not available for 32-bit architectures like <code>armhf</code>(<code>arm/v7</code>), only on 64-bit architectures like <code>arm64</code> and <code>amd64</code>.</p>
-</div>
-<div class="admonition attention">
-<p class="admonition-title">Attention</p>
-<p>On Raspberry Pi your boot parameters file might be in <code>/boot/cmdline.txt</code> or in <code>/boot/firmware/cmdline.txt</code>. Find it with <code>sudo find /boot -name cmdline.txt</code>.  </p>
-</div>
-<p>On Raspberry Pi you need to enable c-groups so the kubelet will work out of the box.<br />
-Add these options at the end of the file, then <code>sudo reboot</code>. Some users report needing <code>cgroup_enable=cpuset</code> as well but try adding only these:
-<div class="highlight"><span class="filename">cmdline.txt</span><pre><span></span><code>cgroup_enable=memory cgroup_memory=1
-</code></pre></div></p>
-<div class="admonition attention">
-<p class="admonition-title">Attention</p>
-<p>On Orange Pi boards these parameters are handled in <code>/boot/boot.cmd</code> by checking:<br />
-<code>if test "${docker_optimizations}" = "on"</code>.  </p>
-<p>Don't edit this file, instead <code>sudo nano /boot/orangepiEnv.txt</code> and set <code>docker_optimizations</code> to <code>on</code>.</p>
-</div>
-<p>If your image doesn't already include it, <a href="https://snapcraft.io/docs/installing-snap-on-raspbian">install</a> <code>snap</code>.
-<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>update
-sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>snapd
-sudo<span class="w"> </span>reboot
-<span class="c1"># ...reconnect after reboot</span>
-sudo<span class="w"> </span>snap<span class="w"> </span>install<span class="w"> </span>core
-</code></pre></div></p>
-<p>Then install MicroK8s.
-<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>sudo<span class="w"> </span>snap<span class="w"> </span>install<span class="w"> </span>microk8s<span class="w"> </span>--classic
-</code></pre></div></p>
-<p>To run commands without <code>sudo</code> add the user to the <code>microk8s</code> group. Example:
-<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>sudo<span class="w"> </span>usermod<span class="w"> </span>-a<span class="w"> </span>-G<span class="w"> </span>microk8s<span class="w"> </span>pi
-sudo<span class="w"> </span>chown<span class="w"> </span>-R<span class="w"> </span>pi<span class="w"> </span>~/.kube
-newgrp<span class="w"> </span>microk8s
-</code></pre></div></p>
-<p>Usage:
-<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>microk8s<span class="w"> </span>status<span class="w"> </span>--wait-ready
-microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>all<span class="w"> </span>--all-namespaces
-<span class="c1"># default addons are: dns ha-cluster helm helm3. You can enable more</span>
-<span class="c1"># but preferably enable them one by one</span>
-microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>dashboard<span class="w"> </span>ingress<span class="w"> </span>metrics-server<span class="w"> </span>
-<span class="nb">alias</span><span class="w"> </span><span class="nv">mkctl</span><span class="o">=</span><span class="s2">&quot;microk8s kubectl&quot;</span>
-<span class="nb">alias</span><span class="w"> </span><span class="nv">mkhelm</span><span class="o">=</span><span class="s2">&quot;microk8s helm&quot;</span>
-mkctl<span class="w"> </span>version<span class="w"> </span>--output<span class="o">=</span>yaml
-watch<span class="w"> </span>microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>all
-microk8s<span class="w"> </span>reset
-microk8s<span class="w"> </span>status
-microk8s<span class="w"> </span>stop<span class="w"> </span><span class="c1"># microk8s start</span>
-</code></pre></div></p>
-<p>You can update a snap package with <code>sudo snap refresh</code>.</p>
-<p>Configuration file. These are the arguments you can add regarding log rotation <code>--container-log-max-files</code> and <code>--container-log-max-size</code>. They have default values. <a href="https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/">More info</a>.
-<div class="highlight"><pre><span></span><code>cat<span class="w"> </span>/var/snap/microk8s/current/args/kubelet
-</code></pre></div></p>
-<h3 id="registry">Registry<a class="headerlink" href="#registry" title="Permanent link">#</a></h3>
-<p><a href="https://microk8s.io/docs/registry-built-in">Registry doc</a>
-<div class="highlight"><pre><span></span><code>microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>registry
-</code></pre></div>
-The containerd daemon used by MicroK8s is configured to trust this insecure registry. To upload images we have to tag them with <code>localhost:32000/your-image</code> before pushing them.</p>
-<h3 id="dashboard">Dashboard<a class="headerlink" href="#dashboard" title="Permanent link">#</a></h3>
-<p>If RBAC is not enabled access the dashboard using the token retrieved with:
-<div class="highlight"><pre><span></span><code>microk8s<span class="w"> </span>kubectl<span class="w"> </span>describe<span class="w"> </span>secret<span class="w"> </span>-n<span class="w"> </span>kube-system<span class="w"> </span>microk8s-dashboard-token
-</code></pre></div>
-Use this token in the https login UI of the <code>kubernetes-dashboard</code> service.
-In an RBAC enabled setup (<code>microk8s enable rbac</code>) you need to create a user with restricted permissions as shown <a href="https://github.com/kubernetes/dashboard/blob/master/docs/user/access-control/creating-sample-user.md">here</a>.</p>
-<p>To access remotely from outside the cluster:</p>
-<h4 id="option-a-port-forward">Option A: <a href="https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#port-forward"><code>port-forward</code></a><a class="headerlink" href="#option-a-port-forward" title="Permanent link">#</a></h4>
-<p>Note: <code>kubectl port-forward</code> <a href="https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/">does not return</a>. To type other commands, you'll need to open another terminal.
-<div class="highlight"><pre><span></span><code>microk8s<span class="w"> </span>kubectl<span class="w"> </span>port-forward<span class="w"> </span>-n<span class="w"> </span>kube-system<span class="w"> </span>service/kubernetes-dashboard<span class="w"> </span><span class="m">10443</span>:443<span class="w"> </span>--address<span class="w"> </span><span class="m">0</span>.0.0.0
-</code></pre></div>
-You can then access the Dashboard with IP or hostname and the forwarded port as in<br />
-<code>https://raspberrypi4.local:10443/</code></p>
-<h4 id="option-b-nodeport">Option B: <code>NodePort</code><a class="headerlink" href="#option-b-nodeport" title="Permanent link">#</a></h4>
-<p>Make the dashboard service a <code>NodePort</code> service by changing <code>type: ClusterIP</code> to <code>type: NodePort</code>.
-<div class="highlight"><pre><span></span><code><span class="nv">KUBE_EDITOR</span><span class="o">=</span>nano<span class="w"> </span>microk8s<span class="w"> </span>kubectl<span class="w"> </span>-n<span class="w"> </span>kube-system<span class="w"> </span>edit<span class="w"> </span>service<span class="w"> </span>kubernetes-dashboard
-<span class="c1"># If using vim:</span>
-<span class="c1"># Enter insert mode with i</span>
-<span class="c1"># Enter command mode with esc </span>
-<span class="c1"># :q! to abort changes </span>
-<span class="c1"># :wq to save and exit</span>
-
-microk8s<span class="w"> </span>kubectl<span class="w"> </span>-n<span class="w"> </span>kube-system<span class="w"> </span>get<span class="w"> </span>service<span class="w"> </span>kubernetes-dashboard
-</code></pre></div>
-You can then access the Dashboard with IP or hostname and the automatically assigned <code>NodePort</code> as in<br />
-<code>https://raspberrypi4.local:30772</code></p>
-<h3 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">#</a></h3>
-<p><div class="highlight"><pre><span></span><code>microk8s<span class="w"> </span>inspect
-</code></pre></div>
-MicroK8s might not recognize that cgroup memory is enabled but you can check with <code>cat /proc/cgroups</code>.</p>
-<h3 id="clustering">Clustering<a class="headerlink" href="#clustering" title="Permanent link">#</a></h3>
-<ol>
-<li>Assign static IPs to all the nodes. </li>
-<li>Edit <code>/etc/hosts</code> on each node with the IP and hostnames of the other nodes so they can resolve during the join process.</li>
-<li>Follow the instructions on <a href="https://microk8s.io/docs/clustering">https://microk8s.io/docs/clustering</a></li>
-</ol>
-<h3 id="openebs">OpenEBS<a class="headerlink" href="#openebs" title="Permanent link">#</a></h3>
-<p>Prerequisite knowledge:
-<a href="https://help.ubuntu.com/community/KVM%20-%20Using%20Hugepages">Huge Pages</a>
-<a href="https://www.techtarget.com/searchstorage/definition/NVMe-over-Fabrics-Nonvolatile-Memory-Express-over-Fabrics">NVMe over Fabrics (NVMe-oF)</a></p>
-<p>Enable:
-<a href="https://microk8s.io/docs/addon-mayastor">Mayastor</a><br />
-Mayastor will run for all nodes in your MicroK8s cluster by default.</p>
-<h3 id="minio">MinIO<a class="headerlink" href="#minio" title="Permanent link">#</a></h3>
-<p>Concepts:<br />
-<a href="https://min.io/docs/minio/linux/operations/concepts.html">https://min.io/docs/minio/linux/operations/concepts.html</a></p>
-<p>Enable:
-<a href="https://microk8s.io/docs/addon-minio">MinIO</a>  </p>
-<p>Usage: <code>microk8s enable minio [OPTIONS]</code>
-<div class="highlight"><pre><span></span><code><span class="w">   </span>-h<span class="w">               </span>Print<span class="w"> </span>this<span class="w"> </span><span class="nb">help</span><span class="w"> </span>message<span class="w">  </span>
-<span class="w">   </span>-k<span class="w">               </span>Do<span class="w"> </span>not<span class="w"> </span>create<span class="w"> </span>default<span class="w"> </span>tenant<span class="w">  </span>
-<span class="w">   </span>-s<span class="w"> </span>STORAGECLASS<span class="w">  </span>Storage<span class="w"> </span>class<span class="w"> </span>to<span class="w"> </span>use<span class="w"> </span><span class="k">for</span><span class="w"> </span>the<span class="w"> </span>default<span class="w"> </span>tenant<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span>microk8s-hostpath<span class="o">)</span><span class="w">  </span>
-<span class="w">   </span>-c<span class="w"> </span>CAPACITY<span class="w">      </span>Capacity<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>default<span class="w"> </span>tenant<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span>20Gi<span class="o">)</span><span class="w">  </span>
-<span class="w">   </span>-n<span class="w"> </span>SERVERS<span class="w">       </span>Servers<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>default<span class="w"> </span>tenant<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span><span class="m">1</span><span class="o">)</span><span class="w">  </span>
-<span class="w">   </span>-v<span class="w"> </span>VOLUMES<span class="w">       </span>Volumes<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>default<span class="w"> </span>tenant<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span><span class="m">1</span><span class="o">)</span><span class="w">  </span>
-<span class="w">   </span>-t<span class="w"> </span>TENANTNAME<span class="w">    </span>Name<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>default<span class="w"> </span>tenant<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span>microk8s<span class="o">)</span><span class="w">  </span>
-<span class="w">   </span>-T<span class="w">               </span>Enable<span class="w"> </span>TLS<span class="w"> </span><span class="k">for</span><span class="w"> </span>the<span class="w"> </span>default<span class="w"> </span>tenant<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span>disabled<span class="o">)</span><span class="w">  </span>
-<span class="w">   </span>-p<span class="w">               </span>Enable<span class="w"> </span>Prometheus<span class="w"> </span><span class="k">for</span><span class="w"> </span>the<span class="w"> </span>default<span class="w"> </span>tenant<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span>disabled<span class="o">)</span><span class="w">  </span>
-<span class="w">   </span>-r<span class="w"> </span>REPOSITORY<span class="w">    </span>Minio<span class="w"> </span>Operator<span class="w"> </span>GitHub<span class="w"> </span>repository<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span>https://github.com/minio/operator<span class="o">)</span><span class="w">  </span>
-<span class="w">   </span>-V<span class="w"> </span>VERSION<span class="w">       </span>Minio<span class="w"> </span>Operator<span class="w"> </span>version<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span><span class="m">4</span>.5.1<span class="o">)</span><span class="w">  </span>
-</code></pre></div>
-Example with 1 server and 1 volume per server (volumes should be a multiple of servers):
-<div class="highlight"><pre><span></span><code>microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>minio<span class="w"> </span>-c<span class="w"> </span>100Gi
-
-<span class="c1"># Create a port-forward for the MinIO console with:</span>
-microk8s<span class="w"> </span>kubectl-minio<span class="w"> </span>proxy
-</code></pre></div></p>
-<p>Filesystem type to use:<br />
-<a href="https://min.io/docs/minio/linux/operations/install-deploy-manage/deploy-minio-single-node-multi-drive.html">https://min.io/docs/minio/linux/operations/install-deploy-manage/deploy-minio-single-node-multi-drive.html</a></p>
-<p>Check status for tenant named <em>microk8s</em>
-<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>microk8s<span class="w"> </span>kubectl-minio<span class="w"> </span>tenant<span class="w"> </span>status<span class="w"> </span>microk8s
-</code></pre></div></p>
-<p>Check all endpoints
-<div class="highlight"><pre><span></span><code>microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>endpoints<span class="w"> </span>-A
-</code></pre></div></p>
 <h2 id="helm">Helm<a class="headerlink" href="#helm" title="Permanent link">#</a></h2>
 <p>You can package your charts and publish them on a repository, which can be any HTTP server. Use the name of the folder containing your <code>Chart.yaml</code> file.
 <div class="highlight"><pre><span></span><code>helm<span class="w"> </span>package<span class="w"> </span>./mychart

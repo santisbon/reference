@@ -142,7 +142,7 @@ We'll flash a pre-configured microSD card or SSD with:
 * Additional packages installed.
 * Wi-Fi configuration.
 * Boot parameters modified to support Kubernetes.
-* Kubernetes ([MicroK8s](https://microk8s.io)) installed with some addons including one for cluster-ready replicated storage based on [OpenEBS](https://microk8s.io/docs/addon-mayastor).
+* Kubernetes ([MicroK8s](https://microk8s.io)).
 
 If you don't have an ssh key, [generate one](https://www.ssh.com/academy/ssh/keygen) with `ssh-keygen -t ed25519`.  
 
@@ -155,9 +155,11 @@ If you don't have an ssh key, [generate one](https://www.ssh.com/academy/ssh/key
 
 ### Flash the image
 
-Insert the microSD card (or connect the SSD) and check the device name e.g. `/dev/disk4`
+Insert the microSD card (or connect the SSD) and check the device name e.g. `/dev/disk4`.  
+Wipe out any existing data/partitions.
 ```sh title="On your laptop" 
 diskutil list
+diskutil zeroDisk short /dev/disk4
 ```
 
 Use that device name to flash the OS image to the card/SSD.
@@ -177,7 +179,7 @@ cd ~/Downloads
 pv $IMAGE | sudo dd bs=1m of=$DEVICE
 ```
 
-When it's done you'll see a volume mounted on your desktop called `system-boot` or something similar. Modify the volume to inject `user-data` and set boot parameters needed by Kubernetes (enable c-groups so the kubelet will work out of the box).
+When it's done you'll see a volume mounted on your desktop called `system-boot` or something similar. Modify the volume to inject `user-data` and set boot parameters to enable c-groups so the kubelet will work out of the box.
 ```sh title="On your laptop" 
 ###################################################################
 # REPLACE WITH YOUR VALUES
@@ -218,27 +220,9 @@ packages:
   - lshw
   - net-tools
   # For OpenEBS or Rook Ceph
-  # - linux-modules-extra-$(uname -r)
+  - linux-modules-extra-$(uname -r)
   # For Rook Ceph
-  # - lvm2
-
-runcmd:
-  - sudo ifconfig wlan0 up
-  - sudo snap refresh
-  # For MicroK8s
-  - sudo snap install microk8s --classic
-  - sudo usermod -a -G microk8s pi
-  - sudo chown -f -R pi ~/.kube
-  - newgrp microk8s
-  # For OpenEBS
-  # - sudo sysctl vm.nr_hugepages=1024
-  # - echo 'vm.nr_hugepages=1024' | sudo tee -a /etc/sysctl.conf
-  # - sudo modprobe nvme_tcp
-  # - echo 'nvme-tcp' | sudo tee -a /etc/modules-load.d/microk8s-mayastor.conf
-  # For Rook Ceph
-  # - sudo modprobe rbd
-  # - microk8s kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.11.1/cert-manager.yaml
-
+  - lvm2
 
 write_files:
 - content: |
@@ -264,6 +248,23 @@ write_files:
 - content: |
     network: {config: disabled}
   path: /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg
+
+runcmd:
+  - sudo ifconfig wlan0 up
+  - sudo snap refresh
+  # For MicroK8s
+  - sudo snap install microk8s --channel=1.28/stable --classic
+  - sudo usermod -a -G microk8s pi
+  - sudo chown -f -R pi ~/.kube
+  - newgrp microk8s
+  # For OpenEBS
+  # - sudo sysctl vm.nr_hugepages=1024
+  # - echo 'vm.nr_hugepages=1024' | sudo tee -a /etc/sysctl.conf
+  # - sudo modprobe nvme_tcp
+  # - echo 'nvme-tcp' | sudo tee -a /etc/modules-load.d/microk8s-mayastor.conf
+  # For Rook Ceph
+  - sudo modprobe rbd
+  - echo 'rbd' | sudo tee -a /etc/modules-load.d/modules.conf
 EOF
 
 # For Kubernetes to run on the Pi, add these options at the end of the file.
@@ -291,24 +292,33 @@ Go make yourself a cup of tea before [connecting](#access-your-pi) for the first
 
 ### Verify
 
-Once cloud-init is done launching our instance, you can check a few things to make sure everything went smoothly.
+Once cloud-init is done launching our instance, check a few things to make sure everything went smoothly.
+```sh title="On your laptop"
+ssh pi@$IP_ADDRESS_OF_YOUR_PI
+```
+If you see a welcome message with `System restart required`, `sudo reboot` and ssh again.
+
 ```sh title="On your Pi"
-# Verify your kernel is built with the modules you need. If modprobe shows 'not found' install the extra kernel modules package for your kernel release, rebuild the kernel to include the modules you need, install a newer kernel, or choose a different Linux distribution.
-lsmod | grep [rbd | nvme_tcp]
-# modprobe rbd # For Ceph
-# modprobe nvme_tcp # For OpenEBS
-
-
 # Check if there were any cloud-init errors
 sudo cat /var/log/cloud-init.log | grep failures
 sudo cat /var/log/cloud-init-output.log
+```
+
+!!! important
+    If anything failed to install or commands ran into errors, run it again manually.
+
+```sh title="On your Pi"
+# Verify your kernel is built with the modules you need. If modprobe shows 'not found' install the extra kernel modules package for your kernel release, rebuild the kernel to include the modules you need, install a newer kernel, or choose a different Linux distribution.
+lsmod | grep rbd
+# if it's not enabled:
+sudo modprobe rbd
 
 # Check if packages were installed
-sudo apt list | grep avahi-daemon
-sudo apt list | grep lshw
+apt list --installed | grep linux-modules-extra-$(uname -r)
 sudo cat /var/log/apt/history.log
 
 # Check if a service is running
+systemctl status unattended-upgrades.service
 systemctl status 'avahi*'
 
 # Check cloud-init's network configuration 
@@ -318,29 +328,9 @@ cat /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg
 # Look at the state of the network.
 # You may need to `sudo reboot` for Wi-Fi to be enabled but 
 # make sure you've allowed enough time for cloud-init to 
-# finish configuring your instance and MicroK8s mayastor pods to come up!
+# finish configuring your instance.
 sudo lshw -c network
 ip addr show | grep wlan0
-```
-
-If setting up a MicroK8s cluster, [add the nodes to the cluster](/reference/k8s/#clustering) and enable any addons you need.
-```sh title="On your Pi"
-# Check if MicroK8s is intalled and running with the addons enabled
-microk8s status --wait-ready
-microk8s kubectl cluster-info
-
-microk8s stop
-microk8s start
-microk8s enable metrics-server
-microk8s enable ingress
-microk8s enable dashboard
-microk8s enable core/mayastor --default-pool-size 20G
-microk8s enable minio -c 100Gi
-
-# On first boot, the etcd-operator-mayastor pod 
-# may be stuck in CrashLoopBackOff state until you reboot
-microk8s kubectl get pod -n mayastor 
-microk8s kubectl get diskpool -n mayastor
 ```
 
 ## Option B: One-off 
@@ -432,9 +422,6 @@ nmcli dev wifi connect wifi_name password wifi_passwd
 ```
 
 To set a static IP on Orange Pi see the [user manual](http://www.orangepi.org/html/hardWare/computerAndMicrocontrollers/service-and-support/Orange-Pi-3B.html) for instructions on using the `nmtui` command.
-
-## Kubernetes
-If you went the one-off route, [install MicroK8s](/reference/k8s/#microk8s).
 
 ## Usage
 

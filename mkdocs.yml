@@ -15,6 +15,7 @@ nav:
     - Kubernetes: 'k8s.md'
     - Python: 'python.md'
     - Raspberry Pi: 'rpi.md'
+    - MicroK8s: 'microk8s.md'
     #- Ceph: 'ceph.md'
     - AWS: 'aws.md'
     - MySQL: 'mysql.md'
