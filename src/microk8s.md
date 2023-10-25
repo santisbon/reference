@@ -272,12 +272,18 @@ sudo microk8s kubectl-minio tenant status microk8s
 
 ### Troubleshooting
 
-Check all endpoints
-```sh
-microk8s kubectl get endpoints -A
-```
+* I see `cloud-init` had failures.  
+    Manually run `sudo apt update`, `sudo apt full-upgrade`.  
+    Manually run `sudo apt install` on any packages that failed.  
+    Manually enable any kernel modules you need and make sure `/etc/modules-load.d/modules.conf` has them so they'll be enabled on every boot.
 
-```zsh
-microk8s inspect
-```
-MicroK8s might not recognize that cgroup memory is enabled but you can check with `cat /proc/cgroups`.
+* I want to check all k8s endpoints or inspect the instance.
+    ```sh
+    microk8s kubectl get endpoints -A
+    microk8s inspect
+    ```
+* I'm not sure cgroups are enabled.  
+    MicroK8s might not recognize that cgroup memory is enabled but you can check with 
+    ```sh
+    cat /proc/cgroups
+    ```

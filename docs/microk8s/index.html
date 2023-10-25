@@ -1145,12 +1145,24 @@ microk8s<span class="w"> </span>kubectl-minio<span class="w"> </span>proxy
 <div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>microk8s<span class="w"> </span>kubectl-minio<span class="w"> </span>tenant<span class="w"> </span>status<span class="w"> </span>microk8s
 </code></pre></div></p>
 <h3 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">#</a></h3>
-<p>Check all endpoints
-<div class="highlight"><pre><span></span><code>microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>endpoints<span class="w"> </span>-A
+<ul>
+<li>
+<p>I see <code>cloud-init</code> had failures.<br />
+    Manually run <code>sudo apt update</code>, <code>sudo apt full-upgrade</code>.<br />
+    Manually run <code>sudo apt install</code> on any packages that failed.<br />
+    Manually enable any kernel modules you need and make sure <code>/etc/modules-load.d/modules.conf</code> has them so they'll be enabled on every boot.</p>
+</li>
+<li>
+<p>I want to check all k8s endpoints or inspect the instance.
+    <div class="highlight"><pre><span></span><code>microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>endpoints<span class="w"> </span>-A
+microk8s<span class="w"> </span>inspect
 </code></pre></div></p>
-<p><div class="highlight"><pre><span></span><code>microk8s<span class="w"> </span>inspect
-</code></pre></div>
-MicroK8s might not recognize that cgroup memory is enabled but you can check with <code>cat /proc/cgroups</code>.</p>
+</li>
+<li>I'm not sure cgroups are enabled.<br />
+    MicroK8s might not recognize that cgroup memory is enabled but you can check with 
+    <div class="highlight"><pre><span></span><code>cat<span class="w"> </span>/proc/cgroups
+</code></pre></div></li>
+</ul>
 
 
 
