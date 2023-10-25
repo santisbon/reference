@@ -1,5 +1,5 @@
-# Single-board Computers (SBCs)
-Raspberry Pi, Orange Pi, and many others.
+# Raspberry Pi
+Single-board Computers (SBCs) like the Raspberry Pi, Orange Pi, and many others.
 
 ![SBCs](https://res.cloudinary.com/practicaldev/image/fetch/s--gU1esoW1--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_800/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/k1mer6vmt81awg37l856.png)
 
