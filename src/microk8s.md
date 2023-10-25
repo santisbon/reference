@@ -31,6 +31,7 @@ After setting up your Raspberry Pi devices with `cloud-init` as defined in the [
 1. [Install MicroCeph](https://microk8s.io/docs/how-to-ceph)
     ```sh title="On all nodes"
     sudo snap install microceph --channel=latest/edge
+    snap info microceph # if you want to see instructions
     ```
     ```sh title="On the control plane node"
     sudo microceph cluster bootstrap
@@ -96,71 +97,10 @@ microk8s start
 microk8s enable metrics-server
 microk8s enable ingress
 microk8s enable dashboard
-microk8s enable core/mayastor --default-pool-size 20G
-microk8s enable minio -c 100Gi
-
-# For Mayastor OpenEBS
-# On first boot, the etcd-operator-mayastor pod may be stuck in CrashLoopBackOff state until you reboot
-microk8s kubectl get pod -n mayastor 
-microk8s kubectl get diskpool -n mayastor
-
-# For Rook Ceph instructions
-snap info microceph
 
 # If you ever want to update MicroK8s to another channel. Tip: use a specific channel number.
 snap info microk8s
 sudo snap refresh microk8s --channel=latest/stable
-```
-
-#### Other storage addons:
-I recommend Ceph for block, file, and object storage but if you want alternatives:
-
-##### OpenEBS
-
-Prerequisite knowledge:
-[Huge Pages](https://help.ubuntu.com/community/KVM%20-%20Using%20Hugepages)
-[NVMe over Fabrics (NVMe-oF)](https://www.techtarget.com/searchstorage/definition/NVMe-over-Fabrics-Nonvolatile-Memory-Express-over-Fabrics)
-
-Enable:
-[Mayastor](https://microk8s.io/docs/addon-mayastor)  
-Mayastor will run for all nodes in your MicroK8s cluster by default.
-
-##### MinIO
-
-Concepts:  
-[https://min.io/docs/minio/linux/operations/concepts.html](https://min.io/docs/minio/linux/operations/concepts.html)
-
-Enable:
-[MinIO](https://microk8s.io/docs/addon-minio)  
-
-Usage: `microk8s enable minio [OPTIONS]`
-```sh
-   -h               Print this help message  
-   -k               Do not create default tenant  
-   -s STORAGECLASS  Storage class to use for the default tenant (default: microk8s-hostpath)  
-   -c CAPACITY      Capacity of the default tenant (default: 20Gi)  
-   -n SERVERS       Servers of the default tenant (default: 1)  
-   -v VOLUMES       Volumes of the default tenant (default: 1)  
-   -t TENANTNAME    Name of the default tenant (default: microk8s)  
-   -T               Enable TLS for the default tenant (default: disabled)  
-   -p               Enable Prometheus for the default tenant (default: disabled)  
-   -r REPOSITORY    Minio Operator GitHub repository (default: https://github.com/minio/operator)  
-   -V VERSION       Minio Operator version (default: 4.5.1)  
-```
-Example with 1 server and 1 volume per server (volumes should be a multiple of servers):
-```sh
-microk8s enable minio -c 100Gi
-
-# Create a port-forward for the MinIO console with:
-microk8s kubectl-minio proxy
-```
-
-Filesystem type to use:  
-[https://min.io/docs/minio/linux/operations/install-deploy-manage/deploy-minio-single-node-multi-drive.html](https://min.io/docs/minio/linux/operations/install-deploy-manage/deploy-minio-single-node-multi-drive.html)
-
-Check status for tenant named *microk8s*
-```sh
-sudo microk8s kubectl-minio tenant status microk8s
 ```
 
 ### Manual setup
@@ -268,6 +208,67 @@ You can then access the Dashboard with IP or hostname and the automatically assi
 microk8s enable registry
 ```
 The containerd daemon used by MicroK8s is configured to trust this insecure registry. To upload images we have to tag them with `localhost:32000/your-image` before pushing them.
+
+### Other storage addons:
+I recommend Ceph for block, file, and object storage but if you want alternatives:
+
+#### OpenEBS
+
+Prerequisite knowledge:
+[Huge Pages](https://help.ubuntu.com/community/KVM%20-%20Using%20Hugepages)
+[NVMe over Fabrics (NVMe-oF)](https://www.techtarget.com/searchstorage/definition/NVMe-over-Fabrics-Nonvolatile-Memory-Express-over-Fabrics)
+
+Enable:
+[Mayastor](https://microk8s.io/docs/addon-mayastor)  
+Mayastor will run for all nodes in your MicroK8s cluster by default.
+
+```sh
+microk8s enable core/mayastor --default-pool-size 20G
+
+# For Mayastor OpenEBS
+# On first boot, the etcd-operator-mayastor pod may be stuck in CrashLoopBackOff state until you reboot
+microk8s kubectl get pod -n mayastor 
+microk8s kubectl get diskpool -n mayastor
+
+```
+
+#### MinIO
+
+Concepts:  
+[https://min.io/docs/minio/linux/operations/concepts.html](https://min.io/docs/minio/linux/operations/concepts.html)
+
+Enable:
+[MinIO](https://microk8s.io/docs/addon-minio)  
+
+Usage: `microk8s enable minio [OPTIONS]`
+```sh
+   -h               Print this help message  
+   -k               Do not create default tenant  
+   -s STORAGECLASS  Storage class to use for the default tenant (default: microk8s-hostpath)  
+   -c CAPACITY      Capacity of the default tenant (default: 20Gi)  
+   -n SERVERS       Servers of the default tenant (default: 1)  
+   -v VOLUMES       Volumes of the default tenant (default: 1)  
+   -t TENANTNAME    Name of the default tenant (default: microk8s)  
+   -T               Enable TLS for the default tenant (default: disabled)  
+   -p               Enable Prometheus for the default tenant (default: disabled)  
+   -r REPOSITORY    Minio Operator GitHub repository (default: https://github.com/minio/operator)  
+   -V VERSION       Minio Operator version (default: 4.5.1)  
+```
+Example with 1 server and 1 volume per server (volumes should be a multiple of servers):
+```sh
+microk8s enable minio -c 100Gi
+
+# Create a port-forward for the MinIO console with:
+microk8s kubectl-minio proxy
+```
+
+Filesystem type to use:  
+[https://min.io/docs/minio/linux/operations/install-deploy-manage/deploy-minio-single-node-multi-drive.html](https://min.io/docs/minio/linux/operations/install-deploy-manage/deploy-minio-single-node-multi-drive.html)
+
+Check status for tenant named *microk8s*
+```sh
+sudo microk8s kubectl-minio tenant status microk8s
+```
 
 ### Troubleshooting
 

@@ -599,33 +599,6 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#other-storage-addons" class="md-nav__link">
-    Other storage addons:
-  </a>
-  
-    <nav class="md-nav" aria-label="Other storage addons:">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#openebs" class="md-nav__link">
-    OpenEBS
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#minio" class="md-nav__link">
-    MinIO
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
       </ul>
     </nav>
   
@@ -669,6 +642,33 @@
   <a href="#registry" class="md-nav__link">
     Registry
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#other-storage-addons" class="md-nav__link">
+    Other storage addons:
+  </a>
+  
+    <nav class="md-nav" aria-label="Other storage addons:">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#openebs" class="md-nav__link">
+    OpenEBS
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#minio" class="md-nav__link">
+    MinIO
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -828,33 +828,6 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#other-storage-addons" class="md-nav__link">
-    Other storage addons:
-  </a>
-  
-    <nav class="md-nav" aria-label="Other storage addons:">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#openebs" class="md-nav__link">
-    OpenEBS
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#minio" class="md-nav__link">
-    MinIO
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
       </ul>
     </nav>
   
@@ -898,6 +871,33 @@
   <a href="#registry" class="md-nav__link">
     Registry
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#other-storage-addons" class="md-nav__link">
+    Other storage addons:
+  </a>
+  
+    <nav class="md-nav" aria-label="Other storage addons:">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#openebs" class="md-nav__link">
+    OpenEBS
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#minio" class="md-nav__link">
+    MinIO
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -956,6 +956,7 @@
 <ol>
 <li><a href="https://microk8s.io/docs/how-to-ceph">Install MicroCeph</a>
     <div class="highlight"><span class="filename">On all nodes</span><pre><span></span><code>sudo<span class="w"> </span>snap<span class="w"> </span>install<span class="w"> </span>microceph<span class="w"> </span>--channel<span class="o">=</span>latest/edge
+snap<span class="w"> </span>info<span class="w"> </span>microceph<span class="w"> </span><span class="c1"># if you want to see instructions</span>
 </code></pre></div>
     <div class="highlight"><span class="filename">On the control plane node</span><pre><span></span><code>sudo<span class="w"> </span>microceph<span class="w"> </span>cluster<span class="w"> </span>bootstrap
 </code></pre></div></li>
@@ -1010,59 +1011,11 @@ microk8s<span class="w"> </span>start
 microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>metrics-server
 microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>ingress
 microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>dashboard
-microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>core/mayastor<span class="w"> </span>--default-pool-size<span class="w"> </span>20G
-microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>minio<span class="w"> </span>-c<span class="w"> </span>100Gi
-
-<span class="c1"># For Mayastor OpenEBS</span>
-<span class="c1"># On first boot, the etcd-operator-mayastor pod may be stuck in CrashLoopBackOff state until you reboot</span>
-microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>-n<span class="w"> </span>mayastor<span class="w"> </span>
-microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>diskpool<span class="w"> </span>-n<span class="w"> </span>mayastor
-
-<span class="c1"># For Rook Ceph instructions</span>
-snap<span class="w"> </span>info<span class="w"> </span>microceph
 
 <span class="c1"># If you ever want to update MicroK8s to another channel. Tip: use a specific channel number.</span>
 snap<span class="w"> </span>info<span class="w"> </span>microk8s
 sudo<span class="w"> </span>snap<span class="w"> </span>refresh<span class="w"> </span>microk8s<span class="w"> </span>--channel<span class="o">=</span>latest/stable
 </code></pre></div>
-<h4 id="other-storage-addons">Other storage addons:<a class="headerlink" href="#other-storage-addons" title="Permanent link">#</a></h4>
-<p>I recommend Ceph for block, file, and object storage but if you want alternatives:</p>
-<h5 id="openebs">OpenEBS<a class="headerlink" href="#openebs" title="Permanent link">#</a></h5>
-<p>Prerequisite knowledge:
-<a href="https://help.ubuntu.com/community/KVM%20-%20Using%20Hugepages">Huge Pages</a>
-<a href="https://www.techtarget.com/searchstorage/definition/NVMe-over-Fabrics-Nonvolatile-Memory-Express-over-Fabrics">NVMe over Fabrics (NVMe-oF)</a></p>
-<p>Enable:
-<a href="https://microk8s.io/docs/addon-mayastor">Mayastor</a><br />
-Mayastor will run for all nodes in your MicroK8s cluster by default.</p>
-<h5 id="minio">MinIO<a class="headerlink" href="#minio" title="Permanent link">#</a></h5>
-<p>Concepts:<br />
-<a href="https://min.io/docs/minio/linux/operations/concepts.html">https://min.io/docs/minio/linux/operations/concepts.html</a></p>
-<p>Enable:
-<a href="https://microk8s.io/docs/addon-minio">MinIO</a>  </p>
-<p>Usage: <code>microk8s enable minio [OPTIONS]</code>
-<div class="highlight"><pre><span></span><code><span class="w">   </span>-h<span class="w">               </span>Print<span class="w"> </span>this<span class="w"> </span><span class="nb">help</span><span class="w"> </span>message<span class="w">  </span>
-<span class="w">   </span>-k<span class="w">               </span>Do<span class="w"> </span>not<span class="w"> </span>create<span class="w"> </span>default<span class="w"> </span>tenant<span class="w">  </span>
-<span class="w">   </span>-s<span class="w"> </span>STORAGECLASS<span class="w">  </span>Storage<span class="w"> </span>class<span class="w"> </span>to<span class="w"> </span>use<span class="w"> </span><span class="k">for</span><span class="w"> </span>the<span class="w"> </span>default<span class="w"> </span>tenant<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span>microk8s-hostpath<span class="o">)</span><span class="w">  </span>
-<span class="w">   </span>-c<span class="w"> </span>CAPACITY<span class="w">      </span>Capacity<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>default<span class="w"> </span>tenant<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span>20Gi<span class="o">)</span><span class="w">  </span>
-<span class="w">   </span>-n<span class="w"> </span>SERVERS<span class="w">       </span>Servers<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>default<span class="w"> </span>tenant<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span><span class="m">1</span><span class="o">)</span><span class="w">  </span>
-<span class="w">   </span>-v<span class="w"> </span>VOLUMES<span class="w">       </span>Volumes<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>default<span class="w"> </span>tenant<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span><span class="m">1</span><span class="o">)</span><span class="w">  </span>
-<span class="w">   </span>-t<span class="w"> </span>TENANTNAME<span class="w">    </span>Name<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>default<span class="w"> </span>tenant<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span>microk8s<span class="o">)</span><span class="w">  </span>
-<span class="w">   </span>-T<span class="w">               </span>Enable<span class="w"> </span>TLS<span class="w"> </span><span class="k">for</span><span class="w"> </span>the<span class="w"> </span>default<span class="w"> </span>tenant<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span>disabled<span class="o">)</span><span class="w">  </span>
-<span class="w">   </span>-p<span class="w">               </span>Enable<span class="w"> </span>Prometheus<span class="w"> </span><span class="k">for</span><span class="w"> </span>the<span class="w"> </span>default<span class="w"> </span>tenant<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span>disabled<span class="o">)</span><span class="w">  </span>
-<span class="w">   </span>-r<span class="w"> </span>REPOSITORY<span class="w">    </span>Minio<span class="w"> </span>Operator<span class="w"> </span>GitHub<span class="w"> </span>repository<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span>https://github.com/minio/operator<span class="o">)</span><span class="w">  </span>
-<span class="w">   </span>-V<span class="w"> </span>VERSION<span class="w">       </span>Minio<span class="w"> </span>Operator<span class="w"> </span>version<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span><span class="m">4</span>.5.1<span class="o">)</span><span class="w">  </span>
-</code></pre></div>
-Example with 1 server and 1 volume per server (volumes should be a multiple of servers):
-<div class="highlight"><pre><span></span><code>microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>minio<span class="w"> </span>-c<span class="w"> </span>100Gi
-
-<span class="c1"># Create a port-forward for the MinIO console with:</span>
-microk8s<span class="w"> </span>kubectl-minio<span class="w"> </span>proxy
-</code></pre></div></p>
-<p>Filesystem type to use:<br />
-<a href="https://min.io/docs/minio/linux/operations/install-deploy-manage/deploy-minio-single-node-multi-drive.html">https://min.io/docs/minio/linux/operations/install-deploy-manage/deploy-minio-single-node-multi-drive.html</a></p>
-<p>Check status for tenant named <em>microk8s</em>
-<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>microk8s<span class="w"> </span>kubectl-minio<span class="w"> </span>tenant<span class="w"> </span>status<span class="w"> </span>microk8s
-</code></pre></div></p>
 <h3 id="manual-setup">Manual setup<a class="headerlink" href="#manual-setup" title="Permanent link">#</a></h3>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
@@ -1146,6 +1099,51 @@ You can then access the Dashboard with IP or hostname and the automatically assi
 <div class="highlight"><pre><span></span><code>microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>registry
 </code></pre></div>
 The containerd daemon used by MicroK8s is configured to trust this insecure registry. To upload images we have to tag them with <code>localhost:32000/your-image</code> before pushing them.</p>
+<h3 id="other-storage-addons">Other storage addons:<a class="headerlink" href="#other-storage-addons" title="Permanent link">#</a></h3>
+<p>I recommend Ceph for block, file, and object storage but if you want alternatives:</p>
+<h4 id="openebs">OpenEBS<a class="headerlink" href="#openebs" title="Permanent link">#</a></h4>
+<p>Prerequisite knowledge:
+<a href="https://help.ubuntu.com/community/KVM%20-%20Using%20Hugepages">Huge Pages</a>
+<a href="https://www.techtarget.com/searchstorage/definition/NVMe-over-Fabrics-Nonvolatile-Memory-Express-over-Fabrics">NVMe over Fabrics (NVMe-oF)</a></p>
+<p>Enable:
+<a href="https://microk8s.io/docs/addon-mayastor">Mayastor</a><br />
+Mayastor will run for all nodes in your MicroK8s cluster by default.</p>
+<div class="highlight"><pre><span></span><code>microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>core/mayastor<span class="w"> </span>--default-pool-size<span class="w"> </span>20G
+
+<span class="c1"># For Mayastor OpenEBS</span>
+<span class="c1"># On first boot, the etcd-operator-mayastor pod may be stuck in CrashLoopBackOff state until you reboot</span>
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>-n<span class="w"> </span>mayastor<span class="w"> </span>
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>diskpool<span class="w"> </span>-n<span class="w"> </span>mayastor
+</code></pre></div>
+<h4 id="minio">MinIO<a class="headerlink" href="#minio" title="Permanent link">#</a></h4>
+<p>Concepts:<br />
+<a href="https://min.io/docs/minio/linux/operations/concepts.html">https://min.io/docs/minio/linux/operations/concepts.html</a></p>
+<p>Enable:
+<a href="https://microk8s.io/docs/addon-minio">MinIO</a>  </p>
+<p>Usage: <code>microk8s enable minio [OPTIONS]</code>
+<div class="highlight"><pre><span></span><code><span class="w">   </span>-h<span class="w">               </span>Print<span class="w"> </span>this<span class="w"> </span><span class="nb">help</span><span class="w"> </span>message<span class="w">  </span>
+<span class="w">   </span>-k<span class="w">               </span>Do<span class="w"> </span>not<span class="w"> </span>create<span class="w"> </span>default<span class="w"> </span>tenant<span class="w">  </span>
+<span class="w">   </span>-s<span class="w"> </span>STORAGECLASS<span class="w">  </span>Storage<span class="w"> </span>class<span class="w"> </span>to<span class="w"> </span>use<span class="w"> </span><span class="k">for</span><span class="w"> </span>the<span class="w"> </span>default<span class="w"> </span>tenant<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span>microk8s-hostpath<span class="o">)</span><span class="w">  </span>
+<span class="w">   </span>-c<span class="w"> </span>CAPACITY<span class="w">      </span>Capacity<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>default<span class="w"> </span>tenant<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span>20Gi<span class="o">)</span><span class="w">  </span>
+<span class="w">   </span>-n<span class="w"> </span>SERVERS<span class="w">       </span>Servers<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>default<span class="w"> </span>tenant<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span><span class="m">1</span><span class="o">)</span><span class="w">  </span>
+<span class="w">   </span>-v<span class="w"> </span>VOLUMES<span class="w">       </span>Volumes<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>default<span class="w"> </span>tenant<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span><span class="m">1</span><span class="o">)</span><span class="w">  </span>
+<span class="w">   </span>-t<span class="w"> </span>TENANTNAME<span class="w">    </span>Name<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>default<span class="w"> </span>tenant<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span>microk8s<span class="o">)</span><span class="w">  </span>
+<span class="w">   </span>-T<span class="w">               </span>Enable<span class="w"> </span>TLS<span class="w"> </span><span class="k">for</span><span class="w"> </span>the<span class="w"> </span>default<span class="w"> </span>tenant<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span>disabled<span class="o">)</span><span class="w">  </span>
+<span class="w">   </span>-p<span class="w">               </span>Enable<span class="w"> </span>Prometheus<span class="w"> </span><span class="k">for</span><span class="w"> </span>the<span class="w"> </span>default<span class="w"> </span>tenant<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span>disabled<span class="o">)</span><span class="w">  </span>
+<span class="w">   </span>-r<span class="w"> </span>REPOSITORY<span class="w">    </span>Minio<span class="w"> </span>Operator<span class="w"> </span>GitHub<span class="w"> </span>repository<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span>https://github.com/minio/operator<span class="o">)</span><span class="w">  </span>
+<span class="w">   </span>-V<span class="w"> </span>VERSION<span class="w">       </span>Minio<span class="w"> </span>Operator<span class="w"> </span>version<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span><span class="m">4</span>.5.1<span class="o">)</span><span class="w">  </span>
+</code></pre></div>
+Example with 1 server and 1 volume per server (volumes should be a multiple of servers):
+<div class="highlight"><pre><span></span><code>microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>minio<span class="w"> </span>-c<span class="w"> </span>100Gi
+
+<span class="c1"># Create a port-forward for the MinIO console with:</span>
+microk8s<span class="w"> </span>kubectl-minio<span class="w"> </span>proxy
+</code></pre></div></p>
+<p>Filesystem type to use:<br />
+<a href="https://min.io/docs/minio/linux/operations/install-deploy-manage/deploy-minio-single-node-multi-drive.html">https://min.io/docs/minio/linux/operations/install-deploy-manage/deploy-minio-single-node-multi-drive.html</a></p>
+<p>Check status for tenant named <em>microk8s</em>
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>microk8s<span class="w"> </span>kubectl-minio<span class="w"> </span>tenant<span class="w"> </span>status<span class="w"> </span>microk8s
+</code></pre></div></p>
 <h3 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">#</a></h3>
 <p>Check all endpoints
 <div class="highlight"><pre><span></span><code>microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>endpoints<span class="w"> </span>-A
