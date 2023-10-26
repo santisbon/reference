@@ -36,7 +36,7 @@ metadata:
 provisioner: rook-ceph.rbd.csi.ceph.com
 parameters:
     # clusterID is the namespace where the rook cluster is running
-    clusterID: rook-ceph
+    clusterID: rook-ceph-external
     # Ceph pool into which the RBD image shall be created
     pool: replicapool
     # RBD image format. Defaults to "2".
