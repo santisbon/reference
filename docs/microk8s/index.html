@@ -1048,7 +1048,7 @@ sudo<span class="w"> </span>microk8s<span class="w"> </span>connect-external-cep
 </code></pre></div></p>
 </li>
 <li>Verify
-    <div class="highlight"><pre><span></span><code>microk8s<span class="w"> </span>kubectl<span class="w"> </span>describe<span class="w"> </span>sc<span class="w"> </span>-A
+    <div class="highlight"><span class="filename">On the control plane</span><pre><span></span><code>microk8s<span class="w"> </span>kubectl<span class="w"> </span>describe<span class="w"> </span>sc<span class="w"> </span>-A
 <span class="c1"># Name:         ceph-rbd</span>
 <span class="c1"># Parameters:   clusterID=rook-ceph-external,</span>
 <span class="c1">#               pool=microk8s-rbd0</span>
@@ -1076,27 +1076,36 @@ snap<span class="w"> </span>info<span class="w"> </span>microk8s
 sudo<span class="w"> </span>snap<span class="w"> </span>refresh<span class="w"> </span>microk8s<span class="w"> </span>--channel<span class="o">=</span>latest/stable
 </code></pre></div>
 <h5 id="storage">Storage<a class="headerlink" href="#storage" title="Permanent link">#</a></h5>
-<p>Create the storage resources for your cluster by downloading <a href="https://github.com/santisbon/reference/tree/main/assets/k8s-storage.yaml">k8s-storage.yaml</a>. Use the info below to adjust for your environment and apply it.</p>
-<p>Erasure Coding  </p>
-<table>
+<p>Create the storage resources for your cluster using the info below.</p>
+<ol>
+<li>
+<p>Review needed info<br />
+    Erasure Coding  </p>
+<p><table>
     <tr><th>Data chunks (k)</th><th>Coding chunks (m)</th><th>Total storage</th><th>Losses Tolerated (m)</th><th>OSDs required (k+m)</th></tr>
     <tr><td>2</td><td>1</td><td>1.5x</td><td>1</td><td>3</td></tr>
     <tr><td>2</td><td>2</td><td>2x</td><td>2</td><td>4</td></tr>
     <tr><td>4</td><td>2</td><td>1.5x</td><td>2</td><td>6</td></tr>
     <tr><td>3</td><td>3</td><td>2x</td><td>3</td><td>6</td></tr>
     <tr><td>16</td><td>4</td><td>1.25x</td><td>4</td><td>20</td></tr>
-</table>
-
-<p><div class="highlight"><pre><span></span><code><span class="c1"># verify the secrets name and namespace</span>
+</table></p>
+<div class="highlight"><span class="filename">On the control plane</span><pre><span></span><code><span class="c1"># Verify the secrets&#39; name and namespace. These are the Ceph cluster admin credentials</span>
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>-A
-<span class="c1"># if you want to see the secrets</span>
+<span class="c1"># if you want to see the secrets&#39; content</span>
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>rook-csi-rbd-provisioner<span class="w"> </span>-n<span class="w"> </span>rook-ceph-external<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.userID}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="p">;</span><span class="nb">echo</span>
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>rook-csi-rbd-provisioner<span class="w"> </span>-n<span class="w"> </span>rook-ceph-external<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.userKey}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="p">;</span><span class="nb">echo</span>
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>rook-csi-rbd-node<span class="w"> </span>-n<span class="w"> </span>rook-ceph-external<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.userID}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="p">;</span><span class="nb">echo</span>
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>rook-csi-rbd-node<span class="w"> </span>-n<span class="w"> </span>rook-ceph-external<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.userKey}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="p">;</span><span class="nb">echo</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code>microk8s<span class="w"> </span>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>k8s-storage.yaml
+</li>
+<li>
+<p>Download <a href="https://github.com/santisbon/reference/tree/main/assets/k8s-storage.yaml"><code>k8s-storage.yaml</code></a>, adjust for your environment and apply it.
+    <div class="highlight"><span class="filename">On the control plane</span><pre><span></span><code>wget<span class="w"> </span>https://raw.githubusercontent.com/santisbon/reference/main/assets/k8s-storage.yaml
+nano<span class="w"> </span>k8s-storage.yaml<span class="w"> </span><span class="c1"># make any needed edits</span>
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>k8s-storage.yaml
 </code></pre></div></p>
+</li>
+</ol>
 <h3 id="manual-setup">Manual setup<a class="headerlink" href="#manual-setup" title="Permanent link">#</a></h3>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>

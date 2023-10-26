@@ -97,7 +97,7 @@ Ceph provides [block](https://docs.ceph.com/en/latest/rbd/), [object](https://do
     sudo microk8s connect-external-ceph
     ```
 3. Verify
-    ```sh
+    ```sh title="On the control plane"
     microk8s kubectl describe sc -A
     # Name:         ceph-rbd
     # Parameters:   clusterID=rook-ceph-external,
@@ -131,31 +131,36 @@ sudo snap refresh microk8s --channel=latest/stable
 
 ##### Storage
 
-Create the storage resources for your cluster by downloading [k8s-storage.yaml](https://github.com/santisbon/reference/tree/main/assets/k8s-storage.yaml). Use the info below to adjust for your environment and apply it.
+Create the storage resources for your cluster using the info below.
 
-Erasure Coding  
+1. Review needed info  
+    Erasure Coding  
 
-<table>
-    <tr><th>Data chunks (k)</th><th>Coding chunks (m)</th><th>Total storage</th><th>Losses Tolerated (m)</th><th>OSDs required (k+m)</th></tr>
-    <tr><td>2</td><td>1</td><td>1.5x</td><td>1</td><td>3</td></tr>
-    <tr><td>2</td><td>2</td><td>2x</td><td>2</td><td>4</td></tr>
-    <tr><td>4</td><td>2</td><td>1.5x</td><td>2</td><td>6</td></tr>
-    <tr><td>3</td><td>3</td><td>2x</td><td>3</td><td>6</td></tr>
-    <tr><td>16</td><td>4</td><td>1.25x</td><td>4</td><td>20</td></tr>
-</table>
+    <table>
+        <tr><th>Data chunks (k)</th><th>Coding chunks (m)</th><th>Total storage</th><th>Losses Tolerated (m)</th><th>OSDs required (k+m)</th></tr>
+        <tr><td>2</td><td>1</td><td>1.5x</td><td>1</td><td>3</td></tr>
+        <tr><td>2</td><td>2</td><td>2x</td><td>2</td><td>4</td></tr>
+        <tr><td>4</td><td>2</td><td>1.5x</td><td>2</td><td>6</td></tr>
+        <tr><td>3</td><td>3</td><td>2x</td><td>3</td><td>6</td></tr>
+        <tr><td>16</td><td>4</td><td>1.25x</td><td>4</td><td>20</td></tr>
+    </table>
 
-```sh
-# verify the secrets name and namespace
-microk8s kubectl get secret -A
-# if you want to see the secrets
-microk8s kubectl get secret rook-csi-rbd-provisioner -n rook-ceph-external -o jsonpath='{.data.userID}' | base64 --decode ;echo
-microk8s kubectl get secret rook-csi-rbd-provisioner -n rook-ceph-external -o jsonpath='{.data.userKey}' | base64 --decode ;echo
-microk8s kubectl get secret rook-csi-rbd-node -n rook-ceph-external -o jsonpath='{.data.userID}' | base64 --decode ;echo
-microk8s kubectl get secret rook-csi-rbd-node -n rook-ceph-external -o jsonpath='{.data.userKey}' | base64 --decode ;echo
-```
-```sh
-microk8s kubectl create -f k8s-storage.yaml
-```
+    ```sh title="On the control plane"
+    # Verify the secrets' name and namespace. These are the Ceph cluster admin credentials
+    microk8s kubectl get secret -A
+    # if you want to see the secrets' content
+    microk8s kubectl get secret rook-csi-rbd-provisioner -n rook-ceph-external -o jsonpath='{.data.userID}' | base64 --decode ;echo
+    microk8s kubectl get secret rook-csi-rbd-provisioner -n rook-ceph-external -o jsonpath='{.data.userKey}' | base64 --decode ;echo
+    microk8s kubectl get secret rook-csi-rbd-node -n rook-ceph-external -o jsonpath='{.data.userID}' | base64 --decode ;echo
+    microk8s kubectl get secret rook-csi-rbd-node -n rook-ceph-external -o jsonpath='{.data.userKey}' | base64 --decode ;echo
+    ```
+
+2. Download [`k8s-storage.yaml`](https://github.com/santisbon/reference/tree/main/assets/k8s-storage.yaml), adjust for your environment and apply it.
+    ```sh title="On the control plane"
+    wget https://raw.githubusercontent.com/santisbon/reference/main/assets/k8s-storage.yaml
+    nano k8s-storage.yaml # make any needed edits
+    microk8s kubectl create -f k8s-storage.yaml
+    ```
 
 ### Manual setup
 
