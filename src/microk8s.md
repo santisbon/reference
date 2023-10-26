@@ -2,33 +2,24 @@ Suitable for Raspberry Pi and other lightweight environments. [Learn  more](http
 
 ### Cloud native setup
 
-After setting up your Raspberry Pi devices with `cloud-init` as defined in the [Raspberry Pi](/reference/rpi/) section:
+#### Prerequisites
 
-1. Add all nodes to the MicroK8s cluster.
-2. Create the storage cluster with MicroCeph.
+1. Set up your Raspberry Pi devices with `cloud-init` as defined in the [Raspberry Pi](/reference/rpi/) section.
+2. Assign static IPs to all the nodes. 
+3. `sudo nano /etc/hosts` on each node and add the IP and hostnames of the other nodes so they can resolve during the join process.
+
+These are the high level steps we'll be following:
+
+1. Create the storage cluster with MicroCeph.
+2. Add all nodes to the MicroK8s cluster.
 3. Connect the MicroK8s cluster to the Ceph cluster.
-4. Enable the rook-ceph MicoK8s addon and any other addons you need.
-
-#### MicroK8s Clustering
-
-1. Assign static IPs to all the nodes. 
-2. `sudo nano /etc/hosts` on each node and add the IP and hostnames of the other nodes so they can resolve during the join process.
-3. [Add all nodes to the cluster](https://microk8s.io/docs/clustering).  
-    ```sh title="On the control plane node"
-    microk8s add-node
-    ```
-    You can add it as a worker-only node
-    ```sh title="On each node you want to add to the cluster"
-    microk8s join $JOIN_STRING --worker
-    ```
-
-    ```sh title="On the control plane node"
-    microk8s kubectl get no
-    ```
+4. Enable the rook-ceph MicroK8s addon and any other addons you need.
 
 #### MicroCeph Clustering
 
-1. [Install MicroCeph](https://microk8s.io/docs/how-to-ceph)
+Ceph provides [block](https://docs.ceph.com/en/latest/rbd/), [object](https://docs.ceph.com/en/latest/radosgw/), and [file](https://docs.ceph.com/en/latest/cephfs/) storage.
+
+1. Install [MicroCeph](https://microk8s.io/docs/how-to-ceph)
     ```sh title="On all nodes"
     sudo snap install microceph --channel=latest/edge
     snap info microceph # if you want to see instructions
@@ -68,21 +59,56 @@ After setting up your Raspberry Pi devices with `cloud-init` as defined in the [
         sudo microceph disk add --wipe "/dev/sdi${l}"
     done
     ```
-    Verify
+4. Verify
     ```sh title="On each node"
     lsblk
     ```
     ```sh title="On the control plane (or any ceph node, really)"
+    sudo microceph status # deployment summary
     sudo microceph disk list
-    sudo ceph status # microceph.ceph status
+    sudo ceph osd metadata $OSD_ID | grep osd_objectstore # check that it's a bluestore OSD
+    
+    sudo ceph status # detailed status
     # HEALTH_OK with all OSDs showing
+    
+    sudo ceph osd pool ls detail -f json-pretty # list the pools with all details
+    sudo ceph osd pool stats # obtain stats from all pools, or from specified pool
     ```
-4. Connect your MicroK8s cluster to your MicroCeph cluster
+    Learn more about [pools](https://docs.ceph.com/en/latest/rados/operations/pools/).
+
+#### MicroK8s Clustering
+
+1. [Add all nodes to the cluster](https://microk8s.io/docs/clustering).  
+    ```sh title="On the control plane node"
+    microk8s add-node
+    ```
+    You can add it as a worker-only node
+    ```sh title="On each node you want to add to the cluster"
+    microk8s join $JOIN_STRING --worker
+    ```
+
+    ```sh title="On the control plane node"
+    microk8s kubectl get no
+    ```
+
+2. Connect your MicroK8s cluster to your MicroCeph cluster. We'll be using [Rook Ceph](https://rook.io/docs/rook/v1.12/Getting-Started/quickstart/#storage).
     ```sh title="On the control plane"
     microk8s enable rook-ceph
     sudo microk8s connect-external-ceph
     ```
-    Now you can create a pod that uses the `ceph-rdb` storage class for a persistent volume.
+3. Verify
+    ```sh
+    microk8s kubectl describe sc -A
+    # Name:         ceph-rbd
+    # Parameters:   clusterID=rook-ceph-external,
+    #               pool=microk8s-rbd0
+    # ...
+
+    microk8s kubectl describe CephBlockPool -A
+    # No resources found
+    ```
+
+Now you can create a pod that uses the `ceph-rdb` storage class (which uses the `microk8s-rbd0` pool) for a persistent volume but to get more control you can [provision and consume storage](https://rook.io/docs/rook/v1.12/Storage-Configuration/Block-Storage-RBD/block-storage/) by creating a `CephBlockPool` CR and a `StorageClass` as shown [here](#storage).
 
 #### MicroK8s config
 
@@ -101,6 +127,34 @@ microk8s enable dashboard
 # If you ever want to update MicroK8s to another channel. Tip: use a specific channel number.
 snap info microk8s
 sudo snap refresh microk8s --channel=latest/stable
+```
+
+##### Storage
+
+Create the storage resources for your cluster by downloading [k8s-storage.yaml](https://github.com/santisbon/reference/tree/main/assets/k8s-storage.yaml). Use the info below to adjust for your environment and apply it.
+
+Erasure Coding  
+
+<table>
+    <tr><th>Data chunks (k)</th><th>Coding chunks (m)</th><th>Total storage</th><th>Losses Tolerated (m)</th><th>OSDs required (k+m)</th></tr>
+    <tr><td>2</td><td>1</td><td>1.5x</td><td>1</td><td>3</td></tr>
+    <tr><td>2</td><td>2</td><td>2x</td><td>2</td><td>4</td></tr>
+    <tr><td>4</td><td>2</td><td>1.5x</td><td>2</td><td>6</td></tr>
+    <tr><td>3</td><td>3</td><td>2x</td><td>3</td><td>6</td></tr>
+    <tr><td>16</td><td>4</td><td>1.25x</td><td>4</td><td>20</td></tr>
+</table>
+
+```sh
+# verify the secrets name and namespace
+microk8s kubectl get secret -A
+# if you want to see the secrets
+microk8s kubectl get secret rook-csi-rbd-provisioner -n rook-ceph-external -o jsonpath='{.data.userID}' | base64 --decode ;echo
+microk8s kubectl get secret rook-csi-rbd-provisioner -n rook-ceph-external -o jsonpath='{.data.userKey}' | base64 --decode ;echo
+microk8s kubectl get secret rook-csi-rbd-node -n rook-ceph-external -o jsonpath='{.data.userID}' | base64 --decode ;echo
+microk8s kubectl get secret rook-csi-rbd-node -n rook-ceph-external -o jsonpath='{.data.userKey}' | base64 --decode ;echo
+```
+```sh
+microk8s kubectl create -f k8s-storage.yaml
 ```
 
 ### Manual setup
@@ -273,9 +327,10 @@ sudo microk8s kubectl-minio tenant status microk8s
 ### Troubleshooting
 
 * I see `cloud-init` had failures.  
+    Based on the `user-data` file:
     Manually run `sudo apt update`, `sudo apt full-upgrade`.  
     Manually run `sudo apt install` on any packages that failed.  
-    Manually enable any kernel modules you need and make sure `/etc/modules-load.d/modules.conf` has them so they'll be enabled on every boot.
+    Manually add any kernel modules you need and make sure `/etc/modules-load.d/modules.conf` has them so they'll be added on every boot.
 
 * I want to check all k8s endpoints or inspect the instance.
     ```sh

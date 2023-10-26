@@ -643,8 +643,8 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#microk8s-clustering" class="md-nav__link">
-    MicroK8s Clustering
+  <a href="#prerequisites" class="md-nav__link">
+    Prerequisites
   </a>
   
 </li>
@@ -657,9 +657,29 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#microk8s-clustering" class="md-nav__link">
+    MicroK8s Clustering
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#microk8s-config" class="md-nav__link">
     MicroK8s config
   </a>
+  
+    <nav class="md-nav" aria-label="MicroK8s config">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#storage" class="md-nav__link">
+    Storage
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -803,8 +823,8 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#microk8s-clustering" class="md-nav__link">
-    MicroK8s Clustering
+  <a href="#prerequisites" class="md-nav__link">
+    Prerequisites
   </a>
   
 </li>
@@ -817,9 +837,29 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#microk8s-clustering" class="md-nav__link">
+    MicroK8s Clustering
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#microk8s-config" class="md-nav__link">
     MicroK8s config
   </a>
+  
+    <nav class="md-nav" aria-label="MicroK8s config">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#storage" class="md-nav__link">
+    Storage
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -925,31 +965,23 @@
 
 <p>Suitable for Raspberry Pi and other lightweight environments. <a href="https://microk8s.io/docs/install-raspberry-pi">Learn  more</a>.</p>
 <h3 id="cloud-native-setup">Cloud native setup<a class="headerlink" href="#cloud-native-setup" title="Permanent link">#</a></h3>
-<p>After setting up your Raspberry Pi devices with <code>cloud-init</code> as defined in the <a href="/reference/rpi/">Raspberry Pi</a> section:</p>
+<h4 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">#</a></h4>
 <ol>
-<li>Add all nodes to the MicroK8s cluster.</li>
-<li>Create the storage cluster with MicroCeph.</li>
-<li>Connect the MicroK8s cluster to the Ceph cluster.</li>
-<li>Enable the rook-ceph MicoK8s addon and any other addons you need.</li>
-</ol>
-<h4 id="microk8s-clustering">MicroK8s Clustering<a class="headerlink" href="#microk8s-clustering" title="Permanent link">#</a></h4>
-<ol>
+<li>Set up your Raspberry Pi devices with <code>cloud-init</code> as defined in the <a href="/reference/rpi/">Raspberry Pi</a> section.</li>
 <li>Assign static IPs to all the nodes. </li>
 <li><code>sudo nano /etc/hosts</code> on each node and add the IP and hostnames of the other nodes so they can resolve during the join process.</li>
-<li>
-<p><a href="https://microk8s.io/docs/clustering">Add all nodes to the cluster</a>.<br />
-    <div class="highlight"><span class="filename">On the control plane node</span><pre><span></span><code>microk8s<span class="w"> </span>add-node
-</code></pre></div>
-    You can add it as a worker-only node
-    <div class="highlight"><span class="filename">On each node you want to add to the cluster</span><pre><span></span><code>microk8s<span class="w"> </span>join<span class="w"> </span><span class="nv">$JOIN_STRING</span><span class="w"> </span>--worker
-</code></pre></div></p>
-<div class="highlight"><span class="filename">On the control plane node</span><pre><span></span><code>microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>no
-</code></pre></div>
-</li>
+</ol>
+<p>These are the high level steps we'll be following:</p>
+<ol>
+<li>Create the storage cluster with MicroCeph.</li>
+<li>Add all nodes to the MicroK8s cluster.</li>
+<li>Connect the MicroK8s cluster to the Ceph cluster.</li>
+<li>Enable the rook-ceph MicroK8s addon and any other addons you need.</li>
 </ol>
 <h4 id="microceph-clustering">MicroCeph Clustering<a class="headerlink" href="#microceph-clustering" title="Permanent link">#</a></h4>
+<p>Ceph provides <a href="https://docs.ceph.com/en/latest/rbd/">block</a>, <a href="https://docs.ceph.com/en/latest/radosgw/">object</a>, and <a href="https://docs.ceph.com/en/latest/cephfs/">file</a> storage.</p>
 <ol>
-<li><a href="https://microk8s.io/docs/how-to-ceph">Install MicroCeph</a>
+<li>Install <a href="https://microk8s.io/docs/how-to-ceph">MicroCeph</a>
     <div class="highlight"><span class="filename">On all nodes</span><pre><span></span><code>sudo<span class="w"> </span>snap<span class="w"> </span>install<span class="w"> </span>microceph<span class="w"> </span>--channel<span class="o">=</span>latest/edge
 snap<span class="w"> </span>info<span class="w"> </span>microceph<span class="w"> </span><span class="c1"># if you want to see instructions</span>
 </code></pre></div>
@@ -981,20 +1013,52 @@ sudo<span class="w"> </span>microceph<span class="w"> </span>disk<span class="w"
 <span class="w">    </span>sudo<span class="w"> </span>mknod<span class="w"> </span>-m<span class="w"> </span><span class="m">0660</span><span class="w"> </span><span class="s2">&quot;/dev/sdi</span><span class="si">${</span><span class="nv">l</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span>b<span class="w"> </span><span class="m">7</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">minor</span><span class="si">}</span><span class="s2">&quot;</span>
 <span class="w">    </span>sudo<span class="w"> </span>microceph<span class="w"> </span>disk<span class="w"> </span>add<span class="w"> </span>--wipe<span class="w"> </span><span class="s2">&quot;/dev/sdi</span><span class="si">${</span><span class="nv">l</span><span class="si">}</span><span class="s2">&quot;</span>
 <span class="k">done</span>
-</code></pre></div>
-    Verify
+</code></pre></div></li>
+<li>Verify
     <div class="highlight"><span class="filename">On each node</span><pre><span></span><code>lsblk
 </code></pre></div>
-    <div class="highlight"><span class="filename">On the control plane (or any ceph node, really)</span><pre><span></span><code>sudo<span class="w"> </span>microceph<span class="w"> </span>disk<span class="w"> </span>list
-sudo<span class="w"> </span>ceph<span class="w"> </span>status<span class="w"> </span><span class="c1"># microceph.ceph status</span>
+    <div class="highlight"><span class="filename">On the control plane (or any ceph node, really)</span><pre><span></span><code>sudo<span class="w"> </span>microceph<span class="w"> </span>status<span class="w"> </span><span class="c1"># deployment summary</span>
+sudo<span class="w"> </span>microceph<span class="w"> </span>disk<span class="w"> </span>list
+sudo<span class="w"> </span>ceph<span class="w"> </span>osd<span class="w"> </span>metadata<span class="w"> </span><span class="nv">$OSD_ID</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>osd_objectstore<span class="w"> </span><span class="c1"># check that it&#39;s a bluestore OSD</span>
+
+sudo<span class="w"> </span>ceph<span class="w"> </span>status<span class="w"> </span><span class="c1"># detailed status</span>
 <span class="c1"># HEALTH_OK with all OSDs showing</span>
-</code></pre></div></li>
-<li>Connect your MicroK8s cluster to your MicroCeph cluster
+
+sudo<span class="w"> </span>ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>ls<span class="w"> </span>detail<span class="w"> </span>-f<span class="w"> </span>json-pretty<span class="w"> </span><span class="c1"># list the pools with all details</span>
+sudo<span class="w"> </span>ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>stats<span class="w"> </span><span class="c1"># obtain stats from all pools, or from specified pool</span>
+</code></pre></div>
+    Learn more about <a href="https://docs.ceph.com/en/latest/rados/operations/pools/">pools</a>.</li>
+</ol>
+<h4 id="microk8s-clustering">MicroK8s Clustering<a class="headerlink" href="#microk8s-clustering" title="Permanent link">#</a></h4>
+<ol>
+<li>
+<p><a href="https://microk8s.io/docs/clustering">Add all nodes to the cluster</a>.<br />
+    <div class="highlight"><span class="filename">On the control plane node</span><pre><span></span><code>microk8s<span class="w"> </span>add-node
+</code></pre></div>
+    You can add it as a worker-only node
+    <div class="highlight"><span class="filename">On each node you want to add to the cluster</span><pre><span></span><code>microk8s<span class="w"> </span>join<span class="w"> </span><span class="nv">$JOIN_STRING</span><span class="w"> </span>--worker
+</code></pre></div></p>
+<div class="highlight"><span class="filename">On the control plane node</span><pre><span></span><code>microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>no
+</code></pre></div>
+</li>
+<li>
+<p>Connect your MicroK8s cluster to your MicroCeph cluster. We'll be using <a href="https://rook.io/docs/rook/v1.12/Getting-Started/quickstart/#storage">Rook Ceph</a>.
     <div class="highlight"><span class="filename">On the control plane</span><pre><span></span><code>microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>rook-ceph
 sudo<span class="w"> </span>microk8s<span class="w"> </span>connect-external-ceph
-</code></pre></div>
-    Now you can create a pod that uses the <code>ceph-rdb</code> storage class for a persistent volume.</li>
+</code></pre></div></p>
+</li>
+<li>Verify
+    <div class="highlight"><pre><span></span><code>microk8s<span class="w"> </span>kubectl<span class="w"> </span>describe<span class="w"> </span>sc<span class="w"> </span>-A
+<span class="c1"># Name:         ceph-rbd</span>
+<span class="c1"># Parameters:   clusterID=rook-ceph-external,</span>
+<span class="c1">#               pool=microk8s-rbd0</span>
+<span class="c1"># ...</span>
+
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>describe<span class="w"> </span>CephBlockPool<span class="w"> </span>-A
+<span class="c1"># No resources found</span>
+</code></pre></div></li>
 </ol>
+<p>Now you can create a pod that uses the <code>ceph-rdb</code> storage class (which uses the <code>microk8s-rbd0</code> pool) for a persistent volume but to get more control you can <a href="https://rook.io/docs/rook/v1.12/Storage-Configuration/Block-Storage-RBD/block-storage/">provision and consume storage</a> by creating a <code>CephBlockPool</code> CR and a <code>StorageClass</code> as shown <a href="#storage">here</a>.</p>
 <h4 id="microk8s-config">MicroK8s config<a class="headerlink" href="#microk8s-config" title="Permanent link">#</a></h4>
 <div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code><span class="c1"># Check if MicroK8s is intalled and running with the addons enabled</span>
 microk8s<span class="w"> </span>status<span class="w"> </span>--wait-ready
@@ -1011,6 +1075,28 @@ microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> <
 snap<span class="w"> </span>info<span class="w"> </span>microk8s
 sudo<span class="w"> </span>snap<span class="w"> </span>refresh<span class="w"> </span>microk8s<span class="w"> </span>--channel<span class="o">=</span>latest/stable
 </code></pre></div>
+<h5 id="storage">Storage<a class="headerlink" href="#storage" title="Permanent link">#</a></h5>
+<p>Create the storage resources for your cluster by downloading <a href="https://github.com/santisbon/reference/tree/main/assets/k8s-storage.yaml">k8s-storage.yaml</a>. Use the info below to adjust for your environment and apply it.</p>
+<p>Erasure Coding  </p>
+<table>
+    <tr><th>Data chunks (k)</th><th>Coding chunks (m)</th><th>Total storage</th><th>Losses Tolerated (m)</th><th>OSDs required (k+m)</th></tr>
+    <tr><td>2</td><td>1</td><td>1.5x</td><td>1</td><td>3</td></tr>
+    <tr><td>2</td><td>2</td><td>2x</td><td>2</td><td>4</td></tr>
+    <tr><td>4</td><td>2</td><td>1.5x</td><td>2</td><td>6</td></tr>
+    <tr><td>3</td><td>3</td><td>2x</td><td>3</td><td>6</td></tr>
+    <tr><td>16</td><td>4</td><td>1.25x</td><td>4</td><td>20</td></tr>
+</table>
+
+<p><div class="highlight"><pre><span></span><code><span class="c1"># verify the secrets name and namespace</span>
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>-A
+<span class="c1"># if you want to see the secrets</span>
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>rook-csi-rbd-provisioner<span class="w"> </span>-n<span class="w"> </span>rook-ceph-external<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.userID}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="p">;</span><span class="nb">echo</span>
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>rook-csi-rbd-provisioner<span class="w"> </span>-n<span class="w"> </span>rook-ceph-external<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.userKey}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="p">;</span><span class="nb">echo</span>
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>rook-csi-rbd-node<span class="w"> </span>-n<span class="w"> </span>rook-ceph-external<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.userID}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="p">;</span><span class="nb">echo</span>
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>rook-csi-rbd-node<span class="w"> </span>-n<span class="w"> </span>rook-ceph-external<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.userKey}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="p">;</span><span class="nb">echo</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>microk8s<span class="w"> </span>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>k8s-storage.yaml
+</code></pre></div></p>
 <h3 id="manual-setup">Manual setup<a class="headerlink" href="#manual-setup" title="Permanent link">#</a></h3>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
@@ -1143,9 +1229,10 @@ microk8s<span class="w"> </span>kubectl-minio<span class="w"> </span>proxy
 <ul>
 <li>
 <p>I see <code>cloud-init</code> had failures.<br />
+    Based on the <code>user-data</code> file:
     Manually run <code>sudo apt update</code>, <code>sudo apt full-upgrade</code>.<br />
     Manually run <code>sudo apt install</code> on any packages that failed.<br />
-    Manually enable any kernel modules you need and make sure <code>/etc/modules-load.d/modules.conf</code> has them so they'll be enabled on every boot.</p>
+    Manually add any kernel modules you need and make sure <code>/etc/modules-load.d/modules.conf</code> has them so they'll be added on every boot.</p>
 </li>
 <li>
 <p>I want to check all k8s endpoints or inspect the instance.
