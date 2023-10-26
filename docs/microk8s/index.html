@@ -979,7 +979,7 @@
 <li>Enable the rook-ceph MicroK8s addon and any other addons you need.</li>
 </ol>
 <h4 id="microceph-clustering">MicroCeph Clustering<a class="headerlink" href="#microceph-clustering" title="Permanent link">#</a></h4>
-<p>Ceph provides <a href="https://docs.ceph.com/en/latest/rbd/">block</a>, <a href="https://docs.ceph.com/en/latest/radosgw/">object</a>, and <a href="https://docs.ceph.com/en/latest/cephfs/">file</a> storage.</p>
+<p>Ceph provides <a href="https://docs.ceph.com/en/latest/rbd/">block</a>, <a href="https://docs.ceph.com/en/latest/radosgw/">object</a>, and <a href="https://docs.ceph.com/en/latest/cephfs/">file</a> storage. It supports both replicated and erasure coded storage.</p>
 <ol>
 <li>Install <a href="https://microk8s.io/docs/how-to-ceph">MicroCeph</a>
     <div class="highlight"><span class="filename">On all nodes</span><pre><span></span><code>sudo<span class="w"> </span>snap<span class="w"> </span>install<span class="w"> </span>microceph<span class="w"> </span>--channel<span class="o">=</span>latest/edge

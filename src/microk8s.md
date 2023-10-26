@@ -17,7 +17,7 @@ These are the high level steps we'll be following:
 
 #### MicroCeph Clustering
 
-Ceph provides [block](https://docs.ceph.com/en/latest/rbd/), [object](https://docs.ceph.com/en/latest/radosgw/), and [file](https://docs.ceph.com/en/latest/cephfs/) storage.
+Ceph provides [block](https://docs.ceph.com/en/latest/rbd/), [object](https://docs.ceph.com/en/latest/radosgw/), and [file](https://docs.ceph.com/en/latest/cephfs/) storage. It supports both replicated and erasure coded storage.
 
 1. Install [MicroCeph](https://microk8s.io/docs/how-to-ceph)
     ```sh title="On all nodes"
