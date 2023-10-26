@@ -160,6 +160,15 @@ Create the storage resources for your cluster using the info below.
     wget https://raw.githubusercontent.com/santisbon/reference/main/assets/k8s-storage.yaml
     nano k8s-storage.yaml # make any needed edits
     microk8s kubectl create -f k8s-storage.yaml
+
+    microk8s kubectl describe sc -A
+    # should show ceph-rbd and the new rook-ceph-block
+    microk8s kubectl describe CephBlockPool -A
+    # replicapool and ecpool
+
+    # To view all resources that `kubectl get all` doesn't get
+    microk8s kubectl api-resources --verbs=list --namespaced -o name | xargs -n 1 microk8s kubectl get --ignore-not-found --show-kind -n rook-ceph-external
+    microk8s kubectl api-resources --verbs=list --namespaced -o name | xargs -n 1 microk8s kubectl get --ignore-not-found --show-kind -n rook-ceph
     ```
 
 ### Manual setup

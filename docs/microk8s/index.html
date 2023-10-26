@@ -1103,6 +1103,15 @@ microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w
     <div class="highlight"><span class="filename">On the control plane</span><pre><span></span><code>wget<span class="w"> </span>https://raw.githubusercontent.com/santisbon/reference/main/assets/k8s-storage.yaml
 nano<span class="w"> </span>k8s-storage.yaml<span class="w"> </span><span class="c1"># make any needed edits</span>
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>k8s-storage.yaml
+
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>describe<span class="w"> </span>sc<span class="w"> </span>-A
+<span class="c1"># should show ceph-rbd and the new rook-ceph-block</span>
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>describe<span class="w"> </span>CephBlockPool<span class="w"> </span>-A
+<span class="c1"># replicapool and ecpool</span>
+
+<span class="c1"># To view all resources that `kubectl get all` doesn&#39;t get</span>
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>api-resources<span class="w"> </span>--verbs<span class="o">=</span>list<span class="w"> </span>--namespaced<span class="w"> </span>-o<span class="w"> </span>name<span class="w"> </span><span class="p">|</span><span class="w"> </span>xargs<span class="w"> </span>-n<span class="w"> </span><span class="m">1</span><span class="w"> </span>microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>--ignore-not-found<span class="w"> </span>--show-kind<span class="w"> </span>-n<span class="w"> </span>rook-ceph-external
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>api-resources<span class="w"> </span>--verbs<span class="o">=</span>list<span class="w"> </span>--namespaced<span class="w"> </span>-o<span class="w"> </span>name<span class="w"> </span><span class="p">|</span><span class="w"> </span>xargs<span class="w"> </span>-n<span class="w"> </span><span class="m">1</span><span class="w"> </span>microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>--ignore-not-found<span class="w"> </span>--show-kind<span class="w"> </span>-n<span class="w"> </span>rook-ceph
 </code></pre></div></p>
 </li>
 </ol>
