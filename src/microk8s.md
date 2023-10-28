@@ -144,7 +144,7 @@ Create the storage resources for your cluster using the info below.
     # Verify the name and namespace of the secrets containing the Ceph cluster admin credentials
     microk8s kubectl get secret -A
     # To see the secrets
-    ROOK_NAMESPACE=rook-ceph # rook-ceph-external
+    ROOK_NAMESPACE=rook-ceph-external # rook-ceph
     microk8s kubectl get secret rook-csi-rbd-provisioner -n $ROOK_NAMESPACE -o jsonpath='{.data.userID}' | base64 --decode ;echo
     microk8s kubectl get secret rook-csi-rbd-provisioner -n $ROOK_NAMESPACE -o jsonpath='{.data.userKey}' | base64 --decode ;echo
     microk8s kubectl get secret rook-csi-rbd-node -n $ROOK_NAMESPACE -o jsonpath='{.data.userID}' | base64 --decode ;echo
