@@ -29,7 +29,7 @@ apiVersion: ceph.rook.io/v1
 kind: CephBlockPool
 metadata:
   name: replicapool
-  namespace: rook-ceph
+  namespace: rook-ceph-external
 spec:
   failureDomain: host
   replicated:
@@ -42,7 +42,7 @@ apiVersion: ceph.rook.io/v1
 kind: CephBlockPool
 metadata:
   name: ecpool
-  namespace: rook-ceph
+  namespace: rook-ceph-external
 spec:
   failureDomain: osd
   erasureCoded:
@@ -60,7 +60,7 @@ metadata:
 provisioner: rook-ceph.rbd.csi.ceph.com
 parameters:
     # clusterID is the namespace where the rook cluster is running
-    clusterID: rook-ceph
+    clusterID: rook-ceph-external
     # Ceph pool into which the RBD image shall be created
     pool: replicapool
     # RBD image format. Defaults to "2".
