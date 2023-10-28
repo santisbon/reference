@@ -204,7 +204,9 @@ WIFI_PASSWORD='MyPassword'
 pbcopy < ~/.ssh/id_ed25519.pub
 KEY=$(pbpaste)
 ###################################################################
+```
 
+```sh title="On your laptop" 
 # create file for `cloud-init`
 cat << EOF > /Volumes/$VOLUME/user-data
 #cloud-config
