@@ -1051,8 +1051,7 @@ sudo<span class="w"> </span>microk8s<span class="w"> </span>connect-external-cep
 </code></pre></div></p>
 </li>
 </ol>
-<p>Now you can create a pod that uses the <code>ceph-rdb</code> storage class (which uses the <code>microk8s-rbd0</code> pool) for a persistent volume.<br />
-But to get more control you can <a href="https://rook.io/docs/rook/v1.12/Storage-Configuration/Block-Storage-RBD/block-storage/">provision and consume storage</a> by creating <a href="https://github.com/rook/rook/blob/release-1.12/deploy/examples/cluster-external.yaml"><code>CephCluster</code></a> and <code>CephBlockPool</code> CRs and a <code>StorageClass</code> as shown <a href="#storage">here</a>.</p>
+<p>Now you can create a pod that uses the <code>ceph-rdb</code> storage class (which uses the <code>microk8s-rbd0</code> pool) for a persistent volume.</p>
 <h4 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">#</a></h4>
 <div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code><span class="c1"># Check if MicroK8s is intalled and running with the addons enabled</span>
 microk8s<span class="w"> </span>status<span class="w"> </span>--wait-ready
@@ -1085,36 +1084,9 @@ sudo<span class="w"> </span>snap<span class="w"> </span>refresh<span class="w"> 
     <tr><td>3</td><td>3</td><td>2x</td><td>3</td><td>6</td></tr>
     <tr><td>16</td><td>4</td><td>1.25x</td><td>4</td><td>20</td></tr>
 </table></p>
-<div class="highlight"><span class="filename">On the control plane</span><pre><span></span><code><span class="c1"># Verify the name and namespace of the secrets containing the Ceph cluster admin credentials</span>
-microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>-A
-<span class="c1"># To see the secrets</span>
-<span class="nv">ROOK_NAMESPACE</span><span class="o">=</span>rook-ceph-external<span class="w"> </span><span class="c1"># rook-ceph</span>
-microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>rook-csi-rbd-provisioner<span class="w"> </span>-n<span class="w"> </span><span class="nv">$ROOK_NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.userID}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="p">;</span><span class="nb">echo</span>
-microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>rook-csi-rbd-provisioner<span class="w"> </span>-n<span class="w"> </span><span class="nv">$ROOK_NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.userKey}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="p">;</span><span class="nb">echo</span>
-microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>rook-csi-rbd-node<span class="w"> </span>-n<span class="w"> </span><span class="nv">$ROOK_NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.userID}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="p">;</span><span class="nb">echo</span>
-microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>rook-csi-rbd-node<span class="w"> </span>-n<span class="w"> </span><span class="nv">$ROOK_NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.userKey}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="p">;</span><span class="nb">echo</span>
-</code></pre></div>
 </li>
 <li>
-<p>Download the resource files, adjust for your environment, and apply them.
-    <div class="highlight"><span class="filename">On the control plane</span><pre><span></span><code><span class="c1"># To view all resources not included in kubectl get all</span>
-microk8s<span class="w"> </span>kubectl<span class="w"> </span>api-resources<span class="w"> </span>--verbs<span class="o">=</span>list<span class="w"> </span>--namespaced<span class="w"> </span>-o<span class="w"> </span>name<span class="w"> </span><span class="p">|</span><span class="w"> </span>xargs<span class="w"> </span>-n<span class="w"> </span><span class="m">1</span><span class="w"> </span>microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>--ignore-not-found<span class="w"> </span>--show-kind<span class="w"> </span>-n<span class="w"> </span>rook-ceph-external
-microk8s<span class="w"> </span>kubectl<span class="w"> </span>api-resources<span class="w"> </span>--verbs<span class="o">=</span>list<span class="w"> </span>--namespaced<span class="w"> </span>-o<span class="w"> </span>name<span class="w"> </span><span class="p">|</span><span class="w"> </span>xargs<span class="w"> </span>-n<span class="w"> </span><span class="m">1</span><span class="w"> </span>microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>--ignore-not-found<span class="w"> </span>--show-kind<span class="w"> </span>-n<span class="w"> </span>rook-ceph
-
-wget<span class="w"> </span>https://raw.githubusercontent.com/santisbon/reference/main/assets/rook-cluster-external.yaml
-microk8s<span class="w"> </span>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>rook-cluster-external.yaml
-
-wget<span class="w"> </span>https://raw.githubusercontent.com/santisbon/reference/main/assets/rook-storage-external.yaml
-microk8s<span class="w"> </span>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>rook-storage-external.yaml
-
-microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>sc<span class="w"> </span>-A
-microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>CephCluster<span class="w"> </span>-A
-microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>CephBlockPool<span class="w"> </span>-A
-
-microk8s<span class="w"> </span>kubectl<span class="w"> </span>describe<span class="w"> </span>sc<span class="w"> </span>-A
-microk8s<span class="w"> </span>kubectl<span class="w"> </span>describe<span class="w"> </span>CephCluster<span class="w"> </span>-A
-microk8s<span class="w"> </span>kubectl<span class="w"> </span>describe<span class="w"> </span>CephBlockPool<span class="w"> </span>-A
-</code></pre></div></p>
+<p>Create your k8s resources.</p>
 </li>
 </ol>
 <h3 id="manual-setup">Manual setup<a class="headerlink" href="#manual-setup" title="Permanent link">#</a></h3>
@@ -1265,6 +1237,21 @@ microk8s<span class="w"> </span>inspect
     <div class="highlight"><pre><span></span><code>cat<span class="w"> </span>/proc/cgroups
 </code></pre></div></li>
 <li>For other issues see <a href="https://microk8s.io/docs/troubleshooting">https://microk8s.io/docs/troubleshooting</a></li>
+<li>View resources
+    <div class="highlight"><span class="filename">On the control plane</span><pre><span></span><code><span class="c1"># To view all resources not included in kubectl get all</span>
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>api-resources<span class="w"> </span>--verbs<span class="o">=</span>list<span class="w"> </span>--namespaced<span class="w"> </span>-o<span class="w"> </span>name<span class="w"> </span><span class="p">|</span><span class="w"> </span>xargs<span class="w"> </span>-n<span class="w"> </span><span class="m">1</span><span class="w"> </span>microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>--ignore-not-found<span class="w"> </span>--show-kind<span class="w"> </span>-n<span class="w"> </span>rook-ceph-external
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>api-resources<span class="w"> </span>--verbs<span class="o">=</span>list<span class="w"> </span>--namespaced<span class="w"> </span>-o<span class="w"> </span>name<span class="w"> </span><span class="p">|</span><span class="w"> </span>xargs<span class="w"> </span>-n<span class="w"> </span><span class="m">1</span><span class="w"> </span>microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>--ignore-not-found<span class="w"> </span>--show-kind<span class="w"> </span>-n<span class="w"> </span>rook-ceph
+
+<span class="c1"># storage classes</span>
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>sc<span class="w"> </span>-A
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>describe<span class="w"> </span>sc<span class="w"> </span>-A
+
+<span class="c1"># secrets</span>
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>rook-csi-rbd-provisioner<span class="w"> </span>-n<span class="w"> </span><span class="nv">$ROOK_NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.userID}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="p">;</span><span class="nb">echo</span>
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>rook-csi-rbd-provisioner<span class="w"> </span>-n<span class="w"> </span><span class="nv">$ROOK_NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.userKey}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="p">;</span><span class="nb">echo</span>
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>rook-csi-rbd-node<span class="w"> </span>-n<span class="w"> </span><span class="nv">$ROOK_NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.userID}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="p">;</span><span class="nb">echo</span>
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>rook-csi-rbd-node<span class="w"> </span>-n<span class="w"> </span><span class="nv">$ROOK_NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.userKey}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="p">;</span><span class="nb">echo</span>
+</code></pre></div></li>
 </ul>
 
 

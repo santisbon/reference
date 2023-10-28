@@ -100,8 +100,7 @@ Ceph provides [block](https://docs.ceph.com/en/latest/rbd/), [object](https://do
     sudo microk8s connect-external-ceph
     ```
 
-Now you can create a pod that uses the `ceph-rdb` storage class (which uses the `microk8s-rbd0` pool) for a persistent volume.  
-But to get more control you can [provision and consume storage](https://rook.io/docs/rook/v1.12/Storage-Configuration/Block-Storage-RBD/block-storage/) by creating [`CephCluster`](https://github.com/rook/rook/blob/release-1.12/deploy/examples/cluster-external.yaml) and `CephBlockPool` CRs and a `StorageClass` as shown [here](#storage).
+Now you can create a pod that uses the `ceph-rdb` storage class (which uses the `microk8s-rbd0` pool) for a persistent volume.
 
 #### Configuration
 
@@ -140,37 +139,7 @@ Create the storage resources for your cluster using the info below.
         <tr><td>16</td><td>4</td><td>1.25x</td><td>4</td><td>20</td></tr>
     </table>
 
-    ```sh title="On the control plane"
-    # Verify the name and namespace of the secrets containing the Ceph cluster admin credentials
-    microk8s kubectl get secret -A
-    # To see the secrets
-    ROOK_NAMESPACE=rook-ceph-external # rook-ceph
-    microk8s kubectl get secret rook-csi-rbd-provisioner -n $ROOK_NAMESPACE -o jsonpath='{.data.userID}' | base64 --decode ;echo
-    microk8s kubectl get secret rook-csi-rbd-provisioner -n $ROOK_NAMESPACE -o jsonpath='{.data.userKey}' | base64 --decode ;echo
-    microk8s kubectl get secret rook-csi-rbd-node -n $ROOK_NAMESPACE -o jsonpath='{.data.userID}' | base64 --decode ;echo
-    microk8s kubectl get secret rook-csi-rbd-node -n $ROOK_NAMESPACE -o jsonpath='{.data.userKey}' | base64 --decode ;echo
-    ```
-
-2. Download the resource files, adjust for your environment, and apply them.
-    ```sh title="On the control plane"
-    # To view all resources not included in kubectl get all
-    microk8s kubectl api-resources --verbs=list --namespaced -o name | xargs -n 1 microk8s kubectl get --ignore-not-found --show-kind -n rook-ceph-external
-    microk8s kubectl api-resources --verbs=list --namespaced -o name | xargs -n 1 microk8s kubectl get --ignore-not-found --show-kind -n rook-ceph
-
-    wget https://raw.githubusercontent.com/santisbon/reference/main/assets/rook-cluster-external.yaml
-    microk8s kubectl apply -f rook-cluster-external.yaml
-
-    wget https://raw.githubusercontent.com/santisbon/reference/main/assets/rook-storage-external.yaml
-    microk8s kubectl apply -f rook-storage-external.yaml
-
-    microk8s kubectl get sc -A
-    microk8s kubectl get CephCluster -A
-    microk8s kubectl get CephBlockPool -A
-
-    microk8s kubectl describe sc -A
-    microk8s kubectl describe CephCluster -A
-    microk8s kubectl describe CephBlockPool -A
-    ```
+2. Create your k8s resources.
 
 ### Manual setup
 
@@ -358,3 +327,19 @@ sudo microk8s kubectl-minio tenant status microk8s
     cat /proc/cgroups
     ```
 * For other issues see [https://microk8s.io/docs/troubleshooting](https://microk8s.io/docs/troubleshooting)
+* View resources
+    ```sh title="On the control plane"
+    # To view all resources not included in kubectl get all
+    microk8s kubectl api-resources --verbs=list --namespaced -o name | xargs -n 1 microk8s kubectl get --ignore-not-found --show-kind -n rook-ceph-external
+    microk8s kubectl api-resources --verbs=list --namespaced -o name | xargs -n 1 microk8s kubectl get --ignore-not-found --show-kind -n rook-ceph
+
+    # storage classes
+    microk8s kubectl get sc -A
+    microk8s kubectl describe sc -A
+
+    # secrets
+    microk8s kubectl get secret rook-csi-rbd-provisioner -n $ROOK_NAMESPACE -o jsonpath='{.data.userID}' | base64 --decode ;echo
+    microk8s kubectl get secret rook-csi-rbd-provisioner -n $ROOK_NAMESPACE -o jsonpath='{.data.userKey}' | base64 --decode ;echo
+    microk8s kubectl get secret rook-csi-rbd-node -n $ROOK_NAMESPACE -o jsonpath='{.data.userID}' | base64 --decode ;echo
+    microk8s kubectl get secret rook-csi-rbd-node -n $ROOK_NAMESPACE -o jsonpath='{.data.userKey}' | base64 --decode ;echo
+    ```
