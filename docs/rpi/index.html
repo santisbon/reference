@@ -1361,8 +1361,8 @@ pv<span class="w"> </span><span class="nv">$IMAGE</span><span class="w"> </span>
 pbcopy<span class="w"> </span>&lt;<span class="w"> </span>~/.ssh/id_ed25519.pub
 <span class="nv">KEY</span><span class="o">=</span><span class="k">$(</span>pbpaste<span class="k">)</span>
 <span class="c1">###################################################################</span>
-
-<span class="c1"># create file for `cloud-init`</span>
+</code></pre></div></p>
+<div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code><span class="c1"># create file for `cloud-init`</span>
 cat<span class="w"> </span><span class="s">&lt;&lt; EOF &gt; /Volumes/$VOLUME/user-data</span>
 <span class="s">#cloud-config</span>
 
@@ -1434,7 +1434,7 @@ cat<span class="w"> </span><span class="s">&lt;&lt; EOF &gt; /Volumes/$VOLUME/us
 
 <span class="c1"># For Kubernetes to run on the Pi, add these options at the end of the file.</span>
 sed<span class="w"> </span>-i<span class="w"> </span><span class="s2">&quot;&quot;</span><span class="w"> </span><span class="s2">&quot;</span>$<span class="s2"> s/</span>$<span class="s2">/ cgroup_enable=memory cgroup_memory=1/&quot;</span><span class="w"> </span>/Volumes/<span class="nv">$VOLUME</span>/cmdline.txt
-</code></pre></div></p>
+</code></pre></div>
 <p>You can verify that the files were written correctly
 <div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code>cat<span class="w"> </span>/Volumes/<span class="nv">$VOLUME</span>/user-data
 cat<span class="w"> </span>/Volumes/<span class="nv">$VOLUME</span>/cmdline.txt
