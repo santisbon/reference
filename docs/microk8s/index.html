@@ -995,15 +995,12 @@ snap<span class="w"> </span>info<span class="w"> </span>microceph<span class="w"
     <div class="highlight"><span class="filename">On each node you want to add to the cluster</span><pre><span></span><code>sudo<span class="w"> </span>microceph<span class="w"> </span>cluster<span class="w"> </span>join<span class="w"> </span><span class="nv">$JOIN_TOKEN</span>
 </code></pre></div></li>
 <li>Allocate disks and add the disks as OSDs.
-    <div class="highlight"><span class="filename">On the control plane</span><pre><span></span><code>sudo<span class="w"> </span>ceph<span class="w"> </span>status<span class="w"> </span><span class="c1"># microceph.ceph status</span>
-<span class="c1"># HEALTH_WARN with no OSDs</span>
-</code></pre></div>
     <div class="highlight"><span class="filename">On each node</span><pre><span></span><code><span class="c1"># After adding physical or virtual disks to your node/VM</span>
 <span class="c1"># for each disk</span>
 sudo<span class="w"> </span>microceph<span class="w"> </span>disk<span class="w"> </span>add<span class="w"> </span>/dev/sdb<span class="w"> </span>--wipe<span class="w"> </span><span class="c1"># whatever device name your disk has</span>
 </code></pre></div>
     Alternatively, you can create virtual disks as loop devices (a special block device that maps to a file).
-    <div class="highlight"><span class="filename">On each node</span><pre><span></span><code><span class="k">for</span><span class="w"> </span>l<span class="w"> </span><span class="k">in</span><span class="w"> </span>a<span class="w"> </span>b<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+    <div class="highlight"><span class="filename">On each node</span><pre><span></span><code><span class="k">for</span><span class="w"> </span>l<span class="w"> </span><span class="k">in</span><span class="w"> </span>a<span class="w"> </span>b<span class="w"> </span>c<span class="p">;</span><span class="w"> </span><span class="k">do</span>
 <span class="w">    </span><span class="nv">loop_file</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>sudo<span class="w"> </span>mktemp<span class="w"> </span>-p<span class="w"> </span>/mnt<span class="w"> </span>XXXX.img<span class="k">)</span><span class="s2">&quot;</span>
 <span class="w">    </span>sudo<span class="w"> </span>truncate<span class="w"> </span>-s<span class="w"> </span>60G<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">loop_file</span><span class="si">}</span><span class="s2">&quot;</span>
 <span class="w">    </span><span class="nv">loop_dev</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>sudo<span class="w"> </span>losetup<span class="w"> </span>--show<span class="w"> </span>-f<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">loop_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="k">)</span><span class="s2">&quot;</span>
@@ -1018,15 +1015,8 @@ sudo<span class="w"> </span>microceph<span class="w"> </span>disk<span class="w"
 <li>Verify
     <div class="highlight"><span class="filename">On each node</span><pre><span></span><code>lsblk
 </code></pre></div>
-    <div class="highlight"><span class="filename">On the control plane (or any ceph node, really)</span><pre><span></span><code>sudo<span class="w"> </span>microceph<span class="w"> </span>status<span class="w"> </span><span class="c1"># deployment summary</span>
-sudo<span class="w"> </span>microceph<span class="w"> </span>disk<span class="w"> </span>list
-sudo<span class="w"> </span>ceph<span class="w"> </span>osd<span class="w"> </span>metadata<span class="w"> </span><span class="nv">$OSD_ID</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>osd_objectstore<span class="w"> </span><span class="c1"># check that it&#39;s a bluestore OSD</span>
-
-sudo<span class="w"> </span>ceph<span class="w"> </span>status<span class="w"> </span><span class="c1"># detailed status</span>
+    <div class="highlight"><span class="filename">On the control plane (or any ceph node, really)</span><pre><span></span><code>sudo<span class="w"> </span>ceph<span class="w"> </span>status<span class="w"> </span><span class="c1"># detailed status</span>
 <span class="c1"># HEALTH_OK with all OSDs showing</span>
-
-sudo<span class="w"> </span>ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>ls<span class="w"> </span>detail<span class="w"> </span>-f<span class="w"> </span>json-pretty<span class="w"> </span><span class="c1"># list the pools with all details</span>
-sudo<span class="w"> </span>ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>stats<span class="w"> </span><span class="c1"># obtain stats from all pools, or from specified pool</span>
 </code></pre></div>
     Learn more about <a href="https://docs.ceph.com/en/latest/rados/operations/pools/">pools</a>.</li>
 </ol>
@@ -1086,7 +1076,7 @@ sudo<span class="w"> </span>snap<span class="w"> </span>refresh<span class="w"> 
 </table></p>
 </li>
 <li>
-<p>Create your k8s resources.</p>
+<p>Create your k8s resources (pods, deployments, etc.).</p>
 </li>
 </ol>
 <h3 id="manual-setup">Manual setup<a class="headerlink" href="#manual-setup" title="Permanent link">#</a></h3>
@@ -1219,26 +1209,31 @@ microk8s<span class="w"> </span>kubectl-minio<span class="w"> </span>proxy
 </code></pre></div></p>
 <h3 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">#</a></h3>
 <ul>
-<li>
-<p>I see <code>cloud-init</code> had failures.<br />
+<li>I see <code>cloud-init</code> had failures.<br />
     Based on the <code>user-data</code> file:
     Manually run <code>sudo apt update</code>, <code>sudo apt full-upgrade</code>.<br />
     Manually run <code>sudo apt install</code> on any packages that failed.<br />
-    Manually add any kernel modules you need and make sure <code>/etc/modules-load.d/modules.conf</code> has them so they'll be added on every boot.</p>
-</li>
-<li>
-<p>I want to check all k8s endpoints or inspect the instance.
+    Manually add any kernel modules you need and make sure <code>/etc/modules-load.d/modules.conf</code> has them so they'll be added on every boot.</li>
+<li>I want to check all k8s endpoints or inspect the instance.
     <div class="highlight"><pre><span></span><code>microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>endpoints<span class="w"> </span>-A
 microk8s<span class="w"> </span>inspect
-</code></pre></div></p>
-</li>
+</code></pre></div></li>
 <li>I'm not sure cgroups are enabled.<br />
     MicroK8s might not recognize that cgroup memory is enabled but you can check with 
     <div class="highlight"><pre><span></span><code>cat<span class="w"> </span>/proc/cgroups
 </code></pre></div></li>
 <li>For other issues see <a href="https://microk8s.io/docs/troubleshooting">https://microk8s.io/docs/troubleshooting</a></li>
 <li>View resources
-    <div class="highlight"><span class="filename">On the control plane</span><pre><span></span><code><span class="c1"># To view all resources not included in kubectl get all</span>
+    <div class="highlight"><span class="filename">On the control plane</span><pre><span></span><code>sudo<span class="w"> </span>microceph<span class="w"> </span>status<span class="w"> </span><span class="c1"># deployment summary</span>
+sudo<span class="w"> </span>microceph<span class="w"> </span>disk<span class="w"> </span>list
+sudo<span class="w"> </span>ceph<span class="w"> </span>osd<span class="w"> </span>metadata<span class="w"> </span><span class="nv">$OSD_ID</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>osd_objectstore<span class="w"> </span><span class="c1"># check that it&#39;s a bluestore OSD</span>
+
+sudo<span class="w"> </span>ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>ls<span class="w"> </span>detail<span class="w"> </span>-f<span class="w"> </span>json-pretty<span class="w"> </span><span class="c1"># list the pools with all details</span>
+sudo<span class="w"> </span>ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>stats<span class="w"> </span><span class="c1"># obtain stats from all pools, or from specified pool</span>
+
+<span class="c1">##########################################################################################</span>
+
+<span class="c1"># To view all resources not included in kubectl get all</span>
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>api-resources<span class="w"> </span>--verbs<span class="o">=</span>list<span class="w"> </span>--namespaced<span class="w"> </span>-o<span class="w"> </span>name<span class="w"> </span><span class="p">|</span><span class="w"> </span>xargs<span class="w"> </span>-n<span class="w"> </span><span class="m">1</span><span class="w"> </span>microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>--ignore-not-found<span class="w"> </span>--show-kind<span class="w"> </span>-n<span class="w"> </span>rook-ceph-external
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>api-resources<span class="w"> </span>--verbs<span class="o">=</span>list<span class="w"> </span>--namespaced<span class="w"> </span>-o<span class="w"> </span>name<span class="w"> </span><span class="p">|</span><span class="w"> </span>xargs<span class="w"> </span>-n<span class="w"> </span><span class="m">1</span><span class="w"> </span>microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>--ignore-not-found<span class="w"> </span>--show-kind<span class="w"> </span>-n<span class="w"> </span>rook-ceph
 

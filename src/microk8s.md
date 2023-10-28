@@ -37,10 +37,6 @@ Ceph provides [block](https://docs.ceph.com/en/latest/rbd/), [object](https://do
     sudo microceph cluster join $JOIN_TOKEN
     ```
 3. Allocate disks and add the disks as OSDs.
-    ```sh title="On the control plane"
-    sudo ceph status # microceph.ceph status
-    # HEALTH_WARN with no OSDs
-    ```
     ```sh title="On each node"
     # After adding physical or virtual disks to your node/VM
     # for each disk
@@ -48,7 +44,7 @@ Ceph provides [block](https://docs.ceph.com/en/latest/rbd/), [object](https://do
     ```
     Alternatively, you can create virtual disks as loop devices (a special block device that maps to a file).
     ```sh title="On each node"
-    for l in a b; do
+    for l in a b c; do
         loop_file="$(sudo mktemp -p /mnt XXXX.img)"
         sudo truncate -s 60G "${loop_file}"
         loop_dev="$(sudo losetup --show -f "${loop_file}")"
@@ -65,15 +61,8 @@ Ceph provides [block](https://docs.ceph.com/en/latest/rbd/), [object](https://do
     lsblk
     ```
     ```sh title="On the control plane (or any ceph node, really)"
-    sudo microceph status # deployment summary
-    sudo microceph disk list
-    sudo ceph osd metadata $OSD_ID | grep osd_objectstore # check that it's a bluestore OSD
-    
     sudo ceph status # detailed status
     # HEALTH_OK with all OSDs showing
-    
-    sudo ceph osd pool ls detail -f json-pretty # list the pools with all details
-    sudo ceph osd pool stats # obtain stats from all pools, or from specified pool
     ```
     Learn more about [pools](https://docs.ceph.com/en/latest/rados/operations/pools/).
 
@@ -139,7 +128,7 @@ Create the storage resources for your cluster using the info below.
         <tr><td>16</td><td>4</td><td>1.25x</td><td>4</td><td>20</td></tr>
     </table>
 
-2. Create your k8s resources.
+2. Create your k8s resources (pods, deployments, etc.).
 
 ### Manual setup
 
@@ -315,7 +304,6 @@ sudo microk8s kubectl-minio tenant status microk8s
     Manually run `sudo apt update`, `sudo apt full-upgrade`.  
     Manually run `sudo apt install` on any packages that failed.  
     Manually add any kernel modules you need and make sure `/etc/modules-load.d/modules.conf` has them so they'll be added on every boot.
-
 * I want to check all k8s endpoints or inspect the instance.
     ```sh
     microk8s kubectl get endpoints -A
@@ -329,6 +317,15 @@ sudo microk8s kubectl-minio tenant status microk8s
 * For other issues see [https://microk8s.io/docs/troubleshooting](https://microk8s.io/docs/troubleshooting)
 * View resources
     ```sh title="On the control plane"
+    sudo microceph status # deployment summary
+    sudo microceph disk list
+    sudo ceph osd metadata $OSD_ID | grep osd_objectstore # check that it's a bluestore OSD
+    
+    sudo ceph osd pool ls detail -f json-pretty # list the pools with all details
+    sudo ceph osd pool stats # obtain stats from all pools, or from specified pool
+
+    ##########################################################################################
+    
     # To view all resources not included in kubectl get all
     microk8s kubectl api-resources --verbs=list --namespaced -o name | xargs -n 1 microk8s kubectl get --ignore-not-found --show-kind -n rook-ceph-external
     microk8s kubectl api-resources --verbs=list --namespaced -o name | xargs -n 1 microk8s kubectl get --ignore-not-found --show-kind -n rook-ceph
