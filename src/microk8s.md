@@ -46,9 +46,9 @@ Ceph provides [block](https://docs.ceph.com/en/latest/rbd/), [object](https://do
     # for each disk
     sudo microceph disk add /dev/sdb --wipe # whatever device name your disk has
     ```
-    Alternatively, you can create virtual disks as loop devices (a special block device that maps to a file). This example creates three 60G disks as loop devices.
+    Alternatively, you can create virtual disks as loop devices (a special block device that maps to a file).
     ```sh title="On each node"
-    for l in a b c; do
+    for l in a b; do
         loop_file="$(sudo mktemp -p /mnt XXXX.img)"
         sudo truncate -s 60G "${loop_file}"
         loop_dev="$(sudo losetup --show -f "${loop_file}")"
@@ -157,15 +157,17 @@ Create the storage resources for your cluster using the info below.
     microk8s kubectl get secret rook-csi-rbd-node -n $ROOK_NAMESPACE -o jsonpath='{.data.userKey}' | base64 --decode ;echo
     ```
 
-2. Download [`k8s-storage.yaml`](https://github.com/santisbon/reference/tree/main/assets/k8s-storage.yaml), adjust for your environment and apply it.
+2. Download the resource files, adjust for your environment, and apply them.
     ```sh title="On the control plane"
-    # To view all resources that `kubectl get all` doesn't get
+    # To view all resources not included in kubectl get all
     microk8s kubectl api-resources --verbs=list --namespaced -o name | xargs -n 1 microk8s kubectl get --ignore-not-found --show-kind -n rook-ceph-external
     microk8s kubectl api-resources --verbs=list --namespaced -o name | xargs -n 1 microk8s kubectl get --ignore-not-found --show-kind -n rook-ceph
 
-    wget https://raw.githubusercontent.com/santisbon/reference/main/assets/k8s-storage.yaml
-    nano k8s-storage.yaml # make any needed edits
-    microk8s kubectl apply -f k8s-storage.yaml
+    wget https://raw.githubusercontent.com/santisbon/reference/main/assets/rook-cluster-external.yaml
+    microk8s kubectl apply -f rook-cluster-external.yaml
+
+    wget https://raw.githubusercontent.com/santisbon/reference/main/assets/rook-storage-external.yaml
+    microk8s kubectl apply -f rook-storage-external.yaml
 
     microk8s kubectl get sc -A
     microk8s kubectl get CephCluster -A
