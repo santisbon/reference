@@ -32,6 +32,7 @@ Ceph provides [block](https://docs.ceph.com/en/latest/rbd/), [object](https://do
     sudo microceph cluster add $NODE_HOSTNAME
     # get the join token for the node
     ```
+    It's best to have an [odd number of monitors](https://access.redhat.com/documentation/en-us/red_hat_ceph_storage/3/html/operations_guide/managing-the-storage-cluster-size) because Ceph needs a majority of monitors to be running e.g. 2 out of 3.
     ```sh title="On each node you want to add to the cluster"
     sudo microceph cluster join $JOIN_TOKEN
     ```
@@ -94,32 +95,32 @@ Ceph provides [block](https://docs.ceph.com/en/latest/rbd/), [object](https://do
 2. Connect your MicroK8s cluster to your MicroCeph cluster. We'll be using [Rook Ceph](https://rook.io/docs/rook/v1.12/Getting-Started/quickstart/#storage).
     ```sh title="On the control plane"
     microk8s enable rook-ceph
+    microk8s kubectl --namespace rook-ceph get pods -l "app=rook-ceph-operator"
+    # wait for the operator pod to be `Running`
     sudo microk8s connect-external-ceph
     ```
 3. Verify
     ```sh title="On the control plane"
     microk8s kubectl describe sc -A
     # Name:         ceph-rbd
-    # Parameters:   clusterID=rook-ceph-external,
-    #               pool=microk8s-rbd0
     # ...
-
-    microk8s kubectl describe CephBlockPool -A
-    # No resources found
     ```
 
-Now you can create a pod that uses the `ceph-rdb` storage class (which uses the `microk8s-rbd0` pool) for a persistent volume but to get more control you can [provision and consume storage](https://rook.io/docs/rook/v1.12/Storage-Configuration/Block-Storage-RBD/block-storage/) by creating a `CephBlockPool` CR and a `StorageClass` as shown [here](#storage).
+Now you can create a pod that uses the `ceph-rdb` storage class (which uses the `microk8s-rbd0` pool) for a persistent volume.  
+But to get more control you can [provision and consume storage](https://rook.io/docs/rook/v1.12/Storage-Configuration/Block-Storage-RBD/block-storage/) by creating [`CephCluster`](https://github.com/rook/rook/blob/release-1.12/deploy/examples/cluster-external.yaml) and `CephBlockPool` CRs and a `StorageClass` as shown [here](#storage).
 
-#### MicroK8s config
+#### Configuration
 
 ```sh title="On your Pi"
 # Check if MicroK8s is intalled and running with the addons enabled
 microk8s status --wait-ready
 microk8s kubectl cluster-info
 
+# How to stop/start
 microk8s stop
 microk8s start
-# Examples:
+
+# Add-on Examples:
 microk8s enable metrics-server
 microk8s enable ingress
 microk8s enable dashboard
@@ -149,26 +150,30 @@ Create the storage resources for your cluster using the info below.
     # Verify the name and namespace of the secrets containing the Ceph cluster admin credentials
     microk8s kubectl get secret -A
     # To see the secrets
-    microk8s kubectl get secret rook-csi-rbd-provisioner -n rook-ceph-external -o jsonpath='{.data.userID}' | base64 --decode ;echo
-    microk8s kubectl get secret rook-csi-rbd-provisioner -n rook-ceph-external -o jsonpath='{.data.userKey}' | base64 --decode ;echo
-    microk8s kubectl get secret rook-csi-rbd-node -n rook-ceph-external -o jsonpath='{.data.userID}' | base64 --decode ;echo
-    microk8s kubectl get secret rook-csi-rbd-node -n rook-ceph-external -o jsonpath='{.data.userKey}' | base64 --decode ;echo
+    ROOK_NAMESPACE=rook-ceph # rook-ceph-external
+    microk8s kubectl get secret rook-csi-rbd-provisioner -n $ROOK_NAMESPACE -o jsonpath='{.data.userID}' | base64 --decode ;echo
+    microk8s kubectl get secret rook-csi-rbd-provisioner -n $ROOK_NAMESPACE -o jsonpath='{.data.userKey}' | base64 --decode ;echo
+    microk8s kubectl get secret rook-csi-rbd-node -n $ROOK_NAMESPACE -o jsonpath='{.data.userID}' | base64 --decode ;echo
+    microk8s kubectl get secret rook-csi-rbd-node -n $ROOK_NAMESPACE -o jsonpath='{.data.userKey}' | base64 --decode ;echo
     ```
 
 2. Download [`k8s-storage.yaml`](https://github.com/santisbon/reference/tree/main/assets/k8s-storage.yaml), adjust for your environment and apply it.
     ```sh title="On the control plane"
-    wget https://raw.githubusercontent.com/santisbon/reference/main/assets/k8s-storage.yaml
-    nano k8s-storage.yaml # make any needed edits
-    microk8s kubectl create -f k8s-storage.yaml
-
-    microk8s kubectl describe sc -A
-    # should show ceph-rbd and the new rook-ceph-block
-    microk8s kubectl describe CephBlockPool -A
-    # replicapool and ecpool
-
     # To view all resources that `kubectl get all` doesn't get
     microk8s kubectl api-resources --verbs=list --namespaced -o name | xargs -n 1 microk8s kubectl get --ignore-not-found --show-kind -n rook-ceph-external
     microk8s kubectl api-resources --verbs=list --namespaced -o name | xargs -n 1 microk8s kubectl get --ignore-not-found --show-kind -n rook-ceph
+
+    wget https://raw.githubusercontent.com/santisbon/reference/main/assets/k8s-storage.yaml
+    nano k8s-storage.yaml # make any needed edits
+    microk8s kubectl apply -f k8s-storage.yaml
+
+    microk8s kubectl get sc -A
+    microk8s kubectl get CephCluster -A
+    microk8s kubectl get CephBlockPool -A
+
+    microk8s kubectl describe sc -A
+    microk8s kubectl describe CephCluster -A
+    microk8s kubectl describe CephBlockPool -A
     ```
 
 ### Manual setup

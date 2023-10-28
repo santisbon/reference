@@ -2,6 +2,30 @@
 # Pool device class can be ssd, nvme, hdd.
 
 apiVersion: ceph.rook.io/v1
+kind: CephCluster
+metadata:
+  name: rook-ceph-external
+  namespace: rook-ceph-external # namespace:cluster
+spec:
+  external:
+    enable: true
+  crashCollector:
+    disable: true
+  healthCheck:
+    daemonHealth:
+      mon:
+        disabled: false
+        interval: 45s
+  # optionally, the ceph-mgr IP address can be passed to gather metric from the prometheus exporter
+  # monitoring:
+  #   enabled: true
+  #   externalMgrEndpoints:
+  #   - ip: ip
+  #     externalMgrPrometheusPort: 9283
+  
+---
+
+apiVersion: ceph.rook.io/v1
 kind: CephBlockPool
 metadata:
   name: replicapool
@@ -22,8 +46,8 @@ metadata:
 spec:
   failureDomain: osd
   erasureCoded:
-    dataChunks: 3
-    codingChunks: 3
+    dataChunks: 2
+    codingChunks: 2
   deviceClass: ssd
 
 ---
