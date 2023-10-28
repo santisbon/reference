@@ -363,3 +363,4 @@ sudo microk8s kubectl-minio tenant status microk8s
     ```sh
     cat /proc/cgroups
     ```
+* For other issues see [https://microk8s.io/docs/troubleshooting](https://microk8s.io/docs/troubleshooting)
