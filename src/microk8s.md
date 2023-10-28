@@ -99,12 +99,6 @@ Ceph provides [block](https://docs.ceph.com/en/latest/rbd/), [object](https://do
     # wait for the operator pod to be `Running`
     sudo microk8s connect-external-ceph
     ```
-3. Verify
-    ```sh title="On the control plane"
-    microk8s kubectl describe sc -A
-    # Name:         ceph-rbd
-    # ...
-    ```
 
 Now you can create a pod that uses the `ceph-rdb` storage class (which uses the `microk8s-rbd0` pool) for a persistent volume.  
 But to get more control you can [provision and consume storage](https://rook.io/docs/rook/v1.12/Storage-Configuration/Block-Storage-RBD/block-storage/) by creating [`CephCluster`](https://github.com/rook/rook/blob/release-1.12/deploy/examples/cluster-external.yaml) and `CephBlockPool` CRs and a `StorageClass` as shown [here](#storage).
