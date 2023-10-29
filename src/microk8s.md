@@ -4,6 +4,9 @@ Suitable for Raspberry Pi and other lightweight environments. [Learn  more](http
 
 #### Overview
 
+!!! attention
+    MicroK8s is not available for 32-bit architectures like `armhf`(`arm/v7`), only on 64-bit architectures like `arm64` and `amd64`.
+
 Ceph provides [block](https://docs.ceph.com/en/latest/rbd/), [object](https://docs.ceph.com/en/latest/radosgw/), and [file](https://docs.ceph.com/en/latest/cephfs/) storage. It supports both replicated and erasure coded storage.
 
 Option 1 (Recommended)
@@ -50,6 +53,18 @@ Imports external cluster but does not create `CephCluster` or `CephBlockPool` ob
     lsblk
     ls -al  /dev/sdi*
     ```
+5. Review storage concepts like replication vs erasure coding.  
+    Erasure Coding  
+
+    <table>
+        <tr><th>Data chunks (k)</th><th>Coding chunks (m)</th><th>Total storage</th><th>Losses Tolerated (m)</th><th>OSDs required (k+m)</th></tr>
+        <tr><td>2</td><td>1</td><td>1.5x</td><td>1</td><td>3</td></tr>
+        <tr><td>2</td><td>2</td><td>2x</td><td>2</td><td>4</td></tr>
+        <tr><td>4</td><td>2</td><td>1.5x</td><td>2</td><td>6</td></tr>
+        <tr><td>3</td><td>3</td><td>2x</td><td>3</td><td>6</td></tr>
+        <tr><td>16</td><td>4</td><td>1.25x</td><td>4</td><td>20</td></tr>
+    </table>
+
 
 #### MicroCeph Clustering
 
@@ -107,12 +122,12 @@ Imports external cluster but does not create `CephCluster` or `CephBlockPool` ob
     # wait for the operator pod to be `Running`
     ```
     Option 1 - To deploy [Ceph on the MicroK8s cluster using storage from the k8s nodes](https://rook.io/docs/rook/latest-release/CRDs/Cluster/ceph-cluster-crd/)
-    ```sh
+    ```sh title="On the control plane node"
     # if you want `dataDirHostPath` to specify where config and data should be stored for each of the services
     microk8s enable hostpath-storage
     ```
     Create the cluster and storage resources like in these [examples](https://rook.io/docs/rook/v1.12/Getting-Started/example-configurations/#cluster-crd). You'll probably want a customized version to match your environment as I do here for my 2-node cluster:
-    ```sh
+    ```sh title="On the control plane node"
     wget https://raw.githubusercontent.com/santisbon/reference/main/assets/rook-cluster.yaml
     wget https://raw.githubusercontent.com/santisbon/reference/main/assets/rook-storageclass.yaml
     wget https://raw.githubusercontent.com/santisbon/reference/main/assets/rook-storageclass-ec.yaml
@@ -124,20 +139,22 @@ Imports external cluster but does not create `CephCluster` or `CephBlockPool` ob
     ```
 
     Option 2 - If you set up an external MicroCeph cluster:
-    ```sh
+    ```sh title="On the control plane node"
     sudo microk8s connect-external-ceph
+    # Now you can create a pod that uses the `ceph-rdb` storage class (which uses the `microk8s-rbd0` pool) for a persistent volume.
     ```
 
-Now you can create a pod that uses the `ceph-rdb` storage class (which uses the `microk8s-rbd0` pool) for a persistent volume.
+#### Usage
 
-#### Configuration
-
-```sh title="On your Pi"
+```sh title="On the control plane node"
 # Check if MicroK8s is intalled and running with the addons enabled
 microk8s status --wait-ready
 microk8s kubectl cluster-info
+microk8s kubectl get all --all-namespaces
+watch microk8s kubectl get all
 
 # How to stop/start
+microk8s reset
 microk8s stop
 microk8s start
 
@@ -147,91 +164,37 @@ microk8s enable metrics-server
 microk8s enable ingress
 microk8s enable dashboard
 
+alias mkctl="microk8s kubectl"
+alias mkhelm="microk8s helm"
+mkctl version --output=yaml
+
 # If you ever want to update MicroK8s to another channel. Tip: use a specific channel number.
 snap info microk8s
 sudo snap refresh microk8s --channel=latest/stable
+
+# Arguments for log rotation `--container-log-max-files` and `--container-log-max-size`. They have default values. 
+cat /var/snap/microk8s/current/args/kubelet
 ```
+[More info](https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/).
 
-##### Storage
-
-Create the storage resources for your cluster using the info below.
-
-1. Review needed info  
-    Erasure Coding  
-
-    <table>
-        <tr><th>Data chunks (k)</th><th>Coding chunks (m)</th><th>Total storage</th><th>Losses Tolerated (m)</th><th>OSDs required (k+m)</th></tr>
-        <tr><td>2</td><td>1</td><td>1.5x</td><td>1</td><td>3</td></tr>
-        <tr><td>2</td><td>2</td><td>2x</td><td>2</td><td>4</td></tr>
-        <tr><td>4</td><td>2</td><td>1.5x</td><td>2</td><td>6</td></tr>
-        <tr><td>3</td><td>3</td><td>2x</td><td>3</td><td>6</td></tr>
-        <tr><td>16</td><td>4</td><td>1.25x</td><td>4</td><td>20</td></tr>
-    </table>
-
-2. Create your k8s resources (pods, deployments, etc.).
-
-### Manual setup
-
-!!! attention
-    MicroK8s is not available for 32-bit architectures like `armhf`(`arm/v7`), only on 64-bit architectures like `arm64` and `amd64`.
+### Other SBCs/OSs
 
 !!! attention 
-    On Raspberry Pi your boot parameters file might be in `/boot/cmdline.txt` or in `/boot/firmware/cmdline.txt`. Find it with `sudo find /boot -name cmdline.txt`.  
-
-On Raspberry Pi you need to enable c-groups so the kubelet will work out of the box.  
-Add these options at the end of the file, then `sudo reboot`. Some users report needing `cgroup_enable=cpuset` as well but try adding only these:
-``` title="cmdline.txt"
-cgroup_enable=memory cgroup_memory=1
-```
+    Your boot parameters file might be in `/boot/cmdline.txt` or in `/boot/firmware/cmdline.txt`. Find it with `sudo find /boot -name cmdline.txt`.  
 
 !!! attention
-    On Orange Pi boards these parameters are handled in `/boot/boot.cmd` by checking:  
+    On Orange Pi boards cgroups are handled in `/boot/boot.cmd` by checking:  
     `if test "${docker_optimizations}" = "on"`.  
 
     Don't edit this file, instead `sudo nano /boot/orangepiEnv.txt` and set `docker_optimizations` to `on`.
 
-If your image doesn't already include it, [install](https://snapcraft.io/docs/installing-snap-on-raspbian) `snap`.
-```zsh title="On your Pi"
+If your image doesn't already include it, [install](https://snapcraft.io/docs/installing-snap-on-raspbian) `snap` before installing MicroK8s.
+```sh title="On each node"
 sudo apt update
 sudo apt install snapd
 sudo reboot
 # ...reconnect after reboot
 sudo snap install core
-```
-
-Then install MicroK8s.
-```zsh title="On your Pi"
-sudo snap install microk8s --classic
-```
-
-To run commands without `sudo` add the user to the `microk8s` group. Example:
-```zsh title="On your Pi"
-sudo usermod -a -G microk8s pi
-sudo chown -R pi ~/.kube
-newgrp microk8s
-```
-
-Usage:
-```zsh title="On your Pi"
-microk8s status --wait-ready
-microk8s kubectl get all --all-namespaces
-# default addons are: dns ha-cluster helm helm3. You can enable more
-# but preferably enable them one by one
-microk8s enable dashboard ingress metrics-server 
-alias mkctl="microk8s kubectl"
-alias mkhelm="microk8s helm"
-mkctl version --output=yaml
-watch microk8s kubectl get all
-microk8s reset
-microk8s status
-microk8s stop # microk8s start
-```
-
-You can update a snap package with `sudo snap refresh`.
-
-Configuration file. These are the arguments you can add regarding log rotation `--container-log-max-files` and `--container-log-max-size`. They have default values. [More info](https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/).
-```zsh
-cat /var/snap/microk8s/current/args/kubelet
 ```
 
 ### Dashboard

@@ -671,22 +671,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#configuration" class="md-nav__link">
-    Configuration
+  <a href="#usage" class="md-nav__link">
+    Usage
   </a>
-  
-    <nav class="md-nav" aria-label="Configuration">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#storage" class="md-nav__link">
-    Storage
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
         
@@ -696,8 +683,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#manual-setup" class="md-nav__link">
-    Manual setup
+  <a href="#other-sbcsoss" class="md-nav__link">
+    Other SBCs/OSs
   </a>
   
 </li>
@@ -858,22 +845,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#configuration" class="md-nav__link">
-    Configuration
+  <a href="#usage" class="md-nav__link">
+    Usage
   </a>
-  
-    <nav class="md-nav" aria-label="Configuration">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#storage" class="md-nav__link">
-    Storage
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
         
@@ -883,8 +857,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#manual-setup" class="md-nav__link">
-    Manual setup
+  <a href="#other-sbcsoss" class="md-nav__link">
+    Other SBCs/OSs
   </a>
   
 </li>
@@ -980,6 +954,10 @@
 <p>Suitable for Raspberry Pi and other lightweight environments. <a href="https://microk8s.io/docs/install-raspberry-pi">Learn  more</a>.</p>
 <h3 id="cloud-native-setup">Cloud native setup<a class="headerlink" href="#cloud-native-setup" title="Permanent link">#</a></h3>
 <h4 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">#</a></h4>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>MicroK8s is not available for 32-bit architectures like <code>armhf</code>(<code>arm/v7</code>), only on 64-bit architectures like <code>arm64</code> and <code>amd64</code>.</p>
+</div>
 <p>Ceph provides <a href="https://docs.ceph.com/en/latest/rbd/">block</a>, <a href="https://docs.ceph.com/en/latest/radosgw/">object</a>, and <a href="https://docs.ceph.com/en/latest/cephfs/">file</a> storage. It supports both replicated and erasure coded storage.</p>
 <p>Option 1 (Recommended)</p>
 <ul>
@@ -1021,6 +999,18 @@ Parameters:            clusterID=rook-ceph-external,pool=microk8s-rbd0 ...
     <div class="highlight"><span class="filename">On each node</span><pre><span></span><code>lsblk
 ls<span class="w"> </span>-al<span class="w">  </span>/dev/sdi*
 </code></pre></div></li>
+<li>
+<p>Review storage concepts like replication vs erasure coding.<br />
+    Erasure Coding  </p>
+<p><table>
+    <tr><th>Data chunks (k)</th><th>Coding chunks (m)</th><th>Total storage</th><th>Losses Tolerated (m)</th><th>OSDs required (k+m)</th></tr>
+    <tr><td>2</td><td>1</td><td>1.5x</td><td>1</td><td>3</td></tr>
+    <tr><td>2</td><td>2</td><td>2x</td><td>2</td><td>4</td></tr>
+    <tr><td>4</td><td>2</td><td>1.5x</td><td>2</td><td>6</td></tr>
+    <tr><td>3</td><td>3</td><td>2x</td><td>3</td><td>6</td></tr>
+    <tr><td>16</td><td>4</td><td>1.25x</td><td>4</td><td>20</td></tr>
+</table></p>
+</li>
 </ol>
 <h4 id="microceph-clustering">MicroCeph Clustering<a class="headerlink" href="#microceph-clustering" title="Permanent link">#</a></h4>
 <p>(Optional) If choosing an external Ceph cluster.</p>
@@ -1068,11 +1058,11 @@ microk8s<span class="w"> </span>kubectl<span class="w"> </span>--namespace<span 
 <span class="c1"># wait for the operator pod to be `Running`</span>
 </code></pre></div>
     Option 1 - To deploy <a href="https://rook.io/docs/rook/latest-release/CRDs/Cluster/ceph-cluster-crd/">Ceph on the MicroK8s cluster using storage from the k8s nodes</a>
-    <div class="highlight"><pre><span></span><code><span class="c1"># if you want `dataDirHostPath` to specify where config and data should be stored for each of the services</span>
+    <div class="highlight"><span class="filename">On the control plane node</span><pre><span></span><code><span class="c1"># if you want `dataDirHostPath` to specify where config and data should be stored for each of the services</span>
 microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>hostpath-storage
 </code></pre></div>
     Create the cluster and storage resources like in these <a href="https://rook.io/docs/rook/v1.12/Getting-Started/example-configurations/#cluster-crd">examples</a>. You'll probably want a customized version to match your environment as I do here for my 2-node cluster:
-    <div class="highlight"><pre><span></span><code>wget<span class="w"> </span>https://raw.githubusercontent.com/santisbon/reference/main/assets/rook-cluster.yaml
+    <div class="highlight"><span class="filename">On the control plane node</span><pre><span></span><code>wget<span class="w"> </span>https://raw.githubusercontent.com/santisbon/reference/main/assets/rook-cluster.yaml
 wget<span class="w"> </span>https://raw.githubusercontent.com/santisbon/reference/main/assets/rook-storageclass.yaml
 wget<span class="w"> </span>https://raw.githubusercontent.com/santisbon/reference/main/assets/rook-storageclass-ec.yaml
 
@@ -1082,17 +1072,20 @@ microk8s<span class="w"> </span>kubectl<span class="w"> </span>apply<span class=
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>rook-storageclass-ec.yaml
 </code></pre></div></p>
 <p>Option 2 - If you set up an external MicroCeph cluster:
-<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>microk8s<span class="w"> </span>connect-external-ceph
+<div class="highlight"><span class="filename">On the control plane node</span><pre><span></span><code>sudo<span class="w"> </span>microk8s<span class="w"> </span>connect-external-ceph
+<span class="c1"># Now you can create a pod that uses the `ceph-rdb` storage class (which uses the `microk8s-rbd0` pool) for a persistent volume.</span>
 </code></pre></div></p>
 </li>
 </ol>
-<p>Now you can create a pod that uses the <code>ceph-rdb</code> storage class (which uses the <code>microk8s-rbd0</code> pool) for a persistent volume.</p>
-<h4 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">#</a></h4>
-<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code><span class="c1"># Check if MicroK8s is intalled and running with the addons enabled</span>
+<h4 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">#</a></h4>
+<p><div class="highlight"><span class="filename">On the control plane node</span><pre><span></span><code><span class="c1"># Check if MicroK8s is intalled and running with the addons enabled</span>
 microk8s<span class="w"> </span>status<span class="w"> </span>--wait-ready
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>cluster-info
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>all<span class="w"> </span>--all-namespaces
+watch<span class="w"> </span>microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>all
 
 <span class="c1"># How to stop/start</span>
+microk8s<span class="w"> </span>reset
 microk8s<span class="w"> </span>stop
 microk8s<span class="w"> </span>start
 
@@ -1102,80 +1095,35 @@ microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> <
 microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>ingress
 microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>dashboard
 
+<span class="nb">alias</span><span class="w"> </span><span class="nv">mkctl</span><span class="o">=</span><span class="s2">&quot;microk8s kubectl&quot;</span>
+<span class="nb">alias</span><span class="w"> </span><span class="nv">mkhelm</span><span class="o">=</span><span class="s2">&quot;microk8s helm&quot;</span>
+mkctl<span class="w"> </span>version<span class="w"> </span>--output<span class="o">=</span>yaml
+
 <span class="c1"># If you ever want to update MicroK8s to another channel. Tip: use a specific channel number.</span>
 snap<span class="w"> </span>info<span class="w"> </span>microk8s
 sudo<span class="w"> </span>snap<span class="w"> </span>refresh<span class="w"> </span>microk8s<span class="w"> </span>--channel<span class="o">=</span>latest/stable
+
+<span class="c1"># Arguments for log rotation `--container-log-max-files` and `--container-log-max-size`. They have default values. </span>
+cat<span class="w"> </span>/var/snap/microk8s/current/args/kubelet
 </code></pre></div>
-<h5 id="storage">Storage<a class="headerlink" href="#storage" title="Permanent link">#</a></h5>
-<p>Create the storage resources for your cluster using the info below.</p>
-<ol>
-<li>
-<p>Review needed info<br />
-    Erasure Coding  </p>
-<p><table>
-    <tr><th>Data chunks (k)</th><th>Coding chunks (m)</th><th>Total storage</th><th>Losses Tolerated (m)</th><th>OSDs required (k+m)</th></tr>
-    <tr><td>2</td><td>1</td><td>1.5x</td><td>1</td><td>3</td></tr>
-    <tr><td>2</td><td>2</td><td>2x</td><td>2</td><td>4</td></tr>
-    <tr><td>4</td><td>2</td><td>1.5x</td><td>2</td><td>6</td></tr>
-    <tr><td>3</td><td>3</td><td>2x</td><td>3</td><td>6</td></tr>
-    <tr><td>16</td><td>4</td><td>1.25x</td><td>4</td><td>20</td></tr>
-</table></p>
-</li>
-<li>
-<p>Create your k8s resources (pods, deployments, etc.).</p>
-</li>
-</ol>
-<h3 id="manual-setup">Manual setup<a class="headerlink" href="#manual-setup" title="Permanent link">#</a></h3>
+<a href="https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/">More info</a>.</p>
+<h3 id="other-sbcsoss">Other SBCs/OSs<a class="headerlink" href="#other-sbcsoss" title="Permanent link">#</a></h3>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
-<p>MicroK8s is not available for 32-bit architectures like <code>armhf</code>(<code>arm/v7</code>), only on 64-bit architectures like <code>arm64</code> and <code>amd64</code>.</p>
+<p>Your boot parameters file might be in <code>/boot/cmdline.txt</code> or in <code>/boot/firmware/cmdline.txt</code>. Find it with <code>sudo find /boot -name cmdline.txt</code>.  </p>
 </div>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
-<p>On Raspberry Pi your boot parameters file might be in <code>/boot/cmdline.txt</code> or in <code>/boot/firmware/cmdline.txt</code>. Find it with <code>sudo find /boot -name cmdline.txt</code>.  </p>
-</div>
-<p>On Raspberry Pi you need to enable c-groups so the kubelet will work out of the box.<br />
-Add these options at the end of the file, then <code>sudo reboot</code>. Some users report needing <code>cgroup_enable=cpuset</code> as well but try adding only these:
-<div class="highlight"><span class="filename">cmdline.txt</span><pre><span></span><code>cgroup_enable=memory cgroup_memory=1
-</code></pre></div></p>
-<div class="admonition attention">
-<p class="admonition-title">Attention</p>
-<p>On Orange Pi boards these parameters are handled in <code>/boot/boot.cmd</code> by checking:<br />
+<p>On Orange Pi boards cgroups are handled in <code>/boot/boot.cmd</code> by checking:<br />
 <code>if test "${docker_optimizations}" = "on"</code>.  </p>
 <p>Don't edit this file, instead <code>sudo nano /boot/orangepiEnv.txt</code> and set <code>docker_optimizations</code> to <code>on</code>.</p>
 </div>
-<p>If your image doesn't already include it, <a href="https://snapcraft.io/docs/installing-snap-on-raspbian">install</a> <code>snap</code>.
-<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>update
+<p>If your image doesn't already include it, <a href="https://snapcraft.io/docs/installing-snap-on-raspbian">install</a> <code>snap</code> before installing MicroK8s.
+<div class="highlight"><span class="filename">On each node</span><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>update
 sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>snapd
 sudo<span class="w"> </span>reboot
 <span class="c1"># ...reconnect after reboot</span>
 sudo<span class="w"> </span>snap<span class="w"> </span>install<span class="w"> </span>core
-</code></pre></div></p>
-<p>Then install MicroK8s.
-<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>sudo<span class="w"> </span>snap<span class="w"> </span>install<span class="w"> </span>microk8s<span class="w"> </span>--classic
-</code></pre></div></p>
-<p>To run commands without <code>sudo</code> add the user to the <code>microk8s</code> group. Example:
-<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>sudo<span class="w"> </span>usermod<span class="w"> </span>-a<span class="w"> </span>-G<span class="w"> </span>microk8s<span class="w"> </span>pi
-sudo<span class="w"> </span>chown<span class="w"> </span>-R<span class="w"> </span>pi<span class="w"> </span>~/.kube
-newgrp<span class="w"> </span>microk8s
-</code></pre></div></p>
-<p>Usage:
-<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>microk8s<span class="w"> </span>status<span class="w"> </span>--wait-ready
-microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>all<span class="w"> </span>--all-namespaces
-<span class="c1"># default addons are: dns ha-cluster helm helm3. You can enable more</span>
-<span class="c1"># but preferably enable them one by one</span>
-microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>dashboard<span class="w"> </span>ingress<span class="w"> </span>metrics-server<span class="w"> </span>
-<span class="nb">alias</span><span class="w"> </span><span class="nv">mkctl</span><span class="o">=</span><span class="s2">&quot;microk8s kubectl&quot;</span>
-<span class="nb">alias</span><span class="w"> </span><span class="nv">mkhelm</span><span class="o">=</span><span class="s2">&quot;microk8s helm&quot;</span>
-mkctl<span class="w"> </span>version<span class="w"> </span>--output<span class="o">=</span>yaml
-watch<span class="w"> </span>microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>all
-microk8s<span class="w"> </span>reset
-microk8s<span class="w"> </span>status
-microk8s<span class="w"> </span>stop<span class="w"> </span><span class="c1"># microk8s start</span>
-</code></pre></div></p>
-<p>You can update a snap package with <code>sudo snap refresh</code>.</p>
-<p>Configuration file. These are the arguments you can add regarding log rotation <code>--container-log-max-files</code> and <code>--container-log-max-size</code>. They have default values. <a href="https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/">More info</a>.
-<div class="highlight"><pre><span></span><code>cat<span class="w"> </span>/var/snap/microk8s/current/args/kubelet
 </code></pre></div></p>
 <h3 id="dashboard">Dashboard<a class="headerlink" href="#dashboard" title="Permanent link">#</a></h3>
 <p>If RBAC is not enabled access the dashboard using the token retrieved with:
