@@ -2,22 +2,58 @@ Suitable for Raspberry Pi and other lightweight environments. [Learn  more](http
 
 ### Cloud native setup
 
+#### Overview
+
+Ceph provides [block](https://docs.ceph.com/en/latest/rbd/), [object](https://docs.ceph.com/en/latest/radosgw/), and [file](https://docs.ceph.com/en/latest/cephfs/) storage. It supports both replicated and erasure coded storage.
+
+Option 1 (Recommended)
+
+- MicroK8s cluster with rook-ceph addon
+- Deploy Ceph on the MicroK8s cluster using storage from the k8s nodes.
+
+Option 2  
+Imports external cluster but does not create `CephCluster` or `CephBlockPool` objects, only the `StorageClass`.
+
+- MicroCeph cluster 
+- MicroK8s cluster with rook-ceph addon connected to the external Ceph cluster
+- [Create](https://docs.ceph.com/en/reef/rados/operations/pools/#create-a-pool) and [initialize](https://docs.ceph.com/en/reef/rbd/rados-rbd-cmds/) Ceph pools e.g.
+    ```sh
+    pool 2 'microk8s-rbd0' replicated size 3 min_size 2 crush_rule 1 object_hash rjenkins pg_num 32 pgp_num 32 autoscale_mode on last_change 31 lfor 0/0/29 flags hashpspool stripe_width 0 application rbd
+    ```
+- Create k8s `StorageClass` objects with paramter `pool=mypool` e.g.
+    ```
+    Name:                  ceph-rbd
+    Provisioner:           rook-ceph.rbd.csi.ceph.com
+    Parameters:            clusterID=rook-ceph-external,pool=microk8s-rbd0 ...
+    ```
+
 #### Prerequisites
 
 1. Set up your Raspberry Pi devices with `cloud-init` as defined in the [Raspberry Pi](/reference/rpi/) section.
 2. Assign static IPs to all the nodes. 
 3. `sudo nano /etc/hosts` on each node and add the IP and hostnames of the other nodes so they can resolve during the join process.
-
-These are the high level steps we'll be following:
-
-1. Create the storage cluster with MicroCeph.
-2. Add all nodes to the MicroK8s cluster.
-3. Connect the MicroK8s cluster to the Ceph cluster.
-4. Enable the rook-ceph MicroK8s addon and any other addons you need.
+4. Allocate disks. You can create virtual disks as loop devices (a special block device that maps to a file).
+    ```sh title="On each node"
+    for l in a b c; do
+        loop_file="$(sudo mktemp -p /mnt XXXX.img)"
+        sudo truncate -s 60G "${loop_file}"
+        loop_dev="$(sudo losetup --show -f "${loop_file}")"
+        # the block-devices plug doesn't allow accessing /dev/loopX
+        # devices so we make those same devices available under alternate
+        # names (/dev/sdiY)
+        minor="${loop_dev##/dev/loop}"
+        sudo mknod -m 0660 "/dev/sdi${l}" b 7 "${minor}"
+    done
+    ```
+    Verify
+    ```sh title="On each node"
+    lsblk
+    ls -al  /dev/sdi*
+    ```
 
 #### MicroCeph Clustering
 
-Ceph provides [block](https://docs.ceph.com/en/latest/rbd/), [object](https://docs.ceph.com/en/latest/radosgw/), and [file](https://docs.ceph.com/en/latest/cephfs/) storage. It supports both replicated and erasure coded storage.
+(Optional) If choosing an external Ceph cluster.
 
 1. Install [MicroCeph](https://microk8s.io/docs/how-to-ceph)
     ```sh title="On all nodes"
@@ -36,30 +72,13 @@ Ceph provides [block](https://docs.ceph.com/en/latest/rbd/), [object](https://do
     ```sh title="On each node you want to add to the cluster"
     sudo microceph cluster join $JOIN_TOKEN
     ```
-3. Allocate disks and add the disks as OSDs.
+3. Add the disks as OSDs.
     ```sh title="On each node"
     # After adding physical or virtual disks to your node/VM
     # for each disk
     sudo microceph disk add /dev/sdb --wipe # whatever device name your disk has
     ```
-    Alternatively, you can create virtual disks as loop devices (a special block device that maps to a file).
-    ```sh title="On each node"
-    for l in a b c; do
-        loop_file="$(sudo mktemp -p /mnt XXXX.img)"
-        sudo truncate -s 60G "${loop_file}"
-        loop_dev="$(sudo losetup --show -f "${loop_file}")"
-        # the block-devices plug doesn't allow accessing /dev/loopX
-        # devices so we make those same devices available under alternate
-        # names (/dev/sdiY)
-        minor="${loop_dev##/dev/loop}"
-        sudo mknod -m 0660 "/dev/sdi${l}" b 7 "${minor}"
-        sudo microceph disk add --wipe "/dev/sdi${l}"
-    done
-    ```
 4. Verify
-    ```sh title="On each node"
-    lsblk
-    ```
     ```sh title="On the control plane (or any ceph node, really)"
     sudo ceph status # detailed status
     # HEALTH_OK with all OSDs showing
@@ -81,11 +100,31 @@ Ceph provides [block](https://docs.ceph.com/en/latest/rbd/), [object](https://do
     microk8s kubectl get no
     ```
 
-2. Connect your MicroK8s cluster to your MicroCeph cluster. We'll be using [Rook Ceph](https://rook.io/docs/rook/v1.12/Getting-Started/quickstart/#storage).
+2. Deploy Ceph to your MicroK8s cluster or connect it to an external MicroCeph cluster. We'll be using [Rook Ceph](https://rook.io/docs/rook/v1.12/Getting-Started/quickstart/#storage).
     ```sh title="On the control plane"
-    microk8s enable rook-ceph
+    microk8s enable rook-ceph # installs crds.yaml, common.yaml, operator.yaml
     microk8s kubectl --namespace rook-ceph get pods -l "app=rook-ceph-operator"
     # wait for the operator pod to be `Running`
+    ```
+    Option 1 - To deploy [Ceph on the MicroK8s cluster using storage from the k8s nodes](https://rook.io/docs/rook/latest-release/CRDs/Cluster/ceph-cluster-crd/)
+    ```sh
+    # if you want `dataDirHostPath` to specify where config and data should be stored for each of the services
+    microk8s enable hostpath-storage
+    ```
+    Create the cluster and storage resources like in these [examples](https://rook.io/docs/rook/v1.12/Getting-Started/example-configurations/#cluster-crd). You'll probably want a customized version to match your environment as I do here for my 2-node cluster:
+    ```sh
+    wget https://raw.githubusercontent.com/santisbon/reference/main/assets/rook-cluster.yaml
+    wget https://raw.githubusercontent.com/santisbon/reference/main/assets/rook-storageclass.yaml
+    wget https://raw.githubusercontent.com/santisbon/reference/main/assets/rook-storageclass-ec.yaml
+
+    # block devices
+    microk8s kubectl apply -f rook-cluster.yaml
+    microk8s kubectl apply -f rook-storageclass.yaml
+    microk8s kubectl apply -f rook-storageclass-ec.yaml
+    ```
+
+    Option 2 - If you set up an external MicroCeph cluster:
+    ```sh
     sudo microk8s connect-external-ceph
     ```
 
@@ -103,6 +142,7 @@ microk8s stop
 microk8s start
 
 # Add-on Examples:
+microk8s enable hostpath-storage
 microk8s enable metrics-server
 microk8s enable ingress
 microk8s enable dashboard
