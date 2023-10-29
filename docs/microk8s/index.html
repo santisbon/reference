@@ -643,6 +643,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    Overview
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#prerequisites" class="md-nav__link">
     Prerequisites
   </a>
@@ -823,6 +830,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    Overview
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#prerequisites" class="md-nav__link">
     Prerequisites
   </a>
@@ -965,21 +979,51 @@
 
 <p>Suitable for Raspberry Pi and other lightweight environments. <a href="https://microk8s.io/docs/install-raspberry-pi">Learn  more</a>.</p>
 <h3 id="cloud-native-setup">Cloud native setup<a class="headerlink" href="#cloud-native-setup" title="Permanent link">#</a></h3>
+<h4 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">#</a></h4>
+<p>Ceph provides <a href="https://docs.ceph.com/en/latest/rbd/">block</a>, <a href="https://docs.ceph.com/en/latest/radosgw/">object</a>, and <a href="https://docs.ceph.com/en/latest/cephfs/">file</a> storage. It supports both replicated and erasure coded storage.</p>
+<p>Option 1 (Recommended)</p>
+<ul>
+<li>MicroK8s cluster with rook-ceph addon</li>
+<li>Deploy Ceph on the MicroK8s cluster using storage from the k8s nodes.</li>
+</ul>
+<p>Option 2<br />
+Imports external cluster but does not create <code>CephCluster</code> or <code>CephBlockPool</code> objects, only the <code>StorageClass</code>.</p>
+<ul>
+<li>MicroCeph cluster </li>
+<li>MicroK8s cluster with rook-ceph addon connected to the external Ceph cluster</li>
+<li><a href="https://docs.ceph.com/en/reef/rados/operations/pools/#create-a-pool">Create</a> and <a href="https://docs.ceph.com/en/reef/rbd/rados-rbd-cmds/">initialize</a> Ceph pools e.g.
+    <div class="highlight"><pre><span></span><code>pool<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="s1">&#39;microk8s-rbd0&#39;</span><span class="w"> </span>replicated<span class="w"> </span>size<span class="w"> </span><span class="m">3</span><span class="w"> </span>min_size<span class="w"> </span><span class="m">2</span><span class="w"> </span>crush_rule<span class="w"> </span><span class="m">1</span><span class="w"> </span>object_hash<span class="w"> </span>rjenkins<span class="w"> </span>pg_num<span class="w"> </span><span class="m">32</span><span class="w"> </span>pgp_num<span class="w"> </span><span class="m">32</span><span class="w"> </span>autoscale_mode<span class="w"> </span>on<span class="w"> </span>last_change<span class="w"> </span><span class="m">31</span><span class="w"> </span>lfor<span class="w"> </span><span class="m">0</span>/0/29<span class="w"> </span>flags<span class="w"> </span>hashpspool<span class="w"> </span>stripe_width<span class="w"> </span><span class="m">0</span><span class="w"> </span>application<span class="w"> </span>rbd
+</code></pre></div></li>
+<li>Create k8s <code>StorageClass</code> objects with paramter <code>pool=mypool</code> e.g.
+    <div class="highlight"><pre><span></span><code>Name:                  ceph-rbd
+Provisioner:           rook-ceph.rbd.csi.ceph.com
+Parameters:            clusterID=rook-ceph-external,pool=microk8s-rbd0 ...
+</code></pre></div></li>
+</ul>
 <h4 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">#</a></h4>
 <ol>
 <li>Set up your Raspberry Pi devices with <code>cloud-init</code> as defined in the <a href="/reference/rpi/">Raspberry Pi</a> section.</li>
 <li>Assign static IPs to all the nodes. </li>
 <li><code>sudo nano /etc/hosts</code> on each node and add the IP and hostnames of the other nodes so they can resolve during the join process.</li>
-</ol>
-<p>These are the high level steps we'll be following:</p>
-<ol>
-<li>Create the storage cluster with MicroCeph.</li>
-<li>Add all nodes to the MicroK8s cluster.</li>
-<li>Connect the MicroK8s cluster to the Ceph cluster.</li>
-<li>Enable the rook-ceph MicroK8s addon and any other addons you need.</li>
+<li>Allocate disks. You can create virtual disks as loop devices (a special block device that maps to a file).
+    <div class="highlight"><span class="filename">On each node</span><pre><span></span><code><span class="k">for</span><span class="w"> </span>l<span class="w"> </span><span class="k">in</span><span class="w"> </span>a<span class="w"> </span>b<span class="w"> </span>c<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">    </span><span class="nv">loop_file</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>sudo<span class="w"> </span>mktemp<span class="w"> </span>-p<span class="w"> </span>/mnt<span class="w"> </span>XXXX.img<span class="k">)</span><span class="s2">&quot;</span>
+<span class="w">    </span>sudo<span class="w"> </span>truncate<span class="w"> </span>-s<span class="w"> </span>60G<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">loop_file</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="w">    </span><span class="nv">loop_dev</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>sudo<span class="w"> </span>losetup<span class="w"> </span>--show<span class="w"> </span>-f<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">loop_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="k">)</span><span class="s2">&quot;</span>
+<span class="w">    </span><span class="c1"># the block-devices plug doesn&#39;t allow accessing /dev/loopX</span>
+<span class="w">    </span><span class="c1"># devices so we make those same devices available under alternate</span>
+<span class="w">    </span><span class="c1"># names (/dev/sdiY)</span>
+<span class="w">    </span><span class="nv">minor</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">loop_dev</span><span class="p">##/dev/loop</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="w">    </span>sudo<span class="w"> </span>mknod<span class="w"> </span>-m<span class="w"> </span><span class="m">0660</span><span class="w"> </span><span class="s2">&quot;/dev/sdi</span><span class="si">${</span><span class="nv">l</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span>b<span class="w"> </span><span class="m">7</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">minor</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="k">done</span>
+</code></pre></div>
+    Verify
+    <div class="highlight"><span class="filename">On each node</span><pre><span></span><code>lsblk
+ls<span class="w"> </span>-al<span class="w">  </span>/dev/sdi*
+</code></pre></div></li>
 </ol>
 <h4 id="microceph-clustering">MicroCeph Clustering<a class="headerlink" href="#microceph-clustering" title="Permanent link">#</a></h4>
-<p>Ceph provides <a href="https://docs.ceph.com/en/latest/rbd/">block</a>, <a href="https://docs.ceph.com/en/latest/radosgw/">object</a>, and <a href="https://docs.ceph.com/en/latest/cephfs/">file</a> storage. It supports both replicated and erasure coded storage.</p>
+<p>(Optional) If choosing an external Ceph cluster.</p>
 <ol>
 <li>Install <a href="https://microk8s.io/docs/how-to-ceph">MicroCeph</a>
     <div class="highlight"><span class="filename">On all nodes</span><pre><span></span><code>sudo<span class="w"> </span>snap<span class="w"> </span>install<span class="w"> </span>microceph<span class="w"> </span>--channel<span class="o">=</span>latest/edge
@@ -994,27 +1038,12 @@ snap<span class="w"> </span>info<span class="w"> </span>microceph<span class="w"
     It's best to have an <a href="https://access.redhat.com/documentation/en-us/red_hat_ceph_storage/3/html/operations_guide/managing-the-storage-cluster-size">odd number of monitors</a> because Ceph needs a majority of monitors to be running e.g. 2 out of 3.
     <div class="highlight"><span class="filename">On each node you want to add to the cluster</span><pre><span></span><code>sudo<span class="w"> </span>microceph<span class="w"> </span>cluster<span class="w"> </span>join<span class="w"> </span><span class="nv">$JOIN_TOKEN</span>
 </code></pre></div></li>
-<li>Allocate disks and add the disks as OSDs.
+<li>Add the disks as OSDs.
     <div class="highlight"><span class="filename">On each node</span><pre><span></span><code><span class="c1"># After adding physical or virtual disks to your node/VM</span>
 <span class="c1"># for each disk</span>
 sudo<span class="w"> </span>microceph<span class="w"> </span>disk<span class="w"> </span>add<span class="w"> </span>/dev/sdb<span class="w"> </span>--wipe<span class="w"> </span><span class="c1"># whatever device name your disk has</span>
-</code></pre></div>
-    Alternatively, you can create virtual disks as loop devices (a special block device that maps to a file).
-    <div class="highlight"><span class="filename">On each node</span><pre><span></span><code><span class="k">for</span><span class="w"> </span>l<span class="w"> </span><span class="k">in</span><span class="w"> </span>a<span class="w"> </span>b<span class="w"> </span>c<span class="p">;</span><span class="w"> </span><span class="k">do</span>
-<span class="w">    </span><span class="nv">loop_file</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>sudo<span class="w"> </span>mktemp<span class="w"> </span>-p<span class="w"> </span>/mnt<span class="w"> </span>XXXX.img<span class="k">)</span><span class="s2">&quot;</span>
-<span class="w">    </span>sudo<span class="w"> </span>truncate<span class="w"> </span>-s<span class="w"> </span>60G<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">loop_file</span><span class="si">}</span><span class="s2">&quot;</span>
-<span class="w">    </span><span class="nv">loop_dev</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>sudo<span class="w"> </span>losetup<span class="w"> </span>--show<span class="w"> </span>-f<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">loop_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="k">)</span><span class="s2">&quot;</span>
-<span class="w">    </span><span class="c1"># the block-devices plug doesn&#39;t allow accessing /dev/loopX</span>
-<span class="w">    </span><span class="c1"># devices so we make those same devices available under alternate</span>
-<span class="w">    </span><span class="c1"># names (/dev/sdiY)</span>
-<span class="w">    </span><span class="nv">minor</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">loop_dev</span><span class="p">##/dev/loop</span><span class="si">}</span><span class="s2">&quot;</span>
-<span class="w">    </span>sudo<span class="w"> </span>mknod<span class="w"> </span>-m<span class="w"> </span><span class="m">0660</span><span class="w"> </span><span class="s2">&quot;/dev/sdi</span><span class="si">${</span><span class="nv">l</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span>b<span class="w"> </span><span class="m">7</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">minor</span><span class="si">}</span><span class="s2">&quot;</span>
-<span class="w">    </span>sudo<span class="w"> </span>microceph<span class="w"> </span>disk<span class="w"> </span>add<span class="w"> </span>--wipe<span class="w"> </span><span class="s2">&quot;/dev/sdi</span><span class="si">${</span><span class="nv">l</span><span class="si">}</span><span class="s2">&quot;</span>
-<span class="k">done</span>
 </code></pre></div></li>
 <li>Verify
-    <div class="highlight"><span class="filename">On each node</span><pre><span></span><code>lsblk
-</code></pre></div>
     <div class="highlight"><span class="filename">On the control plane (or any ceph node, really)</span><pre><span></span><code>sudo<span class="w"> </span>ceph<span class="w"> </span>status<span class="w"> </span><span class="c1"># detailed status</span>
 <span class="c1"># HEALTH_OK with all OSDs showing</span>
 </code></pre></div>
@@ -1033,11 +1062,27 @@ sudo<span class="w"> </span>microceph<span class="w"> </span>disk<span class="w"
 </code></pre></div>
 </li>
 <li>
-<p>Connect your MicroK8s cluster to your MicroCeph cluster. We'll be using <a href="https://rook.io/docs/rook/v1.12/Getting-Started/quickstart/#storage">Rook Ceph</a>.
-    <div class="highlight"><span class="filename">On the control plane</span><pre><span></span><code>microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>rook-ceph
+<p>Deploy Ceph to your MicroK8s cluster or connect it to an external MicroCeph cluster. We'll be using <a href="https://rook.io/docs/rook/v1.12/Getting-Started/quickstart/#storage">Rook Ceph</a>.
+    <div class="highlight"><span class="filename">On the control plane</span><pre><span></span><code>microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>rook-ceph<span class="w"> </span><span class="c1"># installs crds.yaml, common.yaml, operator.yaml</span>
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>--namespace<span class="w"> </span>rook-ceph<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-l<span class="w"> </span><span class="s2">&quot;app=rook-ceph-operator&quot;</span>
 <span class="c1"># wait for the operator pod to be `Running`</span>
-sudo<span class="w"> </span>microk8s<span class="w"> </span>connect-external-ceph
+</code></pre></div>
+    Option 1 - To deploy <a href="https://rook.io/docs/rook/latest-release/CRDs/Cluster/ceph-cluster-crd/">Ceph on the MicroK8s cluster using storage from the k8s nodes</a>
+    <div class="highlight"><pre><span></span><code><span class="c1"># if you want `dataDirHostPath` to specify where config and data should be stored for each of the services</span>
+microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>hostpath-storage
+</code></pre></div>
+    Create the cluster and storage resources like in these <a href="https://rook.io/docs/rook/v1.12/Getting-Started/example-configurations/#cluster-crd">examples</a>. You'll probably want a customized version to match your environment as I do here for my 2-node cluster:
+    <div class="highlight"><pre><span></span><code>wget<span class="w"> </span>https://raw.githubusercontent.com/santisbon/reference/main/assets/rook-cluster.yaml
+wget<span class="w"> </span>https://raw.githubusercontent.com/santisbon/reference/main/assets/rook-storageclass.yaml
+wget<span class="w"> </span>https://raw.githubusercontent.com/santisbon/reference/main/assets/rook-storageclass-ec.yaml
+
+<span class="c1"># block devices</span>
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>rook-cluster.yaml
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>rook-storageclass.yaml
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>rook-storageclass-ec.yaml
+</code></pre></div></p>
+<p>Option 2 - If you set up an external MicroCeph cluster:
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>microk8s<span class="w"> </span>connect-external-ceph
 </code></pre></div></p>
 </li>
 </ol>
@@ -1052,6 +1097,7 @@ microk8s<span class="w"> </span>stop
 microk8s<span class="w"> </span>start
 
 <span class="c1"># Add-on Examples:</span>
+microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>hostpath-storage
 microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>metrics-server
 microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>ingress
 microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>dashboard
