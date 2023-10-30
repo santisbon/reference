@@ -1066,24 +1066,25 @@ microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> <
 wget<span class="w"> </span>https://raw.githubusercontent.com/santisbon/reference/main/assets/rook-storageclass.yaml
 wget<span class="w"> </span>https://raw.githubusercontent.com/santisbon/reference/main/assets/rook-storageclass-ec.yaml
 
-<span class="c1"># block devices</span>
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>rook-cluster.yaml
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>CephCluster<span class="w"> </span>-A<span class="w"> </span><span class="c1"># wait for the cluster to be `Ready`</span>
 
+<span class="c1"># block devices    </span>
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>rook-storageclass.yaml
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>CephBlockPool<span class="w"> </span>-A
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>StorageClass<span class="w"> </span>-A
 
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>rook-storageclass-ec.yaml
 </code></pre></div>
-    It's good to install the <a href="https://rook.io/docs/rook/v1.12/Troubleshooting/ceph-toolbox/">Rook toolbox</a> container for running Ceph commands.
-    <div class="highlight"><pre><span></span><code>wget<span class="w"> </span>https://raw.githubusercontent.com/rook/rook/d34d443e0fa2fc946dd56fd2b66968380e68f449/deploy/examples/toolbox.yaml
+    If the <code>CephBlockPool</code> creation fails, see <a href="https://rook.io/docs/rook/v1.12/Troubleshooting/ceph-common-issues/#investigation_4">here</a>.</p>
+<p>It's good to install the <a href="https://rook.io/docs/rook/v1.12/Troubleshooting/ceph-toolbox/">Rook toolbox</a> container for running Ceph commands.
+<div class="highlight"><pre><span></span><code>wget<span class="w"> </span>https://raw.githubusercontent.com/rook/rook/d34d443e0fa2fc946dd56fd2b66968380e68f449/deploy/examples/toolbox.yaml
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>toolbox.yaml
 <span class="c1"># Wait for the toolbox pod to download its container and get to the running state:</span>
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>-n<span class="w"> </span>rook-ceph<span class="w"> </span>rollout<span class="w"> </span>status<span class="w"> </span>deploy/rook-ceph-tools
 <span class="c1"># Connect to it:</span>
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>-n<span class="w"> </span>rook-ceph<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>deploy/rook-ceph-tools<span class="w"> </span>--<span class="w"> </span>bash
-<span class="c1"># you can use e.g. ceph status, ceph osd status, ceph df, rados df</span>
+<span class="c1"># you can use e.g. ceph status, ceph osd status, ceph osd pool stats, ceph df, rados df</span>
 </code></pre></div></p>
 <p><strong>Option 2</strong> - If you set up an external MicroCeph cluster:
 <div class="highlight"><span class="filename">On the control plane node</span><pre><span></span><code>sudo<span class="w"> </span>microk8s<span class="w"> </span>connect-external-ceph
@@ -1232,12 +1233,15 @@ microk8s<span class="w"> </span>inspect
 </code></pre></div></li>
 <li>For other issues see <a href="https://microk8s.io/docs/troubleshooting">https://microk8s.io/docs/troubleshooting</a></li>
 <li>View resources
-    <div class="highlight"><span class="filename">On the control plane</span><pre><span></span><code>sudo<span class="w"> </span>microceph<span class="w"> </span>status<span class="w"> </span><span class="c1"># deployment summary</span>
+    <div class="highlight"><span class="filename">On the control plane</span><pre><span></span><code><span class="c1"># you may need sudo for these</span>
+sudo<span class="w"> </span>microceph<span class="w"> </span>status<span class="w"> </span><span class="c1"># deployment summary</span>
 sudo<span class="w"> </span>microceph<span class="w"> </span>disk<span class="w"> </span>list
-sudo<span class="w"> </span>ceph<span class="w"> </span>osd<span class="w"> </span>metadata<span class="w"> </span><span class="nv">$OSD_ID</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>osd_objectstore<span class="w"> </span><span class="c1"># check that it&#39;s a bluestore OSD</span>
-
-sudo<span class="w"> </span>ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>ls<span class="w"> </span>detail<span class="w"> </span>-f<span class="w"> </span>json-pretty<span class="w"> </span><span class="c1"># list the pools with all details</span>
-sudo<span class="w"> </span>ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>stats<span class="w"> </span><span class="c1"># obtain stats from all pools, or from specified pool</span>
+ceph<span class="w"> </span>osd<span class="w"> </span>metadata<span class="w"> </span><span class="o">{</span>osd-id<span class="o">}</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>osd_objectstore<span class="w"> </span><span class="c1"># check that it&#39;s a bluestore OSD</span>
+ceph<span class="w"> </span>osd<span class="w"> </span>lspools
+ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>ls
+ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>ls<span class="w"> </span>detail<span class="w"> </span>-f<span class="w"> </span>json-pretty<span class="w"> </span><span class="c1"># list the pools with all details</span>
+ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>stats<span class="w"> </span><span class="c1"># obtain stats from all pools, or from specified pool</span>
+ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>delete<span class="w"> </span><span class="o">{</span>pool-name<span class="o">}</span><span class="w"> </span><span class="o">{</span>pool-name<span class="o">}</span><span class="w"> </span>--yes-i-really-really-mean-it
 
 <span class="c1">##########################################################################################</span>
 

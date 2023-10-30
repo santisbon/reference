@@ -132,16 +132,18 @@ Imports external cluster but does not create `CephCluster` or `CephBlockPool` ob
     wget https://raw.githubusercontent.com/santisbon/reference/main/assets/rook-storageclass.yaml
     wget https://raw.githubusercontent.com/santisbon/reference/main/assets/rook-storageclass-ec.yaml
 
-    # block devices
     microk8s kubectl apply -f rook-cluster.yaml
     microk8s kubectl get CephCluster -A # wait for the cluster to be `Ready`
-    
+
+    # block devices    
     microk8s kubectl apply -f rook-storageclass.yaml
     microk8s kubectl get CephBlockPool -A
     microk8s kubectl get StorageClass -A
 
     microk8s kubectl apply -f rook-storageclass-ec.yaml
     ```
+    If the `CephBlockPool` creation fails, see [here](https://rook.io/docs/rook/v1.12/Troubleshooting/ceph-common-issues/#investigation_4).
+
     It's good to install the [Rook toolbox](https://rook.io/docs/rook/v1.12/Troubleshooting/ceph-toolbox/) container for running Ceph commands.
     ```sh
     wget https://raw.githubusercontent.com/rook/rook/d34d443e0fa2fc946dd56fd2b66968380e68f449/deploy/examples/toolbox.yaml
@@ -150,7 +152,7 @@ Imports external cluster but does not create `CephCluster` or `CephBlockPool` ob
     microk8s kubectl -n rook-ceph rollout status deploy/rook-ceph-tools
     # Connect to it:
     microk8s kubectl -n rook-ceph exec -it deploy/rook-ceph-tools -- bash
-    # you can use e.g. ceph status, ceph osd status, ceph df, rados df
+    # you can use e.g. ceph status, ceph osd status, ceph osd pool stats, ceph df, rados df
     ```
 
     **Option 2** - If you set up an external MicroCeph cluster:
@@ -335,12 +337,15 @@ sudo microk8s kubectl-minio tenant status microk8s
 * For other issues see [https://microk8s.io/docs/troubleshooting](https://microk8s.io/docs/troubleshooting)
 * View resources
     ```sh title="On the control plane"
+    # you may need sudo for these
     sudo microceph status # deployment summary
     sudo microceph disk list
-    sudo ceph osd metadata $OSD_ID | grep osd_objectstore # check that it's a bluestore OSD
-    
-    sudo ceph osd pool ls detail -f json-pretty # list the pools with all details
-    sudo ceph osd pool stats # obtain stats from all pools, or from specified pool
+    ceph osd metadata {osd-id} | grep osd_objectstore # check that it's a bluestore OSD
+    ceph osd lspools
+    ceph osd pool ls
+    ceph osd pool ls detail -f json-pretty # list the pools with all details
+    ceph osd pool stats # obtain stats from all pools, or from specified pool
+    ceph osd pool delete {pool-name} {pool-name} --yes-i-really-really-mean-it
 
     ##########################################################################################
     
