@@ -9,13 +9,15 @@ Suitable for Raspberry Pi and other lightweight environments. [Learn  more](http
 
 Ceph provides [block](https://docs.ceph.com/en/latest/rbd/), [object](https://docs.ceph.com/en/latest/radosgw/), and [file](https://docs.ceph.com/en/latest/cephfs/) storage. It supports both replicated and erasure coded storage.
 
-Option 1 (Recommended)
+**Option 1**
 
 - MicroK8s cluster with rook-ceph addon
 - Deploy Ceph on the MicroK8s cluster using storage from the k8s nodes.
+- Not recommended for clusters with virtual disks backed by loop devices. The `provision` container of the `rook-ceph-osd-prepare` pod for each node will not use them and the pool creation will fail with `skipping OSD configuration as no devices matched the storage settings for this node `.
 
-Option 2  
-Imports external cluster but does not create `CephCluster` or `CephBlockPool` objects, only the `StorageClass`.
+**Option 2**  
+
+Imports external Ceph cluster e.g. MicroCeph. Does not create `CephCluster` or `CephBlockPool` objects, only the `StorageClass`.
 
 - MicroCeph cluster 
 - MicroK8s cluster with rook-ceph addon connected to the external Ceph cluster
@@ -68,7 +70,7 @@ Imports external cluster but does not create `CephCluster` or `CephBlockPool` ob
 
 #### MicroCeph Clustering
 
-(Optional) If choosing an external Ceph cluster.
+If using an external Ceph cluster to be consumed by Rook.
 
 1. Install [MicroCeph](https://microk8s.io/docs/how-to-ceph)
     ```sh title="On all nodes"
@@ -144,7 +146,7 @@ Imports external cluster but does not create `CephCluster` or `CephBlockPool` ob
     ```
     If the `CephBlockPool` creation fails, see [here](https://rook.io/docs/rook/v1.12/Troubleshooting/ceph-common-issues/#investigation_4).
 
-    It's good to install the [Rook toolbox](https://rook.io/docs/rook/v1.12/Troubleshooting/ceph-toolbox/) container for running Ceph commands.
+    (Optional) It's good to install the [Rook toolbox](https://rook.io/docs/rook/v1.12/Troubleshooting/ceph-toolbox/) container for running Ceph commands.
     ```sh
     wget https://raw.githubusercontent.com/rook/rook/d34d443e0fa2fc946dd56fd2b66968380e68f449/deploy/examples/toolbox.yaml
     microk8s kubectl apply -f toolbox.yaml

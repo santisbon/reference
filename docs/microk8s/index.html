@@ -1007,13 +1007,14 @@
 <p>MicroK8s is not available for 32-bit architectures like <code>armhf</code>(<code>arm/v7</code>), only on 64-bit architectures like <code>arm64</code> and <code>amd64</code>.</p>
 </div>
 <p>Ceph provides <a href="https://docs.ceph.com/en/latest/rbd/">block</a>, <a href="https://docs.ceph.com/en/latest/radosgw/">object</a>, and <a href="https://docs.ceph.com/en/latest/cephfs/">file</a> storage. It supports both replicated and erasure coded storage.</p>
-<p>Option 1 (Recommended)</p>
+<p><strong>Option 1</strong></p>
 <ul>
 <li>MicroK8s cluster with rook-ceph addon</li>
 <li>Deploy Ceph on the MicroK8s cluster using storage from the k8s nodes.</li>
+<li>Not recommended for clusters with virtual disks backed by loop devices. The <code>provision</code> container of the <code>rook-ceph-osd-prepare</code> pod for each node will not use them and the pool creation will fail with <code>skipping OSD configuration as no devices matched the storage settings for this node</code>.</li>
 </ul>
-<p>Option 2<br />
-Imports external cluster but does not create <code>CephCluster</code> or <code>CephBlockPool</code> objects, only the <code>StorageClass</code>.</p>
+<p><strong>Option 2</strong>  </p>
+<p>Imports external Ceph cluster e.g. MicroCeph. Does not create <code>CephCluster</code> or <code>CephBlockPool</code> objects, only the <code>StorageClass</code>.</p>
 <ul>
 <li>MicroCeph cluster </li>
 <li>MicroK8s cluster with rook-ceph addon connected to the external Ceph cluster</li>
@@ -1061,7 +1062,7 @@ ls<span class="w"> </span>-al<span class="w">  </span>/dev/sdi*
 </li>
 </ol>
 <h4 id="microceph-clustering">MicroCeph Clustering<a class="headerlink" href="#microceph-clustering" title="Permanent link">#</a></h4>
-<p>(Optional) If choosing an external Ceph cluster.</p>
+<p>If using an external Ceph cluster to be consumed by Rook.</p>
 <ol>
 <li>Install <a href="https://microk8s.io/docs/how-to-ceph">MicroCeph</a>
     <div class="highlight"><span class="filename">On all nodes</span><pre><span></span><code>sudo<span class="w"> </span>snap<span class="w"> </span>install<span class="w"> </span>microceph<span class="w"> </span>--channel<span class="o">=</span>latest/edge
@@ -1125,7 +1126,7 @@ microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>rook-storageclass-ec.yaml
 </code></pre></div>
     If the <code>CephBlockPool</code> creation fails, see <a href="https://rook.io/docs/rook/v1.12/Troubleshooting/ceph-common-issues/#investigation_4">here</a>.</p>
-<p>It's good to install the <a href="https://rook.io/docs/rook/v1.12/Troubleshooting/ceph-toolbox/">Rook toolbox</a> container for running Ceph commands.
+<p>(Optional) It's good to install the <a href="https://rook.io/docs/rook/v1.12/Troubleshooting/ceph-toolbox/">Rook toolbox</a> container for running Ceph commands.
 <div class="highlight"><pre><span></span><code>wget<span class="w"> </span>https://raw.githubusercontent.com/rook/rook/d34d443e0fa2fc946dd56fd2b66968380e68f449/deploy/examples/toolbox.yaml
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>toolbox.yaml
 <span class="c1"># Wait for the toolbox pod to download its container and get to the running state:</span>
