@@ -121,7 +121,7 @@ Imports external cluster but does not create `CephCluster` or `CephBlockPool` ob
     microk8s kubectl --namespace rook-ceph get pods -l "app=rook-ceph-operator"
     # wait for the operator pod to be `Running`
     ```
-    Option 1 - To deploy [Ceph on the MicroK8s cluster using storage from the k8s nodes](https://rook.io/docs/rook/latest-release/CRDs/Cluster/ceph-cluster-crd/)
+    **Option 1** - To deploy [Ceph on the MicroK8s cluster using storage from the k8s nodes](https://rook.io/docs/rook/latest-release/CRDs/Cluster/ceph-cluster-crd/)
     ```sh title="On the control plane node"
     # if you want `dataDirHostPath` to specify where config and data should be stored for each of the services
     microk8s enable hostpath-storage
@@ -134,11 +134,26 @@ Imports external cluster but does not create `CephCluster` or `CephBlockPool` ob
 
     # block devices
     microk8s kubectl apply -f rook-cluster.yaml
+    microk8s kubectl get CephCluster -A # wait for the cluster to be `Ready`
+    
     microk8s kubectl apply -f rook-storageclass.yaml
+    microk8s kubectl get CephBlockPool -A
+    microk8s kubectl get StorageClass -A
+
     microk8s kubectl apply -f rook-storageclass-ec.yaml
     ```
+    It's good to install the [Rook toolbox](https://rook.io/docs/rook/v1.12/Troubleshooting/ceph-toolbox/) container for running Ceph commands.
+    ```sh
+    wget https://raw.githubusercontent.com/rook/rook/d34d443e0fa2fc946dd56fd2b66968380e68f449/deploy/examples/toolbox.yaml
+    microk8s kubectl apply -f toolbox.yaml
+    # Wait for the toolbox pod to download its container and get to the running state:
+    microk8s kubectl -n rook-ceph rollout status deploy/rook-ceph-tools
+    # Connect to it:
+    microk8s kubectl -n rook-ceph exec -it deploy/rook-ceph-tools -- bash
+    # you can use e.g. ceph status, ceph osd status, ceph df, rados df
+    ```
 
-    Option 2 - If you set up an external MicroCeph cluster:
+    **Option 2** - If you set up an external MicroCeph cluster:
     ```sh title="On the control plane node"
     sudo microk8s connect-external-ceph
     # Now you can create a pod that uses the `ceph-rdb` storage class (which uses the `microk8s-rbd0` pool) for a persistent volume.
@@ -342,4 +357,11 @@ sudo microk8s kubectl-minio tenant status microk8s
     microk8s kubectl get secret rook-csi-rbd-provisioner -n $ROOK_NAMESPACE -o jsonpath='{.data.userKey}' | base64 --decode ;echo
     microk8s kubectl get secret rook-csi-rbd-node -n $ROOK_NAMESPACE -o jsonpath='{.data.userID}' | base64 --decode ;echo
     microk8s kubectl get secret rook-csi-rbd-node -n $ROOK_NAMESPACE -o jsonpath='{.data.userKey}' | base64 --decode ;echo
+    ```
+* Rook Ceph inspection
+    ```sh
+    # Inspect the Rook operator container’s logs:
+    microk8s kubectl -n rook-ceph logs -l app=rook-ceph-operator
+    # Inspect the ceph-mgr container’s logs:
+    microk8s kubectl -n rook-ceph logs -l app=rook-ceph-mgr
     ```

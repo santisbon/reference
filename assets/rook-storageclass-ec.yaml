@@ -26,7 +26,7 @@ spec:
   erasureCoded:
     dataChunks: 3
     codingChunks: 3
-  deviceClass: ssd
+  #deviceClass: ssd
 
 ---
 

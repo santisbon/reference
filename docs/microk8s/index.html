@@ -1057,7 +1057,7 @@ sudo<span class="w"> </span>microceph<span class="w"> </span>disk<span class="w"
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>--namespace<span class="w"> </span>rook-ceph<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-l<span class="w"> </span><span class="s2">&quot;app=rook-ceph-operator&quot;</span>
 <span class="c1"># wait for the operator pod to be `Running`</span>
 </code></pre></div>
-    Option 1 - To deploy <a href="https://rook.io/docs/rook/latest-release/CRDs/Cluster/ceph-cluster-crd/">Ceph on the MicroK8s cluster using storage from the k8s nodes</a>
+    <strong>Option 1</strong> - To deploy <a href="https://rook.io/docs/rook/latest-release/CRDs/Cluster/ceph-cluster-crd/">Ceph on the MicroK8s cluster using storage from the k8s nodes</a>
     <div class="highlight"><span class="filename">On the control plane node</span><pre><span></span><code><span class="c1"># if you want `dataDirHostPath` to specify where config and data should be stored for each of the services</span>
 microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>hostpath-storage
 </code></pre></div>
@@ -1068,10 +1068,24 @@ wget<span class="w"> </span>https://raw.githubusercontent.com/santisbon/referenc
 
 <span class="c1"># block devices</span>
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>rook-cluster.yaml
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>CephCluster<span class="w"> </span>-A<span class="w"> </span><span class="c1"># wait for the cluster to be `Ready`</span>
+
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>rook-storageclass.yaml
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>CephBlockPool<span class="w"> </span>-A
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>StorageClass<span class="w"> </span>-A
+
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>rook-storageclass-ec.yaml
+</code></pre></div>
+    It's good to install the <a href="https://rook.io/docs/rook/v1.12/Troubleshooting/ceph-toolbox/">Rook toolbox</a> container for running Ceph commands.
+    <div class="highlight"><pre><span></span><code>wget<span class="w"> </span>https://raw.githubusercontent.com/rook/rook/d34d443e0fa2fc946dd56fd2b66968380e68f449/deploy/examples/toolbox.yaml
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>toolbox.yaml
+<span class="c1"># Wait for the toolbox pod to download its container and get to the running state:</span>
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>-n<span class="w"> </span>rook-ceph<span class="w"> </span>rollout<span class="w"> </span>status<span class="w"> </span>deploy/rook-ceph-tools
+<span class="c1"># Connect to it:</span>
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>-n<span class="w"> </span>rook-ceph<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>deploy/rook-ceph-tools<span class="w"> </span>--<span class="w"> </span>bash
+<span class="c1"># you can use e.g. ceph status, ceph osd status, ceph df, rados df</span>
 </code></pre></div></p>
-<p>Option 2 - If you set up an external MicroCeph cluster:
+<p><strong>Option 2</strong> - If you set up an external MicroCeph cluster:
 <div class="highlight"><span class="filename">On the control plane node</span><pre><span></span><code>sudo<span class="w"> </span>microk8s<span class="w"> </span>connect-external-ceph
 <span class="c1"># Now you can create a pod that uses the `ceph-rdb` storage class (which uses the `microk8s-rbd0` pool) for a persistent volume.</span>
 </code></pre></div></p>
@@ -1240,6 +1254,12 @@ microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>rook-csi-rbd-provisioner<span class="w"> </span>-n<span class="w"> </span><span class="nv">$ROOK_NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.userKey}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="p">;</span><span class="nb">echo</span>
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>rook-csi-rbd-node<span class="w"> </span>-n<span class="w"> </span><span class="nv">$ROOK_NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.userID}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="p">;</span><span class="nb">echo</span>
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>rook-csi-rbd-node<span class="w"> </span>-n<span class="w"> </span><span class="nv">$ROOK_NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.userKey}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="p">;</span><span class="nb">echo</span>
+</code></pre></div></li>
+<li>Rook Ceph inspection
+    <div class="highlight"><pre><span></span><code><span class="c1"># Inspect the Rook operator container’s logs:</span>
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>-n<span class="w"> </span>rook-ceph<span class="w"> </span>logs<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>rook-ceph-operator
+<span class="c1"># Inspect the ceph-mgr container’s logs:</span>
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>-n<span class="w"> </span>rook-ceph<span class="w"> </span>logs<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>rook-ceph-mgr
 </code></pre></div></li>
 </ul>
 
