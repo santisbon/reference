@@ -9,13 +9,7 @@ Suitable for Raspberry Pi and other lightweight environments. [Learn  more](http
 
 Ceph provides [block](https://docs.ceph.com/en/latest/rbd/), [object](https://docs.ceph.com/en/latest/radosgw/), and [file](https://docs.ceph.com/en/latest/cephfs/) storage. It supports both replicated and erasure coded storage.
 
-**Option 1**
-
-- MicroK8s cluster with rook-ceph addon
-- Deploy Ceph on the MicroK8s cluster using storage from the k8s nodes.
-- Not recommended for clusters with virtual disks backed by loop devices. The `provision` container of the `rook-ceph-osd-prepare` pod for each node will not use them and the pool creation will fail with `skipping OSD configuration as no devices matched the storage settings for this node `.
-
-**Option 2**  
+**Option 1**  
 
 Imports external Ceph cluster e.g. MicroCeph. Does not create `CephCluster` or `CephBlockPool` objects, only the `StorageClass`.
 
@@ -31,6 +25,12 @@ Imports external Ceph cluster e.g. MicroCeph. Does not create `CephCluster` or `
     Provisioner:           rook-ceph.rbd.csi.ceph.com
     Parameters:            clusterID=rook-ceph-external,pool=microk8s-rbd0 ...
     ```
+
+**Option 2**
+
+- MicroK8s cluster with rook-ceph addon
+- Deploy Ceph on the MicroK8s cluster using storage from the k8s nodes.
+- Not recommended for clusters with virtual disks backed by loop devices. The `provision` container of the `rook-ceph-osd-prepare` pod for each node will not use them and the pool creation will fail with `skipping OSD configuration as no devices matched the storage settings for this node `.
 
 #### Prerequisites
 
@@ -92,8 +92,10 @@ If using an external Ceph cluster to be consumed by Rook.
 3. Add the disks as OSDs.
     ```sh title="On each node"
     # After adding physical or virtual disks to your node/VM
-    # for each disk
-    sudo microceph disk add /dev/sdb --wipe # whatever device name your disk has
+    # for each disk (whatever device names your disks have)
+    sudo microceph disk add /dev/sdia --wipe 
+    sudo microceph disk add /dev/sdib --wipe
+    sudo microceph disk add /dev/sdic --wipe
     ```
 4. Verify
     ```sh title="On the control plane (or any ceph node, really)"
@@ -123,26 +125,33 @@ If using an external Ceph cluster to be consumed by Rook.
     microk8s kubectl --namespace rook-ceph get pods -l "app=rook-ceph-operator"
     # wait for the operator pod to be `Running`
     ```
-    **Option 1** - To deploy [Ceph on the MicroK8s cluster using storage from the k8s nodes](https://rook.io/docs/rook/latest-release/CRDs/Cluster/ceph-cluster-crd/)
+
+    **Option 1** - If you set up an external MicroCeph cluster:
+    ```sh title="On the control plane node"
+    sudo microk8s connect-external-ceph
+    # Now you can create a pod that uses the `ceph-rdb` storage class, 
+    # which uses the `microk8s-rbd0` pool.
+    ```
+
+    **Option 2** - To deploy [Ceph on the MicroK8s cluster using storage from the k8s nodes](https://rook.io/docs/rook/latest-release/CRDs/Cluster/ceph-cluster-crd/)
     ```sh title="On the control plane node"
     # if you want `dataDirHostPath` to specify where config and data should be stored for each of the services
     microk8s enable hostpath-storage
     ```
-    Create the cluster and storage resources like in these [examples](https://rook.io/docs/rook/v1.12/Getting-Started/example-configurations/#cluster-crd). You'll probably want a customized version to match your environment as I do here for my 2-node cluster:
+    Create the cluster and storage resources like in these [examples](https://rook.io/docs/rook/v1.12/Getting-Started/example-configurations/#cluster-crd). You'll probably want a customized version to match your environment.
     ```sh title="On the control plane node"
-    wget https://raw.githubusercontent.com/santisbon/reference/main/assets/rook-cluster.yaml
-    wget https://raw.githubusercontent.com/santisbon/reference/main/assets/rook-storageclass.yaml
-    wget https://raw.githubusercontent.com/santisbon/reference/main/assets/rook-storageclass-ec.yaml
+    wget https://raw.githubusercontent.com/rook/rook/d34d443e0fa2fc946dd56fd2b66968380e68f449/deploy/examples/cluster.yaml
+    wget https://raw.githubusercontent.com/rook/rook/d34d443e0fa2fc946dd56fd2b66968380e68f449/deploy/examples/csi/rbd/storageclass.yaml
+    wget https://raw.githubusercontent.com/rook/rook/d34d443e0fa2fc946dd56fd2b66968380e68f449/deploy/examples/csi/rbd/storageclass-ec.yaml
 
-    microk8s kubectl apply -f rook-cluster.yaml
+    microk8s kubectl apply -f cluster.yaml
     microk8s kubectl get CephCluster -A # wait for the cluster to be `Ready`
 
     # block devices    
-    microk8s kubectl apply -f rook-storageclass.yaml
+    microk8s kubectl apply -f storageclass.yaml
+    microk8s kubectl apply -f storageclass-ec.yaml
     microk8s kubectl get CephBlockPool -A
     microk8s kubectl get StorageClass -A
-
-    microk8s kubectl apply -f rook-storageclass-ec.yaml
     ```
     If the `CephBlockPool` creation fails, see [here](https://rook.io/docs/rook/v1.12/Troubleshooting/ceph-common-issues/#investigation_4).
 
@@ -155,12 +164,6 @@ If using an external Ceph cluster to be consumed by Rook.
     # Connect to it:
     microk8s kubectl -n rook-ceph exec -it deploy/rook-ceph-tools -- bash
     # you can use e.g. ceph status, ceph osd status, ceph osd pool stats, ceph df, rados df
-    ```
-
-    **Option 2** - If you set up an external MicroCeph cluster:
-    ```sh title="On the control plane node"
-    sudo microk8s connect-external-ceph
-    # Now you can create a pod that uses the `ceph-rdb` storage class (which uses the `microk8s-rbd0` pool) for a persistent volume.
     ```
 
 #### Usage

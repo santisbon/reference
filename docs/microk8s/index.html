@@ -1007,13 +1007,7 @@
 <p>MicroK8s is not available for 32-bit architectures like <code>armhf</code>(<code>arm/v7</code>), only on 64-bit architectures like <code>arm64</code> and <code>amd64</code>.</p>
 </div>
 <p>Ceph provides <a href="https://docs.ceph.com/en/latest/rbd/">block</a>, <a href="https://docs.ceph.com/en/latest/radosgw/">object</a>, and <a href="https://docs.ceph.com/en/latest/cephfs/">file</a> storage. It supports both replicated and erasure coded storage.</p>
-<p><strong>Option 1</strong></p>
-<ul>
-<li>MicroK8s cluster with rook-ceph addon</li>
-<li>Deploy Ceph on the MicroK8s cluster using storage from the k8s nodes.</li>
-<li>Not recommended for clusters with virtual disks backed by loop devices. The <code>provision</code> container of the <code>rook-ceph-osd-prepare</code> pod for each node will not use them and the pool creation will fail with <code>skipping OSD configuration as no devices matched the storage settings for this node</code>.</li>
-</ul>
-<p><strong>Option 2</strong>  </p>
+<p><strong>Option 1</strong>  </p>
 <p>Imports external Ceph cluster e.g. MicroCeph. Does not create <code>CephCluster</code> or <code>CephBlockPool</code> objects, only the <code>StorageClass</code>.</p>
 <ul>
 <li>MicroCeph cluster </li>
@@ -1026,6 +1020,12 @@
 Provisioner:           rook-ceph.rbd.csi.ceph.com
 Parameters:            clusterID=rook-ceph-external,pool=microk8s-rbd0 ...
 </code></pre></div></li>
+</ul>
+<p><strong>Option 2</strong></p>
+<ul>
+<li>MicroK8s cluster with rook-ceph addon</li>
+<li>Deploy Ceph on the MicroK8s cluster using storage from the k8s nodes.</li>
+<li>Not recommended for clusters with virtual disks backed by loop devices. The <code>provision</code> container of the <code>rook-ceph-osd-prepare</code> pod for each node will not use them and the pool creation will fail with <code>skipping OSD configuration as no devices matched the storage settings for this node</code>.</li>
 </ul>
 <h4 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">#</a></h4>
 <ol>
@@ -1079,8 +1079,10 @@ snap<span class="w"> </span>info<span class="w"> </span>microceph<span class="w"
 </code></pre></div></li>
 <li>Add the disks as OSDs.
     <div class="highlight"><span class="filename">On each node</span><pre><span></span><code><span class="c1"># After adding physical or virtual disks to your node/VM</span>
-<span class="c1"># for each disk</span>
-sudo<span class="w"> </span>microceph<span class="w"> </span>disk<span class="w"> </span>add<span class="w"> </span>/dev/sdb<span class="w"> </span>--wipe<span class="w"> </span><span class="c1"># whatever device name your disk has</span>
+<span class="c1"># for each disk (whatever device names your disks have)</span>
+sudo<span class="w"> </span>microceph<span class="w"> </span>disk<span class="w"> </span>add<span class="w"> </span>/dev/sdia<span class="w"> </span>--wipe<span class="w"> </span>
+sudo<span class="w"> </span>microceph<span class="w"> </span>disk<span class="w"> </span>add<span class="w"> </span>/dev/sdib<span class="w"> </span>--wipe
+sudo<span class="w"> </span>microceph<span class="w"> </span>disk<span class="w"> </span>add<span class="w"> </span>/dev/sdic<span class="w"> </span>--wipe
 </code></pre></div></li>
 <li>Verify
     <div class="highlight"><span class="filename">On the control plane (or any ceph node, really)</span><pre><span></span><code>sudo<span class="w"> </span>ceph<span class="w"> </span>status<span class="w"> </span><span class="c1"># detailed status</span>
@@ -1105,27 +1107,31 @@ sudo<span class="w"> </span>microceph<span class="w"> </span>disk<span class="w"
     <div class="highlight"><span class="filename">On the control plane</span><pre><span></span><code>microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>rook-ceph<span class="w"> </span><span class="c1"># installs crds.yaml, common.yaml, operator.yaml</span>
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>--namespace<span class="w"> </span>rook-ceph<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-l<span class="w"> </span><span class="s2">&quot;app=rook-ceph-operator&quot;</span>
 <span class="c1"># wait for the operator pod to be `Running`</span>
-</code></pre></div>
-    <strong>Option 1</strong> - To deploy <a href="https://rook.io/docs/rook/latest-release/CRDs/Cluster/ceph-cluster-crd/">Ceph on the MicroK8s cluster using storage from the k8s nodes</a>
-    <div class="highlight"><span class="filename">On the control plane node</span><pre><span></span><code><span class="c1"># if you want `dataDirHostPath` to specify where config and data should be stored for each of the services</span>
+</code></pre></div></p>
+<p><strong>Option 1</strong> - If you set up an external MicroCeph cluster:
+<div class="highlight"><span class="filename">On the control plane node</span><pre><span></span><code>sudo<span class="w"> </span>microk8s<span class="w"> </span>connect-external-ceph
+<span class="c1"># Now you can create a pod that uses the `ceph-rdb` storage class, </span>
+<span class="c1"># which uses the `microk8s-rbd0` pool.</span>
+</code></pre></div></p>
+<p><strong>Option 2</strong> - To deploy <a href="https://rook.io/docs/rook/latest-release/CRDs/Cluster/ceph-cluster-crd/">Ceph on the MicroK8s cluster using storage from the k8s nodes</a>
+<div class="highlight"><span class="filename">On the control plane node</span><pre><span></span><code><span class="c1"># if you want `dataDirHostPath` to specify where config and data should be stored for each of the services</span>
 microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>hostpath-storage
 </code></pre></div>
-    Create the cluster and storage resources like in these <a href="https://rook.io/docs/rook/v1.12/Getting-Started/example-configurations/#cluster-crd">examples</a>. You'll probably want a customized version to match your environment as I do here for my 2-node cluster:
-    <div class="highlight"><span class="filename">On the control plane node</span><pre><span></span><code>wget<span class="w"> </span>https://raw.githubusercontent.com/santisbon/reference/main/assets/rook-cluster.yaml
-wget<span class="w"> </span>https://raw.githubusercontent.com/santisbon/reference/main/assets/rook-storageclass.yaml
-wget<span class="w"> </span>https://raw.githubusercontent.com/santisbon/reference/main/assets/rook-storageclass-ec.yaml
+Create the cluster and storage resources like in these <a href="https://rook.io/docs/rook/v1.12/Getting-Started/example-configurations/#cluster-crd">examples</a>. You'll probably want a customized version to match your environment.
+<div class="highlight"><span class="filename">On the control plane node</span><pre><span></span><code>wget<span class="w"> </span>https://raw.githubusercontent.com/rook/rook/d34d443e0fa2fc946dd56fd2b66968380e68f449/deploy/examples/cluster.yaml
+wget<span class="w"> </span>https://raw.githubusercontent.com/rook/rook/d34d443e0fa2fc946dd56fd2b66968380e68f449/deploy/examples/csi/rbd/storageclass.yaml
+wget<span class="w"> </span>https://raw.githubusercontent.com/rook/rook/d34d443e0fa2fc946dd56fd2b66968380e68f449/deploy/examples/csi/rbd/storageclass-ec.yaml
 
-microk8s<span class="w"> </span>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>rook-cluster.yaml
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>cluster.yaml
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>CephCluster<span class="w"> </span>-A<span class="w"> </span><span class="c1"># wait for the cluster to be `Ready`</span>
 
 <span class="c1"># block devices    </span>
-microk8s<span class="w"> </span>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>rook-storageclass.yaml
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>storageclass.yaml
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>storageclass-ec.yaml
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>CephBlockPool<span class="w"> </span>-A
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>StorageClass<span class="w"> </span>-A
-
-microk8s<span class="w"> </span>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>rook-storageclass-ec.yaml
 </code></pre></div>
-    If the <code>CephBlockPool</code> creation fails, see <a href="https://rook.io/docs/rook/v1.12/Troubleshooting/ceph-common-issues/#investigation_4">here</a>.</p>
+If the <code>CephBlockPool</code> creation fails, see <a href="https://rook.io/docs/rook/v1.12/Troubleshooting/ceph-common-issues/#investigation_4">here</a>.</p>
 <p>(Optional) It's good to install the <a href="https://rook.io/docs/rook/v1.12/Troubleshooting/ceph-toolbox/">Rook toolbox</a> container for running Ceph commands.
 <div class="highlight"><pre><span></span><code>wget<span class="w"> </span>https://raw.githubusercontent.com/rook/rook/d34d443e0fa2fc946dd56fd2b66968380e68f449/deploy/examples/toolbox.yaml
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>toolbox.yaml
@@ -1134,10 +1140,6 @@ microk8s<span class="w"> </span>kubectl<span class="w"> </span>-n<span class="w"
 <span class="c1"># Connect to it:</span>
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>-n<span class="w"> </span>rook-ceph<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>deploy/rook-ceph-tools<span class="w"> </span>--<span class="w"> </span>bash
 <span class="c1"># you can use e.g. ceph status, ceph osd status, ceph osd pool stats, ceph df, rados df</span>
-</code></pre></div></p>
-<p><strong>Option 2</strong> - If you set up an external MicroCeph cluster:
-<div class="highlight"><span class="filename">On the control plane node</span><pre><span></span><code>sudo<span class="w"> </span>microk8s<span class="w"> </span>connect-external-ceph
-<span class="c1"># Now you can create a pod that uses the `ceph-rdb` storage class (which uses the `microk8s-rbd0` pool) for a persistent volume.</span>
 </code></pre></div></p>
 </li>
 </ol>
