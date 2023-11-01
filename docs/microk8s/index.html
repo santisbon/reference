@@ -1226,23 +1226,8 @@ cat<span class="w"> </span>/var/snap/microk8s/current/args/kubelet
 </code></pre></div>
 <a href="https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/">More info</a>.</p>
 <h3 id="deploying-workloads">Deploying workloads<a class="headerlink" href="#deploying-workloads" title="Permanent link">#</a></h3>
-<div class="highlight"><pre><span></span><code>cat<span class="w"> </span><span class="s">&lt;&lt; EOF &gt; pod.yaml</span>
-<span class="s">apiVersion: v1</span>
-<span class="s">kind: PersistentVolume</span>
-<span class="s">metadata:</span>
-<span class="s">  name: nginx-html-pv</span>
-<span class="s">  labels:</span>
-<span class="s">    directory: nginx-html</span>
-<span class="s">spec:</span>
-<span class="s">  storageClassName: ceph-rbd</span>
-<span class="s">  persistentVolumeReclaimPolicy: Delete</span>
-<span class="s">  capacity:</span>
-<span class="s">    storage: 5Gi</span>
-<span class="s">  accessModes:</span>
-<span class="s">    - ReadWriteOnce</span>
-
-<span class="s">---</span>
-
+<div class="highlight"><pre><span></span><code><span class="c1"># StorageClass is ceph-rbd or rook-ceph-block, depending on your setup.</span>
+cat<span class="w"> </span><span class="s">&lt;&lt; EOF &gt; pod.yaml</span>
 <span class="s">apiVersion: v1</span>
 <span class="s">kind: PersistentVolumeClaim</span>
 <span class="s">metadata:</span>
@@ -1254,9 +1239,6 @@ cat<span class="w"> </span>/var/snap/microk8s/current/args/kubelet
 <span class="s">  resources: </span>
 <span class="s">    requests: </span>
 <span class="s">      storage: 5Gi</span>
-<span class="s">  selector:</span>
-<span class="s">    matchLabels:</span>
-<span class="s">      directory: nginx-html</span>
 
 <span class="s">---</span>
 
@@ -1279,13 +1261,13 @@ cat<span class="w"> </span>/var/snap/microk8s/current/args/kubelet
 <span class="s">          mountPath: /usr/share/nginx/html</span>
 <span class="s">EOF</span>
 
-microk8s<span class="w"> </span>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>pod.yaml<span class="w"> </span>-n<span class="w"> </span>rook-ceph-external
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>pod.yaml
 
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>pvc<span class="w"> </span>-A<span class="w"> </span><span class="c1"># pvc status should be `Bound`</span>
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>pod
 
-microk8s<span class="w"> </span>kubectl<span class="w"> </span>describe<span class="w"> </span>pvc<span class="w"> </span>pod-pvc<span class="w"> </span>-n<span class="w"> </span>rook-ceph-external
-microk8s<span class="w"> </span>kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>nginx<span class="w"> </span>-n<span class="w"> </span>rook-ceph-external
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>describe<span class="w"> </span>pvc<span class="w"> </span>pod-pvc
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>nginx
 
 microk8s<span class="w"> </span>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>nginx<span class="w"> </span>--<span class="w"> </span>bash
 

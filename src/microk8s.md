@@ -224,23 +224,8 @@ cat /var/snap/microk8s/current/args/kubelet
 ### Deploying workloads
 
 ```sh
+# StorageClass is ceph-rbd or rook-ceph-block, depending on your setup.
 cat << EOF > pod.yaml
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: nginx-html-pv
-  labels:
-    directory: nginx-html
-spec:
-  storageClassName: ceph-rbd
-  persistentVolumeReclaimPolicy: Delete
-  capacity:
-    storage: 5Gi
-  accessModes:
-    - ReadWriteOnce
-
----
-
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -252,9 +237,6 @@ spec:
   resources: 
     requests: 
       storage: 5Gi
-  selector:
-    matchLabels:
-      directory: nginx-html
 
 ---
 
@@ -277,13 +259,13 @@ spec:
           mountPath: /usr/share/nginx/html
 EOF
 
-microk8s kubectl apply -f pod.yaml -n rook-ceph-external
+microk8s kubectl apply -f pod.yaml
 
 microk8s kubectl get pvc -A # pvc status should be `Bound`
 microk8s kubectl get pod
 
-microk8s kubectl describe pvc pod-pvc -n rook-ceph-external
-microk8s kubectl describe pod nginx -n rook-ceph-external
+microk8s kubectl describe pvc pod-pvc
+microk8s kubectl describe pod nginx
 
 microk8s kubectl exec -it nginx -- bash
 
