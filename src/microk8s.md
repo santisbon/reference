@@ -9,17 +9,21 @@ Suitable for Raspberry Pi and other lightweight environments. [Learn  more](http
 
 Ceph provides [block](https://docs.ceph.com/en/latest/rbd/), [object](https://docs.ceph.com/en/latest/radosgw/), and [file](https://docs.ceph.com/en/latest/cephfs/) storage. It supports both replicated and erasure coded storage.
 
+We'll work with `CephCluster`, `CephBlockPool` objects, the `rook-ceph.rbd.csi.ceph.com` provisioner pods, the `ceph-rbd` storage class and the Ceph operator pod.
+
 **Option 1**  
 
-Imports external Ceph cluster e.g. MicroCeph. Does not create `CephCluster` or `CephBlockPool` objects, only the `StorageClass`.
+Imports external MicroCeph cluster.
 
-- MicroCeph cluster 
-- MicroK8s cluster with rook-ceph addon connected to the external Ceph cluster
-- [Create](https://docs.ceph.com/en/reef/rados/operations/pools/#create-a-pool) and [initialize](https://docs.ceph.com/en/reef/rbd/rados-rbd-cmds/) Ceph pools e.g.
+Components:
+
+- MicroCeph cluster.
+- MicroK8s cluster with rook-ceph addon connected to the external Ceph cluster.
+- Ceph cluster with pools e.g.
     ```sh
     pool 2 'microk8s-rbd0' replicated size 3 min_size 2 crush_rule 1 object_hash rjenkins pg_num 32 pgp_num 32 autoscale_mode on last_change 31 lfor 0/0/29 flags hashpspool stripe_width 0 application rbd
     ```
-- Create k8s `StorageClass` objects with paramter `pool=mypool` e.g.
+- Kubernetes `StorageClass` objects with paramter `pool=mypool` e.g.
     ```
     Name:                  ceph-rbd
     Provisioner:           rook-ceph.rbd.csi.ceph.com
@@ -28,7 +32,11 @@ Imports external Ceph cluster e.g. MicroCeph. Does not create `CephCluster` or `
 
 **Option 2**
 
-- MicroK8s cluster with rook-ceph addon
+Deploy Ceph on MicroK8s.
+
+Components:
+
+- MicroK8s cluster with rook-ceph addon.
 - Deploy Ceph on the MicroK8s cluster using storage from the k8s nodes.
 - Not recommended for clusters with virtual disks backed by loop devices. The `provision` container of the `rook-ceph-osd-prepare` pod for each node will not use them and the pool creation will fail with `skipping OSD configuration as no devices matched the storage settings for this node `.
 
@@ -119,8 +127,10 @@ If using an external Ceph cluster to be consumed by Rook.
     microk8s kubectl get no
     ```
 
-2. Deploy Ceph to your MicroK8s cluster or connect it to an external MicroCeph cluster. We'll be using [Rook Ceph](https://rook.io/docs/rook/v1.12/Getting-Started/quickstart/#storage).
+2. Connect the MicroK8s cluster to the external Ceph cluster or deploy Ceph to your MicroK8s cluster. We'll use [Rook Ceph](https://rook.io/docs/rook/v1.12/Getting-Started/quickstart/#storage).
     ```sh title="On the control plane"
+    microk8s helm repo add rook-release https://charts.rook.io/release
+
     microk8s enable rook-ceph # installs crds.yaml, common.yaml, operator.yaml
     microk8s kubectl --namespace rook-ceph get pods -l "app=rook-ceph-operator"
     # wait for the operator pod to be `Running`
@@ -129,9 +139,8 @@ If using an external Ceph cluster to be consumed by Rook.
     **Option 1** - If you set up an external MicroCeph cluster:
     ```sh title="On the control plane node"
     sudo microk8s connect-external-ceph
-    # Now you can create a pod that uses the `ceph-rdb` storage class, 
-    # which uses the `microk8s-rbd0` pool.
     ```
+    Now you can create a pod that uses the `ceph-rdb` storage class, which uses the `microk8s-rbd0` pool. You can also [create](https://docs.ceph.com/en/latest/rados/operations/pools/#creating-a-pool) and [initialize](https://docs.ceph.com/en/latest/rbd/rados-rbd-cmds/) other Ceph pools.
 
     **Option 2** - To deploy [Ceph on the MicroK8s cluster using storage from the k8s nodes](https://rook.io/docs/rook/latest-release/CRDs/Cluster/ceph-cluster-crd/)
     ```sh title="On the control plane node"
@@ -180,24 +189,106 @@ microk8s reset
 microk8s stop
 microk8s start
 
-# Add-on Examples:
-microk8s enable hostpath-storage
+# Add-on examples:
 microk8s enable metrics-server
 microk8s enable ingress
 microk8s enable dashboard
-
-alias mkctl="microk8s kubectl"
-alias mkhelm="microk8s helm"
-mkctl version --output=yaml
 
 # If you ever want to update MicroK8s to another channel. Tip: use a specific channel number.
 snap info microk8s
 sudo snap refresh microk8s --channel=latest/stable
 
+# storage classes
+microk8s kubectl get sc -A
+microk8s kubectl describe sc -A
+
+# Ceph
+sudo microceph status # deployment summary
+sudo microceph disk list
+sudo ceph osd metadata {osd-id} | grep osd_objectstore # check that it's a bluestore OSD
+sudo ceph osd lspools
+sudo ceph osd pool ls
+sudo ceph osd pool ls detail -f json-pretty # list the pools with all details
+sudo ceph osd pool stats # obtain stats from all pools, or from specified pool
+sudo ceph osd pool delete {pool-name} {pool-name} --yes-i-really-really-mean-it
+
+alias mkctl="microk8s kubectl"
+alias mkhelm="microk8s helm"
+mkctl version --output=yaml
+
 # Arguments for log rotation `--container-log-max-files` and `--container-log-max-size`. They have default values. 
 cat /var/snap/microk8s/current/args/kubelet
 ```
 [More info](https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/).
+
+### Deploying workloads
+
+```sh
+cat << EOF > pod.yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nginx-html-pv
+  labels:
+    directory: nginx-html
+spec:
+  storageClassName: ceph-rbd
+  persistentVolumeReclaimPolicy: Delete
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pod-pvc
+spec:
+  storageClassName: ceph-rbd
+  accessModes: 
+    - ReadWriteOnce
+  resources: 
+    requests: 
+      storage: 5Gi
+  selector:
+    matchLabels:
+      directory: nginx-html
+
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  volumes:
+    - name: nginx-vol
+      persistentVolumeClaim:
+        claimName: pod-pvc
+  containers:
+    - name: nginx
+      image: nginx:latest
+      ports:
+        - containerPort: 80
+      volumeMounts:
+        - name: nginx-vol
+          mountPath: /usr/share/nginx/html
+EOF
+
+microk8s kubectl apply -f pod.yaml -n rook-ceph-external
+
+microk8s kubectl get pvc -A # pvc status should be `Bound`
+microk8s kubectl get pod
+
+microk8s kubectl describe pvc pod-pvc -n rook-ceph-external
+microk8s kubectl describe pod nginx -n rook-ceph-external
+
+microk8s kubectl exec -it nginx -- bash
+
+microk8s kubectl delete -f pod.yaml # cleanup
+```
 
 ### Other SBCs/OSs
 
@@ -340,27 +431,20 @@ sudo microk8s kubectl-minio tenant status microk8s
     cat /proc/cgroups
     ```
 * For other issues see [https://microk8s.io/docs/troubleshooting](https://microk8s.io/docs/troubleshooting)
-* View resources
+* Common issues [https://rook.io/docs/rook/latest/Troubleshooting/common-issues/](https://rook.io/docs/rook/latest/Troubleshooting/common-issues/)
     ```sh title="On the control plane"
-    # you may need sudo for these
-    sudo microceph status # deployment summary
-    sudo microceph disk list
-    ceph osd metadata {osd-id} | grep osd_objectstore # check that it's a bluestore OSD
-    ceph osd lspools
-    ceph osd pool ls
-    ceph osd pool ls detail -f json-pretty # list the pools with all details
-    ceph osd pool stats # obtain stats from all pools, or from specified pool
-    ceph osd pool delete {pool-name} {pool-name} --yes-i-really-really-mean-it
+    # logs
+    sudo ls -al /var/snap/microceph/common/logs/
+    sudo ls -al /var/snap/microk8s/common/var/log
 
-    ##########################################################################################
-    
+     # Inspect the Rook operator container’s logs:
+    microk8s kubectl -n rook-ceph logs -l app=rook-ceph-operator
+    # Inspect the ceph-mgr container’s logs:
+    microk8s kubectl -n rook-ceph logs -l app=rook-ceph-mgr
+
     # To view all resources not included in kubectl get all
     microk8s kubectl api-resources --verbs=list --namespaced -o name | xargs -n 1 microk8s kubectl get --ignore-not-found --show-kind -n rook-ceph-external
     microk8s kubectl api-resources --verbs=list --namespaced -o name | xargs -n 1 microk8s kubectl get --ignore-not-found --show-kind -n rook-ceph
-
-    # storage classes
-    microk8s kubectl get sc -A
-    microk8s kubectl describe sc -A
 
     # secrets
     microk8s kubectl get secret rook-csi-rbd-provisioner -n $ROOK_NAMESPACE -o jsonpath='{.data.userID}' | base64 --decode ;echo
@@ -368,10 +452,9 @@ sudo microk8s kubectl-minio tenant status microk8s
     microk8s kubectl get secret rook-csi-rbd-node -n $ROOK_NAMESPACE -o jsonpath='{.data.userID}' | base64 --decode ;echo
     microk8s kubectl get secret rook-csi-rbd-node -n $ROOK_NAMESPACE -o jsonpath='{.data.userKey}' | base64 --decode ;echo
     ```
-* Rook Ceph inspection
+* Pods stuck in `ImagePullBackOff`. Errors pulling images or other resources.  
+  Make sure the nodes are not running `avahi-daemon` as it messes with name resolution. Check if you're able to pull an image with k8s `crictl` or MicroK8s `ctr`.
     ```sh
-    # Inspect the Rook operator container’s logs:
-    microk8s kubectl -n rook-ceph logs -l app=rook-ceph-operator
-    # Inspect the ceph-mgr container’s logs:
-    microk8s kubectl -n rook-ceph logs -l app=rook-ceph-mgr
+    microk8s ctr image ls
+    microk8s ctr image pull registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.7.0
     ```

@@ -347,6 +347,26 @@
   
   
     <li class="md-nav__item">
+      <a href="../vm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Virtualization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../package-mgmt/" class="md-nav__link">
         
   
@@ -742,6 +762,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#deploying-workloads" class="md-nav__link">
+    Deploying workloads
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#other-sbcsoss" class="md-nav__link">
     Other SBCs/OSs
   </a>
@@ -905,6 +932,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#deploying-workloads" class="md-nav__link">
+    Deploying workloads
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#other-sbcsoss" class="md-nav__link">
     Other SBCs/OSs
   </a>
@@ -1007,23 +1041,27 @@
 <p>MicroK8s is not available for 32-bit architectures like <code>armhf</code>(<code>arm/v7</code>), only on 64-bit architectures like <code>arm64</code> and <code>amd64</code>.</p>
 </div>
 <p>Ceph provides <a href="https://docs.ceph.com/en/latest/rbd/">block</a>, <a href="https://docs.ceph.com/en/latest/radosgw/">object</a>, and <a href="https://docs.ceph.com/en/latest/cephfs/">file</a> storage. It supports both replicated and erasure coded storage.</p>
+<p>We'll work with <code>CephCluster</code>, <code>CephBlockPool</code> objects, the <code>rook-ceph.rbd.csi.ceph.com</code> provisioner pods, the <code>ceph-rbd</code> storage class and the Ceph operator pod.</p>
 <p><strong>Option 1</strong>  </p>
-<p>Imports external Ceph cluster e.g. MicroCeph. Does not create <code>CephCluster</code> or <code>CephBlockPool</code> objects, only the <code>StorageClass</code>.</p>
+<p>Imports external MicroCeph cluster.</p>
+<p>Components:</p>
 <ul>
-<li>MicroCeph cluster </li>
-<li>MicroK8s cluster with rook-ceph addon connected to the external Ceph cluster</li>
-<li><a href="https://docs.ceph.com/en/reef/rados/operations/pools/#create-a-pool">Create</a> and <a href="https://docs.ceph.com/en/reef/rbd/rados-rbd-cmds/">initialize</a> Ceph pools e.g.
+<li>MicroCeph cluster.</li>
+<li>MicroK8s cluster with rook-ceph addon connected to the external Ceph cluster.</li>
+<li>Ceph cluster with pools e.g.
     <div class="highlight"><pre><span></span><code>pool<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="s1">&#39;microk8s-rbd0&#39;</span><span class="w"> </span>replicated<span class="w"> </span>size<span class="w"> </span><span class="m">3</span><span class="w"> </span>min_size<span class="w"> </span><span class="m">2</span><span class="w"> </span>crush_rule<span class="w"> </span><span class="m">1</span><span class="w"> </span>object_hash<span class="w"> </span>rjenkins<span class="w"> </span>pg_num<span class="w"> </span><span class="m">32</span><span class="w"> </span>pgp_num<span class="w"> </span><span class="m">32</span><span class="w"> </span>autoscale_mode<span class="w"> </span>on<span class="w"> </span>last_change<span class="w"> </span><span class="m">31</span><span class="w"> </span>lfor<span class="w"> </span><span class="m">0</span>/0/29<span class="w"> </span>flags<span class="w"> </span>hashpspool<span class="w"> </span>stripe_width<span class="w"> </span><span class="m">0</span><span class="w"> </span>application<span class="w"> </span>rbd
 </code></pre></div></li>
-<li>Create k8s <code>StorageClass</code> objects with paramter <code>pool=mypool</code> e.g.
+<li>Kubernetes <code>StorageClass</code> objects with paramter <code>pool=mypool</code> e.g.
     <div class="highlight"><pre><span></span><code>Name:                  ceph-rbd
 Provisioner:           rook-ceph.rbd.csi.ceph.com
 Parameters:            clusterID=rook-ceph-external,pool=microk8s-rbd0 ...
 </code></pre></div></li>
 </ul>
 <p><strong>Option 2</strong></p>
+<p>Deploy Ceph on MicroK8s.</p>
+<p>Components:</p>
 <ul>
-<li>MicroK8s cluster with rook-ceph addon</li>
+<li>MicroK8s cluster with rook-ceph addon.</li>
 <li>Deploy Ceph on the MicroK8s cluster using storage from the k8s nodes.</li>
 <li>Not recommended for clusters with virtual disks backed by loop devices. The <code>provision</code> container of the <code>rook-ceph-osd-prepare</code> pod for each node will not use them and the pool creation will fail with <code>skipping OSD configuration as no devices matched the storage settings for this node</code>.</li>
 </ul>
@@ -1103,16 +1141,17 @@ sudo<span class="w"> </span>microceph<span class="w"> </span>disk<span class="w"
 </code></pre></div>
 </li>
 <li>
-<p>Deploy Ceph to your MicroK8s cluster or connect it to an external MicroCeph cluster. We'll be using <a href="https://rook.io/docs/rook/v1.12/Getting-Started/quickstart/#storage">Rook Ceph</a>.
-    <div class="highlight"><span class="filename">On the control plane</span><pre><span></span><code>microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>rook-ceph<span class="w"> </span><span class="c1"># installs crds.yaml, common.yaml, operator.yaml</span>
+<p>Connect the MicroK8s cluster to the external Ceph cluster or deploy Ceph to your MicroK8s cluster. We'll use <a href="https://rook.io/docs/rook/v1.12/Getting-Started/quickstart/#storage">Rook Ceph</a>.
+    <div class="highlight"><span class="filename">On the control plane</span><pre><span></span><code>microk8s<span class="w"> </span>helm<span class="w"> </span>repo<span class="w"> </span>add<span class="w"> </span>rook-release<span class="w"> </span>https://charts.rook.io/release
+
+microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>rook-ceph<span class="w"> </span><span class="c1"># installs crds.yaml, common.yaml, operator.yaml</span>
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>--namespace<span class="w"> </span>rook-ceph<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-l<span class="w"> </span><span class="s2">&quot;app=rook-ceph-operator&quot;</span>
 <span class="c1"># wait for the operator pod to be `Running`</span>
 </code></pre></div></p>
 <p><strong>Option 1</strong> - If you set up an external MicroCeph cluster:
 <div class="highlight"><span class="filename">On the control plane node</span><pre><span></span><code>sudo<span class="w"> </span>microk8s<span class="w"> </span>connect-external-ceph
-<span class="c1"># Now you can create a pod that uses the `ceph-rdb` storage class, </span>
-<span class="c1"># which uses the `microk8s-rbd0` pool.</span>
-</code></pre></div></p>
+</code></pre></div>
+Now you can create a pod that uses the <code>ceph-rdb</code> storage class, which uses the <code>microk8s-rbd0</code> pool. You can also <a href="https://docs.ceph.com/en/latest/rados/operations/pools/#creating-a-pool">create</a> and <a href="https://docs.ceph.com/en/latest/rbd/rados-rbd-cmds/">initialize</a> other Ceph pools.</p>
 <p><strong>Option 2</strong> - To deploy <a href="https://rook.io/docs/rook/latest-release/CRDs/Cluster/ceph-cluster-crd/">Ceph on the MicroK8s cluster using storage from the k8s nodes</a>
 <div class="highlight"><span class="filename">On the control plane node</span><pre><span></span><code><span class="c1"># if you want `dataDirHostPath` to specify where config and data should be stored for each of the services</span>
 microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>hostpath-storage
@@ -1155,24 +1194,103 @@ microk8s<span class="w"> </span>reset
 microk8s<span class="w"> </span>stop
 microk8s<span class="w"> </span>start
 
-<span class="c1"># Add-on Examples:</span>
-microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>hostpath-storage
+<span class="c1"># Add-on examples:</span>
 microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>metrics-server
 microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>ingress
 microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>dashboard
-
-<span class="nb">alias</span><span class="w"> </span><span class="nv">mkctl</span><span class="o">=</span><span class="s2">&quot;microk8s kubectl&quot;</span>
-<span class="nb">alias</span><span class="w"> </span><span class="nv">mkhelm</span><span class="o">=</span><span class="s2">&quot;microk8s helm&quot;</span>
-mkctl<span class="w"> </span>version<span class="w"> </span>--output<span class="o">=</span>yaml
 
 <span class="c1"># If you ever want to update MicroK8s to another channel. Tip: use a specific channel number.</span>
 snap<span class="w"> </span>info<span class="w"> </span>microk8s
 sudo<span class="w"> </span>snap<span class="w"> </span>refresh<span class="w"> </span>microk8s<span class="w"> </span>--channel<span class="o">=</span>latest/stable
 
+<span class="c1"># storage classes</span>
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>sc<span class="w"> </span>-A
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>describe<span class="w"> </span>sc<span class="w"> </span>-A
+
+<span class="c1"># Ceph</span>
+sudo<span class="w"> </span>microceph<span class="w"> </span>status<span class="w"> </span><span class="c1"># deployment summary</span>
+sudo<span class="w"> </span>microceph<span class="w"> </span>disk<span class="w"> </span>list
+sudo<span class="w"> </span>ceph<span class="w"> </span>osd<span class="w"> </span>metadata<span class="w"> </span><span class="o">{</span>osd-id<span class="o">}</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>osd_objectstore<span class="w"> </span><span class="c1"># check that it&#39;s a bluestore OSD</span>
+sudo<span class="w"> </span>ceph<span class="w"> </span>osd<span class="w"> </span>lspools
+sudo<span class="w"> </span>ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>ls
+sudo<span class="w"> </span>ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>ls<span class="w"> </span>detail<span class="w"> </span>-f<span class="w"> </span>json-pretty<span class="w"> </span><span class="c1"># list the pools with all details</span>
+sudo<span class="w"> </span>ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>stats<span class="w"> </span><span class="c1"># obtain stats from all pools, or from specified pool</span>
+sudo<span class="w"> </span>ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>delete<span class="w"> </span><span class="o">{</span>pool-name<span class="o">}</span><span class="w"> </span><span class="o">{</span>pool-name<span class="o">}</span><span class="w"> </span>--yes-i-really-really-mean-it
+
+<span class="nb">alias</span><span class="w"> </span><span class="nv">mkctl</span><span class="o">=</span><span class="s2">&quot;microk8s kubectl&quot;</span>
+<span class="nb">alias</span><span class="w"> </span><span class="nv">mkhelm</span><span class="o">=</span><span class="s2">&quot;microk8s helm&quot;</span>
+mkctl<span class="w"> </span>version<span class="w"> </span>--output<span class="o">=</span>yaml
+
 <span class="c1"># Arguments for log rotation `--container-log-max-files` and `--container-log-max-size`. They have default values. </span>
 cat<span class="w"> </span>/var/snap/microk8s/current/args/kubelet
 </code></pre></div>
 <a href="https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/">More info</a>.</p>
+<h3 id="deploying-workloads">Deploying workloads<a class="headerlink" href="#deploying-workloads" title="Permanent link">#</a></h3>
+<div class="highlight"><pre><span></span><code>cat<span class="w"> </span><span class="s">&lt;&lt; EOF &gt; pod.yaml</span>
+<span class="s">apiVersion: v1</span>
+<span class="s">kind: PersistentVolume</span>
+<span class="s">metadata:</span>
+<span class="s">  name: nginx-html-pv</span>
+<span class="s">  labels:</span>
+<span class="s">    directory: nginx-html</span>
+<span class="s">spec:</span>
+<span class="s">  storageClassName: ceph-rbd</span>
+<span class="s">  persistentVolumeReclaimPolicy: Delete</span>
+<span class="s">  capacity:</span>
+<span class="s">    storage: 5Gi</span>
+<span class="s">  accessModes:</span>
+<span class="s">    - ReadWriteOnce</span>
+
+<span class="s">---</span>
+
+<span class="s">apiVersion: v1</span>
+<span class="s">kind: PersistentVolumeClaim</span>
+<span class="s">metadata:</span>
+<span class="s">  name: pod-pvc</span>
+<span class="s">spec:</span>
+<span class="s">  storageClassName: ceph-rbd</span>
+<span class="s">  accessModes: </span>
+<span class="s">    - ReadWriteOnce</span>
+<span class="s">  resources: </span>
+<span class="s">    requests: </span>
+<span class="s">      storage: 5Gi</span>
+<span class="s">  selector:</span>
+<span class="s">    matchLabels:</span>
+<span class="s">      directory: nginx-html</span>
+
+<span class="s">---</span>
+
+<span class="s">apiVersion: v1</span>
+<span class="s">kind: Pod</span>
+<span class="s">metadata:</span>
+<span class="s">  name: nginx</span>
+<span class="s">spec:</span>
+<span class="s">  volumes:</span>
+<span class="s">    - name: nginx-vol</span>
+<span class="s">      persistentVolumeClaim:</span>
+<span class="s">        claimName: pod-pvc</span>
+<span class="s">  containers:</span>
+<span class="s">    - name: nginx</span>
+<span class="s">      image: nginx:latest</span>
+<span class="s">      ports:</span>
+<span class="s">        - containerPort: 80</span>
+<span class="s">      volumeMounts:</span>
+<span class="s">        - name: nginx-vol</span>
+<span class="s">          mountPath: /usr/share/nginx/html</span>
+<span class="s">EOF</span>
+
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>pod.yaml<span class="w"> </span>-n<span class="w"> </span>rook-ceph-external
+
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>pvc<span class="w"> </span>-A<span class="w"> </span><span class="c1"># pvc status should be `Bound`</span>
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>pod
+
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>describe<span class="w"> </span>pvc<span class="w"> </span>pod-pvc<span class="w"> </span>-n<span class="w"> </span>rook-ceph-external
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>nginx<span class="w"> </span>-n<span class="w"> </span>rook-ceph-external
+
+microk8s<span class="w"> </span>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>nginx<span class="w"> </span>--<span class="w"> </span>bash
+
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>delete<span class="w"> </span>-f<span class="w"> </span>pod.yaml<span class="w"> </span><span class="c1"># cleanup</span>
+</code></pre></div>
 <h3 id="other-sbcsoss">Other SBCs/OSs<a class="headerlink" href="#other-sbcsoss" title="Permanent link">#</a></h3>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
@@ -1283,26 +1401,19 @@ microk8s<span class="w"> </span>inspect
     <div class="highlight"><pre><span></span><code>cat<span class="w"> </span>/proc/cgroups
 </code></pre></div></li>
 <li>For other issues see <a href="https://microk8s.io/docs/troubleshooting">https://microk8s.io/docs/troubleshooting</a></li>
-<li>View resources
-    <div class="highlight"><span class="filename">On the control plane</span><pre><span></span><code><span class="c1"># you may need sudo for these</span>
-sudo<span class="w"> </span>microceph<span class="w"> </span>status<span class="w"> </span><span class="c1"># deployment summary</span>
-sudo<span class="w"> </span>microceph<span class="w"> </span>disk<span class="w"> </span>list
-ceph<span class="w"> </span>osd<span class="w"> </span>metadata<span class="w"> </span><span class="o">{</span>osd-id<span class="o">}</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>osd_objectstore<span class="w"> </span><span class="c1"># check that it&#39;s a bluestore OSD</span>
-ceph<span class="w"> </span>osd<span class="w"> </span>lspools
-ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>ls
-ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>ls<span class="w"> </span>detail<span class="w"> </span>-f<span class="w"> </span>json-pretty<span class="w"> </span><span class="c1"># list the pools with all details</span>
-ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>stats<span class="w"> </span><span class="c1"># obtain stats from all pools, or from specified pool</span>
-ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>delete<span class="w"> </span><span class="o">{</span>pool-name<span class="o">}</span><span class="w"> </span><span class="o">{</span>pool-name<span class="o">}</span><span class="w"> </span>--yes-i-really-really-mean-it
+<li>Common issues <a href="https://rook.io/docs/rook/latest/Troubleshooting/common-issues/">https://rook.io/docs/rook/latest/Troubleshooting/common-issues/</a>
+    <div class="highlight"><span class="filename">On the control plane</span><pre><span></span><code><span class="c1"># logs</span>
+sudo<span class="w"> </span>ls<span class="w"> </span>-al<span class="w"> </span>/var/snap/microceph/common/logs/
+sudo<span class="w"> </span>ls<span class="w"> </span>-al<span class="w"> </span>/var/snap/microk8s/common/var/log
 
-<span class="c1">##########################################################################################</span>
+<span class="w"> </span><span class="c1"># Inspect the Rook operator container’s logs:</span>
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>-n<span class="w"> </span>rook-ceph<span class="w"> </span>logs<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>rook-ceph-operator
+<span class="c1"># Inspect the ceph-mgr container’s logs:</span>
+microk8s<span class="w"> </span>kubectl<span class="w"> </span>-n<span class="w"> </span>rook-ceph<span class="w"> </span>logs<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>rook-ceph-mgr
 
 <span class="c1"># To view all resources not included in kubectl get all</span>
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>api-resources<span class="w"> </span>--verbs<span class="o">=</span>list<span class="w"> </span>--namespaced<span class="w"> </span>-o<span class="w"> </span>name<span class="w"> </span><span class="p">|</span><span class="w"> </span>xargs<span class="w"> </span>-n<span class="w"> </span><span class="m">1</span><span class="w"> </span>microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>--ignore-not-found<span class="w"> </span>--show-kind<span class="w"> </span>-n<span class="w"> </span>rook-ceph-external
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>api-resources<span class="w"> </span>--verbs<span class="o">=</span>list<span class="w"> </span>--namespaced<span class="w"> </span>-o<span class="w"> </span>name<span class="w"> </span><span class="p">|</span><span class="w"> </span>xargs<span class="w"> </span>-n<span class="w"> </span><span class="m">1</span><span class="w"> </span>microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>--ignore-not-found<span class="w"> </span>--show-kind<span class="w"> </span>-n<span class="w"> </span>rook-ceph
-
-<span class="c1"># storage classes</span>
-microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>sc<span class="w"> </span>-A
-microk8s<span class="w"> </span>kubectl<span class="w"> </span>describe<span class="w"> </span>sc<span class="w"> </span>-A
 
 <span class="c1"># secrets</span>
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>rook-csi-rbd-provisioner<span class="w"> </span>-n<span class="w"> </span><span class="nv">$ROOK_NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.userID}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="p">;</span><span class="nb">echo</span>
@@ -1310,11 +1421,10 @@ microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>rook-csi-rbd-node<span class="w"> </span>-n<span class="w"> </span><span class="nv">$ROOK_NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.userID}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="p">;</span><span class="nb">echo</span>
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>rook-csi-rbd-node<span class="w"> </span>-n<span class="w"> </span><span class="nv">$ROOK_NAMESPACE</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.userKey}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="p">;</span><span class="nb">echo</span>
 </code></pre></div></li>
-<li>Rook Ceph inspection
-    <div class="highlight"><pre><span></span><code><span class="c1"># Inspect the Rook operator container’s logs:</span>
-microk8s<span class="w"> </span>kubectl<span class="w"> </span>-n<span class="w"> </span>rook-ceph<span class="w"> </span>logs<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>rook-ceph-operator
-<span class="c1"># Inspect the ceph-mgr container’s logs:</span>
-microk8s<span class="w"> </span>kubectl<span class="w"> </span>-n<span class="w"> </span>rook-ceph<span class="w"> </span>logs<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>rook-ceph-mgr
+<li>Pods stuck in <code>ImagePullBackOff</code>. Errors pulling images or other resources.<br />
+  Make sure the nodes are not running <code>avahi-daemon</code> as it messes with name resolution. Check if you're able to pull an image with k8s <code>crictl</code> or MicroK8s <code>ctr</code>.
+    <div class="highlight"><pre><span></span><code>microk8s<span class="w"> </span>ctr<span class="w"> </span>image<span class="w"> </span>ls
+microk8s<span class="w"> </span>ctr<span class="w"> </span>image<span class="w"> </span>pull<span class="w"> </span>registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.7.0
 </code></pre></div></li>
 </ul>
 

@@ -225,9 +225,8 @@ users:
 
 package_upgrade: true
 packages:
-  - avahi-daemon 
-  - lshw
-  - net-tools
+  #- lshw
+  #- net-tools
   # For OpenEBS or Rook Ceph
   - linux-modules-extra-$(uname -r)
   # For Rook Ceph
@@ -328,7 +327,6 @@ sudo cat /var/log/apt/history.log
 
 # Check if a service is running
 systemctl status unattended-upgrades.service
-systemctl status 'avahi*'
 
 # Check cloud-init's network configuration 
 cat /etc/netplan/50-cloud-init.yaml
@@ -372,13 +370,6 @@ sudo apt update # updates the package list
 sudo apt full-upgrade
 ```
 
-### Configure
-
-Make the board reachable using its hostname, not only its IP. Also install tool to view hardware info.
-```sh title="On your Pi"
-sudo apt install avahi-daemon lshw
-```
-
 #### Authentication
 
 If you **didn't do so during setup**, generate and add an ssh key.
@@ -416,9 +407,9 @@ sudo raspi-config
 
 ##### Orange Pi
 
-In Ubuntu for Orange Pi, to reach other machines by hostname you need to add an entry to the hosts file even if `avahi-daemon` is running on the hosts. Example:
+In Ubuntu for Orange Pi, to reach other machines by hostname you need to add an entry to the hosts file. Example:
 ```sh title="/etc/hosts"
-192.168.x.x  thathostname.local
+192.168.x.x  thathostname
 ```
 
 Orange Pi has a config tool as well
@@ -456,11 +447,7 @@ If you're **reinstalling** the OS you might need to remove old key fingerprints 
 ssh-keygen  -f ~/.ssh/known_hosts -R raspberrypi4b.local
 ```
 
-If your board is already running `avahi-daemon` you can reach it using its hostname.
-```sh title="On your laptop"
-arp raspberrypi4b.local 
-```
-Otherwise, find your board's IP in your router's admin UI or by going over the list of all devices on your network with `arp -a`.
+Find your board's IP in your router's admin UI or by going over the list of all devices on your network with `arp -a`.
 
 SSH into it with the configured user e.g. `pi` and the IP address or hostname. Examples:
 ```sh title="On your laptop"

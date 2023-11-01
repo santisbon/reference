@@ -349,6 +349,26 @@
   
   
     <li class="md-nav__item">
+      <a href="../vm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Virtualization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../package-mgmt/" class="md-nav__link">
         
   
@@ -754,14 +774,7 @@
     Upgrade
   </a>
   
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#configure" class="md-nav__link">
-    Configure
-  </a>
-  
-    <nav class="md-nav" aria-label="Configure">
+    <nav class="md-nav" aria-label="Upgrade">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1047,14 +1060,7 @@
     Upgrade
   </a>
   
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#configure" class="md-nav__link">
-    Configure
-  </a>
-  
-    <nav class="md-nav" aria-label="Configure">
+    <nav class="md-nav" aria-label="Upgrade">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1430,9 +1436,8 @@ cat<span class="w"> </span><span class="s">&lt;&lt; EOF &gt; /Volumes/$VOLUME/us
 
 <span class="s">package_upgrade: true</span>
 <span class="s">packages:</span>
-<span class="s">  - avahi-daemon </span>
-<span class="s">  - lshw</span>
-<span class="s">  - net-tools</span>
+<span class="s">  #- lshw</span>
+<span class="s">  #- net-tools</span>
 <span class="s">  # For OpenEBS or Rook Ceph</span>
 <span class="s">  - linux-modules-extra-$(uname -r)</span>
 <span class="s">  # For Rook Ceph</span>
@@ -1519,7 +1524,6 @@ sudo<span class="w"> </span>cat<span class="w"> </span>/var/log/apt/history.log
 
 <span class="c1"># Check if a service is running</span>
 systemctl<span class="w"> </span>status<span class="w"> </span>unattended-upgrades.service
-systemctl<span class="w"> </span>status<span class="w"> </span><span class="s1">&#39;avahi*&#39;</span>
 
 <span class="c1"># Check cloud-init&#39;s network configuration </span>
 cat<span class="w"> </span>/etc/netplan/50-cloud-init.yaml
@@ -1558,10 +1562,6 @@ ip<span class="w"> </span>addr<span class="w"> </span>show<span class="w"> </spa
 <div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>update<span class="w"> </span><span class="c1"># updates the package list</span>
 sudo<span class="w"> </span>apt<span class="w"> </span>full-upgrade
 </code></pre></div>
-<h3 id="configure">Configure<a class="headerlink" href="#configure" title="Permanent link">#</a></h3>
-<p>Make the board reachable using its hostname, not only its IP. Also install tool to view hardware info.
-<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>avahi-daemon<span class="w"> </span>lshw
-</code></pre></div></p>
 <h4 id="authentication">Authentication<a class="headerlink" href="#authentication" title="Permanent link">#</a></h4>
 <p>If you <strong>didn't do so during setup</strong>, generate and add an ssh key.
 <div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code><span class="c1"># Specify the type of key to create e.g. `ed25519` or `rsa`.</span>
@@ -1588,8 +1588,8 @@ sudo<span class="w"> </span>service<span class="w"> </span>sshd<span class="w"> 
 <span class="c1"># Tab to the Finish option and reboot.</span>
 </code></pre></div></p>
 <h5 id="orange-pi">Orange Pi<a class="headerlink" href="#orange-pi" title="Permanent link">#</a></h5>
-<p>In Ubuntu for Orange Pi, to reach other machines by hostname you need to add an entry to the hosts file even if <code>avahi-daemon</code> is running on the hosts. Example:
-<div class="highlight"><span class="filename">/etc/hosts</span><pre><span></span><code><span class="m">192</span>.168.x.x<span class="w">  </span>thathostname.local
+<p>In Ubuntu for Orange Pi, to reach other machines by hostname you need to add an entry to the hosts file. Example:
+<div class="highlight"><span class="filename">/etc/hosts</span><pre><span></span><code><span class="m">192</span>.168.x.x<span class="w">  </span>thathostname
 </code></pre></div></p>
 <p>Orange Pi has a config tool as well
 <div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>sudo<span class="w"> </span>orangepi-config
@@ -1617,10 +1617,7 @@ ssh-add<span class="w"> </span>--apple-use-keychain<span class="w"> </span>~/.ss
 <p>If you're <strong>reinstalling</strong> the OS you might need to remove old key fingerprints belonging to that hostname from your <code>known_hosts</code> file. Example:
 <div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code>ssh-keygen<span class="w">  </span>-f<span class="w"> </span>~/.ssh/known_hosts<span class="w"> </span>-R<span class="w"> </span>raspberrypi4b.local
 </code></pre></div></p>
-<p>If your board is already running <code>avahi-daemon</code> you can reach it using its hostname.
-<div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code>arp<span class="w"> </span>raspberrypi4b.local<span class="w"> </span>
-</code></pre></div>
-Otherwise, find your board's IP in your router's admin UI or by going over the list of all devices on your network with <code>arp -a</code>.</p>
+<p>Find your board's IP in your router's admin UI or by going over the list of all devices on your network with <code>arp -a</code>.</p>
 <p>SSH into it with the configured user e.g. <code>pi</code> and the IP address or hostname. Examples:
 <div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code>ssh<span class="w"> </span>pi@raspberrypi4b.local
 <span class="c1"># or</span>

@@ -6,6 +6,7 @@ nav:
   - New dev machine:
     - Install the OS: 'install-os.md'
     - Automated setup: 'automated.md'
+    - Virtualization: 'vm.md'
     - Package Manager: 'package-mgmt.md'
     - Shell: 'shell.md'
     - Utilities: 'utilities.md'
