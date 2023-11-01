@@ -440,3 +440,9 @@ sudo microk8s kubectl-minio tenant status microk8s
     microk8s ctr image ls
     microk8s ctr image pull registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.7.0
     ```
+* Connecting an external Ceph cluster to MicroK8s throws *Error: INSTALLATION FAILED: failed to download "rook-release/rook-ceph-cluster"*.  
+    ```sh
+    microk8s helm pull rook-release/rook-ceph-cluster
+    microk8s helm install rook-ceph-external rook-ceph-cluster-v1.12.7.tgz -n rook-ceph-external
+    # If you wish to delete this cluster and start fresh, you will also have to wipe the OSD disks using `sfdisk`
+    ```

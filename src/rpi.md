@@ -19,9 +19,10 @@ These instructions are for Raspberry Pi 4. Other boards may need [additional ste
 
     ```sh
     diskutil list
-    diskutil zeroDisk short /dev/disk4 # or whatever name your device has
+    diskutil zeroDisk short /dev/disk5 # or whatever name your device has
     ```
     On Linux you can use `parted` as explained [here](#ssd-as-additional-storage).
+
 5. Flash your desired OS image to the SSD with `dd` or preferred tool e.g. as explained [here](#flash-the-image).
 6. Unmount and remove the SSD drive from your laptop and connect it to a USB 3.0 port on your Pi.
 7. Turn on your Pi.
@@ -34,14 +35,14 @@ These instructions are for Raspberry Pi 4. Other boards may need [additional ste
 
 If you have an additional SSD you'll need to:
 
-* Choose a partition manipulation program
+1. Choose a partition manipulation program
     * [GNU Parted](https://www.gnu.org/software/parted/manual/parted.html) (`parted`) is probably already installed and ready to use from the command line. 
     * [GParted](https://thepihut.com/blogs/raspberry-pi-tutorials/how-to-set-up-an-ssd-with-the-raspberry-pi) - If you have a desktop environment you can use this graphical frontend. Install with `sudo apt install gparted`.
-* Create a partition table (aka disklabel). The default partition table type is `msdos` for disks smaller than 2 Tebibytes in size (assuming a 512 byte sector size) and `gpt` for disks 2 Tebibytes and larger.
-* Create partition(s) and file system(s).
-* Find the file system's UUID.
-* Create a directory for mounting the SSD.
-* Set up automatic SSD mounting, mount the SSD, reboot to test.
+2. Create a partition table (aka disklabel). The default partition table type is `msdos` for disks smaller than 2 Tebibytes in size (assuming a 512 byte sector size) and `gpt` for disks 2 Tebibytes and larger.
+3. Create partition(s) and file system(s).
+4. Find the file system's UUID.
+5. Create a directory for mounting the SSD.
+6. Set up automatic SSD mounting, mount the SSD, reboot to test.
 
 Example with `parted`:
 ```sh
@@ -158,7 +159,7 @@ If you don't have an ssh key, [generate one](https://www.ssh.com/academy/ssh/key
 
 ### Flash the image
 
-Insert the microSD card (or connect the SSD) and check the device name e.g. `/dev/disk4`.  
+Insert the microSD card (or connect the SSD) and check the device name.  
 Wipe out any existing data/partitions.
 
 !!! danger
@@ -166,7 +167,7 @@ Wipe out any existing data/partitions.
 
 ```sh title="On your laptop" 
 diskutil list
-diskutil zeroDisk short /dev/disk4
+diskutil zeroDisk short /dev/disk5
 ```
 
 Use that device name to flash the OS image to the card/SSD.
@@ -175,7 +176,7 @@ Use that device name to flash the OS image to the card/SSD.
 # REPLACE WITH YOUR VALUES
 ###################################################################
 IMAGE='ubuntu-22.04.3-preinstalled-server-arm64+raspi.img' 
-DEVICE='/dev/disk4' 
+DEVICE='/dev/disk5' 
 ###################################################################
 
 # Unmount the card

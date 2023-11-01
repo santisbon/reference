@@ -1408,6 +1408,11 @@ microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w
     <div class="highlight"><pre><span></span><code>microk8s<span class="w"> </span>ctr<span class="w"> </span>image<span class="w"> </span>ls
 microk8s<span class="w"> </span>ctr<span class="w"> </span>image<span class="w"> </span>pull<span class="w"> </span>registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.7.0
 </code></pre></div></li>
+<li>Connecting an external Ceph cluster to MicroK8s throws <em>Error: INSTALLATION FAILED: failed to download "rook-release/rook-ceph-cluster"</em>.<br />
+    <div class="highlight"><pre><span></span><code>microk8s<span class="w"> </span>helm<span class="w"> </span>pull<span class="w"> </span>rook-release/rook-ceph-cluster
+microk8s<span class="w"> </span>helm<span class="w"> </span>install<span class="w"> </span>rook-ceph-external<span class="w"> </span>rook-ceph-cluster-v1.12.7.tgz<span class="w"> </span>-n<span class="w"> </span>rook-ceph-external
+<span class="c1"># If you wish to delete this cluster and start fresh, you will also have to wipe the OSD disks using `sfdisk`</span>
+</code></pre></div></li>
 </ul>
 
 

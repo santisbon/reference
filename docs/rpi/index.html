@@ -1246,14 +1246,16 @@
 <p>Make sure you got the right device name. All data on the device will be lost.</p>
 </div>
 <p><div class="highlight"><pre><span></span><code>diskutil<span class="w"> </span>list
-diskutil<span class="w"> </span>zeroDisk<span class="w"> </span>short<span class="w"> </span>/dev/disk4<span class="w"> </span><span class="c1"># or whatever name your device has</span>
+diskutil<span class="w"> </span>zeroDisk<span class="w"> </span>short<span class="w"> </span>/dev/disk5<span class="w"> </span><span class="c1"># or whatever name your device has</span>
 </code></pre></div>
-On Linux you can use <code>parted</code> as explained <a href="#ssd-as-additional-storage">here</a>.
-5. Flash your desired OS image to the SSD with <code>dd</code> or preferred tool e.g. as explained <a href="#flash-the-image">here</a>.
-6. Unmount and remove the SSD drive from your laptop and connect it to a USB 3.0 port on your Pi.
-7. Turn on your Pi.
-8. Connect to your Pi over ssh and check available storage space with <code>df -h</code>.</p>
+On Linux you can use <code>parted</code> as explained <a href="#ssd-as-additional-storage">here</a>.</p>
 </li>
+<li>
+<p>Flash your desired OS image to the SSD with <code>dd</code> or preferred tool e.g. as explained <a href="#flash-the-image">here</a>.</p>
+</li>
+<li>Unmount and remove the SSD drive from your laptop and connect it to a USB 3.0 port on your Pi.</li>
+<li>Turn on your Pi.</li>
+<li>Connect to your Pi over ssh and check available storage space with <code>df -h</code>.</li>
 </ol>
 <h2 id="ssd-as-additional-storage">SSD as Additional Storage<a class="headerlink" href="#ssd-as-additional-storage" title="Permanent link">#</a></h2>
 <div class="admonition important">
@@ -1261,7 +1263,7 @@ On Linux you can use <code>parted</code> as explained <a href="#ssd-as-additiona
 <p>If using a SATA SSD make sure the cable/adapter has an <strong>ASMedia</strong> chipset so it will work properly with Raspberry Pi.</p>
 </div>
 <p>If you have an additional SSD you'll need to:</p>
-<ul>
+<ol>
 <li>Choose a partition manipulation program<ul>
 <li><a href="https://www.gnu.org/software/parted/manual/parted.html">GNU Parted</a> (<code>parted</code>) is probably already installed and ready to use from the command line. </li>
 <li><a href="https://thepihut.com/blogs/raspberry-pi-tutorials/how-to-set-up-an-ssd-with-the-raspberry-pi">GParted</a> - If you have a desktop environment you can use this graphical frontend. Install with <code>sudo apt install gparted</code>.</li>
@@ -1272,7 +1274,7 @@ On Linux you can use <code>parted</code> as explained <a href="#ssd-as-additiona
 <li>Find the file system's UUID.</li>
 <li>Create a directory for mounting the SSD.</li>
 <li>Set up automatic SSD mounting, mount the SSD, reboot to test.</li>
-</ul>
+</ol>
 <p>Example with <code>parted</code>:
 <div class="highlight"><pre><span></span><code>cat<span class="w"> </span>/sys/block/sda/queue/optimal_io_size
 <span class="c1"># 33553920</span>
@@ -1376,21 +1378,21 @@ shasum<span class="w"> </span>-c<span class="w"> </span>Orangepi3b_1.0.0_ubuntu_
 <p>This example uses macOS. Adjust the commands with your OS's tools to <a href="https://ostechnix.com/how-to-use-pbcopy-and-pbpaste-commands-on-linux/">copy/paste</a>, view disks, <code>dd</code> options, and <a href="https://unix.stackexchange.com/questions/13711/differences-between-sed-on-mac-osx-and-other-standard-sed"><code>sed</code> version</a>. It has been tested with the image provided by Ubuntu for Raspberry Pi.  </p>
 </div>
 <h3 id="flash-the-image">Flash the image<a class="headerlink" href="#flash-the-image" title="Permanent link">#</a></h3>
-<p>Insert the microSD card (or connect the SSD) and check the device name e.g. <code>/dev/disk4</code>.<br />
+<p>Insert the microSD card (or connect the SSD) and check the device name.<br />
 Wipe out any existing data/partitions.</p>
 <div class="admonition danger">
 <p class="admonition-title">Danger</p>
 <p>Make sure you got the right device name. All data on the device will be lost.</p>
 </div>
 <div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code>diskutil<span class="w"> </span>list
-diskutil<span class="w"> </span>zeroDisk<span class="w"> </span>short<span class="w"> </span>/dev/disk4
+diskutil<span class="w"> </span>zeroDisk<span class="w"> </span>short<span class="w"> </span>/dev/disk5
 </code></pre></div>
 <p>Use that device name to flash the OS image to the card/SSD.
 <div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code><span class="c1">###################################################################</span>
 <span class="c1"># REPLACE WITH YOUR VALUES</span>
 <span class="c1">###################################################################</span>
 <span class="nv">IMAGE</span><span class="o">=</span><span class="s1">&#39;ubuntu-22.04.3-preinstalled-server-arm64+raspi.img&#39;</span><span class="w"> </span>
-<span class="nv">DEVICE</span><span class="o">=</span><span class="s1">&#39;/dev/disk4&#39;</span><span class="w"> </span>
+<span class="nv">DEVICE</span><span class="o">=</span><span class="s1">&#39;/dev/disk5&#39;</span><span class="w"> </span>
 <span class="c1">###################################################################</span>
 
 <span class="c1"># Unmount the card</span>
