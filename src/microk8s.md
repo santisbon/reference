@@ -1,6 +1,6 @@
 Suitable for Raspberry Pi and other lightweight environments. [Learn  more](https://microk8s.io/docs/install-raspberry-pi).
 
-### Cloud native setup
+### Setup
 
 #### Overview
 
@@ -45,7 +45,7 @@ Components:
 1. Set up your Raspberry Pi devices with `cloud-init` as defined in the [Raspberry Pi](/reference/rpi/) section.
 2. Assign static IPs to all the nodes. 
 3. `sudo nano /etc/hosts` on each node and add the IP and hostnames of the other nodes so they can resolve during the join process.
-4. Allocate disks. You can create virtual disks as loop devices (a special block device that maps to a file).
+4. Allocate disks. For a test cluster with only 1 node you can create virtual disks as loop devices (a special block device that maps to a file).
     ```sh title="On each node"
     for l in a b c; do
         loop_file="$(sudo mktemp -p /mnt XXXX.img)"

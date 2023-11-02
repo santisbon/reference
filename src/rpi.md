@@ -85,8 +85,6 @@ sudo nano /etc/fstab
 ```
 
 ## Get OS image
-
-You *could* use an imager program that flashes an operating system for you but you'll be very limited in the ways you can pre-configure the OS. It's better to download the OS image and flash it yourself.  
    
 I recommend using an **Ubuntu** image made specifically for your board instead of a manufaturer's custom OS like Raspberry Pi OS or Orange Pi OS. Those are designed for simplicity and ease of use at the expense of functionality that is important when building a cloud native homelab.
 
@@ -118,11 +116,12 @@ xz -d ubuntu-22.04.3-preinstalled-server-arm64+raspi.img.xz
 shasum -c Orangepi3b_1.0.0_ubuntu_jammy_server_linux5.10.160.img.sha
 ```
 
-## Option A: Cloud native 
+## Setup 
 
 ### Overview
 
-This is the repeatable, flexible option.
+This is the cloud native, repeatable option.  
+If you want a one-off manual option, use Raspberry Pi Imager or Balena Etcher (`brew install --cask [raspberry-pi-imager | balenaetcher]`) to flash the image to the microSD card or SSD.
 
 !!! tip
     This lets you launch your Pi just like a cloud instance. Automatically upgrade the system, configure users, modify boot parameters, install software, run commands on first boot, among other things. Recommended when setting up multiple Pis or installing Kubernetes.
@@ -135,8 +134,6 @@ This is the repeatable, flexible option.
     
     ✅ Supported by the Ubuntu images for Raspberry Pi.  
     ❌ Not supoprted by Orange Pi images.
-
-    If you're setting up an Orange Pi, download the image and see the [one-off](#option-b-one-off) instructions.
 
 We'll flash a pre-configured microSD card or SSD with:  
 
@@ -187,7 +184,7 @@ cd ~/Downloads
 pv $IMAGE | sudo dd bs=1m of=$DEVICE
 ```
 
-When it's done you'll see a volume mounted on your desktop called `system-boot` or something similar. Modify the volume to inject `user-data` and set boot parameters to enable c-groups so the kubelet will work out of the box.
+When it's done you'll see a volume mounted on your desktop called `system-boot` or something similar. Modify the volume to inject `user-data` and set boot parameters to enable c-groups so the kubelet will work out of the box. Feel free to modify in case you don't want to set up Wi-Fi or want different software installed.
 ```sh title="On your laptop" 
 ###################################################################
 # REPLACE WITH YOUR VALUES
@@ -259,7 +256,7 @@ write_files:
   path: /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg
 
 runcmd:
-  - sudo ifconfig wlan0 up
+  #- sudo ifconfig wlan0 up
   - sudo snap refresh
   # For MicroK8s
   - sudo snap install microk8s --channel=1.28/stable --classic
@@ -341,88 +338,58 @@ sudo lshw -c network
 ip addr show | grep wlan0
 ```
 
-## Option B: One-off 
+## Resize the root partition
 
-!!! tip
-    This is the easiest option but is limited in how much you can pre-configure the OS. Recommended if you're setting up only one board or if your OS image doesn't have `cloud-init`.
+By default the root partition will consume all the available space. If you have an SSD you'll want to set up partitions appropriately for things like a Ceph cluster. You can't shrink a system partition while it's being used so **we'll create our own GParted bootable USB drive**. This is because the GParted Live image available for download is only for x86-based architectures like amd64. Both the Pi and Apple Silicon Macs are arm64.
 
+1. Put a microSD card in a USB adapter and flash a Linux distribution with a desktop GUI.
 
-### Flash the image
+    !!! danger
+        Make sure you got the right device name. All data on the device will be lost.
 
-Use Raspberry Pi Imager or Balena Etcher (`brew install --cask [raspberry-pi-imager | balenaetcher]`) to flash the image to the microSD card or SSD. If you use Pi Imager you can:  
+    ```sh title="On your laptop" 
+    diskutil list
+    diskutil zeroDisk short /dev/disk5
+    ```
+    ```sh
+    ###################################################################
+    # REPLACE WITH YOUR VALUES
+    ###################################################################
+    IMAGE='ubuntu-22.04.3-preinstalled-desktop-arm64+raspi.img' 
+    DEVICE='/dev/disk5' 
+    ###################################################################
 
-* Change the password for the default user or disable passwords altogether.  
-* Enable SSH (password or ssh keys); remove password authentication if using keys.  
-* Configure Wi-Fi if needed.  
-* Set the hostname.  
+    # Unmount the card
+    diskutil unmountDisk $DEVICE
 
-!!! attention
-    The Orange Pi images have to be configured manually after first boot.
+    cd ~/Downloads
+    # sudo dd if=$IMAGE of=$DEVICE bs=1m status=progress
+    pv $IMAGE | sudo dd bs=1m of=$DEVICE
+    ```
+    ```sh
+    diskutil unmountDisk $DEVICE
+    ```
 
-[Access your Pi](#access-your-pi) 
+2. After setting up your Pi with the USB bootloader (see the *Boot from SSD* section), connect the SSD to your Pi using a USB 3.0 port.
+3. Allow time for cloud-init to finish configuring your SSD and connect to it via SSH for a required `sudo reboot`.
+4. Connect via SSH again and `sudo shutdown -h now`.
+5. Disconnect the SSD and connect the GParted USB to a USB 3.0 port, a monitor or TV, a mouse, and a keyboard. Turn on your Pi.
+6. After setting up the OS, install GParted.
+    ```sh title="On your Pi" 
+    sudo apt update
+    sudo apt upgrade
+    sudo apt install gparted
+    ```
+7. Connect the SSD to the other USB 3.0 port and open GParted. Hit *Refresh devices* if needed. Select the SSD e.g. `/dev/sdb`.
+8. Right-click on the root ext4 partition e.g. `/dev/sdb2` (it should already be unmounted) and select and apply these operations.
+    1. Check the root partition.
+    2. Resize it to 64 Gi (65,536 Mi) or desired size.
+    3. Create unformatted partition in the unallocated space.
+    4. Check the root partition again.
+9. Turn off the Pi. Disconnect the GParted USB, keep the SSD connected and turn it on.
 
-### Upgrade
+Repeat for each node in your cluster.
 
-* `upgrade` is used to install available upgrades of all packages currently installed on the system. New packages will be installed if required to satisfy dependencies, but existing packages will never be removed. If an upgrade for a package requires the removal of an installed package the upgrade for this package isn't performed.  
-* `full-upgrade` performs the function of upgrade but will remove currently installed packages if this is needed to upgrade the system as a whole.
-
-```sh title="On your Pi"
-sudo apt update # updates the package list
-sudo apt full-upgrade
-```
-
-#### Authentication
-
-If you **didn't do so during setup**, generate and add an ssh key.
-```sh title="On your laptop"
-# Specify the type of key to create e.g. `ed25519` or `rsa`.
-ssh-keygen -t ed25519
-# Add it on the remote machine (if the `-i` filename does not end in `.pub` this is added)
-# Examples:
-ssh-copy-id -i ~/.ssh/id_rsa pi@raspberrypi4b.local
-ssh-copy-id -i ~/.ssh/id_ed25519 orangepi@orangepi3b.local
-```
-
-To remove password authentication:
-```sh title="On your Pi"
-sudo nano /etc/ssh/sshd_config
-```
-and replace `#PasswordAuthentication yes` with `PasswordAuthentication no`.
-Test the validity of the config file and restart the service (or reboot).
-```sh title="On your Pi"
-sudo sshd -t
-sudo service sshd restart
-sudo service sshd status
-```
-
-#### Board-specific tools
-
-##### Raspberry Pi
-
-On Raspberry Pi OS
-```sh title="On your Pi"
-sudo raspi-config
-# Go to Interface Options, VNC (for graphical remote access)
-# Tab to the Finish option and reboot.
-```
-
-##### Orange Pi
-
-In Ubuntu for Orange Pi, to reach other machines by hostname you need to add an entry to the hosts file. Example:
-```sh title="/etc/hosts"
-192.168.x.x  thathostname
-```
-
-Orange Pi has a config tool as well
-```sh title="On your Pi"
-sudo orangepi-config
-```
-If you just need to connect to Wi-Fi on Orange Pi, use:
-```sh title="On your Pi"
-nmcli dev wifi connect wifi_name password wifi_passwd
-```
-
-To set a static IP on Orange Pi see the [user manual](http://www.orangepi.org/html/hardWare/computerAndMicrocontrollers/service-and-support/Orange-Pi-3B.html) for instructions on using the `nmtui` command.
 
 ## Usage
 
@@ -462,6 +429,69 @@ Update the password for default users like `pi`, `orangepi`, `ubuntu`, etc. Exam
 sudo passwd root
 sudo passwd pi
 ```
+
+### Upgrade
+
+* `upgrade` is used to install available upgrades of all packages currently installed on the system. New packages will be installed if required to satisfy dependencies, but existing packages will never be removed. If an upgrade for a package requires the removal of an installed package the upgrade for this package isn't performed.  
+* `full-upgrade` performs the function of upgrade but will remove currently installed packages if this is needed to upgrade the system as a whole.
+
+```sh title="On your Pi"
+sudo apt update # updates the package list
+sudo apt full-upgrade
+```
+
+### Authentication
+
+If you **didn't do so during setup with cloud-init or manually**, generate and add an ssh key.
+```sh title="On your laptop"
+# Specify the type of key to create e.g. `ed25519` or `rsa`.
+ssh-keygen -t ed25519
+# Add it on the remote machine (if the `-i` filename does not end in `.pub` this is added)
+# Examples:
+ssh-copy-id -i ~/.ssh/id_rsa pi@raspberrypi4b.local
+ssh-copy-id -i ~/.ssh/id_ed25519 orangepi@orangepi3b.local
+```
+
+To remove password authentication:
+```sh title="On your Pi"
+sudo nano /etc/ssh/sshd_config
+```
+and replace `#PasswordAuthentication yes` with `PasswordAuthentication no`.
+Test the validity of the config file and restart the service (or reboot).
+```sh title="On your Pi"
+sudo sshd -t
+sudo service sshd restart
+sudo service sshd status
+```
+
+### Board-specific tools
+
+#### Raspberry Pi
+
+On Raspberry Pi OS
+```sh title="On your Pi"
+sudo raspi-config
+# Go to Interface Options, VNC (for graphical remote access)
+# Tab to the Finish option and reboot.
+```
+
+#### Orange Pi
+
+In Ubuntu for Orange Pi, to reach other machines by hostname you need to add an entry to the hosts file. Example:
+```sh title="/etc/hosts"
+192.168.x.x  thathostname
+```
+
+Orange Pi has a config tool as well
+```sh title="On your Pi"
+sudo orangepi-config
+```
+If you just need to connect to Wi-Fi on Orange Pi, use:
+```sh title="On your Pi"
+nmcli dev wifi connect wifi_name password wifi_passwd
+```
+
+To set a static IP on Orange Pi see the [user manual](http://www.orangepi.org/html/hardWare/computerAndMicrocontrollers/service-and-support/Orange-Pi-3B.html) for instructions on using the `nmtui` command.
 
 ### Remote GUI access
 *If you installed a graphical desktop*

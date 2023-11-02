@@ -721,11 +721,11 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#option-a-cloud-native" class="md-nav__link">
-    Option A: Cloud native
+  <a href="#setup" class="md-nav__link">
+    Setup
   </a>
   
-    <nav class="md-nav" aria-label="Option A: Cloud native">
+    <nav class="md-nav" aria-label="Setup">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -755,16 +755,23 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#option-b-one-off" class="md-nav__link">
-    Option B: One-off
+  <a href="#resize-the-root-partition" class="md-nav__link">
+    Resize the root partition
   </a>
   
-    <nav class="md-nav" aria-label="Option B: One-off">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    Usage
+  </a>
+  
+    <nav class="md-nav" aria-label="Usage">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#flash-the-image_1" class="md-nav__link">
-    Flash the image
+  <a href="#access-your-pi" class="md-nav__link">
+    Access your Pi
   </a>
   
 </li>
@@ -774,8 +781,7 @@
     Upgrade
   </a>
   
-    <nav class="md-nav" aria-label="Upgrade">
-      <ul class="md-nav__list">
+</li>
         
           <li class="md-nav__item">
   <a href="#authentication" class="md-nav__link">
@@ -808,31 +814,6 @@
         
       </ul>
     </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#usage" class="md-nav__link">
-    Usage
-  </a>
-  
-    <nav class="md-nav" aria-label="Usage">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#access-your-pi" class="md-nav__link">
-    Access your Pi
-  </a>
   
 </li>
         
@@ -1007,11 +988,11 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#option-a-cloud-native" class="md-nav__link">
-    Option A: Cloud native
+  <a href="#setup" class="md-nav__link">
+    Setup
   </a>
   
-    <nav class="md-nav" aria-label="Option A: Cloud native">
+    <nav class="md-nav" aria-label="Setup">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1041,16 +1022,23 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#option-b-one-off" class="md-nav__link">
-    Option B: One-off
+  <a href="#resize-the-root-partition" class="md-nav__link">
+    Resize the root partition
   </a>
   
-    <nav class="md-nav" aria-label="Option B: One-off">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    Usage
+  </a>
+  
+    <nav class="md-nav" aria-label="Usage">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#flash-the-image_1" class="md-nav__link">
-    Flash the image
+  <a href="#access-your-pi" class="md-nav__link">
+    Access your Pi
   </a>
   
 </li>
@@ -1060,8 +1048,7 @@
     Upgrade
   </a>
   
-    <nav class="md-nav" aria-label="Upgrade">
-      <ul class="md-nav__list">
+</li>
         
           <li class="md-nav__item">
   <a href="#authentication" class="md-nav__link">
@@ -1094,31 +1081,6 @@
         
       </ul>
     </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#usage" class="md-nav__link">
-    Usage
-  </a>
-  
-    <nav class="md-nav" aria-label="Usage">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#access-your-pi" class="md-nav__link">
-    Access your Pi
-  </a>
   
 </li>
         
@@ -1314,7 +1276,6 @@ sudo<span class="w"> </span>nano<span class="w"> </span>/etc/fstab
 <span class="c1"># UUID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx /home/pi/wdssd/ ext4 defaults,auto,users,rw,nofail 0 0</span>
 </code></pre></div></p>
 <h2 id="get-os-image">Get OS image<a class="headerlink" href="#get-os-image" title="Permanent link">#</a></h2>
-<p>You <em>could</em> use an imager program that flashes an operating system for you but you'll be very limited in the ways you can pre-configure the OS. It's better to download the OS image and flash it yourself.  </p>
 <p>I recommend using an <strong>Ubuntu</strong> image made specifically for your board instead of a manufaturer's custom OS like Raspberry Pi OS or Orange Pi OS. Those are designed for simplicity and ease of use at the expense of functionality that is important when building a cloud native homelab.</p>
 <ul>
 <li>❌ Raspberry Pi OS doesn't come with <a href="https://cloud-init.io"><code>cloud-init</code></a>.</li>
@@ -1339,9 +1300,10 @@ xz<span class="w"> </span>-d<span class="w"> </span>ubuntu-22.04.3-preinstalled-
 7zz<span class="w"> </span>x<span class="w"> </span>Orangepi3b_1.0.0_ubuntu_jammy_server_linux5.10.160.7z
 shasum<span class="w"> </span>-c<span class="w"> </span>Orangepi3b_1.0.0_ubuntu_jammy_server_linux5.10.160.img.sha
 </code></pre></div></p>
-<h2 id="option-a-cloud-native">Option A: Cloud native<a class="headerlink" href="#option-a-cloud-native" title="Permanent link">#</a></h2>
+<h2 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link">#</a></h2>
 <h3 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">#</a></h3>
-<p>This is the repeatable, flexible option.</p>
+<p>This is the cloud native, repeatable option.<br />
+If you want a one-off manual option, use Raspberry Pi Imager or Balena Etcher (<code>brew install --cask [raspberry-pi-imager | balenaetcher]</code>) to flash the image to the microSD card or SSD.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>This lets you launch your Pi just like a cloud instance. Automatically upgrade the system, configure users, modify boot parameters, install software, run commands on first boot, among other things. Recommended when setting up multiple Pis or installing Kubernetes.</p>
@@ -1355,7 +1317,6 @@ shasum<span class="w"> </span>-c<span class="w"> </span>Orangepi3b_1.0.0_ubuntu_
 </ul>
 <p>✅ Supported by the Ubuntu images for Raspberry Pi.<br />
 ❌ Not supoprted by Orange Pi images.</p>
-<p>If you're setting up an Orange Pi, download the image and see the <a href="#option-b-one-off">one-off</a> instructions.</p>
 </div>
 <p>We'll flash a pre-configured microSD card or SSD with:  </p>
 <ul>
@@ -1402,7 +1363,7 @@ diskutil<span class="w"> </span>unmountDisk<span class="w"> </span><span class="
 <span class="c1"># sudo dd if=$IMAGE of=$DEVICE bs=1m status=progress</span>
 pv<span class="w"> </span><span class="nv">$IMAGE</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>dd<span class="w"> </span><span class="nv">bs</span><span class="o">=</span>1m<span class="w"> </span><span class="nv">of</span><span class="o">=</span><span class="nv">$DEVICE</span>
 </code></pre></div></p>
-<p>When it's done you'll see a volume mounted on your desktop called <code>system-boot</code> or something similar. Modify the volume to inject <code>user-data</code> and set boot parameters to enable c-groups so the kubelet will work out of the box.
+<p>When it's done you'll see a volume mounted on your desktop called <code>system-boot</code> or something similar. Modify the volume to inject <code>user-data</code> and set boot parameters to enable c-groups so the kubelet will work out of the box. Feel free to modify in case you don't want to set up Wi-Fi or want different software installed.
 <div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code><span class="c1">###################################################################</span>
 <span class="c1"># REPLACE WITH YOUR VALUES</span>
 <span class="c1">###################################################################</span>
@@ -1471,7 +1432,7 @@ cat<span class="w"> </span><span class="s">&lt;&lt; EOF &gt; /Volumes/$VOLUME/us
 <span class="s">  path: /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg</span>
 
 <span class="s">runcmd:</span>
-<span class="s">  - sudo ifconfig wlan0 up</span>
+<span class="s">  #- sudo ifconfig wlan0 up</span>
 <span class="s">  - sudo snap refresh</span>
 <span class="s">  # For MicroK8s</span>
 <span class="s">  - sudo snap install microk8s --channel=1.28/stable --classic</span>
@@ -1538,68 +1499,57 @@ cat<span class="w"> </span>/etc/cloud/cloud.cfg.d/99-disable-network-config.cfg
 sudo<span class="w"> </span>lshw<span class="w"> </span>-c<span class="w"> </span>network
 ip<span class="w"> </span>addr<span class="w"> </span>show<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>wlan0
 </code></pre></div>
-<h2 id="option-b-one-off">Option B: One-off<a class="headerlink" href="#option-b-one-off" title="Permanent link">#</a></h2>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>This is the easiest option but is limited in how much you can pre-configure the OS. Recommended if you're setting up only one board or if your OS image doesn't have <code>cloud-init</code>.</p>
+<h2 id="resize-the-root-partition">Resize the root partition<a class="headerlink" href="#resize-the-root-partition" title="Permanent link">#</a></h2>
+<p>By default the root partition will consume all the available space. If you have an SSD you'll want to set up partitions appropriately for things like a Ceph cluster. You can't shrink a system partition while it's being used so <strong>we'll create our own GParted bootable USB drive</strong>. This is because the GParted Live image available for download is only for x86-based architectures like amd64. Both the Pi and Apple Silicon Macs are arm64.</p>
+<ol>
+<li>
+<p>Put a microSD card in a USB adapter and flash a Linux distribution with a desktop GUI.</p>
+<div class="admonition danger">
+<p class="admonition-title">Danger</p>
+<p>Make sure you got the right device name. All data on the device will be lost.</p>
 </div>
-<h3 id="flash-the-image_1">Flash the image<a class="headerlink" href="#flash-the-image_1" title="Permanent link">#</a></h3>
-<p>Use Raspberry Pi Imager or Balena Etcher (<code>brew install --cask [raspberry-pi-imager | balenaetcher]</code>) to flash the image to the microSD card or SSD. If you use Pi Imager you can:  </p>
-<ul>
-<li>Change the password for the default user or disable passwords altogether.  </li>
-<li>Enable SSH (password or ssh keys); remove password authentication if using keys.  </li>
-<li>Configure Wi-Fi if needed.  </li>
-<li>Set the hostname.  </li>
-</ul>
-<div class="admonition attention">
-<p class="admonition-title">Attention</p>
-<p>The Orange Pi images have to be configured manually after first boot.</p>
-</div>
-<p><a href="#access-your-pi">Access your Pi</a> </p>
-<h3 id="upgrade">Upgrade<a class="headerlink" href="#upgrade" title="Permanent link">#</a></h3>
-<ul>
-<li><code>upgrade</code> is used to install available upgrades of all packages currently installed on the system. New packages will be installed if required to satisfy dependencies, but existing packages will never be removed. If an upgrade for a package requires the removal of an installed package the upgrade for this package isn't performed.  </li>
-<li><code>full-upgrade</code> performs the function of upgrade but will remove currently installed packages if this is needed to upgrade the system as a whole.</li>
-</ul>
-<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>update<span class="w"> </span><span class="c1"># updates the package list</span>
-sudo<span class="w"> </span>apt<span class="w"> </span>full-upgrade
+<p><div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code>diskutil<span class="w"> </span>list
+diskutil<span class="w"> </span>zeroDisk<span class="w"> </span>short<span class="w"> </span>/dev/disk5
 </code></pre></div>
-<h4 id="authentication">Authentication<a class="headerlink" href="#authentication" title="Permanent link">#</a></h4>
-<p>If you <strong>didn't do so during setup</strong>, generate and add an ssh key.
-<div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code><span class="c1"># Specify the type of key to create e.g. `ed25519` or `rsa`.</span>
-ssh-keygen<span class="w"> </span>-t<span class="w"> </span>ed25519
-<span class="c1"># Add it on the remote machine (if the `-i` filename does not end in `.pub` this is added)</span>
-<span class="c1"># Examples:</span>
-ssh-copy-id<span class="w"> </span>-i<span class="w"> </span>~/.ssh/id_rsa<span class="w"> </span>pi@raspberrypi4b.local
-ssh-copy-id<span class="w"> </span>-i<span class="w"> </span>~/.ssh/id_ed25519<span class="w"> </span>orangepi@orangepi3b.local
-</code></pre></div></p>
-<p>To remove password authentication:
-<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>sudo<span class="w"> </span>nano<span class="w"> </span>/etc/ssh/sshd_config
+<div class="highlight"><pre><span></span><code><span class="c1">###################################################################</span>
+<span class="c1"># REPLACE WITH YOUR VALUES</span>
+<span class="c1">###################################################################</span>
+<span class="nv">IMAGE</span><span class="o">=</span><span class="s1">&#39;ubuntu-22.04.3-preinstalled-desktop-arm64+raspi.img&#39;</span><span class="w"> </span>
+<span class="nv">DEVICE</span><span class="o">=</span><span class="s1">&#39;/dev/disk5&#39;</span><span class="w"> </span>
+<span class="c1">###################################################################</span>
+
+<span class="c1"># Unmount the card</span>
+diskutil<span class="w"> </span>unmountDisk<span class="w"> </span><span class="nv">$DEVICE</span>
+
+<span class="nb">cd</span><span class="w"> </span>~/Downloads
+<span class="c1"># sudo dd if=$IMAGE of=$DEVICE bs=1m status=progress</span>
+pv<span class="w"> </span><span class="nv">$IMAGE</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>dd<span class="w"> </span><span class="nv">bs</span><span class="o">=</span>1m<span class="w"> </span><span class="nv">of</span><span class="o">=</span><span class="nv">$DEVICE</span>
 </code></pre></div>
-and replace <code>#PasswordAuthentication yes</code> with <code>PasswordAuthentication no</code>.
-Test the validity of the config file and restart the service (or reboot).
-<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>sudo<span class="w"> </span>sshd<span class="w"> </span>-t
-sudo<span class="w"> </span>service<span class="w"> </span>sshd<span class="w"> </span>restart
-sudo<span class="w"> </span>service<span class="w"> </span>sshd<span class="w"> </span>status
+<div class="highlight"><pre><span></span><code>diskutil<span class="w"> </span>unmountDisk<span class="w"> </span><span class="nv">$DEVICE</span>
 </code></pre></div></p>
-<h4 id="board-specific-tools">Board-specific tools<a class="headerlink" href="#board-specific-tools" title="Permanent link">#</a></h4>
-<h5 id="raspberry-pi_1">Raspberry Pi<a class="headerlink" href="#raspberry-pi_1" title="Permanent link">#</a></h5>
-<p>On Raspberry Pi OS
-<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>sudo<span class="w"> </span>raspi-config
-<span class="c1"># Go to Interface Options, VNC (for graphical remote access)</span>
-<span class="c1"># Tab to the Finish option and reboot.</span>
-</code></pre></div></p>
-<h5 id="orange-pi">Orange Pi<a class="headerlink" href="#orange-pi" title="Permanent link">#</a></h5>
-<p>In Ubuntu for Orange Pi, to reach other machines by hostname you need to add an entry to the hosts file. Example:
-<div class="highlight"><span class="filename">/etc/hosts</span><pre><span></span><code><span class="m">192</span>.168.x.x<span class="w">  </span>thathostname
-</code></pre></div></p>
-<p>Orange Pi has a config tool as well
-<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>sudo<span class="w"> </span>orangepi-config
-</code></pre></div>
-If you just need to connect to Wi-Fi on Orange Pi, use:
-<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>nmcli<span class="w"> </span>dev<span class="w"> </span>wifi<span class="w"> </span>connect<span class="w"> </span>wifi_name<span class="w"> </span>password<span class="w"> </span>wifi_passwd
-</code></pre></div></p>
-<p>To set a static IP on Orange Pi see the <a href="http://www.orangepi.org/html/hardWare/computerAndMicrocontrollers/service-and-support/Orange-Pi-3B.html">user manual</a> for instructions on using the <code>nmtui</code> command.</p>
+</li>
+<li>
+<p>After setting up your Pi with the USB bootloader (see the <em>Boot from SSD</em> section), connect the SSD to your Pi using a USB 3.0 port.</p>
+</li>
+<li>Allow time for cloud-init to finish configuring your SSD and connect to it via SSH for a required <code>sudo reboot</code>.</li>
+<li>Connect via SSH again and <code>sudo shutdown -h now</code>.</li>
+<li>Disconnect the SSD and connect the GParted USB to a USB 3.0 port, a monitor or TV, a mouse, and a keyboard. Turn on your Pi.</li>
+<li>After setting up the OS, install GParted.
+    <div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>update
+sudo<span class="w"> </span>apt<span class="w"> </span>upgrade
+sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>gparted
+</code></pre></div></li>
+<li>Connect the SSD to the other USB 3.0 port and open GParted. Hit <em>Refresh devices</em> if needed. Select the SSD e.g. <code>/dev/sdb</code>.</li>
+<li>Right-click on the root ext4 partition e.g. <code>/dev/sdb2</code> (it should already be unmounted) and select and apply these operations.<ol>
+<li>Check the root partition.</li>
+<li>Resize it to 64 Gi (65,536 Mi) or desired size.</li>
+<li>Create unformatted partition in the unallocated space.</li>
+<li>Check the root partition again.</li>
+</ol>
+</li>
+<li>Turn off the Pi. Disconnect the GParted USB, keep the SSD connected and turn it on.</li>
+</ol>
+<p>Repeat for each node in your cluster.</p>
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">#</a></h2>
 <h3 id="access-your-pi">Access your Pi<a class="headerlink" href="#access-your-pi" title="Permanent link">#</a></h3>
 <div class="admonition tip">
@@ -1629,6 +1579,50 @@ ssh<span class="w"> </span>pi@192.168.xxx.xxx
 <div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>sudo<span class="w"> </span>passwd<span class="w"> </span>root
 sudo<span class="w"> </span>passwd<span class="w"> </span>pi
 </code></pre></div></p>
+<h3 id="upgrade">Upgrade<a class="headerlink" href="#upgrade" title="Permanent link">#</a></h3>
+<ul>
+<li><code>upgrade</code> is used to install available upgrades of all packages currently installed on the system. New packages will be installed if required to satisfy dependencies, but existing packages will never be removed. If an upgrade for a package requires the removal of an installed package the upgrade for this package isn't performed.  </li>
+<li><code>full-upgrade</code> performs the function of upgrade but will remove currently installed packages if this is needed to upgrade the system as a whole.</li>
+</ul>
+<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>update<span class="w"> </span><span class="c1"># updates the package list</span>
+sudo<span class="w"> </span>apt<span class="w"> </span>full-upgrade
+</code></pre></div>
+<h3 id="authentication">Authentication<a class="headerlink" href="#authentication" title="Permanent link">#</a></h3>
+<p>If you <strong>didn't do so during setup with cloud-init or manually</strong>, generate and add an ssh key.
+<div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code><span class="c1"># Specify the type of key to create e.g. `ed25519` or `rsa`.</span>
+ssh-keygen<span class="w"> </span>-t<span class="w"> </span>ed25519
+<span class="c1"># Add it on the remote machine (if the `-i` filename does not end in `.pub` this is added)</span>
+<span class="c1"># Examples:</span>
+ssh-copy-id<span class="w"> </span>-i<span class="w"> </span>~/.ssh/id_rsa<span class="w"> </span>pi@raspberrypi4b.local
+ssh-copy-id<span class="w"> </span>-i<span class="w"> </span>~/.ssh/id_ed25519<span class="w"> </span>orangepi@orangepi3b.local
+</code></pre></div></p>
+<p>To remove password authentication:
+<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>sudo<span class="w"> </span>nano<span class="w"> </span>/etc/ssh/sshd_config
+</code></pre></div>
+and replace <code>#PasswordAuthentication yes</code> with <code>PasswordAuthentication no</code>.
+Test the validity of the config file and restart the service (or reboot).
+<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>sudo<span class="w"> </span>sshd<span class="w"> </span>-t
+sudo<span class="w"> </span>service<span class="w"> </span>sshd<span class="w"> </span>restart
+sudo<span class="w"> </span>service<span class="w"> </span>sshd<span class="w"> </span>status
+</code></pre></div></p>
+<h3 id="board-specific-tools">Board-specific tools<a class="headerlink" href="#board-specific-tools" title="Permanent link">#</a></h3>
+<h4 id="raspberry-pi_1">Raspberry Pi<a class="headerlink" href="#raspberry-pi_1" title="Permanent link">#</a></h4>
+<p>On Raspberry Pi OS
+<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>sudo<span class="w"> </span>raspi-config
+<span class="c1"># Go to Interface Options, VNC (for graphical remote access)</span>
+<span class="c1"># Tab to the Finish option and reboot.</span>
+</code></pre></div></p>
+<h4 id="orange-pi">Orange Pi<a class="headerlink" href="#orange-pi" title="Permanent link">#</a></h4>
+<p>In Ubuntu for Orange Pi, to reach other machines by hostname you need to add an entry to the hosts file. Example:
+<div class="highlight"><span class="filename">/etc/hosts</span><pre><span></span><code><span class="m">192</span>.168.x.x<span class="w">  </span>thathostname
+</code></pre></div></p>
+<p>Orange Pi has a config tool as well
+<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>sudo<span class="w"> </span>orangepi-config
+</code></pre></div>
+If you just need to connect to Wi-Fi on Orange Pi, use:
+<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>nmcli<span class="w"> </span>dev<span class="w"> </span>wifi<span class="w"> </span>connect<span class="w"> </span>wifi_name<span class="w"> </span>password<span class="w"> </span>wifi_passwd
+</code></pre></div></p>
+<p>To set a static IP on Orange Pi see the <a href="http://www.orangepi.org/html/hardWare/computerAndMicrocontrollers/service-and-support/Orange-Pi-3B.html">user manual</a> for instructions on using the <code>nmtui</code> command.</p>
 <h3 id="remote-gui-access">Remote GUI access<a class="headerlink" href="#remote-gui-access" title="Permanent link">#</a></h3>
 <p><em>If you installed a graphical desktop</em></p>
 <p>You'll need a VNC viewer on your laptop to connect to the Pi using the graphical interface.
