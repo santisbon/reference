@@ -259,15 +259,15 @@ runcmd:
   #- sudo ifconfig wlan0 up
   - sudo snap refresh
   # For MicroK8s
-  - sudo snap install microk8s --channel=1.28/stable --classic
-  - sudo usermod -a -G microk8s pi
-  - sudo chown -f -R pi ~/.kube
-  - newgrp microk8s
+  #- sudo snap install microk8s --channel=1.28/stable --classic
+  #- sudo usermod -a -G microk8s pi
+  #- sudo chown -f -R pi ~/.kube
+  #- newgrp microk8s
   # For OpenEBS
-  # - sudo sysctl vm.nr_hugepages=1024
-  # - echo 'vm.nr_hugepages=1024' | sudo tee -a /etc/sysctl.conf
-  # - sudo modprobe nvme_tcp
-  # - echo 'nvme-tcp' | sudo tee -a /etc/modules-load.d/microk8s-mayastor.conf
+  #- sudo sysctl vm.nr_hugepages=1024
+  #- echo 'vm.nr_hugepages=1024' | sudo tee -a /etc/sysctl.conf
+  #- sudo modprobe nvme_tcp
+  #- echo 'nvme-tcp' | sudo tee -a /etc/modules-load.d/microk8s-mayastor.conf
   # For Rook Ceph
   - sudo modprobe rbd
   - echo 'rbd' | sudo tee -a /etc/modules-load.d/modules.conf
@@ -387,6 +387,11 @@ By default the root partition will consume all the available space. If you have 
     3. Create unformatted partition in the unallocated space.
     4. Check the root partition again.
 9. Turn off the Pi. Disconnect the GParted USB, keep the SSD connected and turn it on.
+
+**Alternatively**, you can use `parted` to set up/resize the SSD partitions and file systems as desired. For example, leave a raw partition (no formatted filesystem) for use by a Ceph storage cluster.  
+
+1. [Resize the filesystem](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/managing_file_systems/getting-started-with-an-ext4-file-system_managing-file-systems#resizing-an-ext4-file-system_getting-started-with-an-ext4-file-system).
+2. If needed, [shrink the partition](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/managing_file_systems/partition-operations-with-parted_managing-file-systems#proc_resizing-a-partition-with-parted_partition-operations-with-parted) to leave space to be used by Ceph.
 
 Repeat for each node in your cluster.
 
@@ -647,3 +652,16 @@ I've added some sample code from the [MagPi Essentials book](https://magpi.raspb
 #### GPIO Header
 
 ![GPIO](https://i.imgur.com/3Zroadt.jpg)
+
+## Troubleshooting
+
+* I see `cloud-init` had failures.  
+    Based on the `user-data` file:
+    Manually run `sudo apt update`, `sudo apt full-upgrade`.  
+    Manually run `sudo apt install` on any packages that failed.  
+    Manually add any kernel modules you need and make sure `/etc/modules-load.d/modules.conf` has them so they'll be added on every boot.
+* I'm not sure cgroups are enabled.  
+    Check with 
+    ```sh
+    cat /proc/cgroups
+    ```

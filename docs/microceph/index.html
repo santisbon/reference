@@ -8,11 +8,13 @@
       
       
       
-        <link rel="canonical" href="https://santisbon.github.io/reference/docker/">
+        <link rel="canonical" href="https://santisbon.github.io/reference/microceph/">
       
       
+        <link rel="prev" href="../microk8s/">
       
-        <link rel="next" href="../k8s/">
+      
+        <link rel="next" href="../rook-ceph/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -20,7 +22,7 @@
     
     
       
-        <title>Docker - Notes</title>
+        <title>MicroCeph - Notes</title>
       
     
     
@@ -75,7 +77,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#docker" class="md-skip">
+        <a href="#overview" class="md-skip">
           Skip to content
         </a>
       
@@ -111,7 +113,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Docker
+              MicroCeph
             
           </span>
         </div>
@@ -286,29 +288,9 @@
                 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Docker
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../docker/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -317,80 +299,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#install" class="md-nav__link">
-    Install
-  </a>
-  
-    <nav class="md-nav" aria-label="Install">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#macos" class="md-nav__link">
-    macOS
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#linux-raspberry-pi-os" class="md-nav__link">
-    Linux / Raspberry Pi OS:
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#use" class="md-nav__link">
-    Use
-  </a>
-  
-    <nav class="md-nav" aria-label="Use">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#architecture" class="md-nav__link">
-    Architecture
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#examples" class="md-nav__link">
-    Examples
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -480,9 +388,27 @@
                 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../microceph/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    MicroCeph
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -491,6 +417,59 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    Overview
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    Prerequisites
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setup" class="md-nav__link">
+    Setup
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    Usage
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    Troubleshooting
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -845,8 +824,6 @@
   
   
   
-    
-  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -855,56 +832,37 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#install" class="md-nav__link">
-    Install
+  <a href="#overview" class="md-nav__link">
+    Overview
   </a>
-  
-    <nav class="md-nav" aria-label="Install">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#macos" class="md-nav__link">
-    macOS
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#linux-raspberry-pi-os" class="md-nav__link">
-    Linux / Raspberry Pi OS:
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#use" class="md-nav__link">
-    Use
-  </a>
-  
-    <nav class="md-nav" aria-label="Use">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#architecture" class="md-nav__link">
-    Architecture
+  <a href="#prerequisites" class="md-nav__link">
+    Prerequisites
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#examples" class="md-nav__link">
-    Examples
+      
+        <li class="md-nav__item">
+  <a href="#setup" class="md-nav__link">
+    Setup
   </a>
   
 </li>
-        
-      </ul>
-    </nav>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    Usage
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    Troubleshooting
+  </a>
   
 </li>
       
@@ -926,190 +884,112 @@
   
 
 
-<h1 id="docker">Docker<a class="headerlink" href="#docker" title="Permanent link">#</a></h1>
-<h2 id="install">Install<a class="headerlink" href="#install" title="Permanent link">#</a></h2>
-<h3 id="macos">macOS<a class="headerlink" href="#macos" title="Permanent link">#</a></h3>
-<div class="highlight"><pre><span></span><code>brew<span class="w"> </span>install<span class="w"> </span>--cask<span class="w"> </span>docker
+  <h1>MicroCeph</h1>
+
+<p>If using an external Ceph cluster to be consumed by Rook.</p>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">#</a></h2>
+<p>Ceph provides <a href="https://docs.ceph.com/en/latest/rbd/">block</a>, <a href="https://docs.ceph.com/en/latest/radosgw/">object</a>, and <a href="https://docs.ceph.com/en/latest/cephfs/">file</a> storage. It supports both replicated and erasure coded storage.</p>
+<p>We'll work with <code>CephCluster</code>, <code>CephBlockPool</code> objects, the <code>rook-ceph.rbd.csi.ceph.com</code> provisioner pods, the <code>ceph-rbd</code> storage class and the Ceph operator pod.</p>
+<p><strong>Option 1</strong>  </p>
+<p>Imports external MicroCeph cluster.</p>
+<p>Components:</p>
+<ul>
+<li>MicroCeph cluster.</li>
+<li>MicroK8s cluster with rook-ceph addon connected to the external Ceph cluster.</li>
+<li>Ceph cluster with pools e.g.
+    <div class="highlight"><pre><span></span><code>pool<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="s1">&#39;microk8s-rbd0&#39;</span><span class="w"> </span>replicated<span class="w"> </span>size<span class="w"> </span><span class="m">3</span><span class="w"> </span>min_size<span class="w"> </span><span class="m">2</span><span class="w"> </span>crush_rule<span class="w"> </span><span class="m">1</span><span class="w"> </span>object_hash<span class="w"> </span>rjenkins<span class="w"> </span>pg_num<span class="w"> </span><span class="m">32</span><span class="w"> </span>pgp_num<span class="w"> </span><span class="m">32</span><span class="w"> </span>autoscale_mode<span class="w"> </span>on<span class="w"> </span>last_change<span class="w"> </span><span class="m">31</span><span class="w"> </span>lfor<span class="w"> </span><span class="m">0</span>/0/29<span class="w"> </span>flags<span class="w"> </span>hashpspool<span class="w"> </span>stripe_width<span class="w"> </span><span class="m">0</span><span class="w"> </span>application<span class="w"> </span>rbd
+</code></pre></div></li>
+<li>Kubernetes <code>StorageClass</code> objects with paramter <code>pool=mypool</code> e.g.
+    <div class="highlight"><pre><span></span><code>Name:                  ceph-rbd
+Provisioner:           rook-ceph.rbd.csi.ceph.com
+Parameters:            clusterID=rook-ceph-external,pool=microk8s-rbd0 ...
+</code></pre></div></li>
+</ul>
+<p><strong>Option 2</strong></p>
+<p>Deploy Ceph on MicroK8s.</p>
+<p>Components:</p>
+<ul>
+<li>MicroK8s cluster with rook-ceph addon.</li>
+<li>Deploy Ceph on the MicroK8s cluster using storage from the k8s nodes.</li>
+<li>Not recommended for clusters with virtual disks backed by loop devices. The <code>provision</code> container of the <code>rook-ceph-osd-prepare</code> pod for each node will not use them and the pool creation will fail with <code>skipping OSD configuration as no devices matched the storage settings for this node</code>.</li>
+</ul>
+<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">#</a></h2>
+<ol>
+<li>Allocate disks. For a MicroCeph test cluster with only 1 node you can create virtual disks as loop devices (a special block device that maps to a file).
+    <div class="highlight"><span class="filename">On each node</span><pre><span></span><code><span class="k">for</span><span class="w"> </span>l<span class="w"> </span><span class="k">in</span><span class="w"> </span>a<span class="w"> </span>b<span class="w"> </span>c<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">    </span><span class="nv">loop_file</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>sudo<span class="w"> </span>mktemp<span class="w"> </span>-p<span class="w"> </span>/mnt<span class="w"> </span>XXXX.img<span class="k">)</span><span class="s2">&quot;</span>
+<span class="w">    </span>sudo<span class="w"> </span>truncate<span class="w"> </span>-s<span class="w"> </span>60G<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">loop_file</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="w">    </span><span class="nv">loop_dev</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>sudo<span class="w"> </span>losetup<span class="w"> </span>--show<span class="w"> </span>-f<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">loop_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="k">)</span><span class="s2">&quot;</span>
+<span class="w">    </span><span class="c1"># the block-devices plug doesn&#39;t allow accessing /dev/loopX</span>
+<span class="w">    </span><span class="c1"># devices so we make those same devices available under alternate</span>
+<span class="w">    </span><span class="c1"># names (/dev/sdiY)</span>
+<span class="w">    </span><span class="nv">minor</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">loop_dev</span><span class="p">##/dev/loop</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="w">    </span>sudo<span class="w"> </span>mknod<span class="w"> </span>-m<span class="w"> </span><span class="m">0660</span><span class="w"> </span><span class="s2">&quot;/dev/sdi</span><span class="si">${</span><span class="nv">l</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span>b<span class="w"> </span><span class="m">7</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">minor</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="k">done</span>
 </code></pre></div>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>You must use the --cask version. Otherwise only the client is included and can't run the Docker daemon. Then open the Docker app and grant privileged access when asked. Only then will you be able to use <code>docker</code>.</p>
-</div>
-<h3 id="linux-raspberry-pi-os">Linux / Raspberry Pi OS:<a class="headerlink" href="#linux-raspberry-pi-os" title="Permanent link">#</a></h3>
-<p>If you just ran <code>apt upgrade</code> on your Raspberry Pi, reboot before installing Docker.<br />
-Follow the appropriate <a href="https://docs.docker.com/engine/install/debian/#install-using-the-convenience-script">installation method</a>.  </p>
-<p>If you don't want to have to prefix commands with <code>sudo</code> add your user to the <code>docker</code> group. This is equivalent to giving that user root privileges.
-<div class="highlight"><pre><span></span><code>cat<span class="w"> </span>/etc/group<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>docker<span class="w"> </span><span class="c1"># see if docker group exists</span>
-sudo<span class="w"> </span>usermod<span class="w"> </span>-aG<span class="w"> </span>docker<span class="w"> </span><span class="nv">$USER</span>
-</code></pre></div></p>
-<p>Follow <a href="https://docs.docker.com/engine/install/linux-postinstall/">Post-installation steps</a> to configure log rotation.  </p>
-<h2 id="use">Use<a class="headerlink" href="#use" title="Permanent link">#</a></h2>
-<h3 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link">#</a></h3>
-<p><a href="https://github.com/docker-library/official-images#architectures-other-than-amd64">Supported Architectures</a><br />
-<a href="https://github.com/containerd/containerd/blob/v1.4.3/platforms/platforms.go#L63">Platform specifiers</a>  </p>
-<table>
-<thead>
-<tr>
-<th style="text-align: center;">Value</th>
-<th style="text-align: center;">Normalized</th>
-<th style="text-align: center;">Examples</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: center;">aarch64</td>
-<td style="text-align: center;">arm64</td>
-<td style="text-align: center;">Apple M1/M2, Raspberry Pi 4</td>
-</tr>
-<tr>
-<td style="text-align: center;">armhf</td>
-<td style="text-align: center;">arm</td>
-<td style="text-align: center;">Raspberry Pi 2</td>
-</tr>
-<tr>
-<td style="text-align: center;">armel</td>
-<td style="text-align: center;">arm/v6</td>
-<td style="text-align: center;"></td>
-</tr>
-<tr>
-<td style="text-align: center;">i386</td>
-<td style="text-align: center;">386</td>
-<td style="text-align: center;"></td>
-</tr>
-<tr>
-<td style="text-align: center;">x86_64</td>
-<td style="text-align: center;">amd64</td>
-<td style="text-align: center;">Intel (Default)</td>
-</tr>
-<tr>
-<td style="text-align: center;">x86-64</td>
-<td style="text-align: center;">amd64</td>
-<td style="text-align: center;">Intel (Default)</td>
-</tr>
-</tbody>
-</table>
-<p>Docker Desktop for Apple silicon can run (or build) an Intel image using emulation.<br />
-The <code>--platform</code> option sets the platform if server is multi-platform capable.  </p>
-<p>Macbook <strong>M1/M2</strong> is based on <strong>ARM</strong>. The Docker host is detected as <strong>linux/arm64/v8</strong> by Docker.  </p>
-<p>On a Macbook M1/M2 running a native arm64 linux image instead of an amd64 (x86-64 Intel) image with emulation:<br />
-When installing apps on the container either install the package for the ARM platform if they provide one, or run an amd64 docker image (Docker will use emulation). </p>
-<p>See Docker host info.<br />
-You need to use the real field names (not display names) so we'll grab the info in json to get the real field names and use <code>jq</code> to display it nicely. Then we'll render them using Go templates.</p>
-<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>info<span class="w"> </span>--format<span class="w"> </span><span class="s1">&#39;{{json .}}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>.
-
-docker<span class="w"> </span>info<span class="w"> </span>--format<span class="w"> </span><span class="s2">&quot;{{.Plugins.Volume}}&quot;</span>
-docker<span class="w"> </span>info<span class="w"> </span>--format<span class="w"> </span><span class="s2">&quot;{{.OSType}} - {{.Architecture}} CPUs: {{.NCPU}}&quot;</span>
+    Verify
+    <div class="highlight"><span class="filename">On each node</span><pre><span></span><code>lsblk
+ls<span class="w"> </span>-al<span class="w">  </span>/dev/sdi*
+</code></pre></div></li>
+<li>
+<p>Review storage concepts like replication vs erasure coding.<br />
+    Erasure Coding  </p>
+<p><table>
+    <tr><th>Data chunks (k)</th><th>Coding chunks (m)</th><th>Total storage</th><th>Losses Tolerated (m)</th><th>OSDs required (k+m)</th></tr>
+    <tr><td>2</td><td>1</td><td>1.5x</td><td>1</td><td>3</td></tr>
+    <tr><td>2</td><td>2</td><td>2x</td><td>2</td><td>4</td></tr>
+    <tr><td>4</td><td>2</td><td>1.5x</td><td>2</td><td>6</td></tr>
+    <tr><td>3</td><td>3</td><td>2x</td><td>3</td><td>6</td></tr>
+    <tr><td>16</td><td>4</td><td>1.25x</td><td>4</td><td>20</td></tr>
+</table></p>
+</li>
+</ol>
+<h2 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link">#</a></h2>
+<ol>
+<li>Install <a href="https://microk8s.io/docs/how-to-ceph">MicroCeph</a>
+    <div class="highlight"><span class="filename">On all nodes</span><pre><span></span><code>sudo<span class="w"> </span>snap<span class="w"> </span>install<span class="w"> </span>microceph<span class="w"> </span>--channel<span class="o">=</span>latest/edge
+snap<span class="w"> </span>info<span class="w"> </span>microceph<span class="w"> </span><span class="c1"># if you want to see instructions</span>
 </code></pre></div>
-<p>With the default images, Docker Desktop for Apple silicon warns us the requested image's platform (linux/amd64) is different from the detected host platform (linux/arm64/v8) and no specific platform was requested.<br />
-<code>--platform linux/amd64</code> is the default and the same as  <code>--platform linux/x86_64</code>. It runs (or builds) an Intel image.<br />
-<code>--platform linux/arm64</code> runs (or builds) an aarch64 (arm64) image. Architecture used by Appple M1/M2.  </p>
-<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>--name<span class="w"> </span>container1<span class="w"> </span>debian<span class="w"> </span><span class="c1"># WARNING. uname -m -&gt; x86_64 (amd64)</span>
-docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>--platform<span class="w"> </span>linux/amd64<span class="w"> </span>--name<span class="w"> </span>container1<span class="w"> </span>debian<span class="w"> </span><span class="c1"># NO warning. uname -m -&gt; x86_64 (amd64). On Mac it emulates Intel.</span>
-docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>--platform<span class="w"> </span>linux/arm64<span class="w"> </span>--name<span class="w"> </span>container1<span class="w"> </span>debian<span class="w"> </span><span class="c1"># NO warning. uname -m -&gt; aarch64 (arm64). Mac native.</span>
-
-<span class="c1"># On a Mac M2 you can also use this image</span>
-docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>--name<span class="w"> </span>mycontainer<span class="w"> </span>arm64v8/debian<span class="w"> </span>bash<span class="w"> </span><span class="c1"># NO warning. uname -m -&gt; aarch64 (arm64). Mac native.</span>
+    <div class="highlight"><span class="filename">On the control plane node</span><pre><span></span><code>sudo<span class="w"> </span>microceph<span class="w"> </span>cluster<span class="w"> </span>bootstrap
+</code></pre></div></li>
+<li>Join all nodes to the cluster
+    <div class="highlight"><span class="filename">On the control plane, for each node you want to add</span><pre><span></span><code>sudo<span class="w"> </span>microceph<span class="w"> </span>cluster<span class="w"> </span>add<span class="w"> </span><span class="nv">$NODE_HOSTNAME</span>
+<span class="c1"># get the join token for the node</span>
 </code></pre></div>
-<h3 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">#</a></h3>
-<p>Dockerfile instruction to keep a container running
-<div class="highlight"><pre><span></span><code>CMD<span class="w"> </span>tail<span class="w"> </span>-f<span class="w"> </span>/dev/null
-</code></pre></div></p>
-<p>Running containers
-<div class="highlight"><pre><span></span><code><span class="c1"># sanity check</span>
-docker<span class="w"> </span>version
-docker<span class="w"> </span>--help
-
-<span class="c1"># &quot;docker run&quot; = &quot;docker container run&quot;</span>
-
-docker<span class="w"> </span>run<span class="w"> </span>--name<span class="w"> </span>container1<span class="w"> </span>debian<span class="w"> </span><span class="c1"># created and Exited</span>
-docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>--name<span class="w"> </span>container2<span class="w"> </span>debian<span class="w"> </span><span class="c1"># created and Up. Interactive tty</span>
-docker<span class="w"> </span>run<span class="w"> </span>--detach<span class="w"> </span>--name<span class="w"> </span>container3<span class="w"> </span>debian<span class="w"> </span><span class="c1"># created and Exited</span>
-docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>--detach<span class="w"> </span>--name<span class="w"> </span>container4<span class="w"> </span>debian<span class="w"> </span><span class="c1"># created and Up. Running in background</span>
-
-docker<span class="w"> </span>stop<span class="w"> </span>container4<span class="w"> </span><span class="c1"># Exited</span>
-docker<span class="w"> </span>restart<span class="w"> </span>container4<span class="w"> </span><span class="c1"># Up</span>
-docker<span class="w"> </span>attach<span class="w"> </span>container4<span class="w"> </span><span class="c1"># Interactive tty</span>
-
-<span class="c1"># To have it removed automatically when it&#39;s stopped </span>
-docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>--rm<span class="w"> </span>--name<span class="w"> </span>mycontainer<span class="w"> </span>debian<span class="w"> </span><span class="c1"># created and Up. Interactive tty. </span>
-<span class="c1"># Run bash in a new container with interactive tty, based on debian image.</span>
-docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>--name<span class="w"> </span>mycontainer<span class="w"> </span>debian<span class="w"> </span>bash
-<span class="c1"># Get the IDs of all stopped containers. Options: all, quiet (only IDs), filter.</span>
-docker<span class="w"> </span>ps<span class="w"> </span>-aq<span class="w"> </span>-f<span class="w"> </span><span class="nv">status</span><span class="o">=</span>exited
-</code></pre></div></p>
-<p>Working with images and volumes
-<div class="highlight"><pre><span></span><code><span class="c1"># Show all images (including intermediate images)</span>
-docker<span class="w"> </span>image<span class="w"> </span>ls<span class="w"> </span>-a
-
-<span class="c1"># Build an image from a Dockerfile and give it a name (or name:tag).</span>
-docker<span class="w"> </span>build<span class="w"> </span>-f<span class="w"> </span>mydockerfile<span class="w"> </span>-t<span class="w"> </span>santisbon/myimage<span class="w"> </span>.
-docker<span class="w"> </span>builder<span class="w"> </span>prune<span class="w"> </span>-a<span class="w">     </span><span class="c1"># Remove all unused build cache, not just dangling ones</span>
-docker<span class="w"> </span>image<span class="w"> </span>rm<span class="w"> </span>santisbon/myimage
-
-<span class="c1"># Volumes</span>
-docker<span class="w"> </span>volume<span class="w"> </span>create<span class="w"> </span>my-vol
-docker<span class="w"> </span>volume<span class="w"> </span>ls
-docker<span class="w"> </span>volume<span class="w"> </span>inspect<span class="w"> </span>my-vol
-docker<span class="w"> </span>volume<span class="w"> </span>prune
-docker<span class="w"> </span>volume<span class="w"> </span>rm<span class="w"> </span>my-vol
-
-<span class="c1"># Start a container from an image.</span>
-docker<span class="w"> </span>run<span class="w"> </span><span class="se">\</span>
---name<span class="w"> </span>mycontainer<span class="w"> </span><span class="se">\</span>
---hostname<span class="w"> </span>mycontainer<span class="w"> </span><span class="se">\</span>
---mount<span class="w"> </span><span class="nv">source</span><span class="o">=</span>my-vol,target<span class="o">=</span>/data<span class="w"> </span><span class="se">\</span>
-santisbon/myimage
-
-<span class="c1"># Get rid of all stopped containers. Options: remove **anonymous volumes** associated with the container.</span>
-docker<span class="w"> </span>rm<span class="w"> </span>-v<span class="w"> </span><span class="k">$(</span>docker<span class="w"> </span>ps<span class="w"> </span>-aq<span class="w"> </span>-f<span class="w"> </span><span class="nv">status</span><span class="o">=</span>exited<span class="k">)</span>
-<span class="c1"># You might want to make an alias:</span>
-<span class="nb">alias</span><span class="w"> </span><span class="nv">drm</span><span class="o">=</span><span class="s1">&#39;docker rm -v $(docker ps -aq -f status=exited)&#39;</span>
-<span class="c1"># or</span>
-<span class="nb">alias</span><span class="w"> </span><span class="nv">drm</span><span class="o">=</span><span class="s1">&#39;sudo docker rm -v $(sudo docker ps -aq -f status=exited)&#39;</span>
-
-<span class="c1"># on macOS the volume mountpoint (/var/lib/docker/volumes/) is in the VM that Docker Desktop uses to provide the Linux environment.</span>
-<span class="c1"># You can read it through a container given extended privileges. </span>
-<span class="c1"># Use: </span>
-<span class="c1"># - the &quot;host&quot; PID namespace, </span>
-<span class="c1"># - an image e.g. debian, </span>
-<span class="c1"># - the nsenter command to run a program (sh) in a different namespace</span>
-<span class="c1"># - the target process with PID 1</span>
-<span class="c1"># - enter following namspaces of the target process: mount, UTS, network, IPC.</span>
-docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>--privileged<span class="w"> </span>--pid<span class="o">=</span>host<span class="w"> </span>debian<span class="w"> </span>nsenter<span class="w"> </span>-t<span class="w"> </span><span class="m">1</span><span class="w"> </span>-m<span class="w"> </span>-u<span class="w"> </span>-n<span class="w"> </span>-i<span class="w"> </span>sh
-</code></pre></div></p>
-<p>If you want to build <a href="https://docs.docker.com/build/building/multi-platform/#getting-started">multi-platform</a> docker images:
-<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>buildx<span class="w"> </span>create<span class="w"> </span>--name<span class="w"> </span>mybuilder<span class="w"> </span>--driver<span class="w"> </span>docker-container<span class="w"> </span>--bootstrap
-docker<span class="w"> </span>buildx<span class="w"> </span>use<span class="w"> </span>mybuilder
-
-docker<span class="w"> </span>buildx<span class="w"> </span>inspect
-docker<span class="w"> </span>buildx<span class="w"> </span>ls
-</code></pre></div></p>
-<p>Docker Compose. Multi-container deployments in a compose.yaml file.<br />
-<a href="https://docs.docker.com/compose/production/">Using Compose in Production</a>  </p>
-<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>compose<span class="w"> </span>-p<span class="w"> </span>mastodon-bot-project<span class="w"> </span>up<span class="w"> </span>--detach
-<span class="c1"># or</span>
-docker<span class="w"> </span>compose<span class="w"> </span>-p<span class="w"> </span>mastodon-bot-project<span class="w"> </span>create
-docker<span class="w"> </span>compose<span class="w"> </span>-p<span class="w"> </span>mastodon-bot-project<span class="w"> </span>start
-
-<span class="c1"># connect to a running container</span>
-docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>bot-app<span class="w"> </span>bash
-
-docker<span class="w"> </span>compose<span class="w"> </span>-p<span class="w"> </span>mastodon-bot-project<span class="w"> </span>down
-<span class="c1"># or</span>
-docker<span class="w"> </span>compose<span class="w"> </span>-p<span class="w"> </span>mastodon-bot-project<span class="w"> </span>stop
+    It's best to have an <a href="https://access.redhat.com/documentation/en-us/red_hat_ceph_storage/3/html/operations_guide/managing-the-storage-cluster-size">odd number of monitors</a> because Ceph needs a majority of monitors to be running e.g. 2 out of 3.
+    <div class="highlight"><span class="filename">On each node you want to add to the cluster</span><pre><span></span><code>sudo<span class="w"> </span>microceph<span class="w"> </span>cluster<span class="w"> </span>join<span class="w"> </span><span class="nv">$JOIN_TOKEN</span>
+</code></pre></div></li>
+<li>Add the disks as OSDs. MicroCeph supports loop devices or disks. At the time of this writing it does not support partitions but <a href="https://github.com/canonical/microceph/issues/146">that will change</a>.
+    <div class="highlight"><span class="filename">On each node</span><pre><span></span><code><span class="c1"># After adding physical or virtual disks to your node/VM</span>
+<span class="c1"># for each disk (whatever device names your disks have)</span>
+sudo<span class="w"> </span>microceph<span class="w"> </span>disk<span class="w"> </span>add<span class="w"> </span>/dev/sdia<span class="w"> </span>--wipe<span class="w"> </span>
+sudo<span class="w"> </span>microceph<span class="w"> </span>disk<span class="w"> </span>add<span class="w"> </span>/dev/sdib<span class="w"> </span>--wipe
+sudo<span class="w"> </span>microceph<span class="w"> </span>disk<span class="w"> </span>add<span class="w"> </span>/dev/sdic<span class="w"> </span>--wipe
+</code></pre></div></li>
+<li>Verify
+    <div class="highlight"><span class="filename">On the control plane (or any ceph node, really)</span><pre><span></span><code>sudo<span class="w"> </span>ceph<span class="w"> </span>status<span class="w"> </span><span class="c1"># detailed status</span>
+<span class="c1"># HEALTH_OK with all OSDs showing</span>
 </code></pre></div>
-<p>Kubernetes</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Convert the Docker Compose file to k8s files</span>
-kompose<span class="w"> </span>--file<span class="w"> </span>compose.yaml<span class="w"> </span>convert
-
-<span class="c1"># Make sure the container image is available in a repository. </span>
-<span class="c1"># You can build it with `docker build` or `docker compose create` and push it to a public repository.</span>
-docker<span class="w"> </span>image<span class="w"> </span>push<span class="w"> </span>user/repo
-<span class="c1"># multiple -f filenames or a folder </span>
-kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>./k8s
-kubectl<span class="w"> </span>get<span class="w"> </span>pods
-kubectl<span class="w"> </span>delete<span class="w"> </span>-f<span class="w"> </span>./k8s
+    Learn more about <a href="https://docs.ceph.com/en/latest/rados/operations/pools/">pools</a>.</li>
+</ol>
+<p>You can also <a href="https://docs.ceph.com/en/latest/rados/operations/pools/#creating-a-pool">create</a> and <a href="https://docs.ceph.com/en/latest/rbd/rados-rbd-cmds/">initialize</a> other Ceph pools.</p>
+<h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">#</a></h2>
+<div class="highlight"><pre><span></span><code><span class="c1"># Ceph</span>
+sudo<span class="w"> </span>microceph<span class="w"> </span>status<span class="w"> </span><span class="c1"># deployment summary</span>
+sudo<span class="w"> </span>microceph<span class="w"> </span>disk<span class="w"> </span>list
+sudo<span class="w"> </span>ceph<span class="w"> </span>osd<span class="w"> </span>metadata<span class="w"> </span><span class="o">{</span>osd-id<span class="o">}</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>osd_objectstore<span class="w"> </span><span class="c1"># check that it&#39;s a bluestore OSD</span>
+sudo<span class="w"> </span>ceph<span class="w"> </span>osd<span class="w"> </span>lspools
+sudo<span class="w"> </span>ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>ls
+sudo<span class="w"> </span>ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>ls<span class="w"> </span>detail<span class="w"> </span>-f<span class="w"> </span>json-pretty<span class="w"> </span><span class="c1"># list the pools with all details</span>
+sudo<span class="w"> </span>ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>stats<span class="w"> </span><span class="c1"># obtain stats from all pools, or from specified pool</span>
+sudo<span class="w"> </span>ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>delete<span class="w"> </span><span class="o">{</span>pool-name<span class="o">}</span><span class="w"> </span><span class="o">{</span>pool-name<span class="o">}</span><span class="w"> </span>--yes-i-really-really-mean-it
 </code></pre></div>
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">#</a></h2>
+<ul>
+<li>View logs
+    <div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>ls<span class="w"> </span>-al<span class="w"> </span>/var/snap/microceph/common/logs/
+</code></pre></div></li>
+</ul>
 
 
 

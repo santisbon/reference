@@ -2,7 +2,15 @@ site_name: Notes
 site_url: https://santisbon.github.io/reference/
 repo_url: https://github.com/santisbon/reference
 nav:
-  - Home: 'index.md'
+  #- Home: 'index.md'
+  - Homelab:
+    - Docker: 'docker.md'
+    - Kubernetes: 'k8s.md'
+    - Raspberry Pi: 'rpi.md'
+    - K3s: 'k3s.md'
+    - MicroK8s: 'microk8s.md'
+    - MicroCeph: 'microceph.md'
+    - Rook Ceph: 'rook-ceph.md'
   - New dev machine:
     - Install the OS: 'install-os.md'
     - Automated setup: 'automated.md'
@@ -17,12 +25,6 @@ nav:
     - MySQL: 'mysql.md'
     - Node: 'node.md'
     - MkDocs: 'mkdocs.md'
-  - Homelab:
-    - Docker: 'docker.md'
-    - Kubernetes: 'k8s.md'
-    - Raspberry Pi: 'rpi.md'
-    - MicroK8s: 'microk8s.md'
-    #- Ceph: 'ceph.md'
 markdown_extensions:
   - toc:
       permalink: "#"

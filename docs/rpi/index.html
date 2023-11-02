@@ -14,7 +14,7 @@
         <link rel="prev" href="../k8s/">
       
       
-        <link rel="next" href="../microk8s/">
+        <link rel="next" href="../k3s/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -250,17 +250,435 @@
       
   
   
+    
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Homelab
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            Homelab
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../docker/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Home
+    Docker
   </span>
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../k8s/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kubernetes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Raspberry Pi
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Raspberry Pi
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#boot-from-ssd" class="md-nav__link">
+    Boot from SSD
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ssd-as-additional-storage" class="md-nav__link">
+    SSD as Additional Storage
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-os-image" class="md-nav__link">
+    Get OS image
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setup" class="md-nav__link">
+    Setup
+  </a>
+  
+    <nav class="md-nav" aria-label="Setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    Overview
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flash-the-image" class="md-nav__link">
+    Flash the image
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verify" class="md-nav__link">
+    Verify
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resize-the-root-partition" class="md-nav__link">
+    Resize the root partition
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    Usage
+  </a>
+  
+    <nav class="md-nav" aria-label="Usage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#access-your-pi" class="md-nav__link">
+    Access your Pi
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#upgrade" class="md-nav__link">
+    Upgrade
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#authentication" class="md-nav__link">
+    Authentication
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#board-specific-tools" class="md-nav__link">
+    Board-specific tools
+  </a>
+  
+    <nav class="md-nav" aria-label="Board-specific tools">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#raspberry-pi_1" class="md-nav__link">
+    Raspberry Pi
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#orange-pi" class="md-nav__link">
+    Orange Pi
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remote-gui-access" class="md-nav__link">
+    Remote GUI access
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#to-give-it-a-static-ip" class="md-nav__link">
+    To give it a static IP
+  </a>
+  
+    <nav class="md-nav" aria-label="To give it a static IP">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#option-a-the-router" class="md-nav__link">
+    Option A: The router
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#option-b-dhcpcdconf" class="md-nav__link">
+    Option B: dhcpcd.conf
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#to-set-it-up-as-a-dns-server" class="md-nav__link">
+    To set it up as a DNS server
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#copying-files" class="md-nav__link">
+    Copying files
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#find-info-about-your-pi" class="md-nav__link">
+    Find info about your Pi
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    Troubleshooting
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#learn-about-electronics" class="md-nav__link">
+    Learn about electronics
+  </a>
+  
+    <nav class="md-nav" aria-label="Learn about electronics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gpio-header" class="md-nav__link">
+    GPIO Header
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting_1" class="md-nav__link">
+    Troubleshooting
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../k3s/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    K3s
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../microk8s/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MicroK8s
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../microceph/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MicroCeph
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rook-ceph/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Rook Ceph
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -570,376 +988,6 @@
   
 
     
-      
-      
-  
-  
-    
-  
-  
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
-      
-        
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
-        
-          
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
-            
-  
-  <span class="md-ellipsis">
-    Homelab
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_3">
-            <span class="md-nav__icon md-icon"></span>
-            Homelab
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../docker/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Docker
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../k8s/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Kubernetes
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-    
-  
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Raspberry Pi
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
-        
-  
-  <span class="md-ellipsis">
-    Raspberry Pi
-  </span>
-  
-
-      </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#boot-from-ssd" class="md-nav__link">
-    Boot from SSD
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ssd-as-additional-storage" class="md-nav__link">
-    SSD as Additional Storage
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#get-os-image" class="md-nav__link">
-    Get OS image
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#setup" class="md-nav__link">
-    Setup
-  </a>
-  
-    <nav class="md-nav" aria-label="Setup">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
-    Overview
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#flash-the-image" class="md-nav__link">
-    Flash the image
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#verify" class="md-nav__link">
-    Verify
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#resize-the-root-partition" class="md-nav__link">
-    Resize the root partition
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#usage" class="md-nav__link">
-    Usage
-  </a>
-  
-    <nav class="md-nav" aria-label="Usage">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#access-your-pi" class="md-nav__link">
-    Access your Pi
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#upgrade" class="md-nav__link">
-    Upgrade
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#authentication" class="md-nav__link">
-    Authentication
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#board-specific-tools" class="md-nav__link">
-    Board-specific tools
-  </a>
-  
-    <nav class="md-nav" aria-label="Board-specific tools">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#raspberry-pi_1" class="md-nav__link">
-    Raspberry Pi
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#orange-pi" class="md-nav__link">
-    Orange Pi
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#remote-gui-access" class="md-nav__link">
-    Remote GUI access
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#to-give-it-a-static-ip" class="md-nav__link">
-    To give it a static IP
-  </a>
-  
-    <nav class="md-nav" aria-label="To give it a static IP">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#option-a-the-router" class="md-nav__link">
-    Option A: The router
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#option-b-dhcpcdconf" class="md-nav__link">
-    Option B: dhcpcd.conf
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#to-set-it-up-as-a-dns-server" class="md-nav__link">
-    To set it up as a DNS server
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#copying-files" class="md-nav__link">
-    Copying files
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#find-info-about-your-pi" class="md-nav__link">
-    Find info about your Pi
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#troubleshooting" class="md-nav__link">
-    Troubleshooting
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#learn-about-electronics" class="md-nav__link">
-    Learn about electronics
-  </a>
-  
-    <nav class="md-nav" aria-label="Learn about electronics">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#gpio-header" class="md-nav__link">
-    GPIO Header
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../microk8s/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    MicroK8s
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
   </ul>
 </nav>
                   </div>
@@ -1168,6 +1216,13 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting_1" class="md-nav__link">
+    Troubleshooting
+  </a>
   
 </li>
       
@@ -1435,15 +1490,15 @@ cat<span class="w"> </span><span class="s">&lt;&lt; EOF &gt; /Volumes/$VOLUME/us
 <span class="s">  #- sudo ifconfig wlan0 up</span>
 <span class="s">  - sudo snap refresh</span>
 <span class="s">  # For MicroK8s</span>
-<span class="s">  - sudo snap install microk8s --channel=1.28/stable --classic</span>
-<span class="s">  - sudo usermod -a -G microk8s pi</span>
-<span class="s">  - sudo chown -f -R pi ~/.kube</span>
-<span class="s">  - newgrp microk8s</span>
+<span class="s">  #- sudo snap install microk8s --channel=1.28/stable --classic</span>
+<span class="s">  #- sudo usermod -a -G microk8s pi</span>
+<span class="s">  #- sudo chown -f -R pi ~/.kube</span>
+<span class="s">  #- newgrp microk8s</span>
 <span class="s">  # For OpenEBS</span>
-<span class="s">  # - sudo sysctl vm.nr_hugepages=1024</span>
-<span class="s">  # - echo &#39;vm.nr_hugepages=1024&#39; | sudo tee -a /etc/sysctl.conf</span>
-<span class="s">  # - sudo modprobe nvme_tcp</span>
-<span class="s">  # - echo &#39;nvme-tcp&#39; | sudo tee -a /etc/modules-load.d/microk8s-mayastor.conf</span>
+<span class="s">  #- sudo sysctl vm.nr_hugepages=1024</span>
+<span class="s">  #- echo &#39;vm.nr_hugepages=1024&#39; | sudo tee -a /etc/sysctl.conf</span>
+<span class="s">  #- sudo modprobe nvme_tcp</span>
+<span class="s">  #- echo &#39;nvme-tcp&#39; | sudo tee -a /etc/modules-load.d/microk8s-mayastor.conf</span>
 <span class="s">  # For Rook Ceph</span>
 <span class="s">  - sudo modprobe rbd</span>
 <span class="s">  - echo &#39;rbd&#39; | sudo tee -a /etc/modules-load.d/modules.conf</span>
@@ -1548,6 +1603,11 @@ sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> <
 </ol>
 </li>
 <li>Turn off the Pi. Disconnect the GParted USB, keep the SSD connected and turn it on.</li>
+</ol>
+<p><strong>Alternatively</strong>, you can use <code>parted</code> to set up/resize the SSD partitions and file systems as desired. For example, leave a raw partition (no formatted filesystem) for use by a Ceph storage cluster.  </p>
+<ol>
+<li><a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/managing_file_systems/getting-started-with-an-ext4-file-system_managing-file-systems#resizing-an-ext4-file-system_getting-started-with-an-ext4-file-system">Resize the filesystem</a>.</li>
+<li>If needed, <a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/managing_file_systems/partition-operations-with-parted_managing-file-systems#proc_resizing-a-partition-with-parted_partition-operations-with-parted">shrink the partition</a> to leave space to be used by Ceph.</li>
 </ol>
 <p>Repeat for each node in your cluster.</p>
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">#</a></h2>
@@ -1731,6 +1791,18 @@ resolvectl<span class="w"> </span>status
 <a href="https://github.com/santisbon/reference/tree/main/assets/SBC">Sample code</a></p>
 <h4 id="gpio-header">GPIO Header<a class="headerlink" href="#gpio-header" title="Permanent link">#</a></h4>
 <p><img alt="GPIO" src="https://i.imgur.com/3Zroadt.jpg" /></p>
+<h2 id="troubleshooting_1">Troubleshooting<a class="headerlink" href="#troubleshooting_1" title="Permanent link">#</a></h2>
+<ul>
+<li>I see <code>cloud-init</code> had failures.<br />
+    Based on the <code>user-data</code> file:
+    Manually run <code>sudo apt update</code>, <code>sudo apt full-upgrade</code>.<br />
+    Manually run <code>sudo apt install</code> on any packages that failed.<br />
+    Manually add any kernel modules you need and make sure <code>/etc/modules-load.d/modules.conf</code> has them so they'll be added on every boot.</li>
+<li>I'm not sure cgroups are enabled.<br />
+    Check with 
+    <div class="highlight"><pre><span></span><code>cat<span class="w"> </span>/proc/cgroups
+</code></pre></div></li>
+</ul>
 
 
 

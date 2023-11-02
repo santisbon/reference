@@ -11,8 +11,10 @@
         <link rel="canonical" href="https://santisbon.github.io/reference/microk8s/">
       
       
-        <link rel="prev" href="../rpi/">
+        <link rel="prev" href="../k3s/">
       
+      
+        <link rel="next" href="../microceph/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -75,7 +77,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#setup" class="md-skip">
+        <a href="#prerequisites" class="md-skip">
           Skip to content
         </a>
       
@@ -248,17 +250,322 @@
       
   
   
+    
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Homelab
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            Homelab
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../docker/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Home
+    Docker
   </span>
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../k8s/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kubernetes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rpi/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Raspberry Pi
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../k3s/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    K3s
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    MicroK8s
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    MicroK8s
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    Prerequisites
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clustering" class="md-nav__link">
+    Clustering
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    Usage
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deploying-workloads" class="md-nav__link">
+    Deploying workloads
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#other-sbcsoss" class="md-nav__link">
+    Other SBCs/OSs
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dashboard" class="md-nav__link">
+    Dashboard
+  </a>
+  
+    <nav class="md-nav" aria-label="Dashboard">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#option-a-port-forward" class="md-nav__link">
+    Option A: port-forward
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#option-b-nodeport" class="md-nav__link">
+    Option B: NodePort
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#registry" class="md-nav__link">
+    Registry
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#other-storage-addons" class="md-nav__link">
+    Other storage addons:
+  </a>
+  
+    <nav class="md-nav" aria-label="Other storage addons:">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#openebs" class="md-nav__link">
+    OpenEBS
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#minio" class="md-nav__link">
+    MinIO
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    Troubleshooting
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../microceph/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MicroCeph
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rook-ceph/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Rook Ceph
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -568,297 +875,6 @@
   
 
     
-      
-      
-  
-  
-    
-  
-  
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
-      
-        
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
-        
-          
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
-            
-  
-  <span class="md-ellipsis">
-    Homelab
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_3">
-            <span class="md-nav__icon md-icon"></span>
-            Homelab
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../docker/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Docker
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../k8s/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Kubernetes
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../rpi/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Raspberry Pi
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-    
-  
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    MicroK8s
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
-        
-  
-  <span class="md-ellipsis">
-    MicroK8s
-  </span>
-  
-
-      </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#setup" class="md-nav__link">
-    Setup
-  </a>
-  
-    <nav class="md-nav" aria-label="Setup">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
-    Overview
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
-    Prerequisites
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#microceph-clustering" class="md-nav__link">
-    MicroCeph Clustering
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#microk8s-clustering" class="md-nav__link">
-    MicroK8s Clustering
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#usage" class="md-nav__link">
-    Usage
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#deploying-workloads" class="md-nav__link">
-    Deploying workloads
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#other-sbcsoss" class="md-nav__link">
-    Other SBCs/OSs
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#dashboard" class="md-nav__link">
-    Dashboard
-  </a>
-  
-    <nav class="md-nav" aria-label="Dashboard">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#option-a-port-forward" class="md-nav__link">
-    Option A: port-forward
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#option-b-nodeport" class="md-nav__link">
-    Option B: NodePort
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#registry" class="md-nav__link">
-    Registry
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#other-storage-addons" class="md-nav__link">
-    Other storage addons:
-  </a>
-  
-    <nav class="md-nav" aria-label="Other storage addons:">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#openebs" class="md-nav__link">
-    OpenEBS
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#minio" class="md-nav__link">
-    MinIO
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#troubleshooting" class="md-nav__link">
-    Troubleshooting
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
   </ul>
 </nav>
                   </div>
@@ -884,50 +900,23 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#setup" class="md-nav__link">
-    Setup
-  </a>
-  
-    <nav class="md-nav" aria-label="Setup">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
-    Overview
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#prerequisites" class="md-nav__link">
     Prerequisites
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#microceph-clustering" class="md-nav__link">
-    MicroCeph Clustering
+      
+        <li class="md-nav__item">
+  <a href="#clustering" class="md-nav__link">
+    Clustering
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#microk8s-clustering" class="md-nav__link">
-    MicroK8s Clustering
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#usage" class="md-nav__link">
     Usage
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1034,101 +1023,24 @@
   <h1>MicroK8s</h1>
 
 <p>Suitable for Raspberry Pi and other lightweight environments. <a href="https://microk8s.io/docs/install-raspberry-pi">Learn  more</a>.</p>
-<h3 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link">#</a></h3>
-<h4 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">#</a></h4>
-<div class="admonition attention">
-<p class="admonition-title">Attention</p>
-<p>MicroK8s is not available for 32-bit architectures like <code>armhf</code>(<code>arm/v7</code>), only on 64-bit architectures like <code>arm64</code> and <code>amd64</code>.</p>
-</div>
-<p>Ceph provides <a href="https://docs.ceph.com/en/latest/rbd/">block</a>, <a href="https://docs.ceph.com/en/latest/radosgw/">object</a>, and <a href="https://docs.ceph.com/en/latest/cephfs/">file</a> storage. It supports both replicated and erasure coded storage.</p>
-<p>We'll work with <code>CephCluster</code>, <code>CephBlockPool</code> objects, the <code>rook-ceph.rbd.csi.ceph.com</code> provisioner pods, the <code>ceph-rbd</code> storage class and the Ceph operator pod.</p>
-<p><strong>Option 1</strong>  </p>
-<p>Imports external MicroCeph cluster.</p>
-<p>Components:</p>
-<ul>
-<li>MicroCeph cluster.</li>
-<li>MicroK8s cluster with rook-ceph addon connected to the external Ceph cluster.</li>
-<li>Ceph cluster with pools e.g.
-    <div class="highlight"><pre><span></span><code>pool<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="s1">&#39;microk8s-rbd0&#39;</span><span class="w"> </span>replicated<span class="w"> </span>size<span class="w"> </span><span class="m">3</span><span class="w"> </span>min_size<span class="w"> </span><span class="m">2</span><span class="w"> </span>crush_rule<span class="w"> </span><span class="m">1</span><span class="w"> </span>object_hash<span class="w"> </span>rjenkins<span class="w"> </span>pg_num<span class="w"> </span><span class="m">32</span><span class="w"> </span>pgp_num<span class="w"> </span><span class="m">32</span><span class="w"> </span>autoscale_mode<span class="w"> </span>on<span class="w"> </span>last_change<span class="w"> </span><span class="m">31</span><span class="w"> </span>lfor<span class="w"> </span><span class="m">0</span>/0/29<span class="w"> </span>flags<span class="w"> </span>hashpspool<span class="w"> </span>stripe_width<span class="w"> </span><span class="m">0</span><span class="w"> </span>application<span class="w"> </span>rbd
-</code></pre></div></li>
-<li>Kubernetes <code>StorageClass</code> objects with paramter <code>pool=mypool</code> e.g.
-    <div class="highlight"><pre><span></span><code>Name:                  ceph-rbd
-Provisioner:           rook-ceph.rbd.csi.ceph.com
-Parameters:            clusterID=rook-ceph-external,pool=microk8s-rbd0 ...
-</code></pre></div></li>
-</ul>
-<p><strong>Option 2</strong></p>
-<p>Deploy Ceph on MicroK8s.</p>
-<p>Components:</p>
-<ul>
-<li>MicroK8s cluster with rook-ceph addon.</li>
-<li>Deploy Ceph on the MicroK8s cluster using storage from the k8s nodes.</li>
-<li>Not recommended for clusters with virtual disks backed by loop devices. The <code>provision</code> container of the <code>rook-ceph-osd-prepare</code> pod for each node will not use them and the pool creation will fail with <code>skipping OSD configuration as no devices matched the storage settings for this node</code>.</li>
-</ul>
-<h4 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">#</a></h4>
+<h3 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">#</a></h3>
 <ol>
 <li>Set up your Raspberry Pi devices with <code>cloud-init</code> as defined in the <a href="/reference/rpi/">Raspberry Pi</a> section.</li>
 <li>Assign static IPs to all the nodes. </li>
 <li><code>sudo nano /etc/hosts</code> on each node and add the IP and hostnames of the other nodes so they can resolve during the join process.</li>
-<li>Allocate disks. For a test cluster with only 1 node you can create virtual disks as loop devices (a special block device that maps to a file).
-    <div class="highlight"><span class="filename">On each node</span><pre><span></span><code><span class="k">for</span><span class="w"> </span>l<span class="w"> </span><span class="k">in</span><span class="w"> </span>a<span class="w"> </span>b<span class="w"> </span>c<span class="p">;</span><span class="w"> </span><span class="k">do</span>
-<span class="w">    </span><span class="nv">loop_file</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>sudo<span class="w"> </span>mktemp<span class="w"> </span>-p<span class="w"> </span>/mnt<span class="w"> </span>XXXX.img<span class="k">)</span><span class="s2">&quot;</span>
-<span class="w">    </span>sudo<span class="w"> </span>truncate<span class="w"> </span>-s<span class="w"> </span>60G<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">loop_file</span><span class="si">}</span><span class="s2">&quot;</span>
-<span class="w">    </span><span class="nv">loop_dev</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>sudo<span class="w"> </span>losetup<span class="w"> </span>--show<span class="w"> </span>-f<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">loop_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="k">)</span><span class="s2">&quot;</span>
-<span class="w">    </span><span class="c1"># the block-devices plug doesn&#39;t allow accessing /dev/loopX</span>
-<span class="w">    </span><span class="c1"># devices so we make those same devices available under alternate</span>
-<span class="w">    </span><span class="c1"># names (/dev/sdiY)</span>
-<span class="w">    </span><span class="nv">minor</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">loop_dev</span><span class="p">##/dev/loop</span><span class="si">}</span><span class="s2">&quot;</span>
-<span class="w">    </span>sudo<span class="w"> </span>mknod<span class="w"> </span>-m<span class="w"> </span><span class="m">0660</span><span class="w"> </span><span class="s2">&quot;/dev/sdi</span><span class="si">${</span><span class="nv">l</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span>b<span class="w"> </span><span class="m">7</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">minor</span><span class="si">}</span><span class="s2">&quot;</span>
-<span class="k">done</span>
-</code></pre></div>
-    Verify
-    <div class="highlight"><span class="filename">On each node</span><pre><span></span><code>lsblk
-ls<span class="w"> </span>-al<span class="w">  </span>/dev/sdi*
-</code></pre></div></li>
-<li>
-<p>Review storage concepts like replication vs erasure coding.<br />
-    Erasure Coding  </p>
-<p><table>
-    <tr><th>Data chunks (k)</th><th>Coding chunks (m)</th><th>Total storage</th><th>Losses Tolerated (m)</th><th>OSDs required (k+m)</th></tr>
-    <tr><td>2</td><td>1</td><td>1.5x</td><td>1</td><td>3</td></tr>
-    <tr><td>2</td><td>2</td><td>2x</td><td>2</td><td>4</td></tr>
-    <tr><td>4</td><td>2</td><td>1.5x</td><td>2</td><td>6</td></tr>
-    <tr><td>3</td><td>3</td><td>2x</td><td>3</td><td>6</td></tr>
-    <tr><td>16</td><td>4</td><td>1.25x</td><td>4</td><td>20</td></tr>
-</table></p>
-</li>
 </ol>
-<h4 id="microceph-clustering">MicroCeph Clustering<a class="headerlink" href="#microceph-clustering" title="Permanent link">#</a></h4>
-<p>If using an external Ceph cluster to be consumed by Rook.</p>
-<ol>
-<li>Install <a href="https://microk8s.io/docs/how-to-ceph">MicroCeph</a>
-    <div class="highlight"><span class="filename">On all nodes</span><pre><span></span><code>sudo<span class="w"> </span>snap<span class="w"> </span>install<span class="w"> </span>microceph<span class="w"> </span>--channel<span class="o">=</span>latest/edge
-snap<span class="w"> </span>info<span class="w"> </span>microceph<span class="w"> </span><span class="c1"># if you want to see instructions</span>
-</code></pre></div>
-    <div class="highlight"><span class="filename">On the control plane node</span><pre><span></span><code>sudo<span class="w"> </span>microceph<span class="w"> </span>cluster<span class="w"> </span>bootstrap
-</code></pre></div></li>
-<li>Join all nodes to the cluster
-    <div class="highlight"><span class="filename">On the control plane, for each node you want to add</span><pre><span></span><code>sudo<span class="w"> </span>microceph<span class="w"> </span>cluster<span class="w"> </span>add<span class="w"> </span><span class="nv">$NODE_HOSTNAME</span>
-<span class="c1"># get the join token for the node</span>
-</code></pre></div>
-    It's best to have an <a href="https://access.redhat.com/documentation/en-us/red_hat_ceph_storage/3/html/operations_guide/managing-the-storage-cluster-size">odd number of monitors</a> because Ceph needs a majority of monitors to be running e.g. 2 out of 3.
-    <div class="highlight"><span class="filename">On each node you want to add to the cluster</span><pre><span></span><code>sudo<span class="w"> </span>microceph<span class="w"> </span>cluster<span class="w"> </span>join<span class="w"> </span><span class="nv">$JOIN_TOKEN</span>
-</code></pre></div></li>
-<li>Add the disks as OSDs.
-    <div class="highlight"><span class="filename">On each node</span><pre><span></span><code><span class="c1"># After adding physical or virtual disks to your node/VM</span>
-<span class="c1"># for each disk (whatever device names your disks have)</span>
-sudo<span class="w"> </span>microceph<span class="w"> </span>disk<span class="w"> </span>add<span class="w"> </span>/dev/sdia<span class="w"> </span>--wipe<span class="w"> </span>
-sudo<span class="w"> </span>microceph<span class="w"> </span>disk<span class="w"> </span>add<span class="w"> </span>/dev/sdib<span class="w"> </span>--wipe
-sudo<span class="w"> </span>microceph<span class="w"> </span>disk<span class="w"> </span>add<span class="w"> </span>/dev/sdic<span class="w"> </span>--wipe
-</code></pre></div></li>
-<li>Verify
-    <div class="highlight"><span class="filename">On the control plane (or any ceph node, really)</span><pre><span></span><code>sudo<span class="w"> </span>ceph<span class="w"> </span>status<span class="w"> </span><span class="c1"># detailed status</span>
-<span class="c1"># HEALTH_OK with all OSDs showing</span>
-</code></pre></div>
-    Learn more about <a href="https://docs.ceph.com/en/latest/rados/operations/pools/">pools</a>.</li>
-</ol>
-<h4 id="microk8s-clustering">MicroK8s Clustering<a class="headerlink" href="#microk8s-clustering" title="Permanent link">#</a></h4>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>MicroK8s is not available for 32-bit architectures like <code>armhf</code>(<code>arm/v7</code>), only on 64-bit architectures like <code>arm64</code> and <code>amd64</code>.</p>
+</div>
+<p>If your OS doesn't already include it, <a href="https://snapcraft.io/docs/installing-snap-on-raspbian">install</a> <code>snap</code> before installing MicroK8s.
+<div class="highlight"><span class="filename">On each node</span><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>update
+sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>snapd
+sudo<span class="w"> </span>reboot
+<span class="c1"># ...reconnect after reboot</span>
+sudo<span class="w"> </span>snap<span class="w"> </span>install<span class="w"> </span>core
+</code></pre></div></p>
+<h3 id="clustering">Clustering<a class="headerlink" href="#clustering" title="Permanent link">#</a></h3>
 <ol>
 <li>
 <p><a href="https://microk8s.io/docs/clustering">Add all nodes to the cluster</a>.<br />
@@ -1141,17 +1053,15 @@ sudo<span class="w"> </span>microceph<span class="w"> </span>disk<span class="w"
 </code></pre></div>
 </li>
 <li>
-<p>Connect the MicroK8s cluster to the external Ceph cluster or deploy Ceph to your MicroK8s cluster. We'll use <a href="https://rook.io/docs/rook/v1.12/Getting-Started/quickstart/#storage">Rook Ceph</a>.
-    <div class="highlight"><span class="filename">On the control plane</span><pre><span></span><code>microk8s<span class="w"> </span>helm<span class="w"> </span>repo<span class="w"> </span>add<span class="w"> </span>rook-release<span class="w"> </span>https://charts.rook.io/release
-
-microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>rook-ceph<span class="w"> </span><span class="c1"># installs crds.yaml, common.yaml, operator.yaml</span>
+<p>Connect the MicroK8s cluster to an external Ceph cluster or deploy Ceph to your MicroK8s cluster. We'll use <a href="https://rook.io/docs/rook/v1.12/Getting-Started/quickstart/#storage">Rook Ceph</a> to operate the Ceph cluster.
+    <div class="highlight"><span class="filename">On the control plane</span><pre><span></span><code>microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>rook-ceph<span class="w"> </span><span class="c1"># installs crds.yaml, common.yaml, operator.yaml</span>
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>--namespace<span class="w"> </span>rook-ceph<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-l<span class="w"> </span><span class="s2">&quot;app=rook-ceph-operator&quot;</span>
 <span class="c1"># wait for the operator pod to be `Running`</span>
 </code></pre></div></p>
 <p><strong>Option 1</strong> - If you set up an external MicroCeph cluster:
 <div class="highlight"><span class="filename">On the control plane node</span><pre><span></span><code>sudo<span class="w"> </span>microk8s<span class="w"> </span>connect-external-ceph
 </code></pre></div>
-Now you can create a pod that uses the <code>ceph-rdb</code> storage class, which uses the <code>microk8s-rbd0</code> pool. You can also <a href="https://docs.ceph.com/en/latest/rados/operations/pools/#creating-a-pool">create</a> and <a href="https://docs.ceph.com/en/latest/rbd/rados-rbd-cmds/">initialize</a> other Ceph pools.</p>
+Now you can create a pod that uses the <code>ceph-rdb</code> storage class, which uses the <code>microk8s-rbd0</code> pool.</p>
 <p><strong>Option 2</strong> - To deploy <a href="https://rook.io/docs/rook/latest-release/CRDs/Cluster/ceph-cluster-crd/">Ceph on the MicroK8s cluster using storage from the k8s nodes</a>
 <div class="highlight"><span class="filename">On the control plane node</span><pre><span></span><code><span class="c1"># if you want `dataDirHostPath` to specify where config and data should be stored for each of the services</span>
 microk8s<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>hostpath-storage
@@ -1182,7 +1092,7 @@ microk8s<span class="w"> </span>kubectl<span class="w"> </span>-n<span class="w"
 </code></pre></div></p>
 </li>
 </ol>
-<h4 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">#</a></h4>
+<h3 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">#</a></h3>
 <p><div class="highlight"><span class="filename">On the control plane node</span><pre><span></span><code><span class="c1"># Check if MicroK8s is intalled and running with the addons enabled</span>
 microk8s<span class="w"> </span>status<span class="w"> </span>--wait-ready
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>cluster-info
@@ -1206,16 +1116,6 @@ sudo<span class="w"> </span>snap<span class="w"> </span>refresh<span class="w"> 
 <span class="c1"># storage classes</span>
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>sc<span class="w"> </span>-A
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>describe<span class="w"> </span>sc<span class="w"> </span>-A
-
-<span class="c1"># Ceph</span>
-sudo<span class="w"> </span>microceph<span class="w"> </span>status<span class="w"> </span><span class="c1"># deployment summary</span>
-sudo<span class="w"> </span>microceph<span class="w"> </span>disk<span class="w"> </span>list
-sudo<span class="w"> </span>ceph<span class="w"> </span>osd<span class="w"> </span>metadata<span class="w"> </span><span class="o">{</span>osd-id<span class="o">}</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>osd_objectstore<span class="w"> </span><span class="c1"># check that it&#39;s a bluestore OSD</span>
-sudo<span class="w"> </span>ceph<span class="w"> </span>osd<span class="w"> </span>lspools
-sudo<span class="w"> </span>ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>ls
-sudo<span class="w"> </span>ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>ls<span class="w"> </span>detail<span class="w"> </span>-f<span class="w"> </span>json-pretty<span class="w"> </span><span class="c1"># list the pools with all details</span>
-sudo<span class="w"> </span>ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>stats<span class="w"> </span><span class="c1"># obtain stats from all pools, or from specified pool</span>
-sudo<span class="w"> </span>ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>delete<span class="w"> </span><span class="o">{</span>pool-name<span class="o">}</span><span class="w"> </span><span class="o">{</span>pool-name<span class="o">}</span><span class="w"> </span>--yes-i-really-really-mean-it
 
 <span class="nb">alias</span><span class="w"> </span><span class="nv">mkctl</span><span class="o">=</span><span class="s2">&quot;microk8s kubectl&quot;</span>
 <span class="nb">alias</span><span class="w"> </span><span class="nv">mkhelm</span><span class="o">=</span><span class="s2">&quot;microk8s helm&quot;</span>
@@ -1284,13 +1184,6 @@ microk8s<span class="w"> </span>kubectl<span class="w"> </span>delete<span class
 <code>if test "${docker_optimizations}" = "on"</code>.  </p>
 <p>Don't edit this file, instead <code>sudo nano /boot/orangepiEnv.txt</code> and set <code>docker_optimizations</code> to <code>on</code>.</p>
 </div>
-<p>If your image doesn't already include it, <a href="https://snapcraft.io/docs/installing-snap-on-raspbian">install</a> <code>snap</code> before installing MicroK8s.
-<div class="highlight"><span class="filename">On each node</span><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>update
-sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>snapd
-sudo<span class="w"> </span>reboot
-<span class="c1"># ...reconnect after reboot</span>
-sudo<span class="w"> </span>snap<span class="w"> </span>install<span class="w"> </span>core
-</code></pre></div></p>
 <h3 id="dashboard">Dashboard<a class="headerlink" href="#dashboard" title="Permanent link">#</a></h3>
 <p>If RBAC is not enabled access the dashboard using the token retrieved with:
 <div class="highlight"><pre><span></span><code>microk8s<span class="w"> </span>kubectl<span class="w"> </span>describe<span class="w"> </span>secret<span class="w"> </span>-n<span class="w"> </span>kube-system<span class="w"> </span>microk8s-dashboard-token
@@ -1369,26 +1262,16 @@ microk8s<span class="w"> </span>kubectl-minio<span class="w"> </span>proxy
 </code></pre></div></p>
 <h3 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">#</a></h3>
 <ul>
-<li>I see <code>cloud-init</code> had failures.<br />
-    Based on the <code>user-data</code> file:
-    Manually run <code>sudo apt update</code>, <code>sudo apt full-upgrade</code>.<br />
-    Manually run <code>sudo apt install</code> on any packages that failed.<br />
-    Manually add any kernel modules you need and make sure <code>/etc/modules-load.d/modules.conf</code> has them so they'll be added on every boot.</li>
 <li>I want to check all k8s endpoints or inspect the instance.
     <div class="highlight"><pre><span></span><code>microk8s<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>endpoints<span class="w"> </span>-A
 microk8s<span class="w"> </span>inspect
 </code></pre></div></li>
-<li>I'm not sure cgroups are enabled.<br />
-    MicroK8s might not recognize that cgroup memory is enabled but you can check with 
-    <div class="highlight"><pre><span></span><code>cat<span class="w"> </span>/proc/cgroups
-</code></pre></div></li>
 <li>For other issues see <a href="https://microk8s.io/docs/troubleshooting">https://microk8s.io/docs/troubleshooting</a></li>
+<li>View logs
+    <div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>ls<span class="w"> </span>-al<span class="w"> </span>/var/snap/microk8s/common/var/log
+</code></pre></div></li>
 <li>Common issues <a href="https://rook.io/docs/rook/latest/Troubleshooting/common-issues/">https://rook.io/docs/rook/latest/Troubleshooting/common-issues/</a>
-    <div class="highlight"><span class="filename">On the control plane</span><pre><span></span><code><span class="c1"># logs</span>
-sudo<span class="w"> </span>ls<span class="w"> </span>-al<span class="w"> </span>/var/snap/microceph/common/logs/
-sudo<span class="w"> </span>ls<span class="w"> </span>-al<span class="w"> </span>/var/snap/microk8s/common/var/log
-
-<span class="w"> </span><span class="c1"># Inspect the Rook operator container’s logs:</span>
+    <div class="highlight"><span class="filename">On the control plane</span><pre><span></span><code><span class="w"> </span><span class="c1"># Inspect the Rook operator container’s logs:</span>
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>-n<span class="w"> </span>rook-ceph<span class="w"> </span>logs<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>rook-ceph-operator
 <span class="c1"># Inspect the ceph-mgr container’s logs:</span>
 microk8s<span class="w"> </span>kubectl<span class="w"> </span>-n<span class="w"> </span>rook-ceph<span class="w"> </span>logs<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>rook-ceph-mgr
