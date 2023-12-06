@@ -61,6 +61,22 @@ pip install --upgrade pip setuptools
 pip install pep8
 ```
 
+## Virtual environments
+
+With the built-in `venv` module.
+```python
+# python3 -m venv /path/to/new/virtual/environment
+python3 -m venv .venv --prompt PROMPT
+source .venv/bin/activate
+# `deactivate`
+
+# examples for creating reqs file
+pip freeze > requirements.txt
+pip freeze | grep -i fastapi >> requirements.txt
+
+pip install -r requirements.txt
+```
+
 ## Anaconda
 For data science and machine learning. [Anaconda](https://docs.anaconda.com/anaconda/) is a distribution of the Python and R programming languages for scientific computing. See [Getting Started](https://conda.io/projects/conda/en/latest/user-guide/getting-started.html).
 ```zsh
