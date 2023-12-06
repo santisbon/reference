@@ -4,6 +4,7 @@ These will vary for each person. Some examples on a Mac:
 ```zsh
 brew install wget
 brew install gcc
+brew install grep # GNU grep
 brew install jq
 brew install kompose # translate Docker Compose files to Kubernetes resources
 brew install helm
@@ -37,4 +38,10 @@ On macOS you can also install gcc by installing the xcode developer tools if you
 ```zsh
 xcode-select -v # check if tools are installed
 xcode-select --install
+```
+
+On macOS `grep` is aliased to `grep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn,.idea,.tox}`.  
+If you want to use GNU grep (`brew install grep`), all commands (`grep`, `egrep` and `fgrep`) are installed with the prefix "g". If you need to use these commands with their normal names, add this to your `.zshrc`:
+```sh
+PATH="$HOMEBREW_PREFIX/opt/grep/libexec/gnubin:$PATH"
 ```
