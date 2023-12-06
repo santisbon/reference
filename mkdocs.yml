@@ -8,9 +8,9 @@ nav:
     - Kubernetes: 'k8s.md'
     - Raspberry Pi: 'rpi.md'
     - K3s: 'k3s.md'
+    - Rook Ceph: 'rook-ceph.md'
     - MicroK8s: 'microk8s.md'
     - MicroCeph: 'microceph.md'
-    - Rook Ceph: 'rook-ceph.md'
   - New dev machine:
     - Install the OS: 'install-os.md'
     - Automated setup: 'automated.md'
