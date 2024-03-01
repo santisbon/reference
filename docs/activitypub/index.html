@@ -8,13 +8,9 @@
       
       
       
-        <link rel="canonical" href="https://santisbon.github.io/reference/mysql/">
+        <link rel="canonical" href="https://santisbon.github.io/reference/activitypub/">
       
       
-        <link rel="prev" href="../aws/">
-      
-      
-        <link rel="next" href="../node/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -22,7 +18,7 @@
     
     
       
-        <title>MySQL - Notes</title>
+        <title>Using Bovine - Notes</title>
       
     
     
@@ -77,7 +73,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#mysql-development" class="md-skip">
+        <a href="#using-bovine" class="md-skip">
           Skip to content
         </a>
       
@@ -113,7 +109,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              MySQL
+              Using Bovine
             
           </span>
         </div>
@@ -443,21 +439,21 @@
       
   
   
-    
   
   
-  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
         
           
           <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
@@ -471,7 +467,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             New dev machine
@@ -692,19 +688,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../mysql/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -713,7 +700,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -804,51 +790,19 @@
   
 
 
-<h1 id="mysql-development">MySQL development<a class="headerlink" href="#mysql-development" title="Permanent link">#</a></h1>
-<p>**Install MySQL Community Edition **
-Use your OS package manager or download .dmg installer for macOS. Take note of the root password.</p>
-<p><strong>Configure your PATH</strong>
-Add the mysql location to your PATH. Typically as part of your ~/.bash_profile
-<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span>/usr/local/mysql/bin:<span class="nv">$PATH</span>
+<h1 id="using-bovine">Using <a href="https://bovine.readthedocs.io/en/latest/tutorials/server/">Bovine</a><a class="headerlink" href="#using-bovine" title="Permanent link">#</a></h1>
+<p>View actor info
+<div class="highlight"><pre><span></span><code><span class="c1"># Look up actor id (type application/activity+json) for a handle</span>
+curl<span class="w"> </span>https://mas.to/.well-known/webfinger?resource<span class="o">=</span>acct:themilkman@mas.to<span class="w"> </span><span class="p">|</span><span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>json.tool
+<span class="c1"># Get the actor object</span>
+curl<span class="w"> </span>-H<span class="w"> </span>accept:application/activity+json<span class="w"> </span>https://mas.to/users/themilkman<span class="w"> </span><span class="p">|</span><span class="w"> </span>python<span class="w"> </span>-mjson.tool
 </code></pre></div></p>
-<p><strong>Start the MySQL service</strong>
-On macOS
-<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>launchctl<span class="w"> </span>load<span class="w"> </span>-F<span class="w"> </span>/Library/LaunchDaemons/com.oracle.oss.mysql.mysqld.plist
-</code></pre></div></p>
-<p><strong>Verify it's running</strong>
-On macOS
-<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>launchctl<span class="w"> </span>list<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>mysql
-</code></pre></div></p>
-<p><strong>Connect to your MySQL instance</strong>
-Use MySQL Workbench or other client tool.</p>
-<p><strong>To stop MySQL</strong>
-On macOS
-<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>launchctl<span class="w"> </span>unload<span class="w"> </span>-F<span class="w"> </span>/Library/LaunchDaemons/com.oracle.oss.mysql.mysqld.plist
-</code></pre></div></p>
-<p><strong>Exporting data</strong>
-If you need to export data you may need to disable or set a security setting. On macOS:</p>
-<p>View the variable using your SQL client. If it's NULL you will be restricted regarding file operations.
-<div class="highlight"><pre><span></span><code><span class="k">show</span><span class="w"> </span><span class="n">variables</span><span class="w"> </span><span class="k">like</span><span class="w"> </span><span class="s1">&#39;secure_file_priv&#39;</span><span class="p">;</span>
-</code></pre></div></p>
-<p>Open the configuration file.
-<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>/Library/LaunchDaemons
-sudo<span class="w"> </span>nano<span class="w"> </span>com.oracle.oss.mysql.mysqld.plist
-</code></pre></div>
-and set the <code>--secure-file-priv</code> to an empty string (to disable the restriction) or a dir of your choice.
-<div class="highlight"><pre><span></span><code><span class="nt">&lt;key&gt;</span>ProgramArguments<span class="nt">&lt;/key&gt;</span>
-<span class="w">    </span><span class="nt">&lt;array&gt;</span>
-<span class="w">        </span><span class="nt">&lt;string&gt;</span>--secure-file-priv=<span class="nt">&lt;/string&gt;</span>
-<span class="w">    </span><span class="nt">&lt;/array&gt;</span>
-</code></pre></div></p>
-<p>Then restart MySQL. Now you can export data:
-<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w">  </span><span class="o">*</span>
-<span class="k">INTO</span><span class="w">    </span><span class="n">OUTFILE</span><span class="w"> </span><span class="s1">&#39;your_file.csv&#39;</span>
-<span class="w">        </span><span class="n">FIELDS</span><span class="w"> </span><span class="n">TERMINATED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="s1">&#39;,&#39;</span><span class="w"> </span>
-<span class="w">        </span><span class="n">ENCLOSED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="s1">&#39;&quot;&#39;</span>
-<span class="k">FROM</span><span class="w">    </span><span class="o">`</span><span class="n">your_db</span><span class="o">`</span><span class="p">.</span><span class="o">`</span><span class="n">your_table</span><span class="o">`</span>
-</code></pre></div></p>
-<p>You can find your exported data:
-<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>find<span class="w"> </span>/usr/local/mysql/data<span class="w"> </span>-name<span class="w"> </span>your_file.csv
+<p>The actor object has a <code>preferredUsername</code> and a <code>publicKeyPem</code> to authenticate activities as coming from this actor.</p>
+<p>URL examples:
+<div class="highlight"><pre><span></span><code><span class="nt">&quot;following&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://mstdn.social/users/santisbon/following&quot;</span><span class="p">,</span>
+<span class="nt">&quot;followers&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://mstdn.social/users/santisbon/followers&quot;</span><span class="p">,</span>
+<span class="nt">&quot;inbox&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://mstdn.social/users/santisbon/inbox&quot;</span><span class="p">,</span>
+<span class="nt">&quot;outbox&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://mstdn.social/users/santisbon/outbox&quot;</span><span class="p">,</span>
 </code></pre></div></p>
 
 

@@ -14,11 +14,11 @@
         <link rel="prev" href="../microk8s/">
       
       
-        <link rel="next" href="../rook-ceph/">
+        <link rel="next" href="../install-os/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.2">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.14">
     
     
       
@@ -26,10 +26,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.d451bc0e.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.fad675c6.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.a5377069.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.356b1318.min.css">
       
       
 
@@ -253,6 +253,7 @@
     
   
   
+  
     
     
     
@@ -289,6 +290,7 @@
   
   
   
+  
     <li class="md-nav__item">
       <a href="../docker/" class="md-nav__link">
         
@@ -306,6 +308,7 @@
             
               
                 
+  
   
   
   
@@ -329,6 +332,7 @@
   
   
   
+  
     <li class="md-nav__item">
       <a href="../rpi/" class="md-nav__link">
         
@@ -346,6 +350,7 @@
             
               
                 
+  
   
   
   
@@ -369,6 +374,28 @@
   
   
   
+  
+    <li class="md-nav__item">
+      <a href="../rook-ceph/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Rook Ceph
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
       <a href="../microk8s/" class="md-nav__link">
         
@@ -389,6 +416,7 @@
   
   
     
+  
   
   
     <li class="md-nav__item md-nav__item--active">
@@ -433,35 +461,45 @@
       
         <li class="md-nav__item">
   <a href="#overview" class="md-nav__link">
-    Overview
+    <span class="md-ellipsis">
+      Overview
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#prerequisites" class="md-nav__link">
-    Prerequisites
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#setup" class="md-nav__link">
-    Setup
+    <span class="md-ellipsis">
+      Setup
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#usage" class="md-nav__link">
-    Usage
+    <span class="md-ellipsis">
+      Usage
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#troubleshooting" class="md-nav__link">
-    Troubleshooting
+    <span class="md-ellipsis">
+      Troubleshooting
+    </span>
   </a>
   
 </li>
@@ -470,26 +508,6 @@
   
 </nav>
       
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../rook-ceph/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Rook Ceph
-  </span>
-  
-
-      </a>
     </li>
   
 
@@ -504,6 +522,7 @@
     
       
       
+  
   
   
   
@@ -545,6 +564,7 @@
   
   
   
+  
     <li class="md-nav__item">
       <a href="../install-os/" class="md-nav__link">
         
@@ -562,6 +582,7 @@
             
               
                 
+  
   
   
   
@@ -585,6 +606,7 @@
   
   
   
+  
     <li class="md-nav__item">
       <a href="../vm/" class="md-nav__link">
         
@@ -602,6 +624,7 @@
             
               
                 
+  
   
   
   
@@ -625,6 +648,7 @@
   
   
   
+  
     <li class="md-nav__item">
       <a href="../shell/" class="md-nav__link">
         
@@ -642,6 +666,7 @@
             
               
                 
+  
   
   
   
@@ -665,6 +690,7 @@
   
   
   
+  
     <li class="md-nav__item">
       <a href="../editor/" class="md-nav__link">
         
@@ -682,6 +708,7 @@
             
               
                 
+  
   
   
   
@@ -705,6 +732,7 @@
   
   
   
+  
     <li class="md-nav__item">
       <a href="../python/" class="md-nav__link">
         
@@ -722,6 +750,7 @@
             
               
                 
+  
   
   
   
@@ -745,6 +774,7 @@
   
   
   
+  
     <li class="md-nav__item">
       <a href="../mysql/" class="md-nav__link">
         
@@ -765,6 +795,7 @@
   
   
   
+  
     <li class="md-nav__item">
       <a href="../node/" class="md-nav__link">
         
@@ -782,6 +813,7 @@
             
               
                 
+  
   
   
   
@@ -833,35 +865,45 @@
       
         <li class="md-nav__item">
   <a href="#overview" class="md-nav__link">
-    Overview
+    <span class="md-ellipsis">
+      Overview
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#prerequisites" class="md-nav__link">
-    Prerequisites
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#setup" class="md-nav__link">
-    Setup
+    <span class="md-ellipsis">
+      Setup
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#usage" class="md-nav__link">
-    Usage
+    <span class="md-ellipsis">
+      Usage
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#troubleshooting" class="md-nav__link">
-    Troubleshooting
+    <span class="md-ellipsis">
+      Troubleshooting
+    </span>
   </a>
   
 </li>
@@ -1003,10 +1045,10 @@ sudo<span class="w"> </span>ceph<span class="w"> </span>osd<span class="w"> </sp
         </div>
         
           <button type="button" class="md-top md-icon" data-md-component="top" hidden>
-            
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
-            Back to top
-          </button>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  Back to top
+</button>
         
       </main>
       
@@ -1033,10 +1075,11 @@ sudo<span class="w"> </span>ceph<span class="w"> </span>osd<span class="w"> </sp
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.expand", "navigation.top", "content.code.copy"], "search": "../assets/javascripts/workers/search.a264c092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.expand", "navigation.top", "content.code.copy"], "search": "../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.726fbb30.min.js"></script>
+      <script src="../assets/javascripts/bundle.cd18aaf1.min.js"></script>
       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
       

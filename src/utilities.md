@@ -8,6 +8,7 @@ brew install grep # GNU grep
 brew install jq
 brew install kompose # translate Docker Compose files to Kubernetes resources
 brew install helm
+brew install ngrok/ngrok/ngrok # tunnels to localhost without a domain
 brew install --cask docker
 brew install --cask drawio # Diagrams (UML, AWS, etc.)
 brew install --cask 1password

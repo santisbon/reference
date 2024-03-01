@@ -14,11 +14,11 @@
         <link rel="prev" href="../rpi/">
       
       
-        <link rel="next" href="../microk8s/">
+        <link rel="next" href="../rook-ceph/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.2">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.14">
     
     
       
@@ -26,10 +26,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.d451bc0e.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.fad675c6.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.a5377069.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.356b1318.min.css">
       
       
 
@@ -253,6 +253,7 @@
     
   
   
+  
     
     
     
@@ -289,6 +290,7 @@
   
   
   
+  
     <li class="md-nav__item">
       <a href="../docker/" class="md-nav__link">
         
@@ -306,6 +308,7 @@
             
               
                 
+  
   
   
   
@@ -329,6 +332,7 @@
   
   
   
+  
     <li class="md-nav__item">
       <a href="../rpi/" class="md-nav__link">
         
@@ -349,6 +353,7 @@
   
   
     
+  
   
   
     <li class="md-nav__item md-nav__item--active">
@@ -393,14 +398,60 @@
       
         <li class="md-nav__item">
   <a href="#prerequisites" class="md-nav__link">
-    Prerequisites
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#installation" class="md-nav__link">
-    Installation
+    <span class="md-ellipsis">
+      Installation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Installation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#addons" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addons
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#datastore" class="md-nav__link">
+    <span class="md-ellipsis">
+      Datastore
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service" class="md-nav__link">
+    <span class="md-ellipsis">
+      Service
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deploying-workloads" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deploying workloads
+    </span>
   </a>
   
 </li>
@@ -416,6 +467,28 @@
             
               
                 
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rook-ceph/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Rook Ceph
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
   
   
   
@@ -439,32 +512,13 @@
   
   
   
+  
     <li class="md-nav__item">
       <a href="../microceph/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
     MicroCeph
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../rook-ceph/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Rook Ceph
   </span>
   
 
@@ -483,6 +537,7 @@
     
       
       
+  
   
   
   
@@ -524,6 +579,7 @@
   
   
   
+  
     <li class="md-nav__item">
       <a href="../install-os/" class="md-nav__link">
         
@@ -541,6 +597,7 @@
             
               
                 
+  
   
   
   
@@ -564,6 +621,7 @@
   
   
   
+  
     <li class="md-nav__item">
       <a href="../vm/" class="md-nav__link">
         
@@ -581,6 +639,7 @@
             
               
                 
+  
   
   
   
@@ -604,6 +663,7 @@
   
   
   
+  
     <li class="md-nav__item">
       <a href="../shell/" class="md-nav__link">
         
@@ -621,6 +681,7 @@
             
               
                 
+  
   
   
   
@@ -644,6 +705,7 @@
   
   
   
+  
     <li class="md-nav__item">
       <a href="../editor/" class="md-nav__link">
         
@@ -661,6 +723,7 @@
             
               
                 
+  
   
   
   
@@ -684,6 +747,7 @@
   
   
   
+  
     <li class="md-nav__item">
       <a href="../python/" class="md-nav__link">
         
@@ -701,6 +765,7 @@
             
               
                 
+  
   
   
   
@@ -724,6 +789,7 @@
   
   
   
+  
     <li class="md-nav__item">
       <a href="../mysql/" class="md-nav__link">
         
@@ -744,6 +810,7 @@
   
   
   
+  
     <li class="md-nav__item">
       <a href="../node/" class="md-nav__link">
         
@@ -761,6 +828,7 @@
             
               
                 
+  
   
   
   
@@ -812,14 +880,60 @@
       
         <li class="md-nav__item">
   <a href="#prerequisites" class="md-nav__link">
-    Prerequisites
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#installation" class="md-nav__link">
-    Installation
+    <span class="md-ellipsis">
+      Installation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Installation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#addons" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addons
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#datastore" class="md-nav__link">
+    <span class="md-ellipsis">
+      Datastore
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service" class="md-nav__link">
+    <span class="md-ellipsis">
+      Service
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deploying-workloads" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deploying workloads
+    </span>
   </a>
   
 </li>
@@ -844,6 +958,7 @@
 
   <h1>K3s</h1>
 
+<p>Suitable for Raspberry Pi and other lightweight environments. <a href="https://docs.k3s.io/architecture">Architecture</a>.</p>
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">#</a></h2>
 <ol>
 <li>Set up your Raspberry Pi devices with <code>cloud-init</code> as defined in the <a href="/reference/rpi/">Raspberry Pi</a> section.</li>
@@ -855,6 +970,118 @@
 <li><a href="https://docs.k3s.io/advanced#ubuntu--debian">Ubuntu/Debian requirements</a>.</li>
 <li><a href="https://docs.k3s.io/installation">Installation</a>.</li>
 </ul>
+<p><a href="https://docs.k3s.io/installation/configuration">Configuration</a> file to be used on install instead of CLI arguments. Use the version of <a href="https://docs.k3s.io/advanced#old-iptables-versions">iptables</a> bundled with K3s.
+<div class="highlight"><span class="filename">On the node being configured</span><pre><span></span><code>cat<span class="w"> </span><span class="s">&lt;&lt; EOF &gt; /etc/rancher/k3s/config.yaml</span>
+<span class="s">prefer-bundled-bin: true</span>
+<span class="s">cluster-init: true</span>
+<span class="s">EOF</span>
+</code></pre></div></p>
+<p><a href="https://docs.k3s.io/cli">CLI tools</a>.</p>
+<h3 id="addons"><a href="https://docs.k3s.io/installation/packaged-components">Addons</a><a class="headerlink" href="#addons" title="Permanent link">#</a></h3>
+<p>Any manifest found in <code>/var/lib/rancher/k3s/server/manifests</code> is tracked as an <code>AddOn</code> custom resource in the <code>kube-system</code> namespace.<br />
+Included: <code>coredns</code>, <code>traefik</code>, <code>local-storage</code>, and <code>metrics-server</code>. You can put your own files in the manifests dir for deployment as an <code>AddOn</code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The embedded <code>servicelb</code> LoadBalancer controller does not have a manifest file, but can be disabled as if it were an <code>AddOn</code>.</p>
+</div>
+<p>View any warnings encountered with:
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>event<span class="w"> </span>-n<span class="w"> </span>kube-system
+<span class="c1"># or</span>
+kubectl<span class="w"> </span>describe<span class="w"> </span><span class="o">{</span>AddOn<span class="w"> </span>resource<span class="o">}</span>
+</code></pre></div></p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>It's your responsibility to ensure that files stay in sync across server nodes.</p>
+</div>
+<h3 id="datastore">Datastore<a class="headerlink" href="#datastore" title="Permanent link">#</a></h3>
+<ul>
+<li>Embedded SQLite - Default. For clusters with only 1 server (control plane) node.</li>
+<li><a href="https://docs.k3s.io/datastore/ha-embedded">Embedded etcd</a> - Allows HA with multiple server nodes.</li>
+<li>External database - - Allows HA with multiple server nodes. Supports etcd, MySQL, MariaDB, PostgreSQL.</li>
+</ul>
+<h3 id="service">Service<a class="headerlink" href="#service" title="Permanent link">#</a></h3>
+<p><div class="highlight"><span class="filename">Server node (control plane)</span><pre><span></span><code>ufw<span class="w"> </span>disable
+sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>linux-modules-extra-raspi
+
+curl<span class="w"> </span>-sfL<span class="w"> </span>https://get.k3s.io<span class="w"> </span><span class="p">|</span><span class="w"> </span>sh<span class="w"> </span>-
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="nv">SERVER</span><span class="o">=</span><span class="sb">`</span>uname<span class="w"> </span>-n<span class="sb">`</span>
+<span class="nv">TOKEN</span><span class="o">=</span><span class="sb">`</span>cat<span class="w"> </span>/var/lib/rancher/k3s/server/node-token<span class="sb">`</span>
+</code></pre></div></p>
+<div class="highlight"><span class="filename">Agent node (worker node)</span><pre><span></span><code>ufw<span class="w"> </span>disable
+sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>linux-modules-extra-raspi
+
+curl<span class="w"> </span>-sfL<span class="w"> </span>https://get.k3s.io<span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="nv">K3S_URL</span><span class="o">=</span>https://<span class="nv">$SERVER</span>:6443<span class="w"> </span><span class="nv">K3S_TOKEN</span><span class="o">=</span><span class="nv">$TOKEN</span><span class="w"> </span>sh<span class="w"> </span>-
+</code></pre></div>
+<p><code>curl</code></p>
+<ul>
+<li><code>s</code>ilent, no progress meter or error messages.</li>
+<li><code>f</code>ail silently on server errors.</li>
+<li>If moved, redo the request on the new <code>L</code>ocation.</li>
+</ul>
+<p><code>sh</code></p>
+<ul>
+<li><code>-s</code> Read commands from standard input.</li>
+<li>A <code>--</code> signals the end of options.</li>
+<li>Any arguments after the <code>--</code> are treated as filenames and arguments.  </li>
+<li>An argument of <code>-</code> is equivalent to <code>--</code>.</li>
+</ul>
+<p>Checking the service with systemd.<br />
+Logs are in <code>/var/log/syslog</code>.<br />
+Pod logs at <code>/var/log/pods</code>.<br />
+Containerd logs at <code>/var/lib/rancher/k3s/agent/containerd/containerd.log</code>.
+<div class="highlight"><span class="filename">On server nodes</span><pre><span></span><code>systemctl<span class="w"> </span>status<span class="w"> </span>k3s
+journalctl<span class="w"> </span>-u<span class="w"> </span>k3s
+</code></pre></div>
+<div class="highlight"><span class="filename">On agent nodes</span><pre><span></span><code>journalctl<span class="w"> </span>-u<span class="w"> </span>k3s-agent
+</code></pre></div></p>
+<p>When running with systemd, logs will be created in <code>/var/log/syslog</code> and viewed using journalctl -u k3s (or journalctl -u k3s-agent on agents).</p>
+<h2 id="deploying-workloads">Deploying workloads<a class="headerlink" href="#deploying-workloads" title="Permanent link">#</a></h2>
+<p><div class="highlight"><span class="filename">On the control plane</span><pre><span></span><code>cat<span class="w"> </span><span class="s">&lt;&lt; EOF &gt; ~/pvc.yaml</span>
+<span class="s">apiVersion: v1</span>
+<span class="s">kind: PersistentVolumeClaim</span>
+<span class="s">metadata:</span>
+<span class="s">  name: local-path-pvc</span>
+<span class="s">  namespace: default</span>
+<span class="s">spec:</span>
+<span class="s">  accessModes:</span>
+<span class="s">    - ReadWriteOnce</span>
+<span class="s">  storageClassName: local-path</span>
+<span class="s">  resources:</span>
+<span class="s">    requests:</span>
+<span class="s">      storage: 2Gi</span>
+<span class="s">EOF</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>cat<span class="w"> </span><span class="s">&lt;&lt; EOF &gt; ~/pod.yaml</span>
+<span class="s">apiVersion: v1</span>
+<span class="s">kind: Pod</span>
+<span class="s">metadata:</span>
+<span class="s">  name: volume-test</span>
+<span class="s">  namespace: default</span>
+<span class="s">spec:</span>
+<span class="s">  containers:</span>
+<span class="s">  - name: volume-test</span>
+<span class="s">    image: nginx:stable-alpine</span>
+<span class="s">    imagePullPolicy: IfNotPresent</span>
+<span class="s">    volumeMounts:</span>
+<span class="s">    - name: volv</span>
+<span class="s">      mountPath: /data</span>
+<span class="s">    ports:</span>
+<span class="s">    - containerPort: 80</span>
+<span class="s">  volumes:</span>
+<span class="s">  - name: volv</span>
+<span class="s">    persistentVolumeClaim:</span>
+<span class="s">      claimName: local-path-pvc</span>
+<span class="s">EOF</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>pvc.yaml
+kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>pod.yaml
+
+kubectl<span class="w"> </span>get<span class="w"> </span>pv
+kubectl<span class="w"> </span>get<span class="w"> </span>pvc
+<span class="c1"># The status should be `Bound` for each.</span>
+</code></pre></div></p>
+<p><a href="https://docs.k3s.io/helm">Helm</a> is also supported through a controller that allows using a <code>HelmChart</code> CRD.</p>
 
 
 
@@ -868,10 +1095,10 @@
         </div>
         
           <button type="button" class="md-top md-icon" data-md-component="top" hidden>
-            
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
-            Back to top
-          </button>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  Back to top
+</button>
         
       </main>
       
@@ -898,10 +1125,11 @@
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.expand", "navigation.top", "content.code.copy"], "search": "../assets/javascripts/workers/search.a264c092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.expand", "navigation.top", "content.code.copy"], "search": "../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.726fbb30.min.js"></script>
+      <script src="../assets/javascripts/bundle.cd18aaf1.min.js"></script>
       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
       

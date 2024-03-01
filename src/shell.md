@@ -92,9 +92,10 @@ nano ~/.bash_profile
 ```
 
 ## Terminal app replacement
-You can use [iTerm](https://iterm2.com/index.html)
+You can use [iTerm](https://iterm2.com/index.html) or [Warp](https://docs.warp.dev/getting-started/getting-started-with-warp)
 ```zsh
 brew install --cask iterm2
+brew install --cask warp
 ```
 
 Install iTerm 2 color schemes
