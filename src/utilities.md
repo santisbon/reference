@@ -46,3 +46,16 @@ If you want to use GNU grep (`brew install grep`), all commands (`grep`, `egrep`
 ```sh
 PATH="$HOMEBREW_PREFIX/opt/grep/libexec/gnubin:$PATH"
 ```
+
+[ngrok](https://ngrok.com/docs/agent/config/#full-example) config: `ngrok config check`
+```sh
+version: "2"
+authtoken: XXXXXXX
+tunnels:
+    apiserver:
+        proto: http
+        addr: 8000
+    activitypubserver:
+        proto: http
+        addr: 8001
+```
