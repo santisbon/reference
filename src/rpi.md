@@ -1,6 +1,6 @@
 # Raspberry Pi
 
-![RPi](https://www.raspberrypi.org/pagekit-assets/media/images/dfb2931ebc2dbf1cc9e6.svg)
+![RPi](https://assets.raspberrypi.com/static/raspberry-pi-4-labelled@2x-1c8c2d74ade597b9c9c7e9e2fff16dd4.png)
 
 ## Boot from SSD
 

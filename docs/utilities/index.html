@@ -846,6 +846,17 @@ xcode-select<span class="w"> </span>--install
 If you want to use GNU grep (<code>brew install grep</code>), all commands (<code>grep</code>, <code>egrep</code> and <code>fgrep</code>) are installed with the prefix "g". If you need to use these commands with their normal names, add this to your <code>.zshrc</code>:
 <div class="highlight"><pre><span></span><code><span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$HOMEBREW_PREFIX</span><span class="s2">/opt/grep/libexec/gnubin:</span><span class="nv">$PATH</span><span class="s2">&quot;</span>
 </code></pre></div></p>
+<p><a href="https://ngrok.com/docs/agent/config/#full-example">ngrok</a> config: <code>ngrok config check</code>
+<div class="highlight"><pre><span></span><code>version:<span class="w"> </span><span class="s2">&quot;2&quot;</span>
+authtoken:<span class="w"> </span>XXXXXXX
+tunnels:
+<span class="w">    </span>apiserver:
+<span class="w">        </span>proto:<span class="w"> </span>http
+<span class="w">        </span>addr:<span class="w"> </span><span class="m">8000</span>
+<span class="w">    </span>activitypubserver:
+<span class="w">        </span>proto:<span class="w"> </span>http
+<span class="w">        </span>addr:<span class="w"> </span><span class="m">8001</span>
+</code></pre></div></p>
 
 
 
