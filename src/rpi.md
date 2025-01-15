@@ -1,5 +1,6 @@
 # Raspberry Pi
 
+### Raspberry Pi 4 Model B  
 ![RPi](https://assets.raspberrypi.com/static/raspberry-pi-4-labelled@2x-1c8c2d74ade597b9c9c7e9e2fff16dd4.png)
 
 ## Boot from SSD
