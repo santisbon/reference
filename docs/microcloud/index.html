@@ -913,11 +913,104 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#setup" class="md-nav__link">
+  <a href="#pi-cluster-setup" class="md-nav__link">
     <span class="md-ellipsis">
-      Setup
+      Pi Cluster Setup
     </span>
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#microcloud" class="md-nav__link">
+    <span class="md-ellipsis">
+      MicroCloud
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="MicroCloud">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#install-lxd" class="md-nav__link">
+    <span class="md-ellipsis">
+      Install LXD
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#provide-storage-disks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Provide storage disks
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-external-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      Create external network
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-cluster-members" class="md-nav__link">
+    <span class="md-ellipsis">
+      Create cluster members
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Create cluster members">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-the-vms" class="md-nav__link">
+    <span class="md-ellipsis">
+      Create the VMs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#attach-the-disks-to-the-vms" class="md-nav__link">
+    <span class="md-ellipsis">
+      Attach the disks to the VMs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add-instance-devices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Add instance devices
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#start-the-vms" class="md-nav__link">
+    <span class="md-ellipsis">
+      Start the VMs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -976,15 +1069,6 @@
   <a href="#troubleshooting" class="md-nav__link">
     <span class="md-ellipsis">
       Troubleshooting
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#notes" class="md-nav__link">
-    <span class="md-ellipsis">
-      Notes
     </span>
   </a>
   
@@ -1298,7 +1382,7 @@ Ubuntu <strong>Server</strong> installations default to the <strong>GA</strong> 
 <p>They're like partitions on the disk for specific purposes. Part of a storage pool. </p>
 <p>Types:  </p>
 <ul>
-<li><code>container</code>/<code>virtual-machine</code> - LXD creates these automatically when you launch an instance. Used as the root disk for the instance. Destroyed when the instance is deleted.</li>
+<li><code>container</code>/<code>virtual-machine</code> aka instance volumes - LXD creates these automatically when you launch an instance. Used as the root disk for the instance. Destroyed when the instance is deleted.</li>
 <li><code>image</code> - Created by LXD when it unpacks an image to launch an instance from it. Deleted 10 days after it was last used to launch an instance.</li>
 <li><code>custom</code> - You can add them to one or more instances as a disk device (they can be shared between instances). You can also use them as a special kind of volume to hold data separately from your instances (e.g. to hold backups or images) by setting some server configuration values. They're retained until you delete them.</li>
 </ul>
@@ -1308,8 +1392,8 @@ Ubuntu <strong>Server</strong> installations default to the <strong>GA</strong> 
 </div>
 <p>Storage volume <strong>content</strong> types: </p>
 <ul>
-<li><code>filesystem</code> - Used for containers and container images. Default for custom storage volumes. They take a mount point.</li>
-<li><code>block</code> - Used for virtual machines and virtual machine images. Can be used for custom storage volumes. A custom storage volume of this content type can be attached only to virtual machines. They don't take a mount point.</li>
+<li><code>filesystem</code> - Used for <strong>containers</strong> and container images. Default for custom storage volumes. They take a mount point.</li>
+<li><code>block</code> - Used for <strong>virtual machines</strong> and virtual machine images. Can be used for custom storage volumes. A custom storage volume of this content type can be attached only to virtual machines. They don't take a mount point.</li>
 <li><code>iso</code> - They're always read-only and can be attached to more than one VM at a time without corrupting data.</li>
 </ul>
 <div class="admonition note">
@@ -1391,7 +1475,7 @@ Ubuntu <strong>Server</strong> installations default to the <strong>GA</strong> 
 <p class="admonition-title">Important</p>
 <p>If using a SATA SSD make sure the cable/adapter has an <strong>ASMedia</strong> chipset so it will work properly with Raspberry Pi.</p>
 </div>
-<h2 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link">#</a></h2>
+<h2 id="pi-cluster-setup">Pi Cluster Setup<a class="headerlink" href="#pi-cluster-setup" title="Permanent link">#</a></h2>
 <p>Follow these steps to set up your homelab. When an instruction tells you to power on the Pi you can either plug it in to power or flip the power supply switch to <em>On</em> if you have one.</p>
 <ol start="0">
 <li>Assemble your cluster according to your case's instructions. Plug the Raspberry Pis to your home network with the ethernet cables.</li>
@@ -1418,6 +1502,140 @@ Ubuntu <strong>Server</strong> installations default to the <strong>GA</strong> 
 <li><a href="#accessing-a-pi">Connect</a> to your Pis over ssh.</li>
 <li><a href="#verifying-correctness">Verify</a> everything went smoothly.</li>
 </ol>
+<h2 id="microcloud">MicroCloud<a class="headerlink" href="#microcloud" title="Permanent link">#</a></h2>
+<p>The steps in this section can also be automated by adding them to the base cloud-init file and using <code>lxd init --preseed</code>.<br />
+For now we'll go over them manually as we get more comfortable with all the moving pieces.</p>
+<h3 id="install-lxd">Install LXD<a class="headerlink" href="#install-lxd" title="Permanent link">#</a></h3>
+<p>For each Pi:</p>
+<ol>
+<li>Our cloud-init config already updated Snap for us so just make sure it's version 2.59.1 or later with <code>snap version</code>.</li>
+<li>We need LXD version 5.21. Install or update with:
+    <div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>snap<span class="w"> </span>install<span class="w"> </span>lxd
+<span class="c1"># or</span>
+sudo<span class="w"> </span>snap<span class="w"> </span>refresh<span class="w"> </span>lxd<span class="w"> </span>--channel<span class="o">=</span><span class="m">5</span>.21/stable
+</code></pre></div></li>
+<li>Run <code>sudo lxd init</code>. Accept defaults for all questions below except the ones that have a specified value.
+    <div class="highlight"><pre><span></span><code>Would you like to use LXD clustering? (yes/no) [default=no]: 
+Do you want to configure a new storage pool? (yes/no) [default=yes]: 
+Name of the new storage pool [default=default]: 
+Name of the storage backend to use (powerflex, zfs, btrfs, ceph, dir, lvm) [default=zfs]: 
+Create a new ZFS pool? (yes/no) [default=yes]: 
+Would you like to use an existing empty block device (e.g. a disk or partition)? (yes/no) [default=no]: 
+Size in GiB of the new loop device (1GiB minimum) [default=30GiB]: 100 # &lt;===== or whatever you want
+Would you like to connect to a MAAS server? (yes/no) [default=no]: 
+Would you like to create a new local network bridge? (yes/no) [default=yes]: 
+What should the new bridge be called? [default=lxdbr0]: 
+What IPv4 address should be used? (CIDR subnet notation, “auto” or “none”) [default=auto]: 10.1.123.1/24 # &lt;=====
+Would you like LXD to NAT IPv4 traffic on your bridge? [default=yes]: 
+What IPv6 address should be used? (CIDR subnet notation, “auto” or “none”) [default=auto]: fd42:1:1234:1234::1/64 # &lt;=====
+Would you like LXD to NAT IPv6 traffic on your bridge? [default=yes]: 
+Would you like the LXD server to be available over the network? (yes/no) [default=no]: yes # &lt;=====
+Address to bind LXD to (not including port) [default=all]: 
+Port to bind LXD to [default=8443]: 
+Would you like stale cached images to be updated automatically? (yes/no) [default=yes]: 
+Would you like a YAML &quot;lxd init&quot; preseed to be printed? (yes/no) [default=no]: 
+</code></pre></div></li>
+<li>Modify the default network so we can later define specific IPv6 addresses for the VMs
+    <div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>lxc<span class="w"> </span>network<span class="w"> </span><span class="nb">set</span><span class="w"> </span>lxdbr0<span class="w"> </span>ipv6.dhcp.stateful<span class="w"> </span><span class="nb">true</span>
+</code></pre></div></li>
+</ol>
+<p>Note: MicroCloud requires static IPs for cluster members.</p>
+<h3 id="provide-storage-disks">Provide storage disks<a class="headerlink" href="#provide-storage-disks" title="Permanent link">#</a></h3>
+<p>Each Pi will have 1 VM. We'll provide each VM with 1 disk for local storage and 1 disk for remote storage. Remote storage with high availability (HA) requires at least 3 disks located across 3 cluster members.<br />
+That means we'll create a total of 6 disks.</p>
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>lxc<span class="w"> </span>storage<span class="w"> </span>list
+sudo<span class="w"> </span>lxc<span class="w"> </span>storage<span class="w"> </span>show<span class="w"> </span>default<span class="w"> </span><span class="c1"># &lt;pool_name&gt;</span>
+</code></pre></div>
+<p>Create a ZFS storage pool called <code>disks</code>
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>lxc<span class="w"> </span>storage<span class="w"> </span>create<span class="w"> </span>disks<span class="w"> </span>zfs<span class="w"> </span><span class="nv">size</span><span class="o">=</span>100GiB
+</code></pre></div></p>
+<p>Configure default volume size for the pool
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>lxc<span class="w"> </span>storage<span class="w"> </span><span class="nb">set</span><span class="w"> </span>disks<span class="w"> </span>volume.size<span class="w"> </span>10GiB
+</code></pre></div></p>
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>lxc<span class="w"> </span>storage<span class="w"> </span>volume<span class="w"> </span>list
+</code></pre></div>
+<p>Create a custom volume (as opposed to an instance volume) for local storage
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>lxc<span class="w"> </span>storage<span class="w"> </span>volume<span class="w"> </span>create<span class="w"> </span>disks<span class="w"> </span>local1<span class="w"> </span>--type<span class="w"> </span>block
+</code></pre></div></p>
+<p>Create volumes for remote storage
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>lxc<span class="w"> </span>storage<span class="w"> </span>volume<span class="w"> </span>create<span class="w"> </span>disks<span class="w"> </span>remote1<span class="w"> </span>--type<span class="w"> </span>block<span class="w"> </span><span class="nv">size</span><span class="o">=</span>90GiB
+</code></pre></div></p>
+<p>View details
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>lxc<span class="w"> </span>storage<span class="w"> </span>volume<span class="w"> </span>list<span class="w"> </span>disks
+sudo<span class="w"> </span>lxc<span class="w"> </span>storage<span class="w"> </span>volume<span class="w"> </span>show<span class="w"> </span>disks<span class="w"> </span>custom/local1<span class="w"> </span><span class="c1"># as opposed to container/local1 or virtual-machine/local1</span>
+sudo<span class="w"> </span>lxc<span class="w"> </span>storage<span class="w"> </span>volume<span class="w"> </span>show<span class="w"> </span>disks<span class="w"> </span>custom/remote1
+</code></pre></div></p>
+<h3 id="create-external-network">Create external network<a class="headerlink" href="#create-external-network" title="Permanent link">#</a></h3>
+<p>Create a network for external connectivity
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>lxc<span class="w"> </span>network<span class="w"> </span>create<span class="w"> </span>microbr0
+</code></pre></div></p>
+<p>View network details. Note down the assigned IPv4 and IPv6 addresses for the network.
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>lxc<span class="w"> </span>network<span class="w"> </span>list
+
+sudo<span class="w"> </span>lxc<span class="w"> </span>network<span class="w"> </span>get<span class="w"> </span>microbr0<span class="w"> </span>ipv4.address
+sudo<span class="w"> </span>lxc<span class="w"> </span>network<span class="w"> </span>get<span class="w"> </span>microbr0<span class="w"> </span>ipv6.address
+</code></pre></div></p>
+<p>Example:
+<div class="highlight"><pre><span></span><code>node-01
+10.119.73.1/24
+fd42:d32b:a375:2855::1/64
+
+node-02
+10.45.122.1/24
+fd42:dc56:50a1:9c70::1/64
+
+node-03
+10.230.81.1/24
+fd42:8cba:e02b:a498::1/64
+</code></pre></div></p>
+<h3 id="create-cluster-members">Create cluster members<a class="headerlink" href="#create-cluster-members" title="Permanent link">#</a></h3>
+<h4 id="create-the-vms">Create the VMs<a class="headerlink" href="#create-the-vms" title="Permanent link">#</a></h4>
+<p>Without starting them yet.
+<div class="highlight"><span class="filename">On node-01</span><pre><span></span><code>sudo<span class="w"> </span>lxc<span class="w"> </span>init<span class="w"> </span>ubuntu:24.04<span class="w"> </span>micro1<span class="w"> </span>--vm<span class="w"> </span>--config<span class="w"> </span>limits.cpu<span class="o">=</span><span class="m">2</span><span class="w"> </span>--config<span class="w"> </span>limits.memory<span class="o">=</span>4GiB<span class="w"> </span>-d<span class="w"> </span>eth0,ipv4.address<span class="o">=</span><span class="m">10</span>.1.123.10<span class="w"> </span>-d<span class="w"> </span>eth0,ipv6.address<span class="o">=</span>fd42:1:1234:1234::10
+</code></pre></div>
+<div class="highlight"><span class="filename">On node-02</span><pre><span></span><code>sudo<span class="w"> </span>lxc<span class="w"> </span>init<span class="w"> </span>ubuntu:24.04<span class="w"> </span>micro2<span class="w"> </span>--vm<span class="w"> </span>--config<span class="w"> </span>limits.cpu<span class="o">=</span><span class="m">2</span><span class="w"> </span>--config<span class="w"> </span>limits.memory<span class="o">=</span>4GiB<span class="w"> </span>-d<span class="w"> </span>eth0,ipv4.address<span class="o">=</span><span class="m">10</span>.1.123.20<span class="w"> </span>-d<span class="w"> </span>eth0,ipv6.address<span class="o">=</span>fd42:1:1234:1234::20
+</code></pre></div>
+<div class="highlight"><span class="filename">On node-03</span><pre><span></span><code>sudo<span class="w"> </span>lxc<span class="w"> </span>init<span class="w"> </span>ubuntu:24.04<span class="w"> </span>micro3<span class="w"> </span>--vm<span class="w"> </span>--config<span class="w"> </span>limits.cpu<span class="o">=</span><span class="m">2</span><span class="w"> </span>--config<span class="w"> </span>limits.memory<span class="o">=</span>4GiB<span class="w"> </span>-d<span class="w"> </span>eth0,ipv4.address<span class="o">=</span><span class="m">10</span>.1.123.30<span class="w"> </span>-d<span class="w"> </span>eth0,ipv6.address<span class="o">=</span>fd42:1:1234:1234::30
+</code></pre></div></p>
+<h4 id="attach-the-disks-to-the-vms">Attach the disks to the VMs<a class="headerlink" href="#attach-the-disks-to-the-vms" title="Permanent link">#</a></h4>
+<p>The storage pool (<code>disks</code>) and volumes (<code>local1</code>, <code>remote1</code>) have the same names on all machines.</p>
+<div class="highlight"><span class="filename">On node-01</span><pre><span></span><code>sudo<span class="w"> </span>lxc<span class="w"> </span>storage<span class="w"> </span>volume<span class="w"> </span>attach<span class="w"> </span>disks<span class="w"> </span>local1<span class="w"> </span>micro1
+sudo<span class="w"> </span>lxc<span class="w"> </span>storage<span class="w"> </span>volume<span class="w"> </span>attach<span class="w"> </span>disks<span class="w"> </span>remote1<span class="w"> </span>micro1
+</code></pre></div>
+<div class="highlight"><span class="filename">On node-02</span><pre><span></span><code>sudo<span class="w"> </span>lxc<span class="w"> </span>storage<span class="w"> </span>volume<span class="w"> </span>attach<span class="w"> </span>disks<span class="w"> </span>local1<span class="w"> </span>micro2
+sudo<span class="w"> </span>lxc<span class="w"> </span>storage<span class="w"> </span>volume<span class="w"> </span>attach<span class="w"> </span>disks<span class="w"> </span>remote1<span class="w"> </span>micro2
+</code></pre></div>
+<div class="highlight"><span class="filename">On node-03</span><pre><span></span><code>sudo<span class="w"> </span>lxc<span class="w"> </span>storage<span class="w"> </span>volume<span class="w"> </span>attach<span class="w"> </span>disks<span class="w"> </span>local1<span class="w"> </span>micro3
+sudo<span class="w"> </span>lxc<span class="w"> </span>storage<span class="w"> </span>volume<span class="w"> </span>attach<span class="w"> </span>disks<span class="w"> </span>remote1<span class="w"> </span>micro3
+</code></pre></div>
+<h4 id="add-instance-devices">Add instance devices<a class="headerlink" href="#add-instance-devices" title="Permanent link">#</a></h4>
+<p>Add network interfaces that use the dedicated MicroCloud uplink network. We'll the nic <code>eth1</code>.</p>
+<p>See what we have so far
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>lxc<span class="w"> </span>config<span class="w"> </span>device<span class="w"> </span>list<span class="w"> </span>micro1<span class="w"> </span><span class="c1"># 2, 3</span>
+</code></pre></div></p>
+<div class="highlight"><span class="filename">On node-01</span><pre><span></span><code>sudo<span class="w"> </span>lxc<span class="w"> </span>config<span class="w"> </span>device<span class="w"> </span>add<span class="w"> </span>micro1<span class="w"> </span>eth1<span class="w"> </span>nic<span class="w"> </span><span class="nv">network</span><span class="o">=</span>microbr0<span class="w"> </span><span class="c1"># instance, device-name, type, [key=value...]</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">On node-02</span><pre><span></span><code>sudo<span class="w"> </span>lxc<span class="w"> </span>config<span class="w"> </span>device<span class="w"> </span>add<span class="w"> </span>micro2<span class="w"> </span>eth1<span class="w"> </span>nic<span class="w"> </span><span class="nv">network</span><span class="o">=</span>microbr0
+</code></pre></div>
+<div class="highlight"><span class="filename">On node-03</span><pre><span></span><code>sudo<span class="w"> </span>lxc<span class="w"> </span>config<span class="w"> </span>device<span class="w"> </span>add<span class="w"> </span>micro3<span class="w"> </span>eth1<span class="w"> </span>nic<span class="w"> </span><span class="nv">network</span><span class="o">=</span>microbr0
+</code></pre></div>
+<h4 id="start-the-vms">Start the VMs<a class="headerlink" href="#start-the-vms" title="Permanent link">#</a></h4>
+<div class="highlight"><span class="filename">On node-01</span><pre><span></span><code>sudo<span class="w"> </span>lxc<span class="w"> </span>start<span class="w"> </span>micro1
+</code></pre></div>
+<div class="highlight"><span class="filename">On node-02</span><pre><span></span><code>sudo<span class="w"> </span>lxc<span class="w"> </span>start<span class="w"> </span>micro2
+</code></pre></div>
+<div class="highlight"><span class="filename">On node-03</span><pre><span></span><code>sudo<span class="w"> </span>lxc<span class="w"> </span>start<span class="w"> </span>micro3
+</code></pre></div>
+<p>If a VM fails to start check if you have enough available RAM to start the VM.
+<div class="highlight"><pre><span></span><code>free<span class="w"> </span>-h
+<span class="c1"># Example setting a lower RAM limit on VMs</span>
+sudo<span class="w"> </span>lxc<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>micro2<span class="w"> </span>limits.memory<span class="w"> </span>2GiB
+sudo<span class="w"> </span>lxc<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>micro3<span class="w"> </span>limits.memory<span class="w"> </span>2GiB
+</code></pre></div></p>
+<div class="highlight"><span class="filename">On node-02</span><pre><span></span><code>
+</code></pre></div>
+<div class="highlight"><span class="filename">On node-03</span><pre><span></span><code>
+</code></pre></div>
 <h2 id="appendix">APPENDIX<a class="headerlink" href="#appendix" title="Permanent link">#</a></h2>
 <h3 id="getting-os-images">Getting OS images<a class="headerlink" href="#getting-os-images" title="Permanent link">#</a></h3>
 <p>We'll use an <strong>Ubuntu</strong> image made specifically for your board instead of a manufaturer's custom OS like Raspberry Pi OS. Those are designed for simplicity and ease of use at the expense of functionality that is important when building a cloud-native homelab like <a href="https://cloud-init.io"><code>cloud-init</code></a>. That's right, even our host Raspberry Pis can be set up in an automated, cloud-native way with cloud-init!</p>
@@ -1456,7 +1674,7 @@ wget<span class="w"> </span>-q<span class="w"> </span>--show-progress<span class
 <p>Install <code>pv</code> to see a progress bar and percentage of completion as the image is being flashed:<br />
 <code>brew install pv</code></p>
 </div>
-<p>Insert/connect the target device (microSD card or SSD) and check the device name. 
+<p>Connect the target device (e.g. SSD) and check the device name. 
 If macOS tells you <em>The disk you attached was not readable by this computer</em> you can ignore it.
 <div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code>diskutil<span class="w"> </span>list
 </code></pre></div></p>
@@ -1467,7 +1685,7 @@ If macOS tells you <em>The disk you attached was not readable by this computer</
 </div>
 <p><div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code>diskutil<span class="w"> </span>zeroDisk<span class="w"> </span>short<span class="w"> </span>/dev/disk4<span class="w"> </span><span class="c1"># or whatever name your device has</span>
 </code></pre></div>
-On Linux you can use <code>parted</code> as explained <a href="#ssd-as-additional-storage">here</a>.  </p>
+On Linux you can use <a href="https://www.gnu.org/software/parted/manual/parted.html"><code>parted</code></a>.  </p>
 <p>Use that device name to flash the OS image to the card/SSD.
 <div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code><span class="c1">###################################################################</span>
 <span class="c1"># REPLACE WITH YOUR VALUES</span>
@@ -1483,14 +1701,15 @@ diskutil<span class="w"> </span>unmountDisk<span class="w"> </span><span class="
 <span class="c1"># sudo dd if=$IMAGE of=$DEVICE bs=1m status=progress</span>
 pv<span class="w"> </span><span class="nv">$IMAGE</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>dd<span class="w"> </span><span class="nv">bs</span><span class="o">=</span>1m<span class="w"> </span><span class="nv">of</span><span class="o">=</span><span class="nv">$DEVICE</span>
 </code></pre></div></p>
-<p>When it's done you'll see a volume mounted on your desktop called <code>system-boot</code> or something similar. Modify the volume to inject the <code>user-data</code> used by cloud-init and set boot parameters to enable c-groups. On systems running k8s this is required so that kubelet will work out of the box but we'll do it here anyways in case we want to install k8s on this system later on.  </p>
+<p>When it's done you'll see a volume mounted on your desktop called <code>system-boot</code> or something similar.<br />
+We'll modify the volume to inject the <code>user-data</code> used by cloud-init and set boot parameters to enable c-groups. On systems running k8s this is required so that kubelet will work out of the box but we'll do it here in case we want to do container orchestration directly on this system (or on system containers that share its kernel) later on.  </p>
 <p>Feel free to modify in case you don't want to set up Wi-Fi or want different software installed.
 <div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code><span class="c1">###################################################################</span>
 <span class="c1"># REPLACE WITH YOUR VALUES</span>
 <span class="c1">###################################################################</span>
 <span class="nv">VOLUME</span><span class="o">=</span><span class="s1">&#39;system-boot&#39;</span>
 
-<span class="nv">HOSTNAME</span><span class="o">=</span><span class="s1">&#39;node-01&#39;</span><span class="w"> </span>
+<span class="nv">HOSTNAME</span><span class="o">=</span><span class="s1">&#39;node-01&#39;</span><span class="w"> </span><span class="c1"># Change for node-02, node-03</span>
 <span class="nv">LOCALE</span><span class="o">=</span><span class="s1">&#39;en_US&#39;</span><span class="w"> </span>
 <span class="nv">TIMEZONE</span><span class="o">=</span><span class="s1">&#39;US/Central&#39;</span><span class="w"> </span>
 
@@ -1587,6 +1806,7 @@ sed<span class="w"> </span>-i<span class="w"> </span><span class="s2">&quot;&quo
 <div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code>diskutil<span class="w"> </span>unmountDisk<span class="w"> </span><span class="nv">$DEVICE</span>
 </code></pre></div></p>
 <p>🎉 <strong>You're done!</strong> 🍾  </p>
+<p>Head back to the <a href="#pi-cluster-setup">Pi Cluster Setup</a> section for the next steps.</p>
 <h3 id="accessing-a-pi">Accessing a Pi<a class="headerlink" href="#accessing-a-pi" title="Permanent link">#</a></h3>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
@@ -1615,6 +1835,10 @@ ssh-keygen<span class="w">  </span>-f<span class="w"> </span>~/.ssh/known_hosts<
 The first time you access it you'll get asked about adding the key fingerprint to the list of known hosts. Choose <code>yes</code>.
 <div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code>ssh<span class="w"> </span>pi@node-01<span class="w"> </span><span class="c1"># hostname or IP address</span>
 </code></pre></div></p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>If you're on a VPN you may need to disconnect from it to access your Pis using the hostname.</p>
+</div>
 <p>If you want to use the IP address, find your board's IP in your router's admin UI or by going over the list of all devices on your network with <code>arp -a</code>.</p>
 <p>If you see a welcome message with <code>System restart required</code>, <code>sudo reboot</code> and ssh again.</p>
 <h3 id="verifying-correctness">Verifying correctness<a class="headerlink" href="#verifying-correctness" title="Permanent link">#</a></h3>
@@ -1622,12 +1846,16 @@ The first time you access it you'll get asked about adding the key fingerprint t
 <p>Access your pi via ssh as explained <a href="#accessing-a-pi">here</a>.</p>
 <div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code><span class="c1"># Verify your kernel is built with the modules you need for Ceph RBD (RADOS Block Device) and for disk encryption. </span>
 <span class="c1"># It&#39;s OK if they&#39;re not currently being used (a zero in the third column of the results). They just need to be loaded.</span>
-lsmod<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-iE<span class="w"> </span><span class="s1">&#39;rbd|ceph&#39;</span><span class="w"> </span><span class="c1"># verify that at least rbd is available.</span>
 lsmod<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-iE<span class="w"> </span><span class="s1">&#39;crypto|dm_crypt|aes&#39;</span><span class="w"> </span><span class="c1"># verify that at least dm_crypt is available.</span>
+lsmod<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-iE<span class="w"> </span><span class="s1">&#39;rbd|ceph&#39;</span><span class="w"> </span><span class="c1"># verify that at least rbd is available.</span>
+
+<span class="c1"># You can also check with</span>
+sudo<span class="w"> </span>modinfo<span class="w"> </span>dm-crypt
+sudo<span class="w"> </span>modinfo<span class="w"> </span>rbd
 
 <span class="c1"># if they&#39;re not found:</span>
+sudo<span class="w"> </span>modprobe<span class="w"> </span>dm-crypt
 sudo<span class="w"> </span>modprobe<span class="w"> </span>rbd
-sudo<span class="w"> </span>modprobe<span class="w"> </span>dm_crypt
 
 <span class="c1"># Check if the unattended upgrade service is running</span>
 systemctl<span class="w"> </span>status<span class="w"> </span>unattended-upgrades.service
@@ -1653,26 +1881,6 @@ ip<span class="w"> </span>addr<span class="w"> </span>show<span class="w"> </spa
 <li>I'm not sure cgroups are enabled.<br />
     Check with 
     <div class="highlight"><pre><span></span><code>cat<span class="w"> </span>/proc/cgroups
-</code></pre></div></li>
-</ul>
-<h2 id="notes">Notes<a class="headerlink" href="#notes" title="Permanent link">#</a></h2>
-<ul>
-<li>MicroCloud requires static IPs. Your physical hosts should also have static IPs for convenience.</li>
-<li>If you need full disk encryption on cluster members, the <code>dm-crypt</code> kernel module
-    <div class="highlight"><pre><span></span><code><span class="c1"># Check if the emodule exists</span>
-sudo<span class="w"> </span>modinfo<span class="w"> </span>dm-crypt
-</code></pre></div></li>
-<li>For Ceph you'll need the <code>rbd</code> kernel module.</li>
-<li><code>snapd</code> version 2.59.1 or later.
-    <div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>update
-snap<span class="w"> </span>version
-<span class="c1"># if needed</span>
-sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>snapd
-</code></pre></div></li>
-<li>LXD version 5.21. Install or update with:
-    <div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>snap<span class="w"> </span>install<span class="w"> </span>lxd
-<span class="c1"># or</span>
-sudo<span class="w"> </span>snap<span class="w"> </span>refresh<span class="w"> </span>lxd<span class="w"> </span>--channel<span class="o">=</span><span class="m">5</span>.21/stable
 </code></pre></div></li>
 </ul>
 

@@ -339,9 +339,6 @@ sudo cat /var/log/apt/history.log
 # Check if there were any cloud-init errors
 sudo cat /var/log/cloud-init.log | grep failures
 sudo cat /var/log/cloud-init-output.log
-
-# Check available storage space with 
-df -h
 ```
 
 ## Learn about electronics

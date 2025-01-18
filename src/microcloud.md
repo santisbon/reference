@@ -92,7 +92,7 @@ They're like partitions on the disk for specific purposes. Part of a storage poo
 
 Types:  
 
-- `container`/`virtual-machine` - LXD creates these automatically when you launch an instance. Used as the root disk for the instance. Destroyed when the instance is deleted.
+- `container`/`virtual-machine` aka instance volumes - LXD creates these automatically when you launch an instance. Used as the root disk for the instance. Destroyed when the instance is deleted.
 - `image` - Created by LXD when it unpacks an image to launch an instance from it. Deleted 10 days after it was last used to launch an instance.
 - `custom` - You can add them to one or more instances as a disk device (they can be shared between instances). You can also use them as a special kind of volume to hold data separately from your instances (e.g. to hold backups or images) by setting some server configuration values. They're retained until you delete them.
 
@@ -101,8 +101,8 @@ Types:
 
 Storage volume **content** types: 
 
-- `filesystem` - Used for containers and container images. Default for custom storage volumes. They take a mount point.
-- `block` - Used for virtual machines and virtual machine images. Can be used for custom storage volumes. A custom storage volume of this content type can be attached only to virtual machines. They don't take a mount point.
+- `filesystem` - Used for **containers** and container images. Default for custom storage volumes. They take a mount point.
+- `block` - Used for **virtual machines** and virtual machine images. Can be used for custom storage volumes. A custom storage volume of this content type can be attached only to virtual machines. They don't take a mount point.
 - `iso` - They're always read-only and can be attached to more than one VM at a time without corrupting data.
 
 !!! note
@@ -190,7 +190,7 @@ You'll need:
 !!! important
     If using a SATA SSD make sure the cable/adapter has an **ASMedia** chipset so it will work properly with Raspberry Pi.
 
-## Setup
+## Pi Cluster Setup
 
 Follow these steps to set up your homelab. When an instruction tells you to power on the Pi you can either plug it in to power or flip the power supply switch to *On* if you have one.
 
@@ -214,6 +214,208 @@ Follow these steps to set up your homelab. When an instruction tells you to powe
     Go make yourself a cup of tea before accessing your Pis for the first time. If you also set up the Wi-Fi connection it won't be available until everything has finished configuring and you manually do a required system restart.
 6. [Connect](#accessing-a-pi) to your Pis over ssh.
 7. [Verify](#verifying-correctness) everything went smoothly.
+
+## MicroCloud
+
+The steps in this section can also be automated by adding them to the base cloud-init file and using `lxd init --preseed`.  
+For now we'll go over them manually as we get more comfortable with all the moving pieces.
+
+### Install LXD
+
+For each Pi:
+
+1. Our cloud-init config already updated Snap for us so just make sure it's version 2.59.1 or later with `snap version`.
+2. We need LXD version 5.21. Install or update with:
+    ```sh
+    sudo snap install lxd
+    # or
+    sudo snap refresh lxd --channel=5.21/stable
+    ```
+3. Run `sudo lxd init`. Accept defaults for all questions below except the ones that have a specified value.
+    ```
+    Would you like to use LXD clustering? (yes/no) [default=no]: 
+    Do you want to configure a new storage pool? (yes/no) [default=yes]: 
+    Name of the new storage pool [default=default]: 
+    Name of the storage backend to use (powerflex, zfs, btrfs, ceph, dir, lvm) [default=zfs]: 
+    Create a new ZFS pool? (yes/no) [default=yes]: 
+    Would you like to use an existing empty block device (e.g. a disk or partition)? (yes/no) [default=no]: 
+    Size in GiB of the new loop device (1GiB minimum) [default=30GiB]: 100 # <===== or whatever you want
+    Would you like to connect to a MAAS server? (yes/no) [default=no]: 
+    Would you like to create a new local network bridge? (yes/no) [default=yes]: 
+    What should the new bridge be called? [default=lxdbr0]: 
+    What IPv4 address should be used? (CIDR subnet notation, “auto” or “none”) [default=auto]: 10.1.123.1/24 # <=====
+    Would you like LXD to NAT IPv4 traffic on your bridge? [default=yes]: 
+    What IPv6 address should be used? (CIDR subnet notation, “auto” or “none”) [default=auto]: fd42:1:1234:1234::1/64 # <=====
+    Would you like LXD to NAT IPv6 traffic on your bridge? [default=yes]: 
+    Would you like the LXD server to be available over the network? (yes/no) [default=no]: yes # <=====
+    Address to bind LXD to (not including port) [default=all]: 
+    Port to bind LXD to [default=8443]: 
+    Would you like stale cached images to be updated automatically? (yes/no) [default=yes]: 
+    Would you like a YAML "lxd init" preseed to be printed? (yes/no) [default=no]: 
+    ```
+4. Modify the default network so we can later define specific IPv6 addresses for the VMs
+    ```sh
+    sudo lxc network set lxdbr0 ipv6.dhcp.stateful true
+    ```
+
+Note: MicroCloud requires static IPs for cluster members.
+
+### Provide storage disks
+
+Each Pi will have 1 VM. We'll provide each VM with 1 disk for local storage and 1 disk for remote storage. Remote storage with high availability (HA) requires at least 3 disks located across 3 cluster members.  
+That means we'll create a total of 6 disks.
+
+```sh
+sudo lxc storage list
+sudo lxc storage show default # <pool_name>
+```
+
+Create a ZFS storage pool called `disks`
+```sh
+sudo lxc storage create disks zfs size=100GiB
+```
+
+Configure default volume size for the pool
+```sh
+sudo lxc storage set disks volume.size 10GiB
+```
+
+```sh
+sudo lxc storage volume list
+```
+
+Create a custom volume (as opposed to an instance volume) for local storage
+```sh
+sudo lxc storage volume create disks local1 --type block
+```
+
+Create volumes for remote storage
+```sh
+sudo lxc storage volume create disks remote1 --type block size=90GiB
+```
+
+View details
+```sh
+sudo lxc storage volume list disks
+sudo lxc storage volume show disks custom/local1 # as opposed to container/local1 or virtual-machine/local1
+sudo lxc storage volume show disks custom/remote1
+```
+
+### Create external network
+
+Create a network for external connectivity
+```sh
+sudo lxc network create microbr0
+```
+
+View network details. Note down the assigned IPv4 and IPv6 addresses for the network.
+```sh
+sudo lxc network list
+
+sudo lxc network get microbr0 ipv4.address
+sudo lxc network get microbr0 ipv6.address
+```
+
+Example:
+```
+node-01
+10.119.73.1/24
+fd42:d32b:a375:2855::1/64
+
+node-02
+10.45.122.1/24
+fd42:dc56:50a1:9c70::1/64
+
+node-03
+10.230.81.1/24
+fd42:8cba:e02b:a498::1/64
+```
+
+### Create cluster members
+
+#### Create the VMs 
+
+Without starting them yet.
+```sh title="On node-01" 
+sudo lxc init ubuntu:24.04 micro1 --vm --config limits.cpu=2 --config limits.memory=4GiB -d eth0,ipv4.address=10.1.123.10 -d eth0,ipv6.address=fd42:1:1234:1234::10
+```
+```sh title="On node-02" 
+sudo lxc init ubuntu:24.04 micro2 --vm --config limits.cpu=2 --config limits.memory=4GiB -d eth0,ipv4.address=10.1.123.20 -d eth0,ipv6.address=fd42:1:1234:1234::20
+```
+```sh title="On node-03" 
+sudo lxc init ubuntu:24.04 micro3 --vm --config limits.cpu=2 --config limits.memory=4GiB -d eth0,ipv4.address=10.1.123.30 -d eth0,ipv6.address=fd42:1:1234:1234::30
+```
+
+#### Attach the disks to the VMs
+
+The storage pool (`disks`) and volumes (`local1`, `remote1`) have the same names on all machines.
+
+```sh title="On node-01" 
+sudo lxc storage volume attach disks local1 micro1
+sudo lxc storage volume attach disks remote1 micro1
+```
+
+```sh title="On node-02" 
+sudo lxc storage volume attach disks local1 micro2
+sudo lxc storage volume attach disks remote1 micro2
+```
+
+```sh title="On node-03" 
+sudo lxc storage volume attach disks local1 micro3
+sudo lxc storage volume attach disks remote1 micro3
+```
+
+#### Add instance devices
+
+Add network interfaces that use the dedicated MicroCloud uplink network. We'll the nic `eth1`.
+
+See what we have so far
+```sh
+sudo lxc config device list micro1 # 2, 3
+```
+
+```sh title="On node-01" 
+sudo lxc config device add micro1 eth1 nic network=microbr0 # instance, device-name, type, [key=value...]
+```
+
+```sh title="On node-02" 
+sudo lxc config device add micro2 eth1 nic network=microbr0
+```
+
+```sh title="On node-03"
+sudo lxc config device add micro3 eth1 nic network=microbr0
+```
+
+#### Start the VMs
+
+```sh title="On node-01" 
+sudo lxc start micro1
+```
+
+```sh title="On node-02" 
+sudo lxc start micro2
+```
+
+```sh title="On node-03"
+sudo lxc start micro3
+```
+
+If a VM fails to start check if you have enough available RAM to start the VM.
+```sh
+free -h
+# Example setting a lower RAM limit on VMs
+sudo lxc config set micro2 limits.memory 2GiB
+sudo lxc config set micro3 limits.memory 2GiB
+```
+
+```sh title="On node-02" 
+
+```
+
+```sh title="On node-03"
+
+```
+
 
 ## APPENDIX
 
@@ -262,7 +464,7 @@ Execute each code block one at a time to avoid errors.
     Install `pv` to see a progress bar and percentage of completion as the image is being flashed:  
     `brew install pv`
 
-Insert/connect the target device (microSD card or SSD) and check the device name. 
+Connect the target device (e.g. SSD) and check the device name. 
 If macOS tells you *The disk you attached was not readable by this computer* you can ignore it.
 ```sh title="On your laptop" 
 diskutil list
@@ -276,7 +478,7 @@ Wipe out any existing data/partitions.
 ```sh title="On your laptop" 
 diskutil zeroDisk short /dev/disk4 # or whatever name your device has
 ```
-On Linux you can use `parted` as explained [here](#ssd-as-additional-storage).  
+On Linux you can use [`parted`](https://www.gnu.org/software/parted/manual/parted.html).  
 
 Use that device name to flash the OS image to the card/SSD.
 ```sh title="On your laptop" 
@@ -295,7 +497,8 @@ cd ~/Downloads
 pv $IMAGE | sudo dd bs=1m of=$DEVICE
 ```
 
-When it's done you'll see a volume mounted on your desktop called `system-boot` or something similar. Modify the volume to inject the `user-data` used by cloud-init and set boot parameters to enable c-groups. On systems running k8s this is required so that kubelet will work out of the box but we'll do it here anyways in case we want to install k8s on this system later on.  
+When it's done you'll see a volume mounted on your desktop called `system-boot` or something similar.  
+We'll modify the volume to inject the `user-data` used by cloud-init and set boot parameters to enable c-groups. On systems running k8s this is required so that kubelet will work out of the box but we'll do it here in case we want to do container orchestration directly on this system (or on system containers that share its kernel) later on.  
 
 Feel free to modify in case you don't want to set up Wi-Fi or want different software installed.
 ```sh title="On your laptop" 
@@ -304,7 +507,7 @@ Feel free to modify in case you don't want to set up Wi-Fi or want different sof
 ###################################################################
 VOLUME='system-boot'
 
-HOSTNAME='node-01' 
+HOSTNAME='node-01' # Change for node-02, node-03
 LOCALE='en_US' 
 TIMEZONE='US/Central' 
 
@@ -410,6 +613,8 @@ diskutil unmountDisk $DEVICE
 
 🎉 **You're done!** 🍾  
 
+Head back to the [Pi Cluster Setup](#pi-cluster-setup) section for the next steps.
+
 ### Accessing a Pi
 
 !!! tip
@@ -442,6 +647,9 @@ The first time you access it you'll get asked about adding the key fingerprint t
 ssh pi@node-01 # hostname or IP address
 ```
 
+!!! attention
+    If you're on a VPN you may need to disconnect from it to access your Pis using the hostname.
+
 If you want to use the IP address, find your board's IP in your router's admin UI or by going over the list of all devices on your network with `arp -a`.
 
 If you see a welcome message with `System restart required`, `sudo reboot` and ssh again.
@@ -455,12 +663,16 @@ Access your pi via ssh as explained [here](#accessing-a-pi).
 ```sh title="On your Pi"
 # Verify your kernel is built with the modules you need for Ceph RBD (RADOS Block Device) and for disk encryption. 
 # It's OK if they're not currently being used (a zero in the third column of the results). They just need to be loaded.
-lsmod | grep -iE 'rbd|ceph' # verify that at least rbd is available.
 lsmod | grep -iE 'crypto|dm_crypt|aes' # verify that at least dm_crypt is available.
+lsmod | grep -iE 'rbd|ceph' # verify that at least rbd is available.
+
+# You can also check with
+sudo modinfo dm-crypt
+sudo modinfo rbd
 
 # if they're not found:
+sudo modprobe dm-crypt
 sudo modprobe rbd
-sudo modprobe dm_crypt
 
 # Check if the unattended upgrade service is running
 systemctl status unattended-upgrades.service
@@ -488,27 +700,4 @@ ip addr show | grep wlan0
     Check with 
     ```sh
     cat /proc/cgroups
-    ```
-
-## Notes
-
-- MicroCloud requires static IPs. Your physical hosts should also have static IPs for convenience.
-- If you need full disk encryption on cluster members, the `dm-crypt` kernel module
-    ```sh
-    # Check if the emodule exists
-    sudo modinfo dm-crypt
-    ```
-- For Ceph you'll need the `rbd` kernel module.
-- `snapd` version 2.59.1 or later.
-    ```sh
-    sudo apt update
-    snap version
-    # if needed
-    sudo apt install snapd
-    ```
-- LXD version 5.21. Install or update with:
-    ```sh
-    sudo snap install lxd
-    # or
-    sudo snap refresh lxd --channel=5.21/stable
     ```
