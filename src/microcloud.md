@@ -192,23 +192,28 @@ You'll need:
 
 ## Setup
 
-Follow these steps to set up the Raspberry Pi devices. When an instruction tells you to power on the Pi you can either plug it in to power or flip the power supply switch to *On* if you have one.
+Follow these steps to set up your homelab. When an instruction tells you to power on the Pi you can either plug it in to power or flip the power supply switch to *On* if you have one.
 
 0. Assemble your cluster according to your case's instructions. Plug the Raspberry Pis to your home network with the ethernet cables.
 1. If you don't have an ssh key, [generate one](https://www.ssh.com/academy/ssh/keygen) on macOS/Linux with `ssh-keygen -t ed25519`.  
 2. Download the OS image with [these instructions](#getting-os-images).
 3. Set up each of the Pis to boot from SSD.
-    1. Use [Raspberry Pi Imager](https://www.raspberrypi.com/software/) to flash the **USB Boot** utility image onto the microSD card. 
+    1. Use [Raspberry Pi Imager](https://www.raspberrypi.com/software/) to flash the **USB Boot** utility image onto the microSD card. You can install it on your Mac with: 
         ```sh
         brew install --cask raspberry-pi-imager
         ```
-        It's in Operating System > CHOOSE OS > Misc utility images > Bootloader > USB Boot.
+        The USB Boot utility is in Operating System > CHOOSE OS > Misc utility images > Bootloader > USB Boot.
     2. Insert the card into the Pi, turn it on so the Pi flashes the bootloader from the card. When it's done the green LED will start blinking.
     3. Turn off the Pi and remove the card.    
-4. For each SSD flash your desired OS image to the SSD as explained [here](#flashing-os-images).
-5. For each Pi/SSD remove the SSD from your laptop and plug it into a USB 3.0 port on your Pi which **should be connected to your router with an ethernet cable**. The Wi-Fi won't be available until everything has finished configuring and you manually do a required system restart.
-6. Turn on your Pis.
-7. [Connect](#accessing-a-pi) to your Pis over ssh and check available storage space with `df -h`.
+4. For each Pi/SSD:
+    1. [Flash the OS image](#flashing-os-images) to the SSD. 
+    2. Make sure the Pi is connected to your router/switch with an ethernet cable.
+    3. Remove the SSD from your laptop and plug it into a USB 3.0 port on your Pi. 
+5. Turn on your Pis. They have a lot of work to do on the first boot and it takes several minutes as cloud-init automatically upgrades packages, configures our systems, and installs any software we specified.  
+    You'll be able to go in as soon as the SSH service is up but it will probably still be in the process of setting everything up.  
+    Go make yourself a cup of tea before accessing your Pis for the first time. If you also set up the Wi-Fi connection it won't be available until everything has finished configuring and you manually do a required system restart.
+6. [Connect](#accessing-a-pi) to your Pis over ssh.
+7. [Verify](#verifying-correctness) everything went smoothly.
 
 ## APPENDIX
 
@@ -405,50 +410,6 @@ diskutil unmountDisk $DEVICE
 
 🎉 **You're done!** 🍾  
 
-Since we pre-configured everything it has a lot of work to do on the first boot and it takes several minutes. You'll be able to go in as soon as the SSH service is up but it will probably still be in the process of upgrading packages as well as installing and configuring our software.  
-
-Go make yourself a cup of tea before accessing your Pis for the first time.
-
-#### Verification
-
-Once cloud-init is done launching our instance, check a few things to make sure everything went smoothly.
-
-Access your pi via ssh as explained [here](#accessing-a-pi).
-
-```sh title="On your Pi"
-# Check if there were any cloud-init errors
-sudo cat /var/log/cloud-init.log | grep failures
-sudo cat /var/log/cloud-init-output.log
-```
-
-!!! important
-    If anything failed to install or commands ran into errors, run it again manually.
-
-```sh title="On your Pi"
-# Verify your kernel is built with the modules you need for Ceph RBD (RADOS Block Device) and for disk encryption. 
-# It's OK if they're not currently being used (a zero in the third column of the results). They just need to be loaded.
-lsmod | grep -iE 'rbd|ceph' # verify that at least rbd is available.
-lsmod | grep -iE 'crypto|dm_crypt|aes' # verify that at least dm_crypt is available.
-
-# if they're not found:
-sudo modprobe rbd
-sudo modprobe dm_crypt
-
-# Check if the unattended upgrade service is running
-systemctl status unattended-upgrades.service
-
-# Check cloud-init's network configuration 
-cat /etc/netplan/50-cloud-init.yaml
-cat /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg
-
-# Look at the state of the network.
-# You may need to `sudo reboot` for Wi-Fi to be enabled but 
-# make sure you've allowed enough time for cloud-init to 
-# finish configuring your instance.
-sudo lshw -c network
-ip addr show | grep wlan0
-```
-
 ### Accessing a Pi
 
 !!! tip
@@ -484,6 +445,37 @@ ssh pi@node-01 # hostname or IP address
 If you want to use the IP address, find your board's IP in your router's admin UI or by going over the list of all devices on your network with `arp -a`.
 
 If you see a welcome message with `System restart required`, `sudo reboot` and ssh again.
+
+### Verifying correctness
+
+Once cloud-init is done launching our instance, check a few things to make sure everything went smoothly.
+
+Access your pi via ssh as explained [here](#accessing-a-pi).
+
+```sh title="On your Pi"
+# Verify your kernel is built with the modules you need for Ceph RBD (RADOS Block Device) and for disk encryption. 
+# It's OK if they're not currently being used (a zero in the third column of the results). They just need to be loaded.
+lsmod | grep -iE 'rbd|ceph' # verify that at least rbd is available.
+lsmod | grep -iE 'crypto|dm_crypt|aes' # verify that at least dm_crypt is available.
+
+# if they're not found:
+sudo modprobe rbd
+sudo modprobe dm_crypt
+
+# Check if the unattended upgrade service is running
+systemctl status unattended-upgrades.service
+
+# Check cloud-init's network configuration 
+cat /etc/netplan/50-cloud-init.yaml
+cat /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg
+
+# Look at the state of the network.
+# You may need to `sudo reboot` for Wi-Fi to be enabled but 
+# make sure you've allowed enough time for cloud-init to 
+# finish configuring your instance.
+sudo lshw -c network
+ip addr show | grep wlan0
+```
 
 ## Troubleshooting
 

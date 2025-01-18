@@ -1452,6 +1452,13 @@ resolvectl<span class="w"> </span>status
 <div class="highlight"><pre><span></span><code><span class="c1"># Check if packages were installed</span>
 sudo<span class="w"> </span>cat<span class="w"> </span>/var/log/apt/history.log
 </code></pre></div>
+<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code><span class="c1"># Check if there were any cloud-init errors</span>
+sudo<span class="w"> </span>cat<span class="w"> </span>/var/log/cloud-init.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>failures
+sudo<span class="w"> </span>cat<span class="w"> </span>/var/log/cloud-init-output.log
+
+<span class="c1"># Check available storage space with </span>
+df<span class="w"> </span>-h
+</code></pre></div>
 <h2 id="learn-about-electronics">Learn about electronics<a class="headerlink" href="#learn-about-electronics" title="Permanent link">#</a></h2>
 <p>I've added some sample code from the <a href="https://magpi.raspberrypi.com/books/essentials-gpio-zero-v1">MagPi Essentials book</a>.<br />
 <a href="https://github.com/santisbon/reference/tree/main/assets/SBC">Sample code</a></p>

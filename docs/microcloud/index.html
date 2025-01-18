@@ -947,27 +947,21 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Flashing OS images">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#verification" class="md-nav__link">
-    <span class="md-ellipsis">
-      Verification
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
         
           <li class="md-nav__item">
   <a href="#accessing-a-pi" class="md-nav__link">
     <span class="md-ellipsis">
       Accessing a Pi
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verifying-correctness" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verifying correctness
     </span>
   </a>
   
@@ -1398,24 +1392,31 @@ Ubuntu <strong>Server</strong> installations default to the <strong>GA</strong> 
 <p>If using a SATA SSD make sure the cable/adapter has an <strong>ASMedia</strong> chipset so it will work properly with Raspberry Pi.</p>
 </div>
 <h2 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link">#</a></h2>
-<p>Follow these steps to set up the Raspberry Pi devices. When an instruction tells you to power on the Pi you can either plug it in to power or flip the power supply switch to <em>On</em> if you have one.</p>
+<p>Follow these steps to set up your homelab. When an instruction tells you to power on the Pi you can either plug it in to power or flip the power supply switch to <em>On</em> if you have one.</p>
 <ol start="0">
 <li>Assemble your cluster according to your case's instructions. Plug the Raspberry Pis to your home network with the ethernet cables.</li>
 <li>If you don't have an ssh key, <a href="https://www.ssh.com/academy/ssh/keygen">generate one</a> on macOS/Linux with <code>ssh-keygen -t ed25519</code>.  </li>
 <li>Download the OS image with <a href="#getting-os-images">these instructions</a>.</li>
 <li>Set up each of the Pis to boot from SSD.<ol>
-<li>Use <a href="https://www.raspberrypi.com/software/">Raspberry Pi Imager</a> to flash the <strong>USB Boot</strong> utility image onto the microSD card. 
+<li>Use <a href="https://www.raspberrypi.com/software/">Raspberry Pi Imager</a> to flash the <strong>USB Boot</strong> utility image onto the microSD card. You can install it on your Mac with: 
     <div class="highlight"><pre><span></span><code>brew<span class="w"> </span>install<span class="w"> </span>--cask<span class="w"> </span>raspberry-pi-imager
 </code></pre></div>
-    It's in Operating System &gt; CHOOSE OS &gt; Misc utility images &gt; Bootloader &gt; USB Boot.</li>
+    The USB Boot utility is in Operating System &gt; CHOOSE OS &gt; Misc utility images &gt; Bootloader &gt; USB Boot.</li>
 <li>Insert the card into the Pi, turn it on so the Pi flashes the bootloader from the card. When it's done the green LED will start blinking.</li>
 <li>Turn off the Pi and remove the card.    </li>
 </ol>
 </li>
-<li>For each SSD flash your desired OS image to the SSD as explained <a href="#flashing-os-images">here</a>.</li>
-<li>For each Pi/SSD remove the SSD from your laptop and plug it into a USB 3.0 port on your Pi which <strong>should be connected to your router with an ethernet cable</strong>. The Wi-Fi won't be available until everything has finished configuring and you manually do a required system restart.</li>
-<li>Turn on your Pis.</li>
-<li><a href="#accessing-a-pi">Connect</a> to your Pis over ssh and check available storage space with <code>df -h</code>.</li>
+<li>For each Pi/SSD:<ol>
+<li><a href="#flashing-os-images">Flash the OS image</a> to the SSD. </li>
+<li>Make sure the Pi is connected to your router/switch with an ethernet cable.</li>
+<li>Remove the SSD from your laptop and plug it into a USB 3.0 port on your Pi. </li>
+</ol>
+</li>
+<li>Turn on your Pis. They have a lot of work to do on the first boot and it takes several minutes as cloud-init automatically upgrades packages, configures our systems, and installs any software we specified.<br />
+    You'll be able to go in as soon as the SSH service is up but it will probably still be in the process of setting everything up.<br />
+    Go make yourself a cup of tea before accessing your Pis for the first time. If you also set up the Wi-Fi connection it won't be available until everything has finished configuring and you manually do a required system restart.</li>
+<li><a href="#accessing-a-pi">Connect</a> to your Pis over ssh.</li>
+<li><a href="#verifying-correctness">Verify</a> everything went smoothly.</li>
 </ol>
 <h2 id="appendix">APPENDIX<a class="headerlink" href="#appendix" title="Permanent link">#</a></h2>
 <h3 id="getting-os-images">Getting OS images<a class="headerlink" href="#getting-os-images" title="Permanent link">#</a></h3>
@@ -1586,42 +1587,6 @@ sed<span class="w"> </span>-i<span class="w"> </span><span class="s2">&quot;&quo
 <div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code>diskutil<span class="w"> </span>unmountDisk<span class="w"> </span><span class="nv">$DEVICE</span>
 </code></pre></div></p>
 <p>🎉 <strong>You're done!</strong> 🍾  </p>
-<p>Since we pre-configured everything it has a lot of work to do on the first boot and it takes several minutes. You'll be able to go in as soon as the SSH service is up but it will probably still be in the process of upgrading packages as well as installing and configuring our software.  </p>
-<p>Go make yourself a cup of tea before accessing your Pis for the first time.</p>
-<h4 id="verification">Verification<a class="headerlink" href="#verification" title="Permanent link">#</a></h4>
-<p>Once cloud-init is done launching our instance, check a few things to make sure everything went smoothly.</p>
-<p>Access your pi via ssh as explained <a href="#accessing-a-pi">here</a>.</p>
-<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code><span class="c1"># Check if there were any cloud-init errors</span>
-sudo<span class="w"> </span>cat<span class="w"> </span>/var/log/cloud-init.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>failures
-sudo<span class="w"> </span>cat<span class="w"> </span>/var/log/cloud-init-output.log
-</code></pre></div>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>If anything failed to install or commands ran into errors, run it again manually.</p>
-</div>
-<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code><span class="c1"># Verify your kernel is built with the modules you need for Ceph RBD (RADOS Block Device) and for disk encryption. </span>
-<span class="c1"># It&#39;s OK if they&#39;re not currently being used (a zero in the third column of the results). They just need to be loaded.</span>
-lsmod<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-iE<span class="w"> </span><span class="s1">&#39;rbd|ceph&#39;</span><span class="w"> </span><span class="c1"># verify that at least rbd is available.</span>
-lsmod<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-iE<span class="w"> </span><span class="s1">&#39;crypto|dm_crypt|aes&#39;</span><span class="w"> </span><span class="c1"># verify that at least dm_crypt is available.</span>
-
-<span class="c1"># if they&#39;re not found:</span>
-sudo<span class="w"> </span>modprobe<span class="w"> </span>rbd
-sudo<span class="w"> </span>modprobe<span class="w"> </span>dm_crypt
-
-<span class="c1"># Check if the unattended upgrade service is running</span>
-systemctl<span class="w"> </span>status<span class="w"> </span>unattended-upgrades.service
-
-<span class="c1"># Check cloud-init&#39;s network configuration </span>
-cat<span class="w"> </span>/etc/netplan/50-cloud-init.yaml
-cat<span class="w"> </span>/etc/cloud/cloud.cfg.d/99-disable-network-config.cfg
-
-<span class="c1"># Look at the state of the network.</span>
-<span class="c1"># You may need to `sudo reboot` for Wi-Fi to be enabled but </span>
-<span class="c1"># make sure you&#39;ve allowed enough time for cloud-init to </span>
-<span class="c1"># finish configuring your instance.</span>
-sudo<span class="w"> </span>lshw<span class="w"> </span>-c<span class="w"> </span>network
-ip<span class="w"> </span>addr<span class="w"> </span>show<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>wlan0
-</code></pre></div>
 <h3 id="accessing-a-pi">Accessing a Pi<a class="headerlink" href="#accessing-a-pi" title="Permanent link">#</a></h3>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
@@ -1652,6 +1617,32 @@ The first time you access it you'll get asked about adding the key fingerprint t
 </code></pre></div></p>
 <p>If you want to use the IP address, find your board's IP in your router's admin UI or by going over the list of all devices on your network with <code>arp -a</code>.</p>
 <p>If you see a welcome message with <code>System restart required</code>, <code>sudo reboot</code> and ssh again.</p>
+<h3 id="verifying-correctness">Verifying correctness<a class="headerlink" href="#verifying-correctness" title="Permanent link">#</a></h3>
+<p>Once cloud-init is done launching our instance, check a few things to make sure everything went smoothly.</p>
+<p>Access your pi via ssh as explained <a href="#accessing-a-pi">here</a>.</p>
+<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code><span class="c1"># Verify your kernel is built with the modules you need for Ceph RBD (RADOS Block Device) and for disk encryption. </span>
+<span class="c1"># It&#39;s OK if they&#39;re not currently being used (a zero in the third column of the results). They just need to be loaded.</span>
+lsmod<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-iE<span class="w"> </span><span class="s1">&#39;rbd|ceph&#39;</span><span class="w"> </span><span class="c1"># verify that at least rbd is available.</span>
+lsmod<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-iE<span class="w"> </span><span class="s1">&#39;crypto|dm_crypt|aes&#39;</span><span class="w"> </span><span class="c1"># verify that at least dm_crypt is available.</span>
+
+<span class="c1"># if they&#39;re not found:</span>
+sudo<span class="w"> </span>modprobe<span class="w"> </span>rbd
+sudo<span class="w"> </span>modprobe<span class="w"> </span>dm_crypt
+
+<span class="c1"># Check if the unattended upgrade service is running</span>
+systemctl<span class="w"> </span>status<span class="w"> </span>unattended-upgrades.service
+
+<span class="c1"># Check cloud-init&#39;s network configuration </span>
+cat<span class="w"> </span>/etc/netplan/50-cloud-init.yaml
+cat<span class="w"> </span>/etc/cloud/cloud.cfg.d/99-disable-network-config.cfg
+
+<span class="c1"># Look at the state of the network.</span>
+<span class="c1"># You may need to `sudo reboot` for Wi-Fi to be enabled but </span>
+<span class="c1"># make sure you&#39;ve allowed enough time for cloud-init to </span>
+<span class="c1"># finish configuring your instance.</span>
+sudo<span class="w"> </span>lshw<span class="w"> </span>-c<span class="w"> </span>network
+ip<span class="w"> </span>addr<span class="w"> </span>show<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>wlan0
+</code></pre></div>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">#</a></h2>
 <ul>
 <li>I see <code>cloud-init</code> had failures.<br />

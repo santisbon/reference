@@ -335,6 +335,15 @@ If `modprobe` shows 'not found' install the extra kernel modules package for you
 sudo cat /var/log/apt/history.log
 ```
 
+```sh title="On your Pi"
+# Check if there were any cloud-init errors
+sudo cat /var/log/cloud-init.log | grep failures
+sudo cat /var/log/cloud-init-output.log
+
+# Check available storage space with 
+df -h
+```
+
 ## Learn about electronics
 
 I've added some sample code from the [MagPi Essentials book](https://magpi.raspberrypi.com/books/essentials-gpio-zero-v1).  
