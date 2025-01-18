@@ -1,45 +1,119 @@
 # Raspberry Pi  
 
-## Usage
+## SSD as Additional Storage
 
-### Access your Pi
+!!! important
+    If using a SATA SSD make sure the cable/adapter has an **ASMedia** chipset so it will work properly with Raspberry Pi.
 
-!!! tip
+If you have an additional SSD you'll need to:
 
-    **Before connecting to your Pi**  
-    If it's not already running, start the `ssh-agent` in the background and add your private key to it so you're not asked for your passphrase every time.
-    ```sh title="On your laptop"
-    # is it running?
-    ps -ax | grep ssh-agent
-    # which identities have been added?
-    ssh-add -l
+1. Choose a partition manipulation program
+    * [GNU Parted](https://www.gnu.org/software/parted/manual/parted.html) (`parted`) is probably already installed and ready to use from the command line. 
+    * [GParted](https://thepihut.com/blogs/raspberry-pi-tutorials/how-to-set-up-an-ssd-with-the-raspberry-pi) - If you have a desktop environment you can use this graphical frontend. Install with `sudo apt install gparted`.
+2. Create a partition table (aka disklabel). The default partition table type is `msdos` for disks smaller than 2 Tebibytes in size (assuming a 512 byte sector size) and `gpt` for disks 2 Tebibytes and larger.
+3. Create partition(s) and file system(s).
+4. Find the file system's UUID.
+5. Create a directory for mounting the SSD.
+6. Set up automatic SSD mounting, mount the SSD, reboot to test.
 
-    # start the agent and add your identity
-    eval "$(ssh-agent -s)"
-    ssh-add --apple-use-keychain ~/.ssh/id_ed25519
+Example with `parted`:
+```sh
+cat /sys/block/sda/queue/optimal_io_size
+# 33553920
+cat /sys/block/sda/queue/minimum_io_size
+# 512
+cat /sys/block/sda/alignment_offset
+# 0
+cat /sys/block/sda/queue/physical_block_size
+# 512
+
+sudo parted
+
+(parted) print devices # you should see your SSD e.g. /dev/sda (240GB)
+(parted) select /dev/sda # whatever name your SSD device has
+(parted) mklabel msdos 
+
+# Add optimal_io_size to alignment_offset and divide the result by physical_block_size.
+# This number is the sector at which the partition should start. Here it ends in the last sector.
+# Example:
+(parted) mkpart primary ext4 65535s -1s
+
+(parted) print list
+(parted) align-check optimal 1 # or whatever number your partition has
+# 1 aligned 
+(parted) quit
+
+# Make the filesystem with a volume label on partition 1 (or whatever number yours has)
+sudo mkfs.ext4 -L WDSSD -c /dev/sda1
+# Filesystem UUID is displayed but you can also find it with:
+sudo lsblk -o UUID,NAME,FSTYPE,SIZE,MOUNTPOINT,LABEL,MODEL
+
+mkdir wdssd
+sudo chown pi:pi -R /home/pi/wdssd/
+sudo chmod a+rwx /home/pi/wdssd/
+sudo nano /etc/fstab
+# At the end of the file that opens, add a new line containing the UUID and mounting directory
+# UUID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx /home/pi/wdssd/ ext4 defaults,auto,users,rw,nofail 0 0
+```
+
+## Resizing a root partition
+
+By default the root partition will consume all the available space. If you have an SSD you may want to set up partitions appropriately for things like a Ceph cluster. You can't shrink a system partition while it's being used so **we'll create our own GParted bootable USB drive**. This is because the GParted Live image available for download is only for x86-based architectures like amd64. Both the Pi and Apple Silicon Macs are arm64.
+
+1. Put a microSD card in a USB adapter and flash a Linux distribution with a desktop GUI.
+
+    !!! danger
+        Make sure you got the right device name. All data on the device will be lost.
+
+    ```sh title="On your laptop" 
+    diskutil list
+    diskutil zeroDisk short /dev/disk5
+    ```
+    ```sh
+    ###################################################################
+    # REPLACE WITH YOUR VALUES
+    ###################################################################
+    IMAGE='ubuntu-22.04.3-preinstalled-desktop-arm64+raspi.img' 
+    DEVICE='/dev/disk5' 
+    ###################################################################
+
+    # Unmount the card
+    diskutil unmountDisk $DEVICE
+
+    cd ~/Downloads
+    # sudo dd if=$IMAGE of=$DEVICE bs=1m status=progress
+    pv $IMAGE | sudo dd bs=1m of=$DEVICE
+    ```
+    ```sh
+    diskutil unmountDisk $DEVICE
     ```
 
-If you're **reinstalling** the OS you might need to remove old key fingerprints belonging to that hostname from your `known_hosts` file. Example:
-```sh title="On your laptop"
-ssh-keygen  -f ~/.ssh/known_hosts -R raspberrypi4b.local
-```
+2. After setting up your Pi with the USB bootloader (see the *Boot from SSD* section), connect the SSD to your Pi using a USB 3.0 port.
+3. Allow time for cloud-init to finish configuring your SSD and connect to it via SSH for a required `sudo reboot`.
+4. Connect via SSH again and `sudo shutdown -h now`.
+5. Disconnect the SSD and connect the GParted USB to a USB 3.0 port, a monitor or TV, a mouse, and a keyboard. Turn on your Pi.
+6. After setting up the OS, install GParted.
+    ```sh title="On your Pi" 
+    sudo apt update
+    sudo apt upgrade
+    sudo apt install gparted
+    ```
+7. Connect the SSD to the other USB 3.0 port and open GParted. Hit *Refresh devices* if needed. Select the SSD e.g. `/dev/sdb`.
+8. Right-click on the root ext4 partition e.g. `/dev/sdb2` (it should already be unmounted) and select and apply these operations.
+    1. Check the root partition.
+    2. Resize it to 64 Gi (65,536 Mi) or desired size.
+    3. Create unformatted partition in the unallocated space.
+    4. Check the root partition again.
+9. Turn off the Pi. Disconnect the GParted USB, keep the SSD connected and turn it on.
 
-Find your board's IP in your router's admin UI or by going over the list of all devices on your network with `arp -a`.
+**Alternatively**, you can use `parted` to set up/resize the SSD partitions and file systems as desired. For example, leave a raw partition (no formatted filesystem) for use by a Ceph storage cluster.  
 
-SSH into it with the configured user e.g. `pi` and the IP address or hostname. Examples:
-```sh title="On your laptop"
-ssh pi@raspberrypi4b.local
-# or
-ssh pi@192.168.xxx.xxx
-```
+1. [Resize the filesystem](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/managing_file_systems/getting-started-with-an-ext4-file-system_managing-file-systems#resizing-an-ext4-file-system_getting-started-with-an-ext4-file-system).
+2. If needed, [shrink the partition](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/managing_file_systems/partition-operations-with-parted_managing-file-systems#proc_resizing-a-partition-with-parted_partition-operations-with-parted) to leave space to be used by Ceph.
 
-Update the password for default users like `pi`, `orangepi`, `ubuntu`, etc. Examples:
-```sh title="On your Pi"
-sudo passwd root
-sudo passwd pi
-```
+Repeat for each node in your cluster.
 
-### Upgrade
+## Upgrade
 
 * `upgrade` is used to install available upgrades of all packages currently installed on the system. New packages will be installed if required to satisfy dependencies, but existing packages will never be removed. If an upgrade for a package requires the removal of an installed package the upgrade for this package isn't performed.  
 * `full-upgrade` performs the function of upgrade but will remove currently installed packages if this is needed to upgrade the system as a whole.
@@ -49,7 +123,7 @@ sudo apt update # updates the package list
 sudo apt full-upgrade
 ```
 
-### Authentication
+## Authentication
 
 If you **didn't do so during setup with cloud-init or manually**, generate and add an ssh key.
 ```sh title="On your laptop"
@@ -73,7 +147,13 @@ sudo service sshd restart
 sudo service sshd status
 ```
 
-### Board-specific tools
+If you ever need to update the password for default users like `pi`, `orangepi`, `ubuntu`, etc. you can use:
+```sh title="On your Pi"
+sudo passwd root
+sudo passwd pi
+```
+
+## Board-specific tools
 
 #### Raspberry Pi
 
@@ -102,7 +182,7 @@ nmcli dev wifi connect wifi_name password wifi_passwd
 
 To set a static IP on Orange Pi see the [user manual](http://www.orangepi.org/html/hardWare/computerAndMicrocontrollers/service-and-support/Orange-Pi-3B.html) for instructions on using the `nmtui` command.
 
-### Remote GUI access
+## Remote GUI access
 *If you installed a graphical desktop*
 
 You'll need a VNC viewer on your laptop to connect to the Pi using the graphical interface.
@@ -122,7 +202,7 @@ brew install --cask vnc-viewer
     python3 -m pygame.examples.aliens
     ```
 
-### To give it a static IP
+## To give it a static IP
 
 #### Option A: The router
 
@@ -154,19 +234,19 @@ static domain_name_servers=[DNS IP]
 
 Save the file and `sudo reboot`. From now on, upon each boot, the Pi will attempt to obtain the static ip address you requested.  
 
-### To set it up as a DNS server
+## To set it up as a DNS server
 0. Install and configure a DNS Server e.g. DNSmasq or Pi-Hole on the Pi.
 1. Change your router’s DNS settings to point to the Pi. Log in to your router's admin interface and look for DNS e.g. in **LAN** -> **DHCP Server**. Set the primary DNS server to the IP of your Pi and make sure it's the only DNS server. The Pi will handle upstream DNS services.
 
 
-### Copying files
+## Copying files
 
 To copy files between the Pi and local machine
 ```sh title="On your laptop"
 scp -r pi@raspberrypi2.local:/home/pi/Documents/ ~/Documents/pidocs
 ```
 
-### Find info about your Pi
+## Find info about your Pi
 
 You can find info about the hardware like ports, pins, RAM, SoC, connectivity, etc. with:
 ```sh title="On your Pi"
@@ -226,7 +306,7 @@ Or check the architecture with:
 hostnamectl
 ```
 
-### Troubleshooting
+## Troubleshooting
 
 If your Pi's ethernet port is capable of 1Gbps, you're using a cat5e cable or better, your router and switch support 1Gbps,  and you're still only getting 100Mbps **first try with another cable**. A faulty cable is the most common cause of problems like this. If that doesn't work you can try disabling EEE (Energy Efficient Ethernet) although it will be reenabled at reboot. You could also try setting the speed manually.
 ```sh title="On your Pi"
@@ -248,7 +328,14 @@ cat /etc/resolv.conf
 resolvectl status
 ```
 
-### Learn about electronics
+If `modprobe` shows 'not found' install the extra kernel modules package for your kernel release, rebuild the kernel to include the modules you need, install a newer kernel, or choose a different Linux distribution.
+
+```sh
+# Check if packages were installed
+sudo cat /var/log/apt/history.log
+```
+
+## Learn about electronics
 
 I've added some sample code from the [MagPi Essentials book](https://magpi.raspberrypi.com/books/essentials-gpio-zero-v1).  
 [Sample code](https://github.com/santisbon/reference/tree/main/assets/SBC)
@@ -256,16 +343,3 @@ I've added some sample code from the [MagPi Essentials book](https://magpi.raspb
 #### GPIO Header
 
 ![GPIO](https://i.imgur.com/3Zroadt.jpg)
-
-## Troubleshooting
-
-* I see `cloud-init` had failures.  
-    Based on the `user-data` file:
-    Manually run `sudo apt update`, `sudo apt full-upgrade`.  
-    Manually run `sudo apt install` on any packages that failed.  
-    Manually add any kernel modules you need and make sure `/etc/modules-load.d/modules.conf` has them so they'll be added on every boot.
-* I'm not sure cgroups are enabled.  
-    Check with 
-    ```sh
-    cat /proc/cgroups
-    ```

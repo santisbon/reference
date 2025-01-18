@@ -13,7 +13,9 @@ The goal for this guide is to make our homelab:
     - Software-defined networking.
 - **Open source**.
 
-## Background and Terminology
+This project will sometimes refer to the appendix which has instructions on performing tasks used commonly in any Raspberry Pi projects, not just this one.
+
+## Background
 
 Quick overview of the technologies we'll work with. Based on  and summarized from materials compiled from different places in the Canonical documentation sites for Ubuntu, MicroCloud, MicroK8s, LXD, Ceph, and OVN.  
 Reference: [Canonical](https://canonical.com)
@@ -171,7 +173,7 @@ NICs that can be added using the `nictype` option only.
 - `routed`: Creates a virtual device pair to connect the host to the instance and sets up static routes and proxy ARP/NDP entries to allow the instance to join the network of a designated parent interface.
 
 
-## Hardware
+## Our hardware
 
 ![RPi](https://assets.raspberrypi.com/static/raspberry-pi-4-labelled@2x-1c8c2d74ade597b9c9c7e9e2fff16dd4.png)
 
@@ -206,7 +208,7 @@ Follow these steps to set up the Raspberry Pi devices. When an instruction tells
 4. For each SSD flash your desired OS image to the SSD as explained [here](#flashing-os-images).
 5. For each Pi/SSD remove the SSD from your laptop and plug it into a USB 3.0 port on your Pi which **should be connected to your router with an ethernet cable**. The Wi-Fi won't be available until everything has finished configuring and you manually do a required system restart.
 6. Turn on your Pis.
-7. Connect to your Pis over ssh and check available storage space with `df -h`.
+7. [Connect](#accessing-a-pi) to your Pis over ssh and check available storage space with `df -h`.
 
 ## APPENDIX
 
@@ -405,15 +407,13 @@ diskutil unmountDisk $DEVICE
 
 Since we pre-configured everything it has a lot of work to do on the first boot and it takes several minutes. You'll be able to go in as soon as the SSH service is up but it will probably still be in the process of upgrading packages as well as installing and configuring our software.  
 
-Go make yourself a cup of tea before [connecting](#access-your-pi) for the first time.
+Go make yourself a cup of tea before accessing your Pis for the first time.
 
 #### Verification
 
 Once cloud-init is done launching our instance, check a few things to make sure everything went smoothly.
-```sh title="On your laptop"
-ssh pi@$IP_ADDRESS_OF_YOUR_PI
-```
-If you see a welcome message with `System restart required`, `sudo reboot` and ssh again.
+
+Access your pi via ssh as explained [here](#accessing-a-pi).
 
 ```sh title="On your Pi"
 # Check if there were any cloud-init errors
@@ -425,20 +425,16 @@ sudo cat /var/log/cloud-init-output.log
     If anything failed to install or commands ran into errors, run it again manually.
 
 ```sh title="On your Pi"
-# Verify your kernel is built with the modules you need. If modprobe shows 'not found' install the extra kernel modules package for your kernel release, rebuild the kernel to include the modules you need, install a newer kernel, or choose a different Linux distribution.
-lsmod | grep rbd
-# if it's not enabled:
+# Verify your kernel is built with the modules you need for Ceph RBD (RADOS Block Device) and for disk encryption. 
+# It's OK if they're not currently being used (a zero in the third column of the results). They just need to be loaded.
+lsmod | grep -iE 'rbd|ceph' # verify that at least rbd is available.
+lsmod | grep -iE 'crypto|dm_crypt|aes' # verify that at least dm_crypt is available.
+
+# if they're not found:
 sudo modprobe rbd
+sudo modprobe dm_crypt
 
-lsmod | grep dm-crypt
-# if it's not enabled:
-sudo modprobe dm-crypt
-
-# Check if packages were installed
-apt list --installed | grep linux-modules-extra-$(uname -r)
-sudo cat /var/log/apt/history.log
-
-# Check if a service is running
+# Check if the unattended upgrade service is running
 systemctl status unattended-upgrades.service
 
 # Check cloud-init's network configuration 
@@ -453,118 +449,54 @@ sudo lshw -c network
 ip addr show | grep wlan0
 ```
 
-### SSD as Additional Storage
+### Accessing a Pi
 
-!!! important
-    If using a SATA SSD make sure the cable/adapter has an **ASMedia** chipset so it will work properly with Raspberry Pi.
+!!! tip
 
-If you have an additional SSD you'll need to:
+    **Before connecting to your Pi**  
+    If it's not already running, start the `ssh-agent` in the background and add your private key to it so you're not asked for your passphrase every time.
+    ```sh title="On your laptop"
+    # is it running?
+    ps -ax | grep ssh-agent
+    # which identities have been added?
+    ssh-add -l
 
-1. Choose a partition manipulation program
-    * [GNU Parted](https://www.gnu.org/software/parted/manual/parted.html) (`parted`) is probably already installed and ready to use from the command line. 
-    * [GParted](https://thepihut.com/blogs/raspberry-pi-tutorials/how-to-set-up-an-ssd-with-the-raspberry-pi) - If you have a desktop environment you can use this graphical frontend. Install with `sudo apt install gparted`.
-2. Create a partition table (aka disklabel). The default partition table type is `msdos` for disks smaller than 2 Tebibytes in size (assuming a 512 byte sector size) and `gpt` for disks 2 Tebibytes and larger.
-3. Create partition(s) and file system(s).
-4. Find the file system's UUID.
-5. Create a directory for mounting the SSD.
-6. Set up automatic SSD mounting, mount the SSD, reboot to test.
+    # start the agent and add your identity
+    eval "$(ssh-agent -s)"
+    ssh-add --apple-use-keychain ~/.ssh/id_ed25519
+    ```
 
-Example with `parted`:
-```sh
-cat /sys/block/sda/queue/optimal_io_size
-# 33553920
-cat /sys/block/sda/queue/minimum_io_size
-# 512
-cat /sys/block/sda/alignment_offset
-# 0
-cat /sys/block/sda/queue/physical_block_size
-# 512
+!!! attention
+    If you're **reinstalling** the OS you might need to remove old key fingerprints belonging to that hostname from your `known_hosts` file.  
+    Examples:
+    ```sh title="On your laptop"
+    ssh-keygen  -f ~/.ssh/known_hosts -R 192.168.xxx.xxx
+    ssh-keygen  -f ~/.ssh/known_hosts -R node-01
+    ssh-keygen  -f ~/.ssh/known_hosts -R raspberrypi4b.local
+    ```
 
-sudo parted
-
-(parted) print devices # you should see your SSD e.g. /dev/sda (240GB)
-(parted) select /dev/sda # whatever name your SSD device has
-(parted) mklabel msdos 
-
-# Add optimal_io_size to alignment_offset and divide the result by physical_block_size.
-# This number is the sector at which the partition should start. Here it ends in the last sector.
-# Example:
-(parted) mkpart primary ext4 65535s -1s
-
-(parted) print list
-(parted) align-check optimal 1 # or whatever number your partition has
-# 1 aligned 
-(parted) quit
-
-# Make the filesystem with a volume label on partition 1 (or whatever number yours has)
-sudo mkfs.ext4 -L WDSSD -c /dev/sda1
-# Filesystem UUID is displayed but you can also find it with:
-sudo lsblk -o UUID,NAME,FSTYPE,SIZE,MOUNTPOINT,LABEL,MODEL
-
-mkdir wdssd
-sudo chown pi:pi -R /home/pi/wdssd/
-sudo chmod a+rwx /home/pi/wdssd/
-sudo nano /etc/fstab
-# At the end of the file that opens, add a new line containing the UUID and mounting directory
-# UUID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx /home/pi/wdssd/ ext4 defaults,auto,users,rw,nofail 0 0
+SSH into it with the configured user e.g. `pi` and hostname or IP address.  
+The first time you access it you'll get asked about adding the key fingerprint to the list of known hosts. Choose `yes`.
+```sh title="On your laptop"
+ssh pi@node-01 # hostname or IP address
 ```
 
-### Resizing a root partition
+If you want to use the IP address, find your board's IP in your router's admin UI or by going over the list of all devices on your network with `arp -a`.
 
-By default the root partition will consume all the available space. If you have an SSD you may want to set up partitions appropriately for things like a Ceph cluster. You can't shrink a system partition while it's being used so **we'll create our own GParted bootable USB drive**. This is because the GParted Live image available for download is only for x86-based architectures like amd64. Both the Pi and Apple Silicon Macs are arm64.
+If you see a welcome message with `System restart required`, `sudo reboot` and ssh again.
 
-1. Put a microSD card in a USB adapter and flash a Linux distribution with a desktop GUI.
+## Troubleshooting
 
-    !!! danger
-        Make sure you got the right device name. All data on the device will be lost.
-
-    ```sh title="On your laptop" 
-    diskutil list
-    diskutil zeroDisk short /dev/disk5
-    ```
+* I see `cloud-init` had failures.  
+    Based on the `user-data` file:
+    Manually run `sudo apt update`, `sudo apt full-upgrade`.  
+    Manually run `sudo apt install` on any packages that failed.  
+    Manually add any kernel modules you need and make sure `/etc/modules-load.d/modules.conf` has them so they'll be added on every boot.
+* I'm not sure cgroups are enabled.  
+    Check with 
     ```sh
-    ###################################################################
-    # REPLACE WITH YOUR VALUES
-    ###################################################################
-    IMAGE='ubuntu-22.04.3-preinstalled-desktop-arm64+raspi.img' 
-    DEVICE='/dev/disk5' 
-    ###################################################################
-
-    # Unmount the card
-    diskutil unmountDisk $DEVICE
-
-    cd ~/Downloads
-    # sudo dd if=$IMAGE of=$DEVICE bs=1m status=progress
-    pv $IMAGE | sudo dd bs=1m of=$DEVICE
+    cat /proc/cgroups
     ```
-    ```sh
-    diskutil unmountDisk $DEVICE
-    ```
-
-2. After setting up your Pi with the USB bootloader (see the *Boot from SSD* section), connect the SSD to your Pi using a USB 3.0 port.
-3. Allow time for cloud-init to finish configuring your SSD and connect to it via SSH for a required `sudo reboot`.
-4. Connect via SSH again and `sudo shutdown -h now`.
-5. Disconnect the SSD and connect the GParted USB to a USB 3.0 port, a monitor or TV, a mouse, and a keyboard. Turn on your Pi.
-6. After setting up the OS, install GParted.
-    ```sh title="On your Pi" 
-    sudo apt update
-    sudo apt upgrade
-    sudo apt install gparted
-    ```
-7. Connect the SSD to the other USB 3.0 port and open GParted. Hit *Refresh devices* if needed. Select the SSD e.g. `/dev/sdb`.
-8. Right-click on the root ext4 partition e.g. `/dev/sdb2` (it should already be unmounted) and select and apply these operations.
-    1. Check the root partition.
-    2. Resize it to 64 Gi (65,536 Mi) or desired size.
-    3. Create unformatted partition in the unallocated space.
-    4. Check the root partition again.
-9. Turn off the Pi. Disconnect the GParted USB, keep the SSD connected and turn it on.
-
-**Alternatively**, you can use `parted` to set up/resize the SSD partitions and file systems as desired. For example, leave a raw partition (no formatted filesystem) for use by a Ceph storage cluster.  
-
-1. [Resize the filesystem](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/managing_file_systems/getting-started-with-an-ext4-file-system_managing-file-systems#resizing-an-ext4-file-system_getting-started-with-an-ext4-file-system).
-2. If needed, [shrink the partition](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/managing_file_systems/partition-operations-with-parted_managing-file-systems#proc_resizing-a-partition-with-parted_partition-operations-with-parted) to leave space to be used by Ceph.
-
-Repeat for each node in your cluster.
 
 ## Notes
 

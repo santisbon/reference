@@ -781,13 +781,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#background-and-terminology" class="md-nav__link">
+  <a href="#background" class="md-nav__link">
     <span class="md-ellipsis">
-      Background and Terminology
+      Background
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Background and Terminology">
+    <nav class="md-nav" aria-label="Background">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -904,9 +904,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#hardware" class="md-nav__link">
+  <a href="#our-hardware" class="md-nav__link">
     <span class="md-ellipsis">
-      Hardware
+      Our hardware
     </span>
   </a>
   
@@ -965,18 +965,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#ssd-as-additional-storage" class="md-nav__link">
+  <a href="#accessing-a-pi" class="md-nav__link">
     <span class="md-ellipsis">
-      SSD as Additional Storage
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#resizing-a-root-partition" class="md-nav__link">
-    <span class="md-ellipsis">
-      Resizing a root partition
+      Accessing a Pi
     </span>
   </a>
   
@@ -984,6 +975,15 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Troubleshooting
+    </span>
+  </a>
   
 </li>
       
@@ -1028,7 +1028,8 @@
 </li>
 <li><strong>Open source</strong>.</li>
 </ul>
-<h2 id="background-and-terminology">Background and Terminology<a class="headerlink" href="#background-and-terminology" title="Permanent link">#</a></h2>
+<p>This project will sometimes refer to the appendix which has instructions on performing tasks used commonly in any Raspberry Pi projects, not just this one.</p>
+<h2 id="background">Background<a class="headerlink" href="#background" title="Permanent link">#</a></h2>
 <p>Quick overview of the technologies we'll work with. Based on  and summarized from materials compiled from different places in the Canonical documentation sites for Ubuntu, MicroCloud, MicroK8s, LXD, Ceph, and OVN.<br />
 Reference: <a href="https://canonical.com">Canonical</a></p>
 <h3 id="compute">Compute<a class="headerlink" href="#compute" title="Permanent link">#</a></h3>
@@ -1380,7 +1381,7 @@ Ubuntu <strong>Server</strong> installations default to the <strong>GA</strong> 
 <li><code>p2p</code>: Creates a virtual device pair, putting one side in the instance and leaving the other side on the host.</li>
 <li><code>routed</code>: Creates a virtual device pair to connect the host to the instance and sets up static routes and proxy ARP/NDP entries to allow the instance to join the network of a designated parent interface.</li>
 </ul>
-<h2 id="hardware">Hardware<a class="headerlink" href="#hardware" title="Permanent link">#</a></h2>
+<h2 id="our-hardware">Our hardware<a class="headerlink" href="#our-hardware" title="Permanent link">#</a></h2>
 <p><img alt="RPi" src="https://assets.raspberrypi.com/static/raspberry-pi-4-labelled@2x-1c8c2d74ade597b9c9c7e9e2fff16dd4.png" /></p>
 <p>You'll need:</p>
 <ul>
@@ -1414,7 +1415,7 @@ Ubuntu <strong>Server</strong> installations default to the <strong>GA</strong> 
 <li>For each SSD flash your desired OS image to the SSD as explained <a href="#flashing-os-images">here</a>.</li>
 <li>For each Pi/SSD remove the SSD from your laptop and plug it into a USB 3.0 port on your Pi which <strong>should be connected to your router with an ethernet cable</strong>. The Wi-Fi won't be available until everything has finished configuring and you manually do a required system restart.</li>
 <li>Turn on your Pis.</li>
-<li>Connect to your Pis over ssh and check available storage space with <code>df -h</code>.</li>
+<li><a href="#accessing-a-pi">Connect</a> to your Pis over ssh and check available storage space with <code>df -h</code>.</li>
 </ol>
 <h2 id="appendix">APPENDIX<a class="headerlink" href="#appendix" title="Permanent link">#</a></h2>
 <h3 id="getting-os-images">Getting OS images<a class="headerlink" href="#getting-os-images" title="Permanent link">#</a></h3>
@@ -1586,12 +1587,10 @@ sed<span class="w"> </span>-i<span class="w"> </span><span class="s2">&quot;&quo
 </code></pre></div></p>
 <p>🎉 <strong>You're done!</strong> 🍾  </p>
 <p>Since we pre-configured everything it has a lot of work to do on the first boot and it takes several minutes. You'll be able to go in as soon as the SSH service is up but it will probably still be in the process of upgrading packages as well as installing and configuring our software.  </p>
-<p>Go make yourself a cup of tea before <a href="#access-your-pi">connecting</a> for the first time.</p>
+<p>Go make yourself a cup of tea before accessing your Pis for the first time.</p>
 <h4 id="verification">Verification<a class="headerlink" href="#verification" title="Permanent link">#</a></h4>
-<p>Once cloud-init is done launching our instance, check a few things to make sure everything went smoothly.
-<div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code>ssh<span class="w"> </span>pi@<span class="nv">$IP_ADDRESS_OF_YOUR_PI</span>
-</code></pre></div>
-If you see a welcome message with <code>System restart required</code>, <code>sudo reboot</code> and ssh again.</p>
+<p>Once cloud-init is done launching our instance, check a few things to make sure everything went smoothly.</p>
+<p>Access your pi via ssh as explained <a href="#accessing-a-pi">here</a>.</p>
 <div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code><span class="c1"># Check if there were any cloud-init errors</span>
 sudo<span class="w"> </span>cat<span class="w"> </span>/var/log/cloud-init.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>failures
 sudo<span class="w"> </span>cat<span class="w"> </span>/var/log/cloud-init-output.log
@@ -1600,20 +1599,16 @@ sudo<span class="w"> </span>cat<span class="w"> </span>/var/log/cloud-init-outpu
 <p class="admonition-title">Important</p>
 <p>If anything failed to install or commands ran into errors, run it again manually.</p>
 </div>
-<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code><span class="c1"># Verify your kernel is built with the modules you need. If modprobe shows &#39;not found&#39; install the extra kernel modules package for your kernel release, rebuild the kernel to include the modules you need, install a newer kernel, or choose a different Linux distribution.</span>
-lsmod<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>rbd
-<span class="c1"># if it&#39;s not enabled:</span>
+<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code><span class="c1"># Verify your kernel is built with the modules you need for Ceph RBD (RADOS Block Device) and for disk encryption. </span>
+<span class="c1"># It&#39;s OK if they&#39;re not currently being used (a zero in the third column of the results). They just need to be loaded.</span>
+lsmod<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-iE<span class="w"> </span><span class="s1">&#39;rbd|ceph&#39;</span><span class="w"> </span><span class="c1"># verify that at least rbd is available.</span>
+lsmod<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-iE<span class="w"> </span><span class="s1">&#39;crypto|dm_crypt|aes&#39;</span><span class="w"> </span><span class="c1"># verify that at least dm_crypt is available.</span>
+
+<span class="c1"># if they&#39;re not found:</span>
 sudo<span class="w"> </span>modprobe<span class="w"> </span>rbd
+sudo<span class="w"> </span>modprobe<span class="w"> </span>dm_crypt
 
-lsmod<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>dm-crypt
-<span class="c1"># if it&#39;s not enabled:</span>
-sudo<span class="w"> </span>modprobe<span class="w"> </span>dm-crypt
-
-<span class="c1"># Check if packages were installed</span>
-apt<span class="w"> </span>list<span class="w"> </span>--installed<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>linux-modules-extra-<span class="k">$(</span>uname<span class="w"> </span>-r<span class="k">)</span>
-sudo<span class="w"> </span>cat<span class="w"> </span>/var/log/apt/history.log
-
-<span class="c1"># Check if a service is running</span>
+<span class="c1"># Check if the unattended upgrade service is running</span>
 systemctl<span class="w"> </span>status<span class="w"> </span>unattended-upgrades.service
 
 <span class="c1"># Check cloud-init&#39;s network configuration </span>
@@ -1627,118 +1622,48 @@ cat<span class="w"> </span>/etc/cloud/cloud.cfg.d/99-disable-network-config.cfg
 sudo<span class="w"> </span>lshw<span class="w"> </span>-c<span class="w"> </span>network
 ip<span class="w"> </span>addr<span class="w"> </span>show<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>wlan0
 </code></pre></div>
-<h3 id="ssd-as-additional-storage">SSD as Additional Storage<a class="headerlink" href="#ssd-as-additional-storage" title="Permanent link">#</a></h3>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>If using a SATA SSD make sure the cable/adapter has an <strong>ASMedia</strong> chipset so it will work properly with Raspberry Pi.</p>
-</div>
-<p>If you have an additional SSD you'll need to:</p>
-<ol>
-<li>Choose a partition manipulation program<ul>
-<li><a href="https://www.gnu.org/software/parted/manual/parted.html">GNU Parted</a> (<code>parted</code>) is probably already installed and ready to use from the command line. </li>
-<li><a href="https://thepihut.com/blogs/raspberry-pi-tutorials/how-to-set-up-an-ssd-with-the-raspberry-pi">GParted</a> - If you have a desktop environment you can use this graphical frontend. Install with <code>sudo apt install gparted</code>.</li>
-</ul>
-</li>
-<li>Create a partition table (aka disklabel). The default partition table type is <code>msdos</code> for disks smaller than 2 Tebibytes in size (assuming a 512 byte sector size) and <code>gpt</code> for disks 2 Tebibytes and larger.</li>
-<li>Create partition(s) and file system(s).</li>
-<li>Find the file system's UUID.</li>
-<li>Create a directory for mounting the SSD.</li>
-<li>Set up automatic SSD mounting, mount the SSD, reboot to test.</li>
-</ol>
-<p>Example with <code>parted</code>:
-<div class="highlight"><pre><span></span><code>cat<span class="w"> </span>/sys/block/sda/queue/optimal_io_size
-<span class="c1"># 33553920</span>
-cat<span class="w"> </span>/sys/block/sda/queue/minimum_io_size
-<span class="c1"># 512</span>
-cat<span class="w"> </span>/sys/block/sda/alignment_offset
-<span class="c1"># 0</span>
-cat<span class="w"> </span>/sys/block/sda/queue/physical_block_size
-<span class="c1"># 512</span>
+<h3 id="accessing-a-pi">Accessing a Pi<a class="headerlink" href="#accessing-a-pi" title="Permanent link">#</a></h3>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p><strong>Before connecting to your Pi</strong><br />
+If it's not already running, start the <code>ssh-agent</code> in the background and add your private key to it so you're not asked for your passphrase every time.
+<div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code><span class="c1"># is it running?</span>
+ps<span class="w"> </span>-ax<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>ssh-agent
+<span class="c1"># which identities have been added?</span>
+ssh-add<span class="w"> </span>-l
 
-sudo<span class="w"> </span>parted
-
-<span class="o">(</span>parted<span class="o">)</span><span class="w"> </span>print<span class="w"> </span>devices<span class="w"> </span><span class="c1"># you should see your SSD e.g. /dev/sda (240GB)</span>
-<span class="o">(</span>parted<span class="o">)</span><span class="w"> </span><span class="k">select</span><span class="w"> </span>/dev/sda<span class="w"> </span><span class="c1"># whatever name your SSD device has</span>
-<span class="o">(</span>parted<span class="o">)</span><span class="w"> </span>mklabel<span class="w"> </span>msdos<span class="w"> </span>
-
-<span class="c1"># Add optimal_io_size to alignment_offset and divide the result by physical_block_size.</span>
-<span class="c1"># This number is the sector at which the partition should start. Here it ends in the last sector.</span>
-<span class="c1"># Example:</span>
-<span class="o">(</span>parted<span class="o">)</span><span class="w"> </span>mkpart<span class="w"> </span>primary<span class="w"> </span>ext4<span class="w"> </span>65535s<span class="w"> </span>-1s
-
-<span class="o">(</span>parted<span class="o">)</span><span class="w"> </span>print<span class="w"> </span>list
-<span class="o">(</span>parted<span class="o">)</span><span class="w"> </span>align-check<span class="w"> </span>optimal<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="c1"># or whatever number your partition has</span>
-<span class="c1"># 1 aligned </span>
-<span class="o">(</span>parted<span class="o">)</span><span class="w"> </span>quit
-
-<span class="c1"># Make the filesystem with a volume label on partition 1 (or whatever number yours has)</span>
-sudo<span class="w"> </span>mkfs.ext4<span class="w"> </span>-L<span class="w"> </span>WDSSD<span class="w"> </span>-c<span class="w"> </span>/dev/sda1
-<span class="c1"># Filesystem UUID is displayed but you can also find it with:</span>
-sudo<span class="w"> </span>lsblk<span class="w"> </span>-o<span class="w"> </span>UUID,NAME,FSTYPE,SIZE,MOUNTPOINT,LABEL,MODEL
-
-mkdir<span class="w"> </span>wdssd
-sudo<span class="w"> </span>chown<span class="w"> </span>pi:pi<span class="w"> </span>-R<span class="w"> </span>/home/pi/wdssd/
-sudo<span class="w"> </span>chmod<span class="w"> </span>a+rwx<span class="w"> </span>/home/pi/wdssd/
-sudo<span class="w"> </span>nano<span class="w"> </span>/etc/fstab
-<span class="c1"># At the end of the file that opens, add a new line containing the UUID and mounting directory</span>
-<span class="c1"># UUID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx /home/pi/wdssd/ ext4 defaults,auto,users,rw,nofail 0 0</span>
+<span class="c1"># start the agent and add your identity</span>
+<span class="nb">eval</span><span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>ssh-agent<span class="w"> </span>-s<span class="k">)</span><span class="s2">&quot;</span>
+ssh-add<span class="w"> </span>--apple-use-keychain<span class="w"> </span>~/.ssh/id_ed25519
 </code></pre></div></p>
-<h3 id="resizing-a-root-partition">Resizing a root partition<a class="headerlink" href="#resizing-a-root-partition" title="Permanent link">#</a></h3>
-<p>By default the root partition will consume all the available space. If you have an SSD you may want to set up partitions appropriately for things like a Ceph cluster. You can't shrink a system partition while it's being used so <strong>we'll create our own GParted bootable USB drive</strong>. This is because the GParted Live image available for download is only for x86-based architectures like amd64. Both the Pi and Apple Silicon Macs are arm64.</p>
-<ol>
-<li>
-<p>Put a microSD card in a USB adapter and flash a Linux distribution with a desktop GUI.</p>
-<div class="admonition danger">
-<p class="admonition-title">Danger</p>
-<p>Make sure you got the right device name. All data on the device will be lost.</p>
 </div>
-<p><div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code>diskutil<span class="w"> </span>list
-diskutil<span class="w"> </span>zeroDisk<span class="w"> </span>short<span class="w"> </span>/dev/disk5
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="c1">###################################################################</span>
-<span class="c1"># REPLACE WITH YOUR VALUES</span>
-<span class="c1">###################################################################</span>
-<span class="nv">IMAGE</span><span class="o">=</span><span class="s1">&#39;ubuntu-22.04.3-preinstalled-desktop-arm64+raspi.img&#39;</span><span class="w"> </span>
-<span class="nv">DEVICE</span><span class="o">=</span><span class="s1">&#39;/dev/disk5&#39;</span><span class="w"> </span>
-<span class="c1">###################################################################</span>
-
-<span class="c1"># Unmount the card</span>
-diskutil<span class="w"> </span>unmountDisk<span class="w"> </span><span class="nv">$DEVICE</span>
-
-<span class="nb">cd</span><span class="w"> </span>~/Downloads
-<span class="c1"># sudo dd if=$IMAGE of=$DEVICE bs=1m status=progress</span>
-pv<span class="w"> </span><span class="nv">$IMAGE</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>dd<span class="w"> </span><span class="nv">bs</span><span class="o">=</span>1m<span class="w"> </span><span class="nv">of</span><span class="o">=</span><span class="nv">$DEVICE</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code>diskutil<span class="w"> </span>unmountDisk<span class="w"> </span><span class="nv">$DEVICE</span>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>If you're <strong>reinstalling</strong> the OS you might need to remove old key fingerprints belonging to that hostname from your <code>known_hosts</code> file.<br />
+Examples:
+<div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code>ssh-keygen<span class="w">  </span>-f<span class="w"> </span>~/.ssh/known_hosts<span class="w"> </span>-R<span class="w"> </span><span class="m">192</span>.168.xxx.xxx
+ssh-keygen<span class="w">  </span>-f<span class="w"> </span>~/.ssh/known_hosts<span class="w"> </span>-R<span class="w"> </span>node-01
+ssh-keygen<span class="w">  </span>-f<span class="w"> </span>~/.ssh/known_hosts<span class="w"> </span>-R<span class="w"> </span>raspberrypi4b.local
 </code></pre></div></p>
-</li>
-<li>
-<p>After setting up your Pi with the USB bootloader (see the <em>Boot from SSD</em> section), connect the SSD to your Pi using a USB 3.0 port.</p>
-</li>
-<li>Allow time for cloud-init to finish configuring your SSD and connect to it via SSH for a required <code>sudo reboot</code>.</li>
-<li>Connect via SSH again and <code>sudo shutdown -h now</code>.</li>
-<li>Disconnect the SSD and connect the GParted USB to a USB 3.0 port, a monitor or TV, a mouse, and a keyboard. Turn on your Pi.</li>
-<li>After setting up the OS, install GParted.
-    <div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>update
-sudo<span class="w"> </span>apt<span class="w"> </span>upgrade
-sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>gparted
+</div>
+<p>SSH into it with the configured user e.g. <code>pi</code> and hostname or IP address.<br />
+The first time you access it you'll get asked about adding the key fingerprint to the list of known hosts. Choose <code>yes</code>.
+<div class="highlight"><span class="filename">On your laptop</span><pre><span></span><code>ssh<span class="w"> </span>pi@node-01<span class="w"> </span><span class="c1"># hostname or IP address</span>
+</code></pre></div></p>
+<p>If you want to use the IP address, find your board's IP in your router's admin UI or by going over the list of all devices on your network with <code>arp -a</code>.</p>
+<p>If you see a welcome message with <code>System restart required</code>, <code>sudo reboot</code> and ssh again.</p>
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">#</a></h2>
+<ul>
+<li>I see <code>cloud-init</code> had failures.<br />
+    Based on the <code>user-data</code> file:
+    Manually run <code>sudo apt update</code>, <code>sudo apt full-upgrade</code>.<br />
+    Manually run <code>sudo apt install</code> on any packages that failed.<br />
+    Manually add any kernel modules you need and make sure <code>/etc/modules-load.d/modules.conf</code> has them so they'll be added on every boot.</li>
+<li>I'm not sure cgroups are enabled.<br />
+    Check with 
+    <div class="highlight"><pre><span></span><code>cat<span class="w"> </span>/proc/cgroups
 </code></pre></div></li>
-<li>Connect the SSD to the other USB 3.0 port and open GParted. Hit <em>Refresh devices</em> if needed. Select the SSD e.g. <code>/dev/sdb</code>.</li>
-<li>Right-click on the root ext4 partition e.g. <code>/dev/sdb2</code> (it should already be unmounted) and select and apply these operations.<ol>
-<li>Check the root partition.</li>
-<li>Resize it to 64 Gi (65,536 Mi) or desired size.</li>
-<li>Create unformatted partition in the unallocated space.</li>
-<li>Check the root partition again.</li>
-</ol>
-</li>
-<li>Turn off the Pi. Disconnect the GParted USB, keep the SSD connected and turn it on.</li>
-</ol>
-<p><strong>Alternatively</strong>, you can use <code>parted</code> to set up/resize the SSD partitions and file systems as desired. For example, leave a raw partition (no formatted filesystem) for use by a Ceph storage cluster.  </p>
-<ol>
-<li><a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/managing_file_systems/getting-started-with-an-ext4-file-system_managing-file-systems#resizing-an-ext4-file-system_getting-started-with-an-ext4-file-system">Resize the filesystem</a>.</li>
-<li>If needed, <a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/managing_file_systems/partition-operations-with-parted_managing-file-systems#proc_resizing-a-partition-with-parted_partition-operations-with-parted">shrink the partition</a> to leave space to be used by Ceph.</li>
-</ol>
-<p>Repeat for each node in your cluster.</p>
+</ul>
 <h2 id="notes">Notes<a class="headerlink" href="#notes" title="Permanent link">#</a></h2>
 <ul>
 <li>MicroCloud requires static IPs. Your physical hosts should also have static IPs for convenience.</li>
