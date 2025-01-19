@@ -2,23 +2,29 @@
 
 A homelab is a playground for learning, experimenting, and running workloads in a private environment at home. You can use it to deploy web servers, storage/backup solutions, media servers, home automation, development/test environments, and more.
 
-Building a homelab in a cloud-native way will teach you the concepts and building blocks used by all public cloud providers like AWS or GCP so that when you learn and use their specific implementations everything will make sense.
+Building a homelab in a cloud-native way has important advantages: 
+
+- It will teach you the concepts and building blocks used by all public cloud providers like AWS or GCP so that when you learn and use their specific implementations everything will make sense.
+- It can serve as a personal cloud that lets you take full control of your data and applications by hosting them yourself.
+- It's a lot of fun!
 
 The goal for this guide is to make our homelab:
 
-- **Cost-effective**: We'll use a cluster of single-board computers (SBCs) for low cost and low power consumption.
+- **Cost-effective** - We'll use a cluster of single-board computers (SBCs) for low cost and low power consumption.
+- **Small footprint** - The homelab can even be placed on your desk or in the same space as your home router. 
 - **Cloud-native** with these features:
     - Scalable, highly available, virtualized workloads. 
     - Block, file, and object storage. 
     - Software-defined networking.
 - **Open source**.
 
-This project will sometimes refer to the appendix which has instructions on performing tasks used commonly in any Raspberry Pi projects, not just this one.
+The appendix has instructions for common tasks needed in any Raspberry Pi project. We'll refer to them often as we build our lab.
 
 ## Background
 
-Quick overview of the technologies we'll work with. Based on  and summarized from materials compiled from different places in the Canonical documentation sites for Ubuntu, MicroCloud, MicroK8s, LXD, Ceph, and OVN.  
-Reference: [Canonical](https://canonical.com)
+Quick overview of the technologies we'll work with. Based on materials compiled from different places in the Canonical documentation sites for Ubuntu, MicroCloud, LXD, Ceph, OVN, and MicroK8s as well as my own observations and tips from using these products.  
+I've tried to keep it as succinct as possible so you can get right to action with enough information to get things done and understand what's happening. Then if you want to dive deep into a topic the Canonical site is a great place to start.  
+Reference: [Canonical](https://canonical.com).
 
 ### Compute
 
@@ -97,7 +103,7 @@ Types:
 - `custom` - You can add them to one or more instances as a disk device (they can be shared between instances). You can also use them as a special kind of volume to hold data separately from your instances (e.g. to hold backups or images) by setting some server configuration values. They're retained until you delete them.
 
 !!! note
-    For most storage drivers, custom storage volumes are not replicated across the cluster and exist only on the member for which they were created. This is different for remote storage pools (`ceph`, `cephfs`), where volumes are available from any cluster member.
+    For most storage drivers, custom storage volumes are not replicated across the cluster and exist only on the member for which they were created. This is different for remote storage pools (`ceph`, `cephfs`, `cephobject`, `powerflex`), where volumes are available from any cluster member.
 
 Storage volume **content** types: 
 
@@ -199,7 +205,7 @@ Follow these steps to set up your homelab. When an instruction tells you to powe
 2. Download the OS image with [these instructions](#getting-os-images).
 3. Set up each of the Pis to boot from SSD.
     1. Use [Raspberry Pi Imager](https://www.raspberrypi.com/software/) to flash the **USB Boot** utility image onto the microSD card. You can install it on your Mac with: 
-        ```sh
+        ```sh title="On your laptop"
         brew install --cask raspberry-pi-imager
         ```
         The USB Boot utility is in Operating System > CHOOSE OS > Misc utility images > Bootloader > USB Boot.
@@ -214,88 +220,98 @@ Follow these steps to set up your homelab. When an instruction tells you to powe
     Go make yourself a cup of tea before accessing your Pis for the first time. If you also set up the Wi-Fi connection it won't be available until everything has finished configuring and you manually do a required system restart.
 6. [Connect](#accessing-a-pi) to your Pis over ssh.
 7. [Verify](#verifying-correctness) everything went smoothly.
+8. Give your Pis a [static IP](#static-ip).
 
-## MicroCloud
+### LXD Cluster
 
 The steps in this section can also be automated by adding them to the base cloud-init file and using `lxd init --preseed`.  
 For now we'll go over them manually as we get more comfortable with all the moving pieces.
-
-### Install LXD
 
 For each Pi:
 
 1. Our cloud-init config already updated Snap for us so just make sure it's version 2.59.1 or later with `snap version`.
 2. We need LXD version 5.21. Install or update with:
-    ```sh
+    ```sh title="pi@node-01"
     sudo snap install lxd
     # or
     sudo snap refresh lxd --channel=5.21/stable
     ```
-3. Run `sudo lxd init`. Accept defaults for all questions below except the ones that have a specified value.
+3. We'll choose `node-01` as the bootstrap server for the LXD cluster. 
+    ```sh title="pi@node-01"
+    sudo lxd init
     ```
-    Would you like to use LXD clustering? (yes/no) [default=no]: 
-    Do you want to configure a new storage pool? (yes/no) [default=yes]: 
-    Name of the new storage pool [default=default]: 
-    Name of the storage backend to use (powerflex, zfs, btrfs, ceph, dir, lvm) [default=zfs]: 
-    Create a new ZFS pool? (yes/no) [default=yes]: 
-    Would you like to use an existing empty block device (e.g. a disk or partition)? (yes/no) [default=no]: 
-    Size in GiB of the new loop device (1GiB minimum) [default=30GiB]: 100 # <===== or whatever you want
-    Would you like to connect to a MAAS server? (yes/no) [default=no]: 
-    Would you like to create a new local network bridge? (yes/no) [default=yes]: 
-    What should the new bridge be called? [default=lxdbr0]: 
-    What IPv4 address should be used? (CIDR subnet notation, “auto” or “none”) [default=auto]: 10.1.123.1/24 # <=====
-    Would you like LXD to NAT IPv4 traffic on your bridge? [default=yes]: 
-    What IPv6 address should be used? (CIDR subnet notation, “auto” or “none”) [default=auto]: fd42:1:1234:1234::1/64 # <=====
-    Would you like LXD to NAT IPv6 traffic on your bridge? [default=yes]: 
-    Would you like the LXD server to be available over the network? (yes/no) [default=no]: yes # <=====
-    Address to bind LXD to (not including port) [default=all]: 
-    Port to bind LXD to [default=8443]: 
-    Would you like stale cached images to be updated automatically? (yes/no) [default=yes]: 
-    Would you like a YAML "lxd init" preseed to be printed? (yes/no) [default=no]: 
+    Accept defaults for all questions below except the ones that have a specified value.
+    ```title="pi@node-01"
+    Would you like to use LXD clustering? (yes/no) [default=no]: yes
+    What IP address or DNS name should be used to reach this server? [default=192.0.2.101]: # <===== THE STATIC IP
+    Are you joining an existing cluster? (yes/no) [default=no]: no
+    What member name should be used to identify this server in the cluster? [default=server1]: node-01
+    Do you want to configure a new local storage pool? (yes/no) [default=yes]:
+    Name of the storage backend to use (btrfs, dir, lvm, zfs) [default=zfs]:
+    Create a new ZFS pool? (yes/no) [default=yes]:
+    Would you like to use an existing empty block device (e.g. a disk or partition)? (yes/no) [default=no]:
+    Size in GiB of the new loop device (1GiB minimum) [default=30GiB]:
+    Do you want to configure a new remote storage pool? (yes/no) [default=no]:
+    Would you like to connect to a MAAS server? (yes/no) [default=no]:
+    Would you like to configure LXD to use an existing bridge or host interface? (yes/no) [default=no]:
+    Would you like to create a new Fan overlay network? (yes/no) [default=yes]:
+    What subnet should be used as the Fan underlay? [default=auto]:
+    Would you like stale cached images to be updated automatically? (yes/no) [default=yes]:
+    Would you like a YAML "lxd init" preseed to be printed? (yes/no) [default=no]:
     ```
-4. Modify the default network so we can later define specific IPv6 addresses for the VMs
-    ```sh
-    sudo lxc network set lxdbr0 ipv6.dhcp.stateful true
-    ```
+4. Join additional servers
 
-Note: MicroCloud requires static IPs for cluster members.
+    !!! warning
+        If you're adding existing (not newly installed) LXD servers, make sure to clear their contents before adding them to the cluster because any existing data on them will be lost.
+
+    ```sh title="pi@node-02"
+    sudo lxd init
+    ```
+    ```title="pi@node-02"
+    Would you like to use LXD clustering? (yes/no) [default=no]: yes
+    What IP address or DNS name should be used to reach this server? [default=192.0.2.101]: # <===== THE STATIC IP
+    Are you joining an existing cluster? (yes/no) [default=no]: yes
+    Do you have a join token? (yes/no/[token]) [default=no]: yes
+    Please provide join token: # <===== enter the generated token from the command below
+    All existing data is lost when joining a cluster, continue? (yes/no) [default=no] yes
+    Choose "size" property for storage pool "local":
+    Choose "source" property for storage pool "local":
+    Choose "zfs.pool_name" property for storage pool "local":
+    Would you like a YAML "lxd init" preseed to be printed? (yes/no) [default=no]:
+    ```
+    Generate a cluster join token on an existing cluster member and enter it when asked on the new joining member. 
+    ```sh title="pi@node-01"
+    sudo lxc cluster add node-02 # new_member_name
+    ```
+    Do the same for the third node.
 
 ### Provide storage disks
 
 Each Pi will have 1 VM. We'll provide each VM with 1 disk for local storage and 1 disk for remote storage. Remote storage with high availability (HA) requires at least 3 disks located across 3 cluster members.  
 That means we'll create a total of 6 disks.
 
-```sh
-sudo lxc storage list
-sudo lxc storage show default # <pool_name>
-```
-
 Create a ZFS storage pool called `disks`
-```sh
+```sh title="pi@node-01"
 sudo lxc storage create disks zfs size=100GiB
 ```
 
 Configure default volume size for the pool
-```sh
+```sh title="pi@node-01"
 sudo lxc storage set disks volume.size 10GiB
 ```
 
-```sh
-sudo lxc storage volume list
-```
-
 Create a custom volume (as opposed to an instance volume) for local storage
-```sh
+```sh title="pi@node-01"
 sudo lxc storage volume create disks local1 --type block
 ```
 
 Create volumes for remote storage
-```sh
+```sh title="pi@node-01"
 sudo lxc storage volume create disks remote1 --type block size=90GiB
 ```
 
 View details
-```sh
+```sh title="pi@node-01"
 sudo lxc storage volume list disks
 sudo lxc storage volume show disks custom/local1 # as opposed to container/local1 or virtual-machine/local1
 sudo lxc storage volume show disks custom/remote1
@@ -304,12 +320,12 @@ sudo lxc storage volume show disks custom/remote1
 ### Create external network
 
 Create a network for external connectivity
-```sh
+```sh title="pi@node-01"
 sudo lxc network create microbr0
 ```
 
 View network details. Note down the assigned IPv4 and IPv6 addresses for the network.
-```sh
+```sh title="pi@node-01"
 sudo lxc network list
 
 sudo lxc network get microbr0 ipv4.address
@@ -336,13 +352,13 @@ fd42:8cba:e02b:a498::1/64
 #### Create the VMs 
 
 Without starting them yet.
-```sh title="On node-01" 
+```sh title="pi@node-01" 
 sudo lxc init ubuntu:24.04 micro1 --vm --config limits.cpu=2 --config limits.memory=4GiB -d eth0,ipv4.address=10.1.123.10 -d eth0,ipv6.address=fd42:1:1234:1234::10
 ```
-```sh title="On node-02" 
+```sh title="pi@node-02" 
 sudo lxc init ubuntu:24.04 micro2 --vm --config limits.cpu=2 --config limits.memory=4GiB -d eth0,ipv4.address=10.1.123.20 -d eth0,ipv6.address=fd42:1:1234:1234::20
 ```
-```sh title="On node-03" 
+```sh title="pi@node-03" 
 sudo lxc init ubuntu:24.04 micro3 --vm --config limits.cpu=2 --config limits.memory=4GiB -d eth0,ipv4.address=10.1.123.30 -d eth0,ipv6.address=fd42:1:1234:1234::30
 ```
 
@@ -350,70 +366,160 @@ sudo lxc init ubuntu:24.04 micro3 --vm --config limits.cpu=2 --config limits.mem
 
 The storage pool (`disks`) and volumes (`local1`, `remote1`) have the same names on all machines.
 
-```sh title="On node-01" 
+```sh title="pi@node-01" 
 sudo lxc storage volume attach disks local1 micro1
 sudo lxc storage volume attach disks remote1 micro1
 ```
 
-```sh title="On node-02" 
+```sh title="pi@node-02" 
 sudo lxc storage volume attach disks local1 micro2
 sudo lxc storage volume attach disks remote1 micro2
 ```
 
-```sh title="On node-03" 
+```sh title="pi@node-03" 
 sudo lxc storage volume attach disks local1 micro3
 sudo lxc storage volume attach disks remote1 micro3
 ```
 
 #### Add instance devices
 
-Add network interfaces that use the dedicated MicroCloud uplink network. We'll the nic `eth1`.
+Add network interfaces that use the dedicated MicroCloud uplink network. We'll call the nic `eth1`.
 
 See what we have so far
-```sh
+```sh title="pi@node-01"
 sudo lxc config device list micro1 # 2, 3
 ```
-
-```sh title="On node-01" 
+Add the devices
+```sh title="pi@node-01" 
 sudo lxc config device add micro1 eth1 nic network=microbr0 # instance, device-name, type, [key=value...]
 ```
 
-```sh title="On node-02" 
+```sh title="pi@node-02" 
 sudo lxc config device add micro2 eth1 nic network=microbr0
 ```
 
-```sh title="On node-03"
+```sh title="pi@node-03"
 sudo lxc config device add micro3 eth1 nic network=microbr0
 ```
 
 #### Start the VMs
 
-```sh title="On node-01" 
+```sh title="pi@node-01" 
 sudo lxc start micro1
 ```
 
-```sh title="On node-02" 
+```sh title="pi@node-02" 
 sudo lxc start micro2
 ```
 
-```sh title="On node-03"
+```sh title="pi@node-03"
 sudo lxc start micro3
 ```
 
-If a VM fails to start check if you have enough available RAM to start the VM.
-```sh
+If a VM fails to start check if you have enough available RAM to start the VM. If needed, reduce the amount of memory assigned to the VM and try to start it again.
+```sh title="On the node where the VM failed" 
 free -h
-# Example setting a lower RAM limit on VMs
+# Example setting a lower RAM limit on a VM
 sudo lxc config set micro2 limits.memory 2GiB
-sudo lxc config set micro3 limits.memory 2GiB
 ```
 
-```sh title="On node-02" 
+## MicroCloud
 
+We'll install al required snaps on each VM and configure the network interfaces so they can be used by MicroCloud.  
+MicroCloud needs a network interface that doesn't have an IP address assigned so we'll configure the network interface connected to our external traffic uplink network (`microbr0`) to refuse any IP addresses.
+
+You can see all devices for the VM, including nics.
+```sh title="pi@node-03"
+sudo lxc config device --help
+sudo lxc config device list micro3 #instance
+sudo lxc config device show micro3 # instance
+sudo lxc config device get micro3 eth1 type  # instance, device, key=[network|type]
 ```
 
-```sh title="On node-03"
+### Install
 
+Open 3 terminal windows so you can run these on all machines (`node-01`/`micro1`, `node-02`/`micro2`, `node-03`/`micro3`) at the same time.  
+
+```sh title="pi@node-01" 
+sudo lxc exec micro1 -- bash
+```
+```sh title="root@micro1" 
+cat << EOF > /etc/netplan/99-microcloud.yaml
+# MicroCloud requires a network interface that doesn't have an IP address
+network:
+    version: 2
+    ethernets:
+        enp6s0:
+            accept-ra: false
+            dhcp4: false
+            link-local: []
+EOF
+chmod 0600 /etc/netplan/99-microcloud.yaml
+```
+
+!!! note
+    `enp6s0` is the name that the VM assigns to the network interface that we previously added as `eth1`.
+    You can verify it with `lshw -C network -short` on the VM.
+
+Bring the network interface up.
+```sh title="root@micro1" 
+netplan apply
+```
+
+Install the required snaps
+
+```sh title="root@micro1" 
+snap install lxd --channel=5.21/stable --cohort="+"
+snap install microceph --channel=squid/stable --cohort="+"
+snap install microovn --channel=24.03/stable --cohort="+"
+snap install microcloud --channel=2/stable --cohort="+"
+
+# if lxd is already installed, just refresh it to the latest version
+# snap refresh lxd --channel=5.21/stable --cohort="+"
+```
+
+!!! note
+    The `--cohort="+"` flag in the command ensures that the same version of the snap is installed on all machines so the cluster members [stay in sync]((https://canonical-microcloud.readthedocs-hosted.com/en/latest/microcloud/how-to/snaps/#howto-snap-cluster)).
+
+After you've done this on all 3 machines, you're done!
+
+### Initialize
+
+This ia a good time to make sure our systems are upgraded and `snap/bin` has been added to our PATH by rebooting our machines. 
+
+For each machine (make sure you have 3 terminal windows open, 1 for each Node.):
+```sh title="root@micro1" 
+exit
+```
+```sh title="pi@mnode-01" 
+sudo apt update
+sudo apt upgrade
+sudo reboot
+```
+Wait a bit for the system to restart and then:
+```sh title="On your laptop" 
+ssh pi@node-01
+```
+```sh title="pi@mnode-01" 
+sudo lxc exec micro1 -- bash
+```
+Done!
+
+Now you can use any of the VMs to initialize MicroCloud but here we'll use `micro1`
+```sh title="root@micro1" 
+microcloud init
+```
+```
+Do you want to set up more than one cluster member? (yes/no) [default=yes]: yes
+Select an address for MicroCloud's internal traffic: <=== the IPv4 address
+# Copy the session passphrase
+```
+
+On each of the other VMs, join the cluster
+```sh title="root@micro2" 
+microcloud join
+# select the IPv4 address
+# when asked, enter the session passphrase
 ```
 
 
@@ -440,7 +546,7 @@ echo "e59925e211080b20f02e4504bb2c8336b122d0738668491986ee29a95610e5b1 *ubuntu-2
 ```
 
 If you see an `OK` message like `ubuntu-24.04.1-preinstalled-server-arm64+raspi.img.xz: OK` go ahead and decompress the file:
-```sh
+```sh title="On your laptop"
 xz -d ubuntu-24.04.1-preinstalled-server-arm64+raspi.img.xz
 ```
 
@@ -658,9 +764,9 @@ If you see a welcome message with `System restart required`, `sudo reboot` and s
 
 Once cloud-init is done launching our instance, check a few things to make sure everything went smoothly.
 
-Access your pi via ssh as explained [here](#accessing-a-pi).
+Access your Pi via ssh as explained [here](#accessing-a-pi).
 
-```sh title="On your Pi"
+```sh title="pi@node-01"
 # Verify your kernel is built with the modules you need for Ceph RBD (RADOS Block Device) and for disk encryption. 
 # It's OK if they're not currently being used (a zero in the third column of the results). They just need to be loaded.
 lsmod | grep -iE 'crypto|dm_crypt|aes' # verify that at least dm_crypt is available.
@@ -689,6 +795,45 @@ sudo lshw -c network
 ip addr show | grep wlan0
 ```
 
+### Static IP
+
+#### Option A: The router
+
+Check the MAC address of your `eth0` interface (**not** your `wlan0`, for example).
+```sh title="pi@node-01"
+lshw -C network -short
+```
+
+Log in to your router's admin interface and go to **LAN** -> **DHCP Server** (or similar wording).  
+There will be an option to manually assign an IP address to an item on the list of client MAC addresses. Choose the MAC address you got from the command above.  
+Add all the needed records and apply changes.
+
+#### Option B: `dhcpcd.conf`
+Find the IP adddress of your router. It's the address that appears after `default via`.
+```sh title="pi@node-01"
+ip r
+default via [IP]
+```
+Get the IP of your DNS server (it may or may not be your router)
+```sh title="pi@node-01"
+grep nameserver /etc/resolv.conf
+```
+
+Open this file:
+```sh title="pi@node-01"
+nano /etc/dhcpcd.conf
+```
+and add/edit these lines at the end filling in the correct info.
+```
+interface [wlan0 for Wi-Fi or eth0 for Ethernet]
+static_routers=[ROUTER IP]
+static domain_name_servers=[DNS IP]
+[static or inform] ip_address=[STATIC IP ADDRESS YOU WANT]/24
+```
+`inform` means that the Pi will attempt to get the IP address you requested, but if it's not available, it will choose another. If you use `static`, it will have no IP v4 address at all if the requested one is in use.  
+
+Save the file and `sudo reboot`. From now on, upon each boot, the Pi will attempt to obtain the static ip address you requested.  
+
 ## Troubleshooting
 
 * I see `cloud-init` had failures.  
@@ -698,6 +843,48 @@ ip addr show | grep wlan0
     Manually add any kernel modules you need and make sure `/etc/modules-load.d/modules.conf` has them so they'll be added on every boot.
 * I'm not sure cgroups are enabled.  
     Check with 
-    ```sh
+    ```sh title="pi@node-01"
     cat /proc/cgroups
     ```
+
+## Cleanup
+
+View
+```sh title="pi@node-01"
+sudo lxc cluster list # LXD cluster members
+sudo lxc cluster show node-01
+
+sudo lxc storage list #storage pools
+sudo lxc storage show local
+
+sudo lxc storage volume list # storage volumes
+sudo lxc storage volume list local # storage volumes for a pool
+
+sudo lxc network list # networks
+sudo lxc network show lxdfan0
+
+sudo lxc list #instances
+sudo lxc show micro1
+
+sudo lxc config device list micro1 # instance devices
+
+```
+
+Delete
+```sh title="pi@node-01"
+sudo lxc stop micro1 # 1, 2, 3
+sudo lxc delete micro1 # 1, 2, 3
+
+sudo lxc storage volume delete disks local1
+sudo lxc storage volume delete disks remote1
+
+sudo lxc storage delete disks
+
+#networks
+sudo lxc network delete microbr0
+
+sudo snap remove lxd --purge # uninstall lxd
+
+snap saved
+sudo snap forget 1 # snapshot id
+```

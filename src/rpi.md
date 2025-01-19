@@ -202,38 +202,6 @@ brew install --cask vnc-viewer
     python3 -m pygame.examples.aliens
     ```
 
-## To give it a static IP
-
-#### Option A: The router
-
-Log in to your router's admin interface and go to **LAN** -> **DHCP Server** (or similar wording). There will be an option to manually assign an IP to an item on the list of client MAC addresses.
-
-#### Option B: `dhcpcd.conf`
-Find the IP adddress of your router. It's the address that appears after `default via`.
-```sh title="On your Pi"
-ip r
-default via [IP]
-```
-Get the IP of your DNS server (it may or may not be your router)
-```sh title="On your Pi"
-grep nameserver /etc/resolv.conf
-```
-
-Open this file:
-```sh title="On your Pi"
-nano /etc/dhcpcd.conf
-```
-and add/edit these lines at the end filling in the correct info.
-```
-interface [wlan0 for Wi-Fi or eth0 for Ethernet]
-static_routers=[ROUTER IP]
-static domain_name_servers=[DNS IP]
-[static or inform] ip_address=[STATIC IP ADDRESS YOU WANT]/24
-```
-`inform` means that the Pi will attempt to get the IP address you requested, but if it's not available, it will choose another. If you use `static`, it will have no IP v4 address at all if the requested one is in use.  
-
-Save the file and `sudo reboot`. From now on, upon each boot, the Pi will attempt to obtain the static ip address you requested.  
-
 ## To set it up as a DNS server
 0. Install and configure a DNS Server e.g. DNSmasq or Pi-Hole on the Pi.
 1. Change your router’s DNS settings to point to the Pi. Log in to your router's admin interface and look for DNS e.g. in **LAN** -> **DHCP Server**. Set the primary DNS server to the IP of your Pi and make sure it's the only DNS server. The Pi will handle upstream DNS services.
