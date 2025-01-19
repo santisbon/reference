@@ -458,39 +458,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#to-give-it-a-static-ip" class="md-nav__link">
-    <span class="md-ellipsis">
-      To give it a static IP
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="To give it a static IP">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#option-a-the-router" class="md-nav__link">
-    <span class="md-ellipsis">
-      Option A: The router
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#option-b-dhcpcdconf" class="md-nav__link">
-    <span class="md-ellipsis">
-      Option B: dhcpcd.conf
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#to-set-it-up-as-a-dns-server" class="md-nav__link">
     <span class="md-ellipsis">
       To set it up as a DNS server
@@ -1074,39 +1041,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#to-give-it-a-static-ip" class="md-nav__link">
-    <span class="md-ellipsis">
-      To give it a static IP
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="To give it a static IP">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#option-a-the-router" class="md-nav__link">
-    <span class="md-ellipsis">
-      Option A: The router
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#option-b-dhcpcdconf" class="md-nav__link">
-    <span class="md-ellipsis">
-      Option B: dhcpcd.conf
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#to-set-it-up-as-a-dns-server" class="md-nav__link">
     <span class="md-ellipsis">
       To set it up as a DNS server
@@ -1361,28 +1295,6 @@ sudo<span class="w"> </span>pip3<span class="w"> </span>install<span class="w"> 
 python3<span class="w"> </span>-m<span class="w"> </span>pygame.examples.aliens
 </code></pre></div></p>
 </div>
-<h2 id="to-give-it-a-static-ip">To give it a static IP<a class="headerlink" href="#to-give-it-a-static-ip" title="Permanent link">#</a></h2>
-<h4 id="option-a-the-router">Option A: The router<a class="headerlink" href="#option-a-the-router" title="Permanent link">#</a></h4>
-<p>Log in to your router's admin interface and go to <strong>LAN</strong> -&gt; <strong>DHCP Server</strong> (or similar wording). There will be an option to manually assign an IP to an item on the list of client MAC addresses.</p>
-<h4 id="option-b-dhcpcdconf">Option B: <code>dhcpcd.conf</code><a class="headerlink" href="#option-b-dhcpcdconf" title="Permanent link">#</a></h4>
-<p>Find the IP adddress of your router. It's the address that appears after <code>default via</code>.
-<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>ip<span class="w"> </span>r
-default<span class="w"> </span>via<span class="w"> </span><span class="o">[</span>IP<span class="o">]</span>
-</code></pre></div>
-Get the IP of your DNS server (it may or may not be your router)
-<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>grep<span class="w"> </span>nameserver<span class="w"> </span>/etc/resolv.conf
-</code></pre></div></p>
-<p>Open this file:
-<div class="highlight"><span class="filename">On your Pi</span><pre><span></span><code>nano<span class="w"> </span>/etc/dhcpcd.conf
-</code></pre></div>
-and add/edit these lines at the end filling in the correct info.
-<div class="highlight"><pre><span></span><code>interface [wlan0 for Wi-Fi or eth0 for Ethernet]
-static_routers=[ROUTER IP]
-static domain_name_servers=[DNS IP]
-[static or inform] ip_address=[STATIC IP ADDRESS YOU WANT]/24
-</code></pre></div>
-<code>inform</code> means that the Pi will attempt to get the IP address you requested, but if it's not available, it will choose another. If you use <code>static</code>, it will have no IP v4 address at all if the requested one is in use.  </p>
-<p>Save the file and <code>sudo reboot</code>. From now on, upon each boot, the Pi will attempt to obtain the static ip address you requested.  </p>
 <h2 id="to-set-it-up-as-a-dns-server">To set it up as a DNS server<a class="headerlink" href="#to-set-it-up-as-a-dns-server" title="Permanent link">#</a></h2>
 <ol start="0">
 <li>Install and configure a DNS Server e.g. DNSmasq or Pi-Hole on the Pi.</li>
